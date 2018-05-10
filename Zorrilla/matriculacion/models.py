@@ -22,13 +22,13 @@ class Persona(models.Model):
         abstract = True
 
 
-class Profesor(Persona)
-    foto 
-    telefono_particular_p
-    telefono_laboral_p
-    telefono_familiar_p
-    datos_familiares_cargo
-    fecha_inicio_actividad
-    antecedentes_laborales
-    antiguedad_en_empresa
-    antiguedad_en_escuela
+class Profesor(Persona):
+    foto = models.ImageField(upload_to=get_image_path, blank=True, null=True)
+    telefono_particular_p = models.IntegerField(max_length=15)
+    telefono_laboral_p = models.IntegerField(max_length=15)
+    telefono_familiar_p = models.IntegerField(max_length=15)
+    datos_familiares_cargo = models.TextArea(max_length=300)
+    fecha_inicio_actividad = models.DateTimeField()
+    antecedentes_laborales = models.TextArea(max_length=300)
+    antiguedad_en_empresa = models.DateTimeField()
+    estudios_cursados = models.TextArea(max_length=300)
