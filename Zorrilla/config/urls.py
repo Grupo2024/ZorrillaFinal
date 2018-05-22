@@ -19,6 +19,13 @@ from matriculacion .views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+
+    #Url for Templates
+
     url(r'^$', index, name="index"),
     url(r'^form', formulario, name="form"),
+
+    #Url for models creation
+
+    url(r'crear_alumno/', crear_alumno, name="crear_alumno")
 ]
