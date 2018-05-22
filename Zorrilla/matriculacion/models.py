@@ -96,8 +96,13 @@ class Alumno(Persona):
     padres = models.ForeignKey(Padre_madre)
     tiene_obra_social = models.BooleanField('Tiene obra o no')
     obra_social_nombre = models.CharField('Nombre Obra Social', max_length=40, null=True)
-    obra_social_numero = models.IntegerField('Num Obra Social') #Numero de afiliacion a la ora social
-
+    obra_social_numero = models.IntegerField('Num Obra Social')#Numero de afiliacion a la ora social
+    matriculado = models.BooleanField('Esta matriculado o no') 
 
     def __str__(self):
         return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre, self.apellido, self.dni, self.sexo)
+
+    def matricular(self):
+        if self.matriculado is not False:
+            self.matriculado = True
+        return self.matriculado
