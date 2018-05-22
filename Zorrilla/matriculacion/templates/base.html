@@ -11,41 +11,41 @@
         </head>
         <body>        
             <nav class="navbar navbar-expand-md navbar-light bg-light">
-                <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-                    <ul class="navbar-nav mr-auto">
-                        {% block navbar %}
-                        {% endblock navbar %}                
-                        <li class="nav-item dropdown ">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            MATRICULACIONES
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">Alumnos</a>
-                                <a class="dropdown-item" href="#">Profesores</a>                              
-                            </div>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="#">BIBLOTECA</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="mx-auto order-0">
-                    {% block navbar2 %}
-                    {% endblock navbar2 %}
-                    <a class="navbar-brand mx-auto" href="#">ZORRILLA</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                </div>
-
-                <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <button class="btn btn-outline-success my-2 my-sm-0 " type="submit">DOCENTES</button>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+                    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+                        <ul class="navbar-nav mr-auto">
+                            
+                            {% block navbar %}
+                            {% endblock navbar %}
+                            <li class="nav-item dropdown ">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                MATRICULACIONES
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#">Alumnos</a>
+                                    <a class="dropdown-item" href="#">Profesores</a>
+                                </div>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link " href="#">BIBLOTECA</a>
+                            </li>
+                        </ul>
+                    </div>
+            
+                    <div class="mx-auto order-0">
+                        <a class="navbar-brand mnonex-auto" href="#">ZORRILLA</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+            
+                    <div class="navbar-collapse collapse w-100">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <button class="btn btn-outline-success my-2 my-sm-0 " type="submit">DOCENTES</button>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
                 
                 {% block body %}
                     
