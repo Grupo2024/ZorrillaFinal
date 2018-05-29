@@ -106,3 +106,12 @@ class Alumno(Persona):
         if self.matriculado is not False:
             self.matriculado = True
         return self.matriculado
+
+
+class Matriculacion(models.Model):
+    alumno = models.ForeignKey(Alumno, null=False)
+    fecha_matriculacion = models.DateTimeField('Fecha Matriculacion', blank=True)
+    matriculado = models.BooleanField('Esta matriculado o no', default=False)
+
+    def __str__(self):
+        return 'El alumno: {} tiene un estado de matriculacion {}'.format(self.alumno.nombre, self.matriculado)

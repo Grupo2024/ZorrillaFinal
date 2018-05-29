@@ -4,6 +4,7 @@ In this file we will see the functions that creates the models for Alumnos, Tran
 from django.db import models
 from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
+from django.utils import timezone
 from .models import *
 
 def crear_alumno(request):
@@ -54,5 +55,7 @@ def crear_alumno(request):
                              obra_social_nombre=alumno_obra_social_nombre,
                              obra_social_numero = alumno_obra_social_numero,
                              matriculado = alumno_matriculado)
-        #alumno1.save()
-        return HttpResponse('formulario guardado')
+        alumno1.save()
+        matriculacion = Matriculacion (alumno=alumno1, fecha_matriculacion=timezone.now(), matriculado=False)
+        matriculacion.save()
+        return HttpResponse('Alumno guardado')

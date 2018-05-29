@@ -24,6 +24,7 @@ urlpatterns = [
 
     url(r'^$', index, name="index"),
     url(r'^form', formulario, name="form"),
+    url(r'^pedidos', aceptar_matriculaciones, name="aceptar_matriculaciones"),
 
     #Url for models creation
 
