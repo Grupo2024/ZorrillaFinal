@@ -9,3 +9,11 @@ def index(request):
 
 def formulario(request):
     return render(request, 'formulario.html')
+
+def aceptar_matriculaciones(request):
+    print request.user
+    alumnos = Alumno.objects.all()
+    print alumnos
+    matriculaciones = Matriculacion.objects.all().order_by('-fecha_matriculacion')
+    print matriculaciones
+    return render(request, 'pedidos.html', {'matriculaciones':matriculaciones})
