@@ -15,3 +15,10 @@ def fallo_matriculando(id_matriculacion):
         matriculacion.save()
     else:
         pass
+
+def habilitar_matriculaciones():
+    matriculaciones = Matriculacion.objects.all()
+    for matriculacion in matriculaciones:
+        matriculacion.matriculado = False
+        matriculacion.save()
+    return True

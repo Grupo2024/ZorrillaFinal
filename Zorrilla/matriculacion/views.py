@@ -14,6 +14,9 @@ def formulario(request):
     return render(request, 'formulario.html')
 
 def solicitar_matriculacion(request):
+    #Funcion para cambiar el estado de las matricualciones para poder asi
+    #interactuar con los mismos
+    #habilitar_matriculaciones()
     print request.user
     alumnos = Alumno.objects.all()
     print alumnos
