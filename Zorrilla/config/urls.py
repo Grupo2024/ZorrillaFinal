@@ -24,9 +24,13 @@ urlpatterns = [
 
     url(r'^$', index, name="index"),
     url(r'^form', formulario, name="form"),
-    url(r'^pedidos', aceptar_matriculaciones, name="aceptar_matriculaciones"),
+    url(r'^pedidos', solicitar_matriculacion, name="solicitar_matriculacion"),
 
     #Url for models creation
 
-    url(r'crear_alumno/', crear_alumno, name="crear_alumno")
+    url(r'crear_alumno/', crear_alumno, name="crear_alumno"),
+
+    #url for an ID
+
+    url(r'^aceptar_matriculacion/(?P<id_matriculacion>\d+)$', aceptar_matriculacion, name="aceptar_matriculacion")
 ]
