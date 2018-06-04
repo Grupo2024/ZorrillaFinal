@@ -1,17 +1,25 @@
 {% extends 'base.html' %}
 {% load static %}
-            
-
 {% block navbar %}
-
 {% endblock navbar %}
-    
 {% block body %}
-<div class="parallax"></div>
+
+<div class="parallax">
+    <br>
+    <br>
+    <br>
+    <br>
+    <h1 class="display-1 font-weight-bold text-center text-white"><u>Primario Zorrilla</u></h1>
+
+        <button class="btn btn-info btn-lg align-bottom d-block mx-auto " onclick="scrollWin()" style="width: 35%;">Ver Mas</button>
+
+    </div>
 
 <div class="parallax_blur "  style="height:800px;">
     <br>
     <br>
+    <br>
+
     <div class="row d-flex justify-content-around">
         <div class="card insidediv " style="width:500px; filter:none;"  >
             <img class="card-img-top " src="{% static "img/3zorrilla.jpeg" %}" alt="Card image">
@@ -42,6 +50,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    function scrollWin() {
+    window.scrollBy(0, 730)
+}
+</script>
 {% endblock body %}
 
 
