@@ -1,33 +1,31 @@
 {% extends 'base.html' %}
 {% load static %}
-            
-
 {% block navbar %}
-
 {% endblock navbar %}
-    
 {% block body %}
+
 <div class="parallax">
-<br>
-<br>
-<br>
-<br>
-    <h1 class="display-1 font-weight-bold text-center text-white"><u>Primario Zorrilla</u></h1>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h1 class="display-1 font-weight-bold text-center text-white">Primario Zorrilla</h1>
 
         <button class="btn btn-info btn-lg align-bottom d-block mx-auto " onclick="scrollWin()" style="width: 35%;">Ver Mas</button>
-    
 
-</div>
+    </div>
 
-<div class="parallax_blur "  style="height:800px;">
+<div class="parallax_blur">
     <br>
     <br>
-    <div class="row d-flex justify-content-around">
-        <div class="card insidediv " style="width:500px; filter:none;"  >
+    <br>
+
+    <div class="row justify-content-around">
+        <div class="card insidediv " style="width:40%; filter:none;"  >
             <img class="card-img-top " src="{% static "img/3zorrilla.jpeg" %}" alt="Card image">
             <div class="card-img-overlay text-center">
                 <h1 class="card-title">Historia</h4>
-                <h6 class="card-text">Vallisoletano, era hijo de José Zorrilla, un hombre conservador y absolutista, seguidor del pretendiente Carlos María Isidro de Borbón y relator de la Real Chancillería. Su madre, Nicomedes Moral, era una mujer muy piadosa. Tras varios años en Valladolid, la familia pasó por Burgos y Sevilla para al fin establecerse, cuando el niño tenía nueve años, en Madrid, donde el padre trabajó con gran celo como superintendente de policía y el hijo ingresó en el Seminario de Nobles, regentado por los jesuitas; allí participó en representaciones teatrales escolares.
+                <h6 class="card-text " >Vallisoletano, era hijo de José Zorrilla, un hombre conservador y absolutista, seguidor del pretendiente Carlos María Isidro de Borbón y relator de la Real Chancillería. Su madre, Nicomedes Moral, era una mujer muy piadosa. Tras varios años en Valladolid, la familia pasó por Burgos y Sevilla para al fin establecerse, cuando el niño tenía nueve años, en Madrid, donde el padre trabajó con gran celo como superintendente de policía y el hijo ingresó en el Seminario de Nobles, regentado por los jesuitas; allí participó en representaciones teatrales escolares.
                         
                         Muerto Fernando VII, el furibundo absolutista que era el padre, fue desterrado a Lerma (Burgos) y el hijo fue enviado a estudiar derecho a la Real Universidad de Toledo bajo la vigilancia de un pariente canónigo en cuya casa se hospedó; sin embargo, el hijo se distraía en otras ocupaciones y los libros de derecho se le caían de las manos y el canónigo lo devolvió a Valladolid para que siguiera estudiando allí (1833-1836). Al llegar el díscolo hijo, fue amonestado por el padre, que marchó después al pueblo de su naturaleza, Torquemada, y por Manuel Joaquín Tarancón y Morón, rector de la Universidad y futuro Obispo de Córdoba.
                         
@@ -48,19 +46,33 @@
                 <h6>gordohdp@gmail.com</h6>
                 <br>
                 <h5>Ubicacion</h5>
+                <div id="map"></div>
             </div>
         </div>
     </div>
+<br>
+<br>
 </div>
 
 <script>
-
-
-    function scrollWin() {
-        window.scrollBy(0, 720);
+function scrollWin() {
+    window.scrollBy(0, 730)
 }
-        </script>
-        
+
+function initMap() {
+        var uluru = {lat: -31.3729118, lng: -64.2350452};
+        var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 16,
+        center: uluru
+    });
+    var marker = new google.maps.Marker({
+        position: uluru,
+        map: map
+    });
+    }
+</script>
+
+
 {% endblock body %}
 
 
