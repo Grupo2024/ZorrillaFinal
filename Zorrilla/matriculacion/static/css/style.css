@@ -23,7 +23,7 @@ body, html {
     background-image: url('/static/img/blur.png');
 
     /* Full height */
-    height: 150%; 
+    height: auto; 
     z-index:  0;
 
     /* Create the parallax scrolling effect */
