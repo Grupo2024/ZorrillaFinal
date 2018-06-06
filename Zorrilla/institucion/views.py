@@ -7,7 +7,7 @@ from django.shortcuts import render
 def perfil_profesor(request):
     return render(request, 'templates_docentes/perfil_profesor.html')
 
-def 1(request):
+def cursos1(request):
     return render(request, 'templates_cursos/cursos1.html')
 
 def cursos2(request):
