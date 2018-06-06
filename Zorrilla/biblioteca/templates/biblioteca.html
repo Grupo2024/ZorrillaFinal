@@ -76,28 +76,27 @@ input[type=text]{
     <br></br>
     <center><h2>BIBLIOTECA</h2></center>
     <input type="text"placeholder="Nombre del libro que desee buscar">
-<br></br>
+    <a align="right" class="btn btn-success mr-auto" href="{% url 'model_form_upload' %}">Añadir libro</a>
 <table>
   <tr>
     <th>Libro</th>
     <th>Descripción</th>
     <th>Fecha</th>
+    <th>Eliminar</th>
   </tr>
   {% for obj in documentos %}
   <tr>
     <td><a href="{{ obj.document.url }}">{{ obj.document.name }}</a></td>
     <td>{{obj.description}}</td>
     <td>{{obj.uploaded_at}}</td>
+    <td><a class="btn btn-danger">Eliminar libro</a></td>
   </tr>
     {% endfor %}
 
 </table>
 
             <br></br>
-            <p align="right">
-            <a class="btn btn-success" href="{% url 'model_form_upload' %}">Añadir libro</a>
-            <a class="btn btn-danger">Eliminar libro</a>
-                </p>
+
 
 
 </body>
