@@ -17,6 +17,8 @@ from django.conf.urls import url
 from django.contrib import admin
 from matriculacion .views import *
 from biblioteca .views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -34,5 +36,13 @@ urlpatterns = [
 
     #url for an ID
 
-    url(r'^aceptar_matriculacion/(?P<id_matriculacion>\d+)$', aceptar_matriculacion, name="aceptar_matriculacion")
+    url(r'^aceptar_matriculacion/(?P<id_matriculacion>\d+)$', aceptar_matriculacion, name="aceptar_matriculacion"),
+
+    #Url for BIBLIOTECA
+
+    url(r'^uploads/form/$', model_form_upload, name='model_form_upload'),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
