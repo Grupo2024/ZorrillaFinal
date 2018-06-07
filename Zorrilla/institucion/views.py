@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 
+
 # Create your views here.
 def perfil_profesor(request):
     return render(request, 'templates_docentes/perfil_profesor.html')
@@ -18,3 +19,6 @@ def cursos3(request):
 
 def cursos4(request):
     return render(request, 'templates_cursos/cursos4.html')
+
+def docentes_lista(request):
+    return render(request, 'templates_docentes/docentes_lista.html')
