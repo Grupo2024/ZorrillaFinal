@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from matriculacion .views import *
+from institucion .views import *
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
