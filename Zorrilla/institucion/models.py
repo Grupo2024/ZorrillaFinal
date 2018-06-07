@@ -49,4 +49,4 @@ class Seccion(models.Model):
     grado_asignado = models.ForeignKey(Grado, null=False)
 
     def __str__(self):
-       return 'El curso {} {} tiene como profesor asignado a {} {}'.format(self.curso, self.grado_asignado.aNo, self.prof_asignado.apellido, self.prof_asignado.nombre)
+       return 'El curso {} {} turno {} tiene como profesor asignado a {} {}'.format(self.curso, self.grado_asignado.aNo, self.grado_asignado.turno_asignado.que_hora, self.prof_asignado.apellido, self.prof_asignado.nombre)
