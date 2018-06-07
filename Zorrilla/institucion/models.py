@@ -30,11 +30,17 @@ class Turno(models.Model):
         else:
             return aux
 
+    def __str__(self):
+        return 'Turno {}'.format(self.que_hora())
+
 
 
 class Grado(models.Model):
     aNo = models.CharField('1ero, 2do, etc...', max_length=5)
     turno_asignado = models.ForeignKey(Turno, null=False)
+
+    def __str__(self):
+        return 'El Grado {} asiste al turno {}'.format(self.aNo, self.turno_asignado.que_hora())
 
 
 class Seccion(models.Model):
@@ -42,5 +48,5 @@ class Seccion(models.Model):
     prof_asignado = models.ForeignKey(Profesor, null=False)
     grado_asignado = models.ForeignKey(Grado, null=False)
 
-#    def __str__(self):
-#       return ''.format(self.alumno.nombre, self.matriculado)
+    def __str__(self):
+       return 'El curso {} {} tiene como profesor asignado a {} {}'.format(self.curso, self.grado_asignado.aNo, self.prof_asignado.apellido, self.prof_asignado.nombre)
