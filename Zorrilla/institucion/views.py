@@ -20,5 +20,5 @@ def cursos3(request):
 def cursos4(request):
     return render(request, 'templates_cursos/cursos4.html')
 
-def docentes_lista(request):
-    return render(request, 'templates_docentes/docentes_lista.html')
+def docentes(request):
+    return render(request, 'templates_docentes/docentes.html')

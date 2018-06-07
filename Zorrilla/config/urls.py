@@ -33,7 +33,7 @@ urlpatterns = [
     url(r'^seccion', cursos3, name="cursos3"),
     url(r'^alumnos', cursos4, name="cursos4"),
 
-    url(r'^docentes_lista',docentes_lista, name="docentes_lista"),
+    url(r'^docentes',docentes, name="docentes"),
 
     url(r'^perfil_profesor', perfil_profesor, name="perfil_profesor"),
     url(r'^pedidos', aceptar_matriculaciones, name="aceptar_matriculaciones"),
