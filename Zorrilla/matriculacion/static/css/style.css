@@ -116,3 +116,29 @@ transform: rotateX(-180deg);
 .card, .card-img-top {
 border-radius: 0;
 }
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+input[type=text]{
+    margin-left: 15px;
+    width:290px;
+    height: 30px;
+    border: 2px solid #ccc;
+    border-radius:4px;
+    padding: 0px 5px;
+    font-size: 16px;
+}
+#bot{
+    margin-left: 700px;
+}
