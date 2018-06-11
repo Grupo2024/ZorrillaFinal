@@ -3,10 +3,12 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 
+from matriculacion.models import *
 
 # Create your views here.
 def perfil_profesor(request):
-    return render(request, 'templates_docentes/perfil_profesor.html')
+    profesores = Profesor.objects.all()
+    return render(request, 'templates_docentes/perfil_profesor.html', {'profesores':profesores})
 
 def cursos1(request):
     return render(request, 'templates_cursos/cursos1.html')

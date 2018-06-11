@@ -28,6 +28,8 @@ urlpatterns = [
     url(r'^form', formulario, name="form"),
     url(r'^cursos', cursos, name="cursos"),
 
+    url(r'^logIn', logIn, name="logIn"),
+
     url(r'^turnos', cursos1, name="cursos1"),
     url(r'^grados', cursos2, name="cursos2"),
     url(r'^seccion', cursos3, name="cursos3"),
