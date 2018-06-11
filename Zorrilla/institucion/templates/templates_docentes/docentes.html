@@ -1,23 +1,52 @@
+<!DOCTYPE html>
 <html>
-        <head>
-            {% load static %}
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-            <link rel="stylesheet" href="{% static "css/style.css" %}">
-            <link rel="stylesheet" href="{% static 'img' %}">
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-            <script type="text-javascript" src="{% static "js/function.js"%}"></script>  
-
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByp7LMa69SI-fNylGU5IRax4d0S8ox5NQ&callback=initMap"></script>
-
-
-        </head>
-        <body>        
-            
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>ZORILLA</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">  
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>          
+<style>
+.navbar-nav{ 
+    list-style:none;
+    margin:10px;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+input[type=text]{
+    margin-left: 15px;
+    width:290px;
+    height: 30px;
+    border: 2px solid #ccc;
+    border-radius:4px;
+    padding: 0px 5px;
+    font-size: 16px;
+}
+#bot{
+    margin-left: 700px;
+}
+</style>
+</head>
+<body>
             <nav class="navbar navbar-expand-md navbar-dark bg-dark">
                 <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                     <ul class="navbar-nav mr-auto">
@@ -35,7 +64,7 @@
                             </div>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link " href="#">BIBLOTECA</a>
+                            <a class="nav-link " href="#">BIBLIOTECA</a>
                         </li>
                     </ul>
                 </div>
@@ -55,20 +84,196 @@
                     </ul>
                 </div>
             </nav>
+    {% block body %}    
+    <center><h2>DOCENTES</h2></center>
+
+<div class="container">
+    <div class="row">
+        <input type="text"placeholder="Nombre del docente que desee buscar">
+        <p align="right">
+            <a class="btn btn-success" id="bot">Añadir docente</a>
+        
+        
+        <div class="col-md-12">
+        <h4></h4>
+        <div class="table-responsive">
+
                 
-        {% block body %}
+              <table id="mytable" class="table table-bordred table-striped">
+                   
+                   <thead>
+                   
+                   <th> </th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>DNI</th>
+                    <th>Lugar de nacimiento</th>
+                    <th>Fecha de nacimiento</th>
+                    <th>Domicilio</th>
+                    <th>Email</th>
+                    <th>Sexo</th>
+                      <th>Edit</th>
+                      
+                       <th>Delete</th>
+                   </thead>
+    <tbody>
+    
+    <tr>
+    <td><input type="checkbox" class="checkthis" /></td>
+    <td>Javier</td>
+    <td>Guignard</td>
+    <td>420</td>
+    <td>Virgolandia</td>
+    <td>4/20</td>
+    <td>Comisaria</td>
+    <td>virgard@gmail.com</td>
+    <td>casi nada</td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+    </tr>
+    
+ <tr>
+    <td><input type="checkbox" class="checkthis" /></td>
+    <td>Javier</td>
+    <td>Guignard</td>
+    <td>420</td>
+    <td>Virgolandia</td>
+    <td>4/20</td>
+    <td>Comisaria</td>
+    <td>virgard@gmail.com</td>
+    <td>casi nada</td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+    </tr>
+    
+    
+ <tr>
+    <td><input type="checkbox" class="checkthis" /></td>
+    <td>Javier</td>
+    <td>Guignard</td>
+    <td>420</td>
+    <td>Virgolandia</td>
+    <td>4/20</td>
+    <td>Comisaria</td>
+    <td>virgard@gmail.com</td>
+    <td>casi nada</td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+    </tr>
+    
+    
+    
+ <tr>
+    <td><input type="checkbox" class="checkthis" /></td>
+    <td>Javier</td>
+    <td>Guignard</td>
+    <td>420</td>
+    <td>Virgolandia</td>
+    <td>4/20</td>
+    <td>Comisaria</td>
+    <td>virgard@gmail.com</td>
+    <td>casi nada</td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+    </tr>
+    
+    
+ <tr>
+    <td><input type="checkbox" class="checkthis" /></td>
+    <td>Javier</td>
+    <td>Guignard</td>
+    <td>420</td>
+    <td>Virgolandia</td>
+    <td>4/20</td>
+    <td>Comisaria</td>
+    <td>virgard@gmail.com</td>
+    <td>casi nada</td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+    </tr>
+    
+   
+    
+   
+    
+    </tbody>
+        
+</table>
 
-            <center><h1></h1>  
-        {% endblock body %}  
+<div class="clearfix"></div>
+<ul class="pagination pull-right">
+  <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+  <li class="active"><a href="#">1</a></li>
+  <li><a href="#">2</a></li>
+  <li><a href="#">3</a></li>
+  <li><a href="#">4</a></li>
+  <li><a href="#">5</a></li>
+  <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+</ul>
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
 
 
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+      <div class="modal-dialog">
+    <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+        <h4 class="modal-title custom_align" id="Heading">Editar Docente</h4>
+      </div>
+          <div class="modal-body">
+          <div class="form-group">
+        <input class="form-control " type="text" placeholder="">
+        </div>
+        <div class="form-group">
+        
+        <input class="form-control " type="text" placeholder="">
+        </div>
+        <div class="form-group">
+        <textarea rows="2" class="form-control" placeholder=""></textarea>
+    
+        
+        </div>
+      </div>
+          <div class="modal-footer ">
+        <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Actualizar</button>
+      </div>
+        </div>
+    <!-- /.modal-content --> 
+  </div>
+      <!-- /.modal-dialog --> 
+    </div>
+    
+    
+    
+    <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+      <div class="modal-dialog">
+    <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+        <h4 class="modal-title custom_align" id="Heading">Eliminar este docente</h4>
+      </div>
+          <div class="modal-body">
+       
+       <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span>Esta seguro/a que quiere eliminar este docente?</div>
+       
+      </div>
+        <div class="modal-footer ">
+        <button type="button" class="btn btn-success" ><span class="glyphicon glyphicon-ok-sign"></span> Si</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
+      </div>
+        </div>
+    <!-- /.modal-content --> 
+  </div>
+      <!-- /.modal-dialog --> 
+    </div>
+    {% endblock body %} 
+</body>
 
-        </body>
-
-
-
-
-
-
-
+<script>
+</script>
 </html>
