@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^cursos', cursos, name="cursos"),
 
     url(r'^turnos', cursos1, name="cursos1"),
-    url(r'^grados', cursos2, name="cursos2"),
+    url(r'^grados/(?P<turno>[\w\-]+)$', cursos2, name="cursos2"),
     url(r'^seccion', cursos3, name="cursos3"),
     url(r'^alumnos', cursos4, name="cursos4"),
 

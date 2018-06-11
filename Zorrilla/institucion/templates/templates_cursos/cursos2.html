@@ -17,24 +17,11 @@
     </tr>
     </thead>
     <tbody>
+    {% for grado in todos_los_grados %}
     <tr>
-        <td><a href="{%url 'cursos3'%}">1er Grado</a></td>
+        <td><a href="{%url 'cursos3'%}">{{grado.aNo}} - Turno {{grado.turno_asignado.que_hora}}</a></td>
     </tr>
-    <tr>
-        <td><a href="{%url 'cursos3'%}">2do Grado</a></td>
-    </tr>
-    <tr>
-        <td><a href="{%url 'cursos3'%}">3er Grado</a></td>
-    </tr>
-    <tr>
-        <td><a href="{%url 'cursos3'%}">4to Grado</a></td>
-    </tr>
-    <tr>
-        <td><a href="{%url 'cursos3'%}">5to Grado</a></td>
-    </tr>
-    <tr>
-        <td><a href="{%url 'cursos3'%}">6to Grado</a></td>
-    </tr>
+   {% endfor %}
     </tbody>
 </table>
 
