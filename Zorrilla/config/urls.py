@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from matriculacion .views import *
+from institucion .views import *
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -24,6 +26,18 @@ urlpatterns = [
 
     url(r'^$', index, name="index"),
     url(r'^form', formulario, name="form"),
+    url(r'^cursos', cursos, name="cursos"),
+
+    url(r'^logIn', logIn, name="logIn"),
+
+    url(r'^turnos', cursos1, name="cursos1"),
+    url(r'^grados', cursos2, name="cursos2"),
+    url(r'^seccion', cursos3, name="cursos3"),
+    url(r'^alumnos', cursos4, name="cursos4"),
+
+    url(r'^docentes',docentes, name="docentes"),
+
+    url(r'^perfil_profesor', perfil_profesor, name="perfil_profesor"),
     url(r'^pedidos', aceptar_matriculaciones, name="aceptar_matriculaciones"),
 
     #Url for models creation
