@@ -16,6 +16,9 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from matriculacion .views import *
+from biblioteca .views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -24,9 +27,22 @@ urlpatterns = [
 
     url(r'^$', index, name="index"),
     url(r'^form', formulario, name="form"),
-    url(r'^pedidos', aceptar_matriculaciones, name="aceptar_matriculaciones"),
+    url(r'^pedidos', solicitar_matriculacion, name="solicitar_matriculacion"),
+    url(r'^biblioteca', biblioteca, name="biblioteca"),
+    url(r'filter_books/', filter_books, name="filter_books"),
 
     #Url for models creation
 
-    url(r'crear_alumno/', crear_alumno, name="crear_alumno")
+    url(r'crear_alumno/', crear_alumno, name="crear_alumno"),
+
+    #url for an ID
+
+    url(r'^aceptar_matriculacion/(?P<id_matriculacion>\d+)$', aceptar_matriculacion, name="aceptar_matriculacion"),
+
+    url(r'^eliminar_libro/(?P<id_documento>\d+)$', eliminar_libro, name="eliminar_libro")
+
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
