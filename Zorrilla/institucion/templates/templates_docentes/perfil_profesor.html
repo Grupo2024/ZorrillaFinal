@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="row">
+
+    {% for p in profesores %}
+
+	  	<div class="card text-center" style="width:300px">
+	    	<img class="card-img-top" src="https://www.w3schools.com/w3images/avatar2.png" alt="Card image" style="width:100%">
+	    <div class="card-body">
+	      	<h4 class="card-title">{{p.nombre}} {{p.apellido}}</h4>
+	      	<ul class="list-group list-group-flush">
+	       	 	<li class="list-group-item">DNI: {{p.dni}}</li>
+	        	<li class="list-group-item">Fecha de nacimiento: {{p.fecha_nacimiento}}</li>
+	      	</ul>
+	    	<br>
+	      	<a href="#" class="btn btn-outline-primary">Matricular</a>
+	    </div>
+	    <div class="card-footer">
+	    </div>
+	 	</div>
+
+  	{% endfor %}
+
+</div>
+
+{% endblock body %}
