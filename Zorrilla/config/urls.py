@@ -39,6 +39,8 @@ urlpatterns = [
 
     url(r'^aceptar_matriculacion/(?P<id_matriculacion>\d+)$', aceptar_matriculacion, name="aceptar_matriculacion"),
 
+    url(r'^eliminar_libro/(?P<id_documento>\d+)$', eliminar_libro, name="eliminar_libro")
+
 ]
 
 

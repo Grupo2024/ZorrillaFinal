@@ -17,7 +17,7 @@ class Document(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return 'Titulo {}'.format(self.title)
+        return 'Titulo {}, id {}'.format(self.title, self.id)
 
     def change(self):
         if self.habilitado:

@@ -10,6 +10,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js">
+  </script>
 <style>
 .navbar-nav{
     list-style:none;
@@ -75,23 +78,31 @@ input[type=text]{
     </nav>
     <br></br>
     <center><h2>BIBLIOTECA</h2></center>
-    <input type="text"placeholder="Nombre del libro que desee buscar">
-<br></br>
-<table>
-  <tr>
-    <th>Libro</th>
-    <th>Descripción</th>
-    <th>Fecha</th>
-  </tr>
-  {% for obj in documentos %}
-  <tr>
-    <td><a href="{{ obj.document.url }}">{{ obj.document.name }}</a></td>
-    <td>{{obj.description}}</td>
-    <td>{{obj.uploaded_at}}</td>
-  </tr>
-    {% endfor %}
+    <p align="right">
+      <input type="text"placeholder="Nombre del libro que desee buscar">
+      <a class="btn btn-success" data-toggle="modal" data-target="#myModal" >Añadir libro</a>
+    </p>
+<div id="table">
+  <table>
+    <tr>
+      <th>Libro</th>
+      <th>Descripción</th>
+      <th>Fecha</th>
+      <th>Eliminar</th>
+    </tr>
+    {% for obj in documentos %}
+    <tr>
+      <td><a href="{{ obj.document.url }}">{{ obj.document.name }}</a></td>
+      <td>{{obj.title}}</td>
+      <td>{{obj.uploaded_at}}</td>
+      <td><a onclick="eliminar_libro('{% url 'eliminar_libro' obj.id %}', {{obj.id}})" id="myBtn"
+        class="waves-effect waves-light btn red darken-4">
+      <i class="material-icons">delete</i></a></td>
+    </tr>
+      {% endfor %}
 
-</table>
+  </table>
+</div>
 
 <!-- The Modal -->
   <div class="modal fade" id="myModal">
@@ -107,6 +118,7 @@ input[type=text]{
         <!-- Modal body -->
         <div class="modal-body">
           <form method="post" enctype="multipart/form-data">
+            <input type="hidden" value={{form.id}} name="id_form">
             {% csrf_token %}
             {{ form.as_p }}
         </div>
@@ -122,15 +134,37 @@ input[type=text]{
 </div>
 
 
-    <br></br>
-    <p align="right">
-    <a class="btn btn-success" data-toggle="modal" data-target="#myModal" >Añadir libro</a>
-    <a class="btn btn-danger">Eliminar libro</a>
-    </p>
+
 
 
 </body>
 
 <script>
+
+function updateDiv()
+  {
+    $( "#table" ).load(window.location.href + " #table" );
+  }
+
+  function eliminar_libro(url, alum) {
+    var r = confirm("Eliminar Libro ?");
+    if (r == true) {
+      $.ajax({
+          method: "POST",
+          url: url,
+          data: {
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+          }
+        })
+        .done(function (data) {
+            alert(data.estado);
+            updateDiv();
+        });
+    } else {
+        return;
+    }
+
+  };
+
 </script>
 </html>
