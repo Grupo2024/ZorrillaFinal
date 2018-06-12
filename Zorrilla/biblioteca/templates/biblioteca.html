@@ -119,7 +119,87 @@
           <div class="modal-body">
             <form method="post" enctype="multipart/form-data">
               {% csrf_token %}
-              {{ form.as_p }}
+            
+              <div class="form-group">
+                  <label >descripcion:</label>
+                  <div align="left">
+                    {{ form.description }}
+                  </div>
+              </div>
+            
+            
+              <div class="form-group">
+                <label for="usr">eliga un archivo:</label>
+                <div align="left">
+                  {{form.document}}
+                </div>
+              </div>
+            
+            
+              <div class="form-group">
+                <label for="usr">titulo:</label>
+                <div align="left">
+                  {{ form.title}}
+                </div>
+              </div>
+            
+            
+              <div class="form-group">
+                <label for="usr">elija un archivo:</label>
+                <div align="left">
+                  {{ form.tipo}}
+                </div>
+              </div>
+            
+            
+              <div class="form-group">
+                <label for="usr">Autor:</label>
+                <div align="left">
+                  {{ form.autor}}
+                </div>
+              </div>
+            
+            
+              <div class="form-group">
+                <label for="usr">Editorial:</label>
+                <div align="left">
+                  {{ form.editorial}}
+                </div>
+              </div>
+            
+            
+              <div class="form-group">
+                <label for="usr">fecha de salida:</label>
+                <div align="left">                
+                  {{ form.fecha_lanzamiento}}
+                </div>
+              </div>
+            
+            
+              <div class="form-group">
+                <label for="usr">cantidad de paginas:</label>
+                <div align="left">
+                  {{ form.cantidad_paginas}}
+                </div>
+              </div>
+            
+            
+              <div class="form-group">
+                <label for="usr">genero:</label>
+                <div align="left">
+                  {{ form.genero}}
+                </div>
+              </div>
+            
+            
+              <div class="form-group">
+                <label for="usr">habilitado:</label>
+                <div align="left">
+                  {{ form.habilitado}}
+                </div>
+              </div>
+              
+              
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
