@@ -32,10 +32,10 @@ def biblioteca(request):
 #Decorator missing.
 def eliminar_libro(request, id_documento):
     document = Document.objects.get(id=id_documento)
-    estado = Estado(document=document, user=request.user, modificacion="Deshabilitar")
+    #estado = Estado(document=document, user=request.user, modificacion="Deshabilitar")
     document.habilitado = False
     document.save()
-    estado.save()
+    #estado.save()
     data = {
         'estado': "El libro " + str(document.title) + " ha sido eliminado"
     }
