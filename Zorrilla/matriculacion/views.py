@@ -16,6 +16,9 @@ def formulario(request):
 def cursos(request):
     return render(request, 'cursos.html')
 
+def logIn(request):
+    return render(request, 'docentes_login.html') 
+
 def aceptar_matriculaciones(request):
     print request.user
     alumnos = Alumno.objects.all()

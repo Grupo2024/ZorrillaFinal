@@ -32,6 +32,10 @@ urlpatterns = [
     url(r'^biblioteca', biblioteca, name="biblioteca"),
     url(r'filter_books/', filter_books, name="filter_books"),
     url(r'^cursos', cursos, name="cursos"),
+
+    url(r'^logIn', logIn, name="logIn"),
+
+
     url(r'^turnos', cursos1, name="cursos1"),
     url(r'^grados', cursos2, name="cursos2"),
     url(r'^seccion', cursos3, name="cursos3"),
