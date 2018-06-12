@@ -1,0 +1,40 @@
+body, html {
+    height: 100%;
+}
+
+.parallax {
+    /* The image used */
+    background-image: url('/static/img/2zorrilla.jpeg');
+
+    /* Full height */
+    height: 75%; 
+    z-index:  -1;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.parallax_blur {
+    /* The image used */
+    background-image: url('/static/img/blur.png');
+
+    /* Full height */
+    height: 100%; 
+    z-index:  0;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.navbar-nav{ 
+    list-style:none;
+    margin:10px;
+}
+
