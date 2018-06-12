@@ -13,11 +13,11 @@ def biblioteca(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-            aux = request.POST['id_form']
+            #aux = request.POST['id_form']
             form.save()
-            document = Document.objects.get(id=aux)
-            estado = Estado(document = form, user=request.user, modificacion="Crear")
-            estado.save()
+            #document = Document.objects.get(document_id=aux)
+            #estado = Estado(document = form, user=request.user, modificacion="Crear")
+            #estado.save()
 
             return redirect ('biblioteca')
 
@@ -26,10 +26,14 @@ def biblioteca(request):
     return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
 
 
+# Function that changes the document habilitado attribute to False, it does not delete the book,
+# only Directora can do it.
+
+#Decorator missing.
 def eliminar_libro(request, id_documento):
     document = Document.objects.get(id=id_documento)
     estado = Estado(document=document, user=request.user, modificacion="Deshabilitar")
-    #document.habilitado = False
+    document.habilitado = False
     document.save()
     estado.save()
     data = {
