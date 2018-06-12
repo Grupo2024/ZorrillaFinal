@@ -13,7 +13,10 @@ def index(request):
 def formulario(request):
     return render(request, 'formulario.html')
 
-def solicitar_matriculacion(request):
+def cursos(request):
+    return render(request, 'cursos.html')
+
+def aceptar_matriculaciones(request):
     print request.user
     alumnos = Alumno.objects.all()
     print alumnos

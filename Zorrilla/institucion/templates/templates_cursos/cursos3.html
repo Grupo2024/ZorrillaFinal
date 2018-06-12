@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{%url 'cursos1'%}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{%url 'cursos2'%}">Turno</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Grado</li>
+    </ol>
+</nav>
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+    <th>Seccion</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><a href="{%url 'cursos4'%}">(grado) A</a></td>
+    </tr>
+    <tr>
+        <td><a href="{%url 'cursos4'%}">(grado) B</a></td>
+    </tr>
+    <tr>
+        <td><a href="{%url 'cursos4'%}">(grado) C</a></td>
+    </tr>
+    <tr>
+        <td><a href="{%url 'cursos4'%}">(grado) D</a></td>
+    </tr>
+    <tr>
+        <td><a href="{%url 'cursos4'%}">(grado) E</a></td>
+    </tr>
+    </tbody>
+</table>
+
+{% endblock body %}
