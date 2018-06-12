@@ -2,35 +2,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta charset="UTF-8">
-<title>ZORILLA</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<style>
-.navbar-nav{
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <title>ZORILLA</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js">
+  </script>
+  <style>
+  .navbar-nav{
     list-style:none;
     margin:10px;
-}
-table {
+  }
+  table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
-}
+  }
 
-td, th {
+  td, th {
     border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
-}
+  }
 
-tr:nth-child(even) {
+  tr:nth-child(even) {
     background-color: #dddddd;
-}
-input[type=text]{
+  }
+  input[type=text]{
     margin-left: 15px;
     width:270px;
     height: 30px;
@@ -38,70 +41,129 @@ input[type=text]{
     border-radius:4px;
     padding: 0px 5px;
     font-size: 16px;
-}
+  }
 
 </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item dropdown ">
-                    <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    MATRICULACIONES
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Alumnos</a>
-                        <a class="dropdown-item" href="#">Profesores</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown ">
+          <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            MATRICULACIONES
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Alumnos</a>
+            <a class="dropdown-item" href="#">Profesores</a>
+          </div>
+        </li>
+      </ul>
+    </div>
 
-        <div class="mx-auto order-0">
-            <a class="navbar-brand mx-auto" href="/">ZORRILLA</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
+    <div class="mx-auto order-0">
+      <a class="navbar-brand mx-auto" href="/">ZORRILLA</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
 
-        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a href="/docentes" class="btn btn-outline-success my-2 my-sm-0 " type="submit">DOCENTES</a>
-            </li>
-            </ul>
-        </div>
-    </nav>
-    <br></br>
-    <center><h2>BIBLIOTECA</h2></center>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a href="/docentes" class="btn btn-outline-success my-2 my-sm-0 " type="submit">DOCENTES</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <br></br>
+  <center><h2>BIBLIOTECA</h2></center>
+  <p align="right">
     <input type="text"placeholder="Nombre del libro que desee buscar">
-    <a align="right" class="btn btn-success mr-auto" href="{% url 'model_form_upload' %}">Añadir libro</a>
-<table>
-  <tr>
-    <th>Libro</th>
-    <th>Descripción</th>
-    <th>Fecha</th>
-    <th>Eliminar</th>
-  </tr>
-  {% for obj in documentos %}
-  <tr>
-    <td><a href="{{ obj.document.url }}">{{ obj.document.name }}</a></td>
-    <td>{{obj.description}}</td>
-    <td>{{obj.uploaded_at}}</td>
-    <td><a class="btn btn-danger">Eliminar libro</a></td>
-  </tr>
-    {% endfor %}
+    <a class="btn btn-success" data-toggle="modal" data-target="#myModal" >Añadir libro</a>
+  </p>
+  <div id="table">
+    <table>
+      <tr>
+        <th>Libro</th>
+        <th>Descripción</th>
+        <th>Fecha</th>
+        <th>Eliminar</th>
+      </tr>
+      {% for obj in documentos %}
+      <tr>
+        <td><a href="{{ obj.document.url }}">{{ obj.document.name }}</a></td>
+        <td>{{obj.title}}</td>
+        <td>{{obj.uploaded_at}}</td>
+        <td><a onclick="eliminar_libro('{% url 'eliminar_libro' obj.id %}', {{obj.id}})" id="myBtn"
+          class="waves-effect waves-light btn red darken-4">
+          <i class="material-icons">delete</i></a></td>
+        </tr>
+        {% endfor %}
 
-</table>
+      </table>
+    </div>
 
-            <br></br>
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Cargar Libro</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              {{ form.as_p }}
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button class="btn btn-success" type="submit">Cargar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
 
 
 
 </body>
 
 <script>
+
+function updateDiv()
+{
+  $( "#table" ).load(window.location.href + " #table" );
+}
+
+function eliminar_libro(url, alum) {
+  var r = confirm("Eliminar Libro ?");
+  if (r == true) {
+    $.ajax({
+      method: "POST",
+      url: url,
+      data: {
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+      }
+    })
+    .done(function (data) {
+      alert(data.estado);
+      updateDiv();
+    });
+  } else {
+    return;
+  }
+
+};
 
 </script>
 </html>

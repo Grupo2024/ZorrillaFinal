@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^form', formulario, name="form"),
     url(r'^pedidos', solicitar_matriculacion, name="solicitar_matriculacion"),
     url(r'^biblioteca', biblioteca, name="biblioteca"),
+    url(r'filter_books/', filter_books, name="filter_books"),
 
     #Url for models creation
 
@@ -38,9 +39,8 @@ urlpatterns = [
 
     url(r'^aceptar_matriculacion/(?P<id_matriculacion>\d+)$', aceptar_matriculacion, name="aceptar_matriculacion"),
 
-    #Url for BIBLIOTECA
+    url(r'^eliminar_libro/(?P<id_documento>\d+)$', eliminar_libro, name="eliminar_libro")
 
-    url(r'^uploads/form/$', model_form_upload, name='model_form_upload'),
 ]
 
 
