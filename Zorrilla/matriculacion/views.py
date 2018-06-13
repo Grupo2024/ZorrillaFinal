@@ -42,3 +42,8 @@ def aceptar_matriculacion(request, id_matriculacion):
             'estado':"La matriculacion falló"
         }
     return JsonResponse(data, safe=False)
+
+def alumno(request, id_alumno):
+    alumno = Alumno.objects.get(dni=id_alumno)
+    print alumno
+    return render(request, 'templates_cursos/perfilAlumno.html', {'alumno':alumno})
