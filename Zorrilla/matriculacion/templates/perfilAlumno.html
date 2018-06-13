@@ -5,24 +5,18 @@
 {% block body %}
 <br>
 <div class="row">
-
-    {% for a in alumno %}
-
 	  	<div class="card text-center" style="width:20%; margin-left: 3%">
 	    <div class="card-body">
-	      	<h4 class="card-title">{{a.nombre}} {{a.apellido}}</h4>
+	      	<h4 class="card-title">{{alumno.nombre}} {{alumno.apellido}}</h4>
 	      	<ul class="list-group list-group-flush">
-	       	 	<li class="list-group-item">DNI: {{a.dni}}</li>
-	        	<li class="list-group-item">Fecha de nacimiento: {{a.fecha_nacimiento}}</li>
+	       	 	<li class="list-group-item">DNI: {{alumno.dni}}</li>
+	        	<li class="list-group-item">Fecha de nacimiento: {{alumno.fecha_nacimiento}}</li>
 	      	</ul>
 	    	<br>
 	    	<a href="#" class="btn btn-outline-dark">Ver mas</a>
 	      	<a href="#" class="btn btn-outline-dark">Matricular</a>
 	    </div>
 	 	</div>
-
-  	{% endfor %}
-
 </div>
 
 {% endblock body %}

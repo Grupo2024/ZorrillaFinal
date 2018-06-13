@@ -16,7 +16,7 @@
 	        	<li class="list-group-item">Fecha de nacimiento: {{m.alumno.fecha_nacimiento}}</li>
 	      	</ul>
 	    	<br>
-	    	<a class="btn btn-outline-dark" href="{% url 'alumno' alumno.dni %}, {{alumno.dni}}">Ver mas</a>
+	    	<a class="btn btn-outline-dark" href="{% url 'alumno' m.alumno.dni %}">Ver mas</a>
 	      	<a href="#" class="btn btn-outline-dark">Matricular</a>
 	    </div>
 	    <div class="card-footer">
