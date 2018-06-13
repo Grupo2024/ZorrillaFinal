@@ -15,7 +15,7 @@ class Document(models.Model):
     genero = models.CharField(max_length=60, null=True)
     habilitado = models.BooleanField(default=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    
+
     def __str__(self):
         return 'Titulo {}, id {}'.format(self.title, self.id)
 
