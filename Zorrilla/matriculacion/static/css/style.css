@@ -3,15 +3,6 @@ body, html {
     height: 100%;
 }
 
-.formulario{
-    margin-top: 2%;
-    margin-left: 2%;
-    margin-right: 2%;
-}
-
-.botonformulario{
-    margin-left: 47%;
-}
 .parallax {
     /* The image used */
     background-image: url('/static/img/2zorrilla.jpeg');
@@ -152,6 +143,8 @@ input[type=text]{
     margin-left: 686px;
 }
 
+
+
 ---------------------------------------------------
 
 .table-wrapper {
@@ -204,10 +197,10 @@ input[type=text]{
     vertical-align: middle;
     }
   table.table tr th:first-child {
-    width: 60px;
+    width: auto;
   }
   table.table tr th:last-child {
-    width: 100px;
+    width: auto;
   }
     table.table-striped tbody tr:nth-of-type(odd) {
       background-color: #fcfcfc;
@@ -303,4 +296,4 @@ input[type=text]{
         float: left;
         margin-top: 10px;
         font-size: 13px;
-    }
+}

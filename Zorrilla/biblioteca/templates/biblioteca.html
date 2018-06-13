@@ -1,121 +1,77 @@
-
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta charset="UTF-8">
-  <title>ZORILLA</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js">
-  </script>
-  <style>
-  .navbar-nav{
-    list-style:none;
-    margin:10px;
-  }
-  table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-  }
-
-  td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-  }
-
-  tr:nth-child(even) {
-    background-color: #dddddd;
-  }
-  input[type=text]{
-    margin-left: 15px;
-    width:270px;
-    height: 30px;
-    border: 2px solid #ccc;
-    border-radius:4px;
-    padding: 0px 5px;
-    font-size: 16px;
-  }
-
-</style>
-</head>
-<body>
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item dropdown ">
-          <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            MATRICULACIONES
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Alumnos</a>
-            <a class="dropdown-item" href="#">Profesores</a>
-          </div>
-        </li>
-      </ul>
-    </div>
-
-    <div class="mx-auto order-0">
-      <a class="navbar-brand mx-auto" href="/">ZORRILLA</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-
-    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a href="/docentes" class="btn btn-outline-success my-2 my-sm-0 " type="submit">DOCENTES</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
   <br></br>
   <center><h2>BIBLIOTECA</h2></center>
-  <p align="right">
-    <input type="text"placeholder="Nombre del libro que desee buscar">
-    <a class="btn btn-success" data-toggle="modal" data-target="#myModal" >Añadir libro</a>
-  </p>
-  <div id="table">
-    <table>
-      <tr>
+<div class="container">
+    <div class="row">
+        <input type="text"placeholder="Nombre del libro que desee buscar">
+        <p align="right">
+            <a class="btn btn-success" id="bot">Añadir libro</a>
+        
+        
+        <div class="col-md-12">
+        <h4></h4>
+        <div class="table-responsive">
+
+                
+<table id="mytable" class="table">
+                   
+                   <thead>
+                   
         <th>Libro</th>
         <th>Descripción</th>
         <th>Fecha</th>
-        <th>Eliminar</th>
-      </tr>
-      {% for obj in documentos %}
-      <tr>
-        <td><a href="{{ obj.document.url }}">{{ obj.document.name }}</a></td>
-        <td>{{obj.title}}</td>
-        <td>{{obj.uploaded_at}}</td>
-        <td><a onclick="eliminar_libro('{% url 'eliminar_libro' obj.id %}', {{obj.id}})" id="myBtn"
-          class="waves-effect waves-light btn red darken-4">
-          <i class="material-icons">delete</i></a></td>
-        </tr>
-        {% endfor %}
+        <th>Editar</th>
+        <th>Borrar</th>
+        <th></th>
+                   </thead>
+  <tbody>
+    
+    <tr>
+    <td>La bala q doblo la esquina</td>
+    <td>Un libro en el cual la trama te hara flipar</td>
+    <td>DATETIME</td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button type="button" class="btn btn-info"><i style="font-size:15px" class="fa">&#xf013;</i></button></p></td>
+    
+    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button type="button" class="btn btn-danger"><i style="font-size:15px" class="fa">&#xf00d;</i></button></p></td>
 
-      </table>
+    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button type="button" class="btn btn-outline-primary">Abrir</button></p></td>
+    </tr>
+    
+   </tbody>
+        
+</table>
+
+<div class="clearfix">
+                <ul class="pagination">
+                    <li class="page-item"><a href="#" class="page-link">Previous</a></li>
+                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                    <li class="page-item"><a href="#" class="page-link">2</a></li>
+                    <li class="page-item"><a href="#" class="page-link">3</a></li>
+                    <li class="page-item"><a href="#" class="page-link">4</a></li>
+                    <li class="page-item"><a href="#" class="page-link">5</a></li>
+                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                </ul>
+            </div>
+        </div>
+                
+            </div>
+            
+        </div>
     </div>
+</div>
 
-    <!-- The Modal -->
-    <div class="modal fade" id="myModal">
+
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
       <div class="modal-dialog">
-        <div class="modal-content">
-
-          <!-- Modal Header -->
+    <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Cargar Libro</h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-
-          <!-- Modal body -->
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+        <h4 class="modal-title custom_align" id="Heading">Editar Libro</h4>
+      </div>
           <div class="modal-body">
             <form method="post" enctype="multipart/form-data">
               {% csrf_token %}
@@ -206,11 +162,51 @@
               <button class="btn btn-success" type="submit">Cargar</button>
             </div>
           </form>
+          <div class="form-group">
+        <input class="form-control " type="text" placeholder="">
+        </div>
+        <div class="form-group">
+        
+        <input class="form-control " type="text" placeholder="">
+        </div>
+        <div class="form-group">
+        <textarea rows="2" class="form-control" placeholder=""></textarea>
+    
+        
         </div>
       </div>
-    </div>
-
+          <div class="modal-footer ">
+        <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Actualizar</button>
+      </div>
+        </div>
+    <!-- /.modal-content --> 
   </div>
+      <!-- /.modal-dialog --> 
+    </div>
+    
+    
+    
+    <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+      <div class="modal-dialog">
+    <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+        <h4 class="modal-title custom_align" id="Heading">Eliminar este libro</h4>
+      </div>
+          <div class="modal-body">
+       
+       <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span>Esta seguro/a que quiere eliminar este libro?</div>
+       
+      </div>
+        <div class="modal-footer ">
+        <button type="button" class="btn btn-success" ><span class="glyphicon glyphicon-ok-sign"></span> Si</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
+      </div>
+        </div>
+    <!-- /.modal-content --> 
+  </div>
+      <!-- /.modal-dialog --> 
+    </div>
 
 
 
@@ -247,3 +243,4 @@ function eliminar_libro(url, alum) {
 
 </script>
 </html>
+{% endblock body %} 
