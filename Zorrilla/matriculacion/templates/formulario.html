@@ -1,172 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block body %}
-<div class="formulario">
-    <form  id="create_student" action="{% url 'crear_alumno' %}" method="post">
-        {% csrf_token %}
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="usr">Name:</label>
+<form  id="create_student" action="{% url 'crear_alumno' %}" method="post">
+{% csrf_token %}
+<div class="container">
+  <br></br>
+    <div class="card bg-light" style="height:530px">
+        <div class="card-body text-center">
+            <p class="card-text">DATOS PERSONALES</p>
+            <div class="form-group col-md-6" style="right"> 
+                <label for="usr">Nombre:</label>
                 <input type="text" class="form-control" id="alumno_nombre" name="alumno_nombre">
             </div>
-            <div class="form-group col-md-6">    
-                <label for="usr">Apellido:</label>
-                <input type="text" class="form-control" id="alumno_apellido" name="alumno_apellido">
-            </div>
         </div>
-
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="usr">DNI:</label>
-                <input type="text" class="form-control" id="alumno_dni" name="alumno_dni">
-            </div>
-            <div class="form-group col-md-6">    
-                <label for="usr">Fecha de nacimiento:</label>
-                <input type="date" class="form-control" id="alumno_fecha_nacimiento" name="alumno_fecha_nacimiento">
-            </div>
-        </div>
-        
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="usr">Lugar de nacimiento:</label>
-                <input type="text" class="form-control" id="alumno_lugar_nacimiento" name="alumno_lugar_nacimiento">
-            </div>
-            <div class="form-group col-md-6">    
-                <label for="usr">Telefono de la madre:</label>
-                <input type="text" class="form-control" id="alumno_telefono_madre" name="alumno_telefono_madre">
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group col-md-12"> 
-                <label for="usr">Domicilio actual:</label>
-                <input type="text" class="form-control" id="alumno_domicilio" name="alumno_domicilio">
-            </div>
-        </div>
-
-
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="usr">Telefono de casa:</label>
-                <input type="text" class="form-control" id="alumno_telefono_casa" name="alumno_telefono_casa">
-            </div>
-            <div class="form-group col-md-6">    
-                <label for="usr">Telefono del padre:</label>
-                <input type="text" class="form-control" id="alumno_telefono_padre" name="alumno_telefono_padre">
-            </div>
-        </div>
-        
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="usr">Telefono de un familiar:</label>
-                <input type="text" class="form-control" id="alumno_telefono_familiar" name="alumno_telefono_familiar">
-            </div>
-            <div class="form-group col-md-6">    
-                <label for="usr">Telefono de un vecino:</label>
-                <input type="text" class="form-control" id="alumno_telefono_vecino" name="alumno_telefono_vecino">
-            </div>
-        </div>
-
-
-        <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="sel1">Sexo:</label>
-                    <select id="inputState" class="form-control">
-                        <option selected disabled>Elige...</option>
-                        <option id="alumno_sexo_true" name="alumno_sexo_true">Hombre</option>
-                        <option id="alumno_sexo_false" name="alumno_sexo_false">Mujer</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-6"> 
-                    <label for="usr">Email:</label>
-                    <input type="text" class="form-control" id="alumno_email" name="alumno_email">
-                </div>
-            </div>
-            
-            
-            <!-- Inputs que definen el Sexo del Alumno 
-    
-            <label><input type="radio" id="alumno_sexo_true" name="alumno_sexo_true">Hombre</label>
-            <label><input type="radio" id="alumno_sexo_false" name="alumno_sexo_false">Mujer</label>
-            <input id="alumno_sexo" name="alumno_sexo" value=True type="hidden">
-            <br>
-    -->
-        
-        <div class="form-group">
-            <label for="usr">Enfermedad relevante:</label>
-            <textarea class="form-control" rows="2" id="alumno_enfermedad_relevante" name="alumno_enfermedad_relevante"></textarea>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                <label for="usr">Con quien vive:</label>
-                <input type="text" class="form-control" id="alumno_con_quien_vive" name="alumno_con_quien_vive">
-            </div>
-            <div class="form-group col-md-4">
-                <label for="usr">Quien lo trae:</label>
-                <input type="text" class="form-control" id="alumno_quien_lo_trae" name="alumno_quien_lo_trae">
-            </div>
-            <div class="form-group col-md-4">
-                <label for="usr">Telefono de quien lo trae:</label>
-                <input type="text" class="form-control" id="alumno_telefono_que_lo_trae" name="alumno_telefono_que_lo_trae">
-            </div>
-        </div>
-
-        
-        
-        
-        
-        <!-- Inputs que definen si el Alumno Utiliza Transporte 
-
-        <label for="usr">Utiliza transporte:</label>
-        <ul>
-            <label><input type="radio" id="alumno_utiliza_transporte_SI" name="alumno_utiliza_transporte_SI">Si</label>
-            <label><input type="radio" id="alumno_utiliza_transporte_NO" name="alumno_utiliza_transporte_NO">No</label>
-        </ul>
-        <input id="alumno_utiliza_transporte" name="alumno_utiliza_transporte" value=True type="hidden">
-        -->
-
-        <!-- Inputs que definen si el Alumno tiene Obra Social -->
-
-        <fieldset class="form-group">
-            <div class="row">
-                <legend class="col-form-label col-sm-2 pt-0">Tiene obra social</legend>
-                <div class="col-sm-10">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio"  name="alumno_tiene_obra_social_SI" id="alumno_tiene_obra_social_SI" value="option1">
-                        <label class="form-check-label" for="gridRadios1">
-                        Si
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="alumno_tiene_obra_social_NO" name="alumno_tiene_obra_social_NO" value="option2">
-                        <label class="form-check-label" for="gridRadios2">
-                        No
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </fieldset>
-
-        
-
-
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="usr">Nombre de la obra social:</label>
-                <input type="text" class="form-control" id="alumno_obra_social_nombre" name="alumno_obra_social_nombre">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="usr">Numero de la obra social:</label>
-                <input type="text" class="form-control" id="alumno_obra_social_numero" name="alumno_obra_social_numero">
-            </div>
-        </div>
-    
-        
-        
-        <button class="btn btn-success botonformulario" type="submit">Cargar</button>
-    </form>
-</div>
-
-
+    </div>
+  </div>
 {% endblock body %}
