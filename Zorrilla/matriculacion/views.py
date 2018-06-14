@@ -42,4 +42,5 @@ def aceptar_matriculacion(request, id_matriculacion):
 
 def alumno(request, id_alumno):
     alumno = Alumno.objects.get(dni=id_alumno)
+    alumno.sexo = alumno.genero()
     return render(request, 'perfilAlumno.html', {'alumno':alumno})
