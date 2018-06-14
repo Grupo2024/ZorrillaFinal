@@ -7,7 +7,7 @@
 <h1 class="card-title" align="center">{{alumno.nombre}} {{alumno.apellido}}</h1>
 <br>
 <div class='row'>
-  	<div class="card text-center" style="width: 30%; margin-left: 5%">
+  	<div class="card text-center" style="width: 30%; height: 67%; margin-left: 3%">
     <div class="card-body">
 		<h4 class="card-title">Datos personales</h4>
       	<ul class="list-group list-group-flush">
@@ -22,29 +22,29 @@
     </div>
  	</div>
 
-  	<div class="card text-center" style="width: 30%;">
+  	<div class="card text-center" style="width: 30%; margin-left: 2%">
     <div class="card-body">
-  		<h4 class="card-title">Contacto</h4>
+  		<h4 class="card-title">Datos de contacto</h4>
       	<ul class="list-group list-group-flush">
        	 	<li class="list-group-item">Telefono fijo: {{alumno.telefono_casa}}</li>
+        	<li class="list-group-item">Padres: {{alumno.padres}}</li>
        	 	<li class="list-group-item">Telefono del padre: {{alumno.telefono_padre}}</li>
         	<li class="list-group-item">Telefono de familiar: {{alumno.telefono_familiar}}</li>
         	<li class="list-group-item">Telefono de vecino: {{alumno.telefono_vecino}}</li>
-        	<li class="list-group-item">Enfermedades: {{alumno.enfermedad_relevante}}</li>
         	<li class="list-group-item">Con quien vive: {{alumno.con_quien_vive}}</li>
+        	<li class="list-group-item">Autorizados: {{alumno.autorizados}}</li>
         	<li class="list-group-item">Quien lo trae: {{alumno.quien_lo_trae}}</li>
       		<li class="list-group-item">Telefono: {{alumno.telefono_que_lo_trae}}</li>
+        	<li class="list-group-item">Utiliza transporte: {{alumno.utiliza_transporte}}</li>
       	</ul>
     </div>
  	</div>
 
- 	<div class="card text-center" style="width: 30%;">
+ 	<div class="card text-center" style="width: 30%; height: 43%;margin-left: 2%">
     <div class="card-body">
- 		<h4 class="card-title">Otros datos</h4>
+ 		<h4 class="card-title">Datos medicos</h4>
       	<ul class="list-group list-group-flush">
-        	<li class="list-group-item">Utiliza transporte: {{alumno.utiliza_transporte}}</li>
-        	<li class="list-group-item">Autorizados: {{alumno.autorizados}}</li>
-        	<li class="list-group-item">Padres: {{alumno.padres}}</li>
+        	<li class="list-group-item">Enfermedades: {{alumno.enfermedad_relevante}}</li>
         	<li class="list-group-item">Obra social: {{alumno.obra_social_nombre}}</li>
         	<li class="list-group-item">Numero obre social: {{alumno.obra_social_numero}}</li>
         	<li class="list-group-item">Matriculado: {{alumno.matriculado}}</li>
