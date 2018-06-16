@@ -5,44 +5,55 @@
 {% block body %}
   <br></br>
   <center><h2>BIBLIOTECA</h2></center>
+
+  <div class="row">
+    <p align="left">
+      <input type="text"placeholder="Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
+      <select id="filter_by">
+          <option value=0>Libro</option>
+          <option value=1>Descripción</option>
+          <option value=2>Fecha</option>
+      </select>
+      </p>
+      <p align="right">
+          <a class="btn btn-success" data-toggle="modal" data-target="#myModal" >Añadir libro</a>
+      </p>
+    </div>
 <div class="container">
     <div class="row">
-        <input type="text"placeholder="Nombre del libro que desee buscar">
-        <p align="right">
-            <a class="btn btn-success" id="bot">Añadir libro</a>
-        
-        
         <div class="col-md-12">
         <h4></h4>
         <div class="table-responsive">
 
-                
+
 <table id="mytable" class="table">
-                   
-                   <thead>
-                   
+
+      <thead>
         <th>Libro</th>
         <th>Descripción</th>
         <th>Fecha</th>
-        <th>Editar</th>
+        <th>Info</th>
         <th>Borrar</th>
-        <th></th>
-                   </thead>
-  <tbody>
-    
-    <tr>
-    <td>La bala q doblo la esquina</td>
-    <td>Un libro en el cual la trama te hara flipar</td>
-    <td>DATETIME</td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button type="button" class="btn btn-info"><i style="font-size:15px" class="fa">&#xf013;</i></button></p></td>
-    
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button type="button" class="btn btn-danger"><i style="font-size:15px" class="fa">&#xf00d;</i></button></p></td>
+        <th>Ver Libro</th>
+      </thead>
+      <tbody>
+        {% for doc in documentos %}
+            <tr>
+            <td>{{doc.title}}</td>
+            <td>{{doc.description}}</td>
+            <td>{{doc.uploaded_at}}</td>
+            <td><button class="btn btn-info" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book">
+              <i style="font-size:15px" class="fa">&#xf013;</i></button></td>
 
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button type="button" class="btn btn-outline-primary">Abrir</button></p></td>
-    </tr>
-    
-   </tbody>
-        
+            <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book">
+              <i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
+
+            <td><a type="button" class="btn btn-outline-primary" href="{{ doc.document.url }}">Abrir</a></p></td>
+            </tr>
+
+        {% endfor %}
+     </tbody>
+
 </table>
 
 <div class="clearfix">
@@ -57,13 +68,17 @@
                 </ul>
             </div>
         </div>
-                
+
             </div>
-            
+
         </div>
     </div>
 </div>
 
+<!-- The Modal -->
+   <div class="modal fade" id="myModal">
+     <div class="modal-dialog">
+       <div class="modal-content">
 
 <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
       <div class="modal-dialog">
@@ -75,87 +90,87 @@
           <div class="modal-body">
             <form method="post" enctype="multipart/form-data">
               {% csrf_token %}
-            
+
               <div class="form-group">
                   <label >descripcion:</label>
                   <div align="left">
                     {{ form.description }}
                   </div>
               </div>
-            
-            
+
+
               <div class="form-group">
                 <label for="usr">eliga un archivo:</label>
                 <div align="left">
                   {{form.document}}
                 </div>
               </div>
-            
-            
+
+
               <div class="form-group">
                 <label for="usr">titulo:</label>
                 <div align="left">
                   {{ form.title}}
                 </div>
               </div>
-            
-            
+
+
               <div class="form-group">
                 <label for="usr">elija un archivo:</label>
                 <div align="left">
                   {{ form.tipo}}
                 </div>
               </div>
-            
-            
+
+
               <div class="form-group">
                 <label for="usr">Autor:</label>
                 <div align="left">
                   {{ form.autor}}
                 </div>
               </div>
-            
-            
+
+
               <div class="form-group">
                 <label for="usr">Editorial:</label>
                 <div align="left">
                   {{ form.editorial}}
                 </div>
               </div>
-            
-            
+
+
               <div class="form-group">
                 <label for="usr">fecha de salida:</label>
-                <div align="left">                
+                <div align="left">
                   {{ form.fecha_lanzamiento}}
                 </div>
               </div>
-            
-            
+
+
               <div class="form-group">
                 <label for="usr">cantidad de paginas:</label>
                 <div align="left">
                   {{ form.cantidad_paginas}}
                 </div>
               </div>
-            
-            
+
+
               <div class="form-group">
                 <label for="usr">genero:</label>
                 <div align="left">
                   {{ form.genero}}
                 </div>
               </div>
-            
-            
+
+
               <div class="form-group">
                 <label for="usr">habilitado:</label>
                 <div align="left">
                   {{ form.habilitado}}
                 </div>
               </div>
-              
-              
+
+
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
@@ -166,26 +181,26 @@
         <input class="form-control " type="text" placeholder="">
         </div>
         <div class="form-group">
-        
+
         <input class="form-control " type="text" placeholder="">
         </div>
         <div class="form-group">
         <textarea rows="2" class="form-control" placeholder=""></textarea>
-    
-        
+
+
         </div>
       </div>
           <div class="modal-footer ">
         <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Actualizar</button>
       </div>
         </div>
-    <!-- /.modal-content --> 
+    <!-- /.modal-content -->
   </div>
-      <!-- /.modal-dialog --> 
+      <!-- /.modal-dialog -->
     </div>
-    
-    
-    
+
+
+
     <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
       <div class="modal-dialog">
     <div class="modal-content">
@@ -194,31 +209,74 @@
         <h4 class="modal-title custom_align" id="Heading">Eliminar este libro</h4>
       </div>
           <div class="modal-body">
-       
+
        <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span>Esta seguro/a que quiere eliminar este libro?</div>
-       
+
       </div>
         <div class="modal-footer ">
         <button type="button" class="btn btn-success" ><span class="glyphicon glyphicon-ok-sign"></span> Si</button>
         <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
       </div>
         </div>
-    <!-- /.modal-content --> 
+    <!-- /.modal-content -->
   </div>
-      <!-- /.modal-dialog --> 
+      <!-- /.modal-dialog -->
     </div>
 
+         <!-- Modal body -->
+         <div class="modal-body">
+           <form method="post" enctype="multipart/form-data">
+             {% csrf_token %}
+             {{ form.as_p }}
+           </div>
+           <!-- Modal footer -->
+           <div class="modal-footer">
+             <button class="btn btn-success" type="submit">Cargar</button>
+           </div>
+         </form>
+       </div>
+     </div>
+   </div>
 
 
+      <div class="modal fade" id="modal_info">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div id="datos_modal">
+          </div>
+        </div>
+      </div>
+    </div>
 
+</div>
 
 </body>
 
 <script>
 
+function myFunction() {
+  var e = document.getElementById("filter_by");
+  var strUser = e.options[e.selectedIndex].value;
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("mytable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[strUser];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
 function updateDiv()
 {
-  $( "#table" ).load(window.location.href + " #table" );
+  $( "#mytable" ).load(window.location.href + " #mytable" );
 }
 
 function eliminar_libro(url, alum) {
@@ -241,6 +299,23 @@ function eliminar_libro(url, alum) {
 
 };
 
+function info_libro(url, alum) {
+    $.ajax({
+        method: "POST",
+        url: url,
+        data: {
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        }
+    })
+    .done(function (data) {
+        $("#datos_modal").html(data);
+        $("#modal_info").modal();
+    });
+};
+
 </script>
+
+
+
 </html>
-{% endblock body %} 
+{% endblock body %}
