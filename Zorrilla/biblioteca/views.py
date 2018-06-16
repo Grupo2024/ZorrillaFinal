@@ -40,3 +40,7 @@ def eliminar_libro(request, id_documento):
         'estado': "El libro " + str(document.title) + " ha sido eliminado"
     }
     return JsonResponse(data, safe=True)
+
+def info_libro(request, id_documento):
+    document = Document.objects.get(id=id_documento)
+    return render(request, 'book_info.html', {'doc':document})

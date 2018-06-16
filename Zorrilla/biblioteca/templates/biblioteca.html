@@ -6,6 +6,7 @@
   <br></br>
   <center><h2>BIBLIOTECA</h2></center>
 
+  <div class="row">
     <p align="left">
       <input type="text"placeholder="Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
       <select id="filter_by">
@@ -14,8 +15,10 @@
           <option value=2>Fecha</option>
       </select>
       </p>
-      <a align="right" class="btn btn-success" data-toggle="modal" data-target="#myModal" >Añadir libro</a>
-
+      <p align="right">
+          <a class="btn btn-success" data-toggle="modal" data-target="#myModal" >Añadir libro</a>
+      </p>
+    </div>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -29,9 +32,9 @@
         <th>Libro</th>
         <th>Descripción</th>
         <th>Fecha</th>
-        <th>Editar</th>
+        <th>Info</th>
         <th>Borrar</th>
-        <th></th>
+        <th>Ver Libro</th>
       </thead>
       <tbody>
         {% for doc in documentos %}
@@ -39,12 +42,13 @@
             <td>{{doc.title}}</td>
             <td>{{doc.description}}</td>
             <td>{{doc.uploaded_at}}</td>
-            <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button type="button" class="btn btn-info"><i style="font-size:15px" class="fa">&#xf013;</i></button></p></td>
+            <td><button class="btn btn-info" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book">
+              <i style="font-size:15px" class="fa">&#xf013;</i></button></td>
 
-            <td><a onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="myBtn"
-          class="waves-effect waves-light btn red darken-4"><i class="material-icons">delete</i></a></td>
+            <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book">
+              <i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
 
-            <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button type="button" class="btn btn-outline-primary">Abrir</button></p></td>
+            <td><a type="button" class="btn btn-outline-primary" href="{{ doc.document.url }}">Abrir</a></p></td>
             </tr>
 
         {% endfor %}
@@ -97,6 +101,16 @@
      </div>
    </div>
 
+
+      <div class="modal fade" id="modal_info">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div id="datos_modal">
+          </div>
+        </div>
+      </div>
+    </div>
+
 </div>
 
 </body>
@@ -148,6 +162,23 @@ function eliminar_libro(url, alum) {
 
 };
 
+function info_libro(url, alum) {
+    $.ajax({
+        method: "POST",
+        url: url,
+        data: {
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        }
+    })
+    .done(function (data) {
+        $("#datos_modal").html(data);
+        $("#modal_info").modal();
+    });
+};
+
 </script>
+
+
+
 </html>
 {% endblock body %}
