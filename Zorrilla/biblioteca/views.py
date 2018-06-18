@@ -11,7 +11,7 @@ def filter_books(request):
     return render(request, 'filter_books.html')
 
 def biblioteca(request):
-    documents = Document.objects.filter(habilitado=False).order_by('-uploaded_at')[:5]
+    documents = Document.objects.filter(habilitado=True).order_by('-uploaded_at')[:5]
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
