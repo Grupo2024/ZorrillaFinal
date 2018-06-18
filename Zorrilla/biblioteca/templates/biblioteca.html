@@ -4,6 +4,7 @@
 {% endblock navbar %}
 {% block body %}
 
+<<<<<<< HEAD
 
 <div class="sidenav">
   <h1 align="center" class="text-white">Indice</h1>
@@ -31,6 +32,72 @@
     <a href="#">25 libros</a>
     <a href="#">50 libros</a>
     <a href="#">100 libros</a>
+=======
+<style>
+
+#snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -110px;
+    background-color: #0099cc;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+    
+#snackbar.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;} 
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;} 
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+</style>
+
+  <br>
+  <center><h2>BIBLIOTECA</h2></center>
+  <br><br>
+<div class="container">
+  <div class="row">
+    <div class="">
+      <input type="text"placeholder="Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
+      <select id="filter_by">
+          <option value=0>Libro</option>
+          <option value=1>Descripción</option>
+          <option value=2>Fecha</option>
+      </select>
+      </div>
+      <div class="col-6">
+      </div>
+      <div class="col">
+          <a class="btn btn-success" data-toggle="modal" data-target="#myModal" >Añadir libro</a>
+      </div>
+>>>>>>> f5d9777cd76ee57fc4dcce9b1caa8c933aca00f2
   </div>
   <button class="dropdown-btn">Genero<i class="fa fa-caret-down"></i></button>
   <div class="dropdown-container">
@@ -50,6 +117,7 @@
   </div>
   <a href="#todos">Todos</a>
 </div>
+<<<<<<< HEAD
 
 
 
@@ -123,14 +191,86 @@
                     <div>
                       {{ form.description }}
                     </div>
+=======
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+        <h4></h4>
+        <div class="table-responsive">
+
+
+<table id="mytable" class="table table-hover">
+
+      <thead>
+        <th onclick="sortTable(0)">Libro</th>
+        <th onclick="sortTable(1)">Descripción</th>
+        <th onclick="sortTable(2)">Fecha</th>
+        <th>Info</th>
+        <th>Borrar</th>
+        <th>Ver Libro</th>
+      </thead>
+      <tbody>
+        {% for doc in documentos %}
+            <tr>
+            <td>{{doc.title}}</td>
+            <td>{{doc.description}}</td>
+            <td>{{doc.uploaded_at}}</td>
+            <td><button class="btn btn-info" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book">
+              <i style="font-size:15px" class="fa">&#xf013;</i></button></td>
+
+            <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book">
+              <i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
+
+            <td><a type="button" class="btn btn-outline-primary" href="{{ doc.document.url }}">Abrir</a></td>
+            </tr>
+
+        {% endfor %}
+     </tbody>
+
+</table>
+            
+    <div id="snackbar"><span id="span_result"></span></div>
+            
+<!-- The Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="font-weight-bold" id="Heading">Cargar Libro</h4>            
+          <button type="button" class="close" data-dismiss="modal">X</button>
+        </div>
+        <div class="modal-body">
+            <form method="post" enctype="multipart/form-data" id="form_for_book">
+              {% csrf_token %}
+
+              <div class="form-group">
+                  <label class="form_biblo" >Descripcion:</label>
+                  <div>
+                    {{ form.description }}
+                  </div>
+              </div>
+
+
+              <div class="form-group">
+                <label class="form_biblo">Elija un archivo:</label>
+                <div style="margin-left: 3%;">
+                    {{form.document}}
+>>>>>>> f5d9777cd76ee57fc4dcce9b1caa8c933aca00f2
                 </div>
 
 
+<<<<<<< HEAD
                 <div class="form-group">
                   <label class="form_biblo">elija un archivo:</label>
                   <div style="margin-left: 3%;">
                     {{form.document}}
                   </div>
+=======
+              <div class="form-group">
+                <label class="form_biblo">Titulo:</label>
+                <div>
+                  {{ form.title}}
+>>>>>>> f5d9777cd76ee57fc4dcce9b1caa8c933aca00f2
                 </div>
 
 
@@ -158,19 +298,33 @@
                 </div>
 
 
+<<<<<<< HEAD
                 <div class="form-group">
                   <label class="form_biblo">Editorial:</label>
                   <div>
                     {{ form.editorial}}
                   </div>
+=======
+              <div class="form-group">
+                <label class="form_biblo">Fecha de salida:</label>
+                <div>
+                    {{ form.fecha_lanzamiento}}>
+>>>>>>> f5d9777cd76ee57fc4dcce9b1caa8c933aca00f2
                 </div>
 
 
+<<<<<<< HEAD
                 <div class="form-group">
                   <label class="form_biblo">fecha de salida:</label>
                   <div>
                     {{ form.fecha_lanzamiento}}
                   </div>
+=======
+              <div class="form-group">
+                <label class="form_biblo">Cantidad de paginas:</label>
+                <div style="margin-left: 3%;" >
+                  {{ form.cantidad_paginas }}
+>>>>>>> f5d9777cd76ee57fc4dcce9b1caa8c933aca00f2
                 </div>
 
 
@@ -189,6 +343,7 @@
                   </div>
                 </div>
               </div>
+<<<<<<< HEAD
               <!-- Modal footer -->
               <hr>
                 <button class="btn btn-success" align="center" type="submit">Cargar</button>
@@ -196,6 +351,17 @@
         </div>
       </div>
   </div>
+=======
+            <!-- Modal footer -->
+            <hr>
+            </form>
+               
+              <button class="btn btn-success" align="center" onclick="load_book()">Cargar</button>
+                 <span id="estado" style="color:red"></span>
+          </div>
+    </div>
+</div>
+>>>>>>> f5d9777cd76ee57fc4dcce9b1caa8c933aca00f2
 
         <div class="modal fade" id="modal_info">
           <div class="modal-dialog">
@@ -209,10 +375,47 @@
   </div>
 </div>
 
-</body>
 
 <script>
-
+    
+    function updateDiv()
+    {
+      $( "#mytable" ).load(window.location.href + " #mytable" );
+    }
+    
+    function reload_modal()
+    {
+      $( "#myModal" ).load(window.location.href + " #myModal" );
+    }
+    
+    function load_book(){
+        var myForm = document.getElementById('form_for_book');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: 'cargado/',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                console.log(data.error);
+                if (data.error){
+                    var x = document.getElementById("estado");
+                    estado.innerHTML = data.estado
+                }else{
+                    var x = document.getElementById("myModal");
+                    $(x).modal('hide');
+                    updateDiv();
+                    reload_model();
+                    var y = document.getElementById("snackbar");
+                    y.className = "show";
+                    document.getElementById("span_result").innerHTML = data.estado;
+                    setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
+                }
+            }
+        });
+    }
+    
 function sortTable(n) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
   table = document.getElementById("mytable");
@@ -288,10 +491,7 @@ function myFunction() {
   }
 }
 
-function updateDiv()
-{
-  $( "#mytable" ).load(window.location.href + " #mytable" );
-}
+
 
 function eliminar_libro(url, alum) {
   var r = confirm("Eliminar Libro ?");
