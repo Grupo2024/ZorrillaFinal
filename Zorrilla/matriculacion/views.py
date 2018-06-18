@@ -17,14 +17,11 @@ def cursos(request):
     return render(request, 'cursos.html')
 
 def logIn(request):
-    return render(request, 'docentes_login.html') 
+    return render(request, 'docentes_login.html')
 
 def aceptar_matriculaciones(request):
-    print request.user
     alumnos = Alumno.objects.all()
-    print alumnos
     matriculaciones = Matriculacion.objects.filter(matriculado=False)
-    print matriculaciones
     return render(request, 'pedidos.html', {'matriculaciones':matriculaciones})
 
 def aceptar_matriculacion(request, id_matriculacion):
@@ -42,3 +39,8 @@ def aceptar_matriculacion(request, id_matriculacion):
             'estado':"La matriculacion falló"
         }
     return JsonResponse(data, safe=False)
+
+def alumno(request, id_alumno):
+    alumno = Alumno.objects.get(dni=id_alumno)
+    alumno.sexo = alumno.genero()
+    return render(request, 'perfilAlumno.html', {'alumno':alumno})

@@ -9,7 +9,8 @@ urlpatterns = [
     url(r'^form', formulario, name="form"),
     url(r'^cursos', cursos, name="cursos"),
     url(r'^logIn', logIn, name="logIn"),
-    url(r'^pedidos', aceptar_matriculaciones, name="aceptar_matriculaciones"),
+    url(r'^pedidos', aceptar_matriculaciones, name="pedidos"),
     url(r'crear_alumno/', crear_alumno, name="crear_alumno"),
     url(r'^aceptar_matriculacion/(?P<id_matriculacion>\d+)$', aceptar_matriculacion, name="aceptar_matriculacion"),
+    url(r'^perfilAlumno/(\d+)/$', alumno, name="alumno"),
 ]

@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^seccion', cursos3, name="cursos3"),
     url(r'^alumnos', cursos4, name="cursos4"),
     url(r'^docentes',docentes, name="docentes"),
+    url(r'^perfilProfesor/(\d+)/$', profesor, name="profesor"),
 ]

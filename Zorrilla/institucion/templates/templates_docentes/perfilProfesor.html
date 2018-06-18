@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+<br>
+<h1 class="card-title" align="center">{{profesor.nombre}} {{profesor.apellido}}</h1>
+<br>
+<div class='row'>
+    <div class="card text-center" style="width: 30%; height: 63%; margin-left: 3%">
+    <div class="card-body">
+    <h4 class="card-title">Datos personales</h4>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">DNI: {{profesor.dni}}</li>
+          <li class="list-group-item">Lugar nacimiento: {{profesor.lugar_nacimiento}}</li>
+          <li class="list-group-item">Fecha de nacimiento: {{profesor.fecha_nacimiento}}</li>
+          <li class="list-group-item">Domicilio: {{profesor.domicilio}}</li>
+          <li class="list-group-item">mail: {{profesor.email}}</li>
+          <li class="list-group-item">Sexo: {{profesor.sexo}}</li>
+        </ul>
+    </div>
+  </div>
+
+    <div class="card text-center" style="width: 30%; height: 43%; margin-left: 2%">
+    <div class="card-body">
+      <h4 class="card-title">Datos de contacto</h4>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Telefono particular: {{profesor.telefono_particular_p}}</li>
+          <li class="list-group-item">Telefono laboral: {{profesor.telefono_laboral_p}}</li>
+          <li class="list-group-item">Telefono de familiar: {{profesor.telefono_familiar_p}}</li>
+          <li class="list-group-item">Datos de familiar: {{profesor.datos_familiares_cargo}}</li>
+        </ul>
+    </div>
+  </div>
+
+  <div class="card text-center" style="width: 30%; height: 43%; margin-left: 2%">
+    <div class="card-body">
+    <h4 class="card-title">Datos laborales</h4>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Estudios: {{profesor.estudios_cursados}}</li>
+          <li class="list-group-item">Fecha de inicio: {{profesor.fecha_inicio_actividad}}</li>
+          <li class="list-group-item">Antecedentes laborales: {{profesor.antecedentes_laborales}}</li>
+          <li class="list-group-item">Antiguedad: {{profesor.antiguedad_en_empresa}}</li>
+        </ul>
+    </div>
+  </div>
+</div>
+
+{% endblock body %}

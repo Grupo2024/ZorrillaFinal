@@ -35,24 +35,26 @@
                     <th>Editar</th>
                     <th>Borrar</th>
                    </thead>
+ {% for p in profesores %}
     <tbody>
     
     <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button type="button" class="btn btn-info"><i style="font-size:15px" class="fa">&#xf013;</i></button></p></td>
+    <td>{{p.nombre}}</td>
+    <td>{{p.apellido}}</td>
+    <td>{{p.dni}}</td>
+    <td>{{p.lugar_nacimiento}}</td>
+    <td>{{p.fecha_nacimiento}}</td>
+    <td>{{p.domicilio}}</td>
+    <td>{{p.email}}</td>
+    <td>{{p.sexo}}</td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="{% url 'profesor' p.dni %}" class="btn btn-info"><i style="font-size:15px" class="fa">&#xf013;</i></a></p></td>
     
     <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button type="button" class="btn btn-danger"><i style="font-size:15px" class="fa">&#xf00d;</i></button></p></td>
 
     </tr>
     
    </tbody>
+{% endfor %}
         
 </table>
 
