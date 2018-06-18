@@ -172,7 +172,7 @@
               <div class="form-group">
                 <label class="form_biblo">Fecha de salida:</label>
                 <div>
-                    {{ form.fecha_lanzamiento}}>
+                    {{ form.fecha_lanzamiento}}
                 </div>
               </div>
 
@@ -341,7 +341,10 @@ function eliminar_libro(url, alum) {
       }
     })
     .done(function (data) {
-      //Aca va el toast
+      var y = document.getElementById("snackbar");
+      y.className = "show";
+      document.getElementById("span_result").innerHTML = data.estado;
+      setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
       updateDiv();
     });
   } else {

@@ -11,7 +11,7 @@ def filter_books(request):
     return render(request, 'filter_books.html')
 
 def biblioteca(request):
-    documents = Document.objects.filter(habilitado=True).order_by('-uploaded_at')[:5]
+    documents = Document.objects.filter(habilitado=False).order_by('-uploaded_at')[:5]
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
@@ -55,6 +55,9 @@ def cargado(request):
                     'estado': "El libro " + str(document) + " ha sido cargado",
                     'error': False
                 }
+        data = {
+            'estado': "Fallo"
+        }
         return JsonResponse(data)
     
 # Function that changes the document habilitado attribute to False, it does not delete the book,
