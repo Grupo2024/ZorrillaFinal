@@ -55,35 +55,27 @@
   
     <button class="dropdown-btn">Alfabeticamente<i class="fa fa-caret-down"></i></button>
     <div class="dropdown-container">
-      <a href="#">5 libros</a>
-      <a href="#">10 libros</a>
-      <a href="#">25 libros</a>
-      <a href="#">50 libros</a>
-      <a href="#">100 libros</a>
+      <a href="{% url 'filtered_books' 'title' 5 %}">5 libros</a>
+      <a href="{% url 'filtered_books' 'title' 10 %}">10 libros</a>
+      <a href="{% url 'filtered_books' 'title' 25 %}">25 libros</a>
+      <a href="{% url 'filtered_books' 'title' 50 %}">50 libros</a>
+      <a href="{% url 'filtered_books' 'title' 100 %}">100 libros</a>
     </div>
-    <button class="dropdown-btn">Autor<i class="fa fa-caret-down"></i></button>
+    <button class="dropdown-btn">Fecha de Lanzamiento<i class="fa fa-caret-down"></i></button>
     <div class="dropdown-container">
-      <a href="#">5 libros</a>
-      <a href="#">10 libros</a>
-      <a href="#">25 libros</a>
-      <a href="#">50 libros</a>
-      <a href="#">100 libros</a>
-    </div>
-    <button class="dropdown-btn">Fecha de lanzamiento<i class="fa fa-caret-down"></i></button>
-    <div class="dropdown-container">
-      <a href="#">5 libros</a>
-      <a href="#">10 libros</a>
-      <a href="#">25 libros</a>
-      <a href="#">50 libros</a>
-      <a href="#">100 libros</a>
+      <a href="{% url 'filtered_books' 'fecha_lanzamiento' 5 %}">5 libros</a>
+      <a href="{% url 'filtered_books' 'fecha_lanzamiento' 10 %}">10 libros</a>
+      <a href="{% url 'filtered_books' 'fecha_lanzamiento' 25 %}">25 libros</a>
+      <a href="{% url 'filtered_books' 'fecha_lanzamiento' 50 %}">50 libros</a>
+      <a href="{% url 'filtered_books' 'fecha_lanzamiento' 100 %}">100 libros</a>
     </div>
     <button class="dropdown-btn">Genero<i class="fa fa-caret-down"></i></button>
     <div class="dropdown-container">
-      <a href="#">5 libros</a>
-      <a href="#">10 libros</a>
-      <a href="#">25 libros</a>
-      <a href="#">50 libros</a>
-      <a href="#">100 libros</a>
+      <a href="{% url 'filtered_books' 'genero' 5 %}">5 libros</a>
+      <a href="{% url 'filtered_books' 'genero' 10 %}">10 libros</a>
+      <a href="{% url 'filtered_books' 'genero' 25 %}">25 libros</a>
+      <a href="{% url 'filtered_books' 'genero' 50 %}">50 libros</a>
+      <a href="{% url 'filtered_books' 'genero' 100 %}">100 libros</a>
     </div>
     <button class="dropdown-btn">Habilitado<i class="fa fa-caret-down"></i></button>
     <div class="dropdown-container">
@@ -93,7 +85,7 @@
       <a href="#">50 libros</a>
       <a href="#">100 libros</a>
     </div>
-    <a href="#todos">Todos</a>
+    <a href="{% url 'all_the_books' %}">Todos</a>
     <a class="btn btn-success" data-toggle="modal" data-target="#myModal">Añadir libro</a>
   </div>
   
@@ -109,7 +101,7 @@
       <div class="">
         <input type="text"placeholder="Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
         <select id="filter_by">
-            <option value=0>Libro</option>
+            <option value=0>Titulo</option>
             <option value=1>Descripción</option>
             <option value=2>Fecha</option>
         </select>
@@ -126,7 +118,7 @@
   <table id="mytable" class="table table-hover">
 
         <thead>
-          <th onclick="sortTable(0)">Libro</th>
+          <th onclick="sortTable(0)">Titulo</th>
           <th onclick="sortTable(1)">Descripción</th>
           <th onclick="sortTable(2)">Fecha</th>
           <th>Info</th>
@@ -228,21 +220,22 @@
                   <div style="margin-left: 3%;" >
                     {{ form.cantidad_paginas }}
                   </div>
+                    
                 </div>
 
 
                 <div class="form-group">
-                  <label class="form_biblo">genero:</label>
+                  <label class="form_biblo">Genero:</label>
                   <div>
                     {{ form.genero}}
                   </div>
                 </div>
+                <span id="estado" style="color:red"></span>
               <!-- Modal footer -->
               <hr>
               </form>
                 
                 <button class="btn btn-success" align="center" onclick="load_book()">Cargar</button>
-                  <span id="estado" style="color:red"></span>
             </div>
       </div>
   </div>
@@ -267,16 +260,16 @@
       $( "#mytable" ).load(window.location.href + " #mytable" );
     }
     
-    function reload_modal()
+    function updateModal()
     {
       $( "#myModal" ).load(window.location.href + " #myModal" );
     }
-    
+        
     function load_book(){
         var myForm = document.getElementById('form_for_book');
         formData = new FormData(myForm);
         $.ajax({
-            url: 'cargado/',
+            url: '/cargado/',
             data: formData,
             processData: false,
             contentType: false,
@@ -290,7 +283,6 @@
                     var x = document.getElementById("myModal");
                     $(x).modal('hide');
                     updateDiv();
-                    reload_modal();
                     var y = document.getElementById("snackbar");
                     y.className = "show";
                     document.getElementById("span_result").innerHTML = data.estado;
@@ -410,7 +402,8 @@ function info_libro(url, alum) {
     })
     .done(function (data) {
         $("#datos_modal").html(data);
-        $("#modal_info").modal();
+        var x = document.getElementById("modal_info");
+        $(x).modal();
     });
 };
 

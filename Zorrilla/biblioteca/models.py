@@ -11,7 +11,7 @@ class Document(models.Model):
     autor = models.CharField(max_length=120)
     editorial = models.CharField(max_length=120, null=True)
     fecha_lanzamiento = models.DateTimeField(null=True)
-    cantidad_paginas = models.IntegerField()
+    cantidad_paginas = models.IntegerField(null=True)
     genero = models.CharField(max_length=60, null=True)
     habilitado = models.BooleanField(default=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
@@ -45,6 +45,6 @@ class Estado(models.Model):
         (ED , 'Editar')
     )
 
-    document = models.ForeignKey(Document, null=True)
+    document = models.ForeignKey(Document)
     user = models.ForeignKey(User)
     modificacion = models.CharField('Modificacion', max_length=12, choices=MODIFICACION_CHOICES)
