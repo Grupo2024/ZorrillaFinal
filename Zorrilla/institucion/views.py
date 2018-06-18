@@ -18,4 +18,11 @@ def cursos4(request):
     return render(request, 'templates_cursos/cursos4.html')
 
 def docentes(request):
-    return render(request, 'templates_docentes/docentes.html')
+    profesores = Profesor.objects.all()
+    return render(request, 'templates_docentes/docentes.html', {'profesores':profesores})
+
+
+def profesor(request, id_profesor):
+    profesor = Profesor.objects.get(dni=id_profesor)
+    profesor.sexo = profesor.genero()
+    return render(request, 'templates_docentes/perfilProfesor.html', {'profesor':profesor})
