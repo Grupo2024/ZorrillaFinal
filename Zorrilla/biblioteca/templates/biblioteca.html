@@ -3,162 +3,210 @@
 {% block navbar %}
 {% endblock navbar %}
 {% block body %}
-  <br></br>
-  <center><h2>BIBLIOTECA</h2></center>
-  <br><br>
-<div class="container">
-  <div class="row">
-    <div class="">
-      <input type="text"placeholder="Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
-      <select id="filter_by">
-          <option value=0>Libro</option>
-          <option value=1>Descripción</option>
-          <option value=2>Fecha</option>
-      </select>
-      </div>
-      <div class="col-6">
-      </div>
-      <div class="col">
-          <a class="btn btn-success" data-toggle="modal" data-target="#myModal" >Añadir libro</a>
+
+
+<div class="sidenav">
+  <h1 align="center" class="text-white">Indice</h1>
+
+  <button class="dropdown-btn">Alfabeticamente<i class="fa fa-caret-down"></i></button>
+  <div class="dropdown-container">
+    <a href="#">5 libros</a>
+    <a href="#">10 libros</a>
+    <a href="#">25 libros</a>
+    <a href="#">50 libros</a>
+    <a href="#">100 libros</a>
+  </div>
+  <button class="dropdown-btn">Autor<i class="fa fa-caret-down"></i></button>
+  <div class="dropdown-container">
+    <a href="#">5 libros</a>
+    <a href="#">10 libros</a>
+    <a href="#">25 libros</a>
+    <a href="#">50 libros</a>
+    <a href="#">100 libros</a>
+  </div>
+  <button class="dropdown-btn">Fecha de lanzamiento<i class="fa fa-caret-down"></i></button>
+  <div class="dropdown-container">
+    <a href="#">5 libros</a>
+    <a href="#">10 libros</a>
+    <a href="#">25 libros</a>
+    <a href="#">50 libros</a>
+    <a href="#">100 libros</a>
+  </div>
+  <button class="dropdown-btn">Genero<i class="fa fa-caret-down"></i></button>
+  <div class="dropdown-container">
+    <a href="#">5 libros</a>
+    <a href="#">10 libros</a>
+    <a href="#">25 libros</a>
+    <a href="#">50 libros</a>
+    <a href="#">100 libros</a>
+  </div>
+  <button class="dropdown-btn">Habilitado<i class="fa fa-caret-down"></i></button>
+  <div class="dropdown-container">
+    <a href="#">5 libros</a>
+    <a href="#">10 libros</a>
+    <a href="#">25 libros</a>
+    <a href="#">50 libros</a>
+    <a href="#">100 libros</a>
+  </div>
+  <a href="#todos">Todos</a>
+</div>
+
+
+
+<div class="main">
+
+    <br></br>
+    <center><h2>BIBLIOTECA</h2></center>
+    <br><br>
+  <div class="container">
+    <div class="row">
+      <div class="">
+        <input type="text"placeholder="Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
+        <select id="filter_by">
+            <option value=0>Libro</option>
+            <option value=1>Descripción</option>
+            <option value=2>Fecha</option>
+        </select>
+      <a class="btn btn-success" data-toggle="modal" data-target="#myModal" >Añadir libro</a>
+    </div>
+  </div>
+  <div class="container">
+      <div class="row">
+          <div class="col-md-12">
+          <h4></h4>
+          <div class="table-responsive">
+
+
+  <table id="mytable" class="table table-hover">
+
+        <thead>
+          <th onclick="sortTable(0)">Libro</th>
+          <th onclick="sortTable(1)">Descripción</th>
+          <th onclick="sortTable(2)">Fecha</th>
+          <th>Info</th>
+          <th>Borrar</th>
+          <th>Ver Libro</th>
+        </thead>
+        <tbody>
+          {% for doc in documentos %}
+              <tr>
+              <td>{{doc.title}}</td>
+              <td>{{doc.description}}</td>
+              <td>{{doc.uploaded_at}}</td>
+              <td><button class="btn btn-info" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book">
+                <i style="font-size:15px" class="fa">&#xf013;</i></button></td>
+
+              <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book">
+                <i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
+
+              <td><a type="button" class="btn btn-outline-primary" href="{{ doc.document.url }}">Abrir</a></p></td>
+              </tr>
+
+          {% endfor %}
+      </tbody>
+
+  </table>
+  <!-- The Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="font-weight-bold" id="Heading">Cargar Libro</h4>            
+            <button type="button" class="close" data-dismiss="modal">X</button>
+          </div>
+          <div class="modal-body">
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label class="form_biblo" >descripcion:</label>
+                    <div>
+                      {{ form.description }}
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label class="form_biblo">elija un archivo:</label>
+                  <div style="margin-left: 3%;">
+                    {{form.document}}
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label class="form_biblo">titulo:</label>
+                  <div>
+                    {{ form.title}}
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label class="form_biblo">Tipo de archivo:</label>
+                  <div>
+                    {{ form.tipo}}
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label class="form_biblo">Autor:</label>
+                  <div>
+                    {{ form.autor}}
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label class="form_biblo">Editorial:</label>
+                  <div>
+                    {{ form.editorial}}
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label class="form_biblo">fecha de salida:</label>
+                  <div>
+                    {{ form.fecha_lanzamiento}}
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label class="form_biblo">cantidad de paginas:</label>
+                  <div style="margin-left: 3%;" >
+                    {{ form.cantidad_paginas }}
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label class="form_biblo">genero:</label>
+                  <div>
+                    {{ form.genero}}
+                  </div>
+                </div>
+              </div>
+              <!-- Modal footer -->
+              <hr>
+                <button class="btn btn-success" align="center" type="submit">Cargar</button>
+          </form>
+        </div>
       </div>
   </div>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-        <h4></h4>
-        <div class="table-responsive">
 
-
-<table id="mytable" class="table table-hover">
-
-      <thead>
-        <th onclick="sortTable(0)">Libro</th>
-        <th onclick="sortTable(1)">Descripción</th>
-        <th onclick="sortTable(2)">Fecha</th>
-        <th>Info</th>
-        <th>Borrar</th>
-        <th>Ver Libro</th>
-      </thead>
-      <tbody>
-        {% for doc in documentos %}
-            <tr>
-            <td>{{doc.title}}</td>
-            <td>{{doc.description}}</td>
-            <td>{{doc.uploaded_at}}</td>
-            <td><button class="btn btn-info" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book">
-              <i style="font-size:15px" class="fa">&#xf013;</i></button></td>
-
-            <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book">
-              <i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
-
-            <td><a type="button" class="btn btn-outline-primary" href="{{ doc.document.url }}">Abrir</a></p></td>
-            </tr>
-
-        {% endfor %}
-     </tbody>
-
-</table>
-<!-- The Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="font-weight-bold" id="Heading">Cargar Libro</h4>            
-          <button type="button" class="close" data-dismiss="modal">X</button>
-        </div>
-        <div class="modal-body">
-            <form method="post" enctype="multipart/form-data">
-              {% csrf_token %}
-
-              <div class="form-group">
-                  <label class="form_biblo" >descripcion:</label>
-                  <div>
-                    {{ form.description }}
-                  </div>
-              </div>
-
-
-              <div class="form-group">
-                <label class="form_biblo">elija un archivo:</label>
-                <div style="margin-left: 3%;">
-                  {{form.document}}
-                </div>
-              </div>
-
-
-              <div class="form-group">
-                <label class="form_biblo">titulo:</label>
-                <div>
-                  {{ form.title}}
-                </div>
-              </div>
-
-
-              <div class="form-group">
-                <label class="form_biblo">Tipo de archivo:</label>
-                <div>
-                  {{ form.tipo}}
-                </div>
-              </div>
-
-
-              <div class="form-group">
-                <label class="form_biblo">Autor:</label>
-                <div>
-                  {{ form.autor}}
-                </div>
-              </div>
-
-
-              <div class="form-group">
-                <label class="form_biblo">Editorial:</label>
-                <div>
-                  {{ form.editorial}}
-                </div>
-              </div>
-
-
-              <div class="form-group">
-                <label class="form_biblo">fecha de salida:</label>
-                <div>
-                  {{ form.fecha_lanzamiento}}
-                </div>
-              </div>
-
-
-              <div class="form-group">
-                <label class="form_biblo">cantidad de paginas:</label>
-                <div style="margin-left: 3%;" >
-                  {{ form.cantidad_paginas }}
-                </div>
-              </div>
-
-
-              <div class="form-group">
-                <label class="form_biblo">genero:</label>
-                <div>
-                  {{ form.genero}}
-                </div>
-              </div>
+        <div class="modal fade" id="modal_info">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div id="datos_modal">
             </div>
-            <!-- Modal footer -->
-            <hr>
-              <button class="btn btn-success" align="center" type="submit">Cargar</button>
-        </form>
-      </div>
-    </div>
-</div>
-
-      <div class="modal fade" id="modal_info">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div id="datos_modal">
           </div>
         </div>
       </div>
-    </div>
 
+  </div>
 </div>
 
 </body>
@@ -278,6 +326,26 @@ function info_libro(url, alum) {
         $("#modal_info").modal();
     });
 };
+
+$(".dropdown-toggle").click(function() {
+  $(this).toggleClass("btnBackground");
+});
+
+/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+var dropdown = document.getElementsByClassName("dropdown-btn");
+var i;
+
+for (i = 0; i < dropdown.length; i++) {
+  dropdown[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var dropdownContent = this.nextElementSibling;
+    if (dropdownContent.style.display === "block") {
+      dropdownContent.style.display = "none";
+    } else {
+      dropdownContent.style.display = "block";
+    }
+  });
+}
 
 </script>
 
