@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^biblioteca', biblioteca, name="biblioteca"),
     url(r'^filter_books/', filter_books, name="filter_books"),
     url(r'^eliminar_libro/(?P<id_documento>\d+)$', eliminar_libro, name="eliminar_libro"),
-    url(r'^info_libro/(?P<id_documento>\d+)$', info_libro, name="info_libro")
+    url(r'^info_libro/(?P<id_documento>\d+)$', info_libro, name="info_libro"),
+    url(r'^cargado/', cargado, name="cargado"),
 ]

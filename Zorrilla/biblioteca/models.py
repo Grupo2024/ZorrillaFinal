@@ -28,7 +28,7 @@ class Document(models.Model):
             self.habilitado = True
             self.save()
             return self.habilitado
-
+        
 class Estado(models.Model):
 
     HA = 'Habilitar'
@@ -45,6 +45,6 @@ class Estado(models.Model):
         (ED , 'Editar')
     )
 
-    document = models.ForeignKey(Document)
+    document = models.ForeignKey(Document, null=True)
     user = models.ForeignKey(User)
     modificacion = models.CharField('Modificacion', max_length=12, choices=MODIFICACION_CHOICES)
