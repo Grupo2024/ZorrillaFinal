@@ -95,8 +95,9 @@ def eliminar_libro(request, id_documento):
     return JsonResponse(data, safe=True)
 
 def info_libro(request, id_documento):
-    document = Document.objects.get(id=id_documento)
-    return render(request, 'book_info.html', {'doc':document})
+    if request.method == 'POST':
+        document = Document.objects.get(id=id_documento)
+        return render(request, 'book_info.html', {'doc':document})
 
 def all_the_books(request):
     documents = Document.objects.all()

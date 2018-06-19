@@ -1,22 +1,28 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+
       <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Datos {{doc.title}}</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
+        <div class="modal-header">
+            <h4 class="modal-title">Datos de {{doc.title}}</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
 
       <!-- Modal body -->
-      <div class="modal-body">
-        <span>Tipo:</span><p>{{doc.tipo}}</p>
-        <span>Titulo:</span><p>{{doc.title}}</p>
-        <span>Descripción:</span><p>{{doc.description}}</p>
-        <span>Autor:</span><p>{{doc.autor}}</p>
-        <span>Editorial:</span><p>{{doc.editorial}}</p>
-        <span>Fecha de lanzamiento:</span><p>{{doc.fecha_lanzamiento}}</p>
-        <span>Cantidad de paginas:</span><p>{{doc.cantidad_paginas}}</p>
-        <span>genero:</span><p>{{doc.genero}}</p>
+        <div class="modal-body">
+            <span>Tipo:</span><p>{{doc.tipo}}</p>
+            <span>Titulo:</span><p>{{doc.title}}</p>
+            <span>Descripción:</span><p>{{doc.description}}</p>
+            <span>Autor:</span><p>{{doc.autor}}</p>
+            <span>Editorial:</span><p>{{doc.editorial}}</p>
+            <span>Fecha de lanzamiento:</span><p>{{doc.fecha_lanzamiento}}</p>
+            <span>Cantidad de paginas:</span><p>{{doc.cantidad_paginas}}</p>
+            <span>genero:</span><p>{{doc.genero}}</p>
+        </div>
 
         <!-- Modal footer -->
         <div class="modal-footer">
-          <button class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         </div>
+
     </div>
+</div>

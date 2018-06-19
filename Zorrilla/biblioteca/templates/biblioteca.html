@@ -147,110 +147,105 @@
               
       <div id="snackbar"><span id="span_result"></span></div>
               
-  <!-- The Modal -->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="font-weight-bold" id="Heading">Cargar Libro</h4>            
-            <button type="button" class="close" data-dismiss="modal">X</button>
-          </div>
-          <div class="modal-body">
-              <form method="post" enctype="multipart/form-data" id="form_for_book">
-                {% csrf_token %}
-
-                <div class="form-group">
-                    <label class="form_biblo" >Descripcion:</label>
-                    <div>
-                      {{ form.description }}
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                  <label class="form_biblo">Elija un archivo:</label>
-                  <div style="margin-left: 3%;">
-                      {{form.document}}
-                  </div>
-                </div>
-
-
-                <div class="form-group">
-                  <label class="form_biblo">Titulo:</label>
-                  <div>
-                    {{ form.title}}
-                  </div>
-                </div>
-
-
-                <div class="form-group">
-                  <label class="form_biblo">Tipo de archivo:</label>
-                  <div>
-                    {{ form.tipo}}
-                  </div>
-                </div>
-
-
-                <div class="form-group">
-                  <label class="form_biblo">Autor:</label>
-                  <div>
-                    {{ form.autor}}
-                  </div>
-                </div>
-
-
-                <div class="form-group">
-                  <label class="form_biblo">Editorial:</label>
-                  <div>
-                    {{ form.editorial}}
-                  </div>
-                </div>
-
-
-                <div class="form-group">
-                  <label class="form_biblo">Fecha de salida:</label>
-                  <div>
-                      {{ form.fecha_lanzamiento}}
-                  </div>
-                </div>
-
-
-                <div class="form-group">
-                  <label class="form_biblo">Cantidad de paginas:</label>
-                  <div style="margin-left: 3%;" >
-                    {{ form.cantidad_paginas }}
-                  </div>
-                    
-                </div>
-
-
-                <div class="form-group">
-                  <label class="form_biblo">Genero:</label>
-                  <div>
-                    {{ form.genero}}
-                  </div>
-                </div>
-                <span id="estado" style="color:red"></span>
-              <!-- Modal footer -->
-              <hr>
-              </form>
-                
-                <button class="btn btn-success" align="center" onclick="load_book()">Cargar</button>
-            </div>
-      </div>
-  </div>
-
-        <div class="modal fade" id="modal_info">
+      <!-- The Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
-              <div id="datos_modal">
-            </div>
-          </div>
-        </div>
-      </div>
+              <div class="modal-header">
+                <h4 class="font-weight-bold" id="Heading">Cargar Libro</h4>            
+                <button type="button" class="close" data-dismiss="modal">X</button>
+              </div>
+              <div class="modal-body">
+                  <form method="post" enctype="multipart/form-data" id="form_for_book">
+                    {% csrf_token %}
 
-  </div>
-</div>
+                    <div class="form-group">
+                        <label class="form_biblo" >Descripcion:</label>
+                        <div>
+                          {{ form.description }}
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="form_biblo">Elija un archivo:</label>
+                      <div style="margin-left: 3%;">
+                          {{form.document}}
+                      </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="form_biblo">Titulo:</label>
+                      <div>
+                        {{ form.title}}
+                      </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="form_biblo">Tipo de archivo:</label>
+                      <div>
+                        {{ form.tipo}}
+                      </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="form_biblo">Autor:</label>
+                      <div>
+                        {{ form.autor}}
+                      </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="form_biblo">Editorial:</label>
+                      <div>
+                        {{ form.editorial}}
+                      </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="form_biblo">Fecha de salida:</label>
+                      <div>
+                          {{ form.fecha_lanzamiento}}
+                      </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="form_biblo">Cantidad de paginas:</label>
+                      <div style="margin-left: 3%;" >
+                        {{ form.cantidad_paginas }}
+                      </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="form_biblo">Genero:</label>
+                      <div>
+                        {{ form.genero}}
+                      </div>
+                    </div>
+                    <span id="estado" style="color:red"></span>
+                  <!-- Modal footer -->
+                  <hr>
+                  </form>
+
+                    <button class="btn btn-success" align="center" onclick="load_book()">Cargar</button>
+                </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal_info">
+        <div id="datos_modal">
+        </div>
+    </div>
+
 
 
 <script>
@@ -401,9 +396,9 @@ function info_libro(url, alum) {
         }
     })
     .done(function (data) {
+        console.log("llega");
         $("#datos_modal").html(data);
-        var x = document.getElementById("modal_info");
-        $(x).modal();
+        $('#modal_info').modal('show'); 
     });
 };
 
