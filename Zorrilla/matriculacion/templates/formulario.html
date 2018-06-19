@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block body %}
+<<<<<<< HEAD
 <div class="formulario">
     <form  id="create_student" action="{% url 'crear_alumno' %}" method="post">
         {% csrf_token %}
@@ -164,13 +165,92 @@
                 <label for="usr">Numero de la obra social:</label>
                 <input type="text" class="form-control" id="alumno_obra_social_numero" name="alumno_obra_social_numero">
             </div>
+=======
+<form  id="create_student" action="{% url 'crear_alumno' %}" method="post">
+{% csrf_token %}
+<div class="container">
+  <br></br>
+    <div class="card bg-light" style="height:530px">
+        <div class="card-body text-center">
+            <p class="card-text">DATOS PERSONALES</p>
+            <br></br>
+            <form action="/action_page.php">
+            <div class="form-group">
+                <p align="left">
+                <label>Nombre:</label>
+                <input placeholder= "Nombre del alumno" id="">
+                </p>
+            </div>
+            <div class="form-group">
+                <p align="left">                
+                <label>Apellido:</label>
+                <input placeholder= "Apellido del alumno" id="">
+                </p>
+            </div>
+            <div class="form-group">
+                <p align="left">                
+                <label>DNI:</label>
+                <input placeholder= "00000000" id="">
+                </p>
+            </div>
+            <div class="form-group">
+                <p align="left">                
+                <label>Fecha de nacimiento:</label>
+                <input type="date" id="">
+                </p>
+            </div>
+            <div class="form-group">
+                <p align="left">                
+                <label>Lugar de nacimiento:</label>
+                <input placeholder= "ej:Córdoba" id="">
+                </p>
+            </div>
+            <div class="form-group">
+                <p align="left">                
+                <label>Telefono de la madre:</label>
+                <input placeholder= "ej:3510000000" id="">
+                </p>
+            </div>
+            <div class="form-group">
+                <p align="left">                
+                <label>Telefono del padre/tutor:</label>
+                <input placeholder= "ej:3510000000" id="">
+                </p>
+            </div>
+            <div class="form-group">
+                <p align="left">                
+                <label>Telefono de la casa:</label>
+                <input placeholder= "ej:123456" id="">
+                </p>
+            </div>
+            <div class="form-group">
+                <p align="right">                
+                <label>Telefono de un familiar:</label>
+                <input placeholder= "ej:3510000000" id="">
+                </p>
+            </div>
+            <div class="form-group">
+                <p align="right">                
+                <label>Domicilio:</label>
+                <input placeholder= "ej:123456" id="">
+                </p>
+            </div>
+            <div class="form-group">
+                <p align="right">                
+                <label>Sexo:</label>
+                <input type="radio" name="gender" value="male" checked> Masculino<br>
+                <input type="radio" name="gender" value="female"> Femenino<br>
+                </p>
+            </div>
+            <div class="form-group">
+                <p align="right">                
+                <label>Email:</label>
+                <input placeholder= "pepe123@ejemplo.com" id="">
+                </p>
+            </div>
+            </form> 
+>>>>>>> act_formulario
         </div>
-    
-        
-        
-        <button class="btn btn-success botonformulario" type="submit">Cargar</button>
-    </form>
-</div>
-
-
+    </div>
+  </div>
 {% endblock body %}
