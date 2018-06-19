@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block body %}
-<<<<<<< HEAD
 <div class="formulario">
     <form  id="create_student" action="{% url 'crear_alumno' %}" method="post">
         {% csrf_token %}
@@ -165,7 +164,6 @@
                 <label for="usr">Numero de la obra social:</label>
                 <input type="text" class="form-control" id="alumno_obra_social_numero" name="alumno_obra_social_numero">
             </div>
-=======
 <form  id="create_student" action="{% url 'crear_alumno' %}" method="post">
 {% csrf_token %}
 <div class="container">
@@ -249,7 +247,6 @@
                 </p>
             </div>
             </form> 
->>>>>>> act_formulario
         </div>
     </div>
   </div>
