@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import DocumentForm
-from .test_model import *
 from django.http import JsonResponse
 import datetime
 import os

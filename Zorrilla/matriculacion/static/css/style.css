@@ -325,7 +325,7 @@ input[type=text]{
     padding: 6px 8px 6px 16px;
     text-decoration: none;
     font-size: 20px;
-    color: #818181;
+    color: #8d8989;
     display: block;
     border: none;
     background: none;
@@ -354,6 +354,8 @@ input[type=text]{
     
 }
 
+
+
 /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
 .dropdown-container {
     display: none;
@@ -373,4 +375,57 @@ input[type=text]{
     .sidenav a {font-size: 18px;}
 }
 
+.boton_cargar{
+    position: absolute;
+    bottom:   5%;
+}
+
 /* end side bar */
+
+
+
+/* Toast */
+
+#snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -110px;
+    background-color: #0099cc;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+    
+#snackbar.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;} 
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;} 
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+/* end Toast */
