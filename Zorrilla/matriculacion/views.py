@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from .creation import *
 from .test_model import *
 from django.http import JsonResponse
+from django.contrib import auth
 
 # Create your views here.
 
@@ -18,6 +19,11 @@ def cursos(request):
 
 def logIn(request):
     return render(request, 'docentes_login.html')
+
+def logout_me_out(request):
+    print "logueate gato"
+    auth.logout(request)
+    return redirect ('index')
 
 def aceptar_matriculaciones(request):
     alumnos = Alumno.objects.all()
