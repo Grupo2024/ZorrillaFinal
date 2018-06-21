@@ -3,11 +3,7 @@
 {% block navbar %}
 {% endblock navbar %}
 {% block body %}
-
-<style>
-
-
-</style>
+{% load poll_extras %}
 
 <div class="sidenav">
     <h1 align="center" class="text-white">Indice</h1>
@@ -45,8 +41,9 @@
       <a href="#">100 libros</a>
     </div>
     <a href="{% url 'all_the_books' %}">Todos</a>
-    
-      <button class="btn btn-success boton_cargar btn-lg btn-block"  data-toggle="modal" data-target="#myModal">Añadir libro</button>
+    {% if user.is_authenticated %}
+        <button class="btn btn-success boton_cargar btn-lg btn-block"  data-toggle="modal" data-target="#myModal">Añadir libro</button>
+    {% endif %}
     
   </div>
 
@@ -57,6 +54,8 @@
     <br>
     <center><h2>BIBLIOTECA</h2></center>
     <br>
+    
+    
   <div class="container">
     <div class="row">
       <div class="">
@@ -78,32 +77,32 @@
 
   <table id="mytable" class="table table-hover">
 
-        <thead>
-          <th onclick="sortTable(0)">Titulo</th>
-          <th onclick="sortTable(1)">Descripción</th>
-          <th onclick="sortTable(2)">Fecha</th>
-          <th>Info</th>
-          <th>Borrar</th>
-          <th>Ver Libro</th>
-        </thead>
-        <tbody>
-          {% for doc in documentos %}
-              <tr>
-              <td>{{doc.title}}</td>
-              <td>{{doc.description}}</td>
-              <td>{{doc.uploaded_at}}</td>
-              <td><button class="btn btn-info" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book">
+    <thead>
+        <th onclick="sortTable(0)">Titulo</th>
+        <th onclick="sortTable(1)">Descripción</th>
+        <th onclick="sortTable(2)">Fecha</th>
+        <th>Info</th>
+        {% if user.is_authenticated %}
+            <th>Borrar</th>
+        {% endif %}
+        <th>Ver Libro</th>
+    </thead>
+    <tbody>
+        {% for doc in documentos %}
+            <tr>
+                <td>{{doc.title}}</td>
+                <td>{{doc.description}}</td>
+                <td>{{doc.uploaded_at}}</td>
+                <td><button class="btn btn-info" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book">
                 <i style="font-size:15px" class="fa">&#xf013;</i></button></td>
-
-              <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book">
-                <i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
-
-              <td><a type="button" class="btn btn-outline-primary" href="{{ doc.document.url }}">Abrir</a></td>
-              </tr>
-
+                {% if user.is_authenticated %}
+                    <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book">
+                    <i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
+                 {% endif %}
+                <td><a type="button" class="btn btn-outline-primary" href="{{ doc.document.url }}">Abrir</a></td>
+            </tr>
           {% endfor %}
       </tbody>
-
   </table>
               
       <div id="snackbar"><span id="span_result"></span></div>
@@ -196,9 +195,9 @@
                 <hr>  
                   </div>
                     </form>
-              <button class="btn btn-success" align="center"  onclick="load_book()">Cargar</button>
-                  
-              
+           
+              <button class="btn btn-success" align="center"  onclick="load_book()">Cargar</button>                 
+  
             </div>
         </div>
       </div>
@@ -245,41 +244,41 @@
     }
     
 function sortTable(n) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-  table = document.getElementById("mytable");
-  switching = true;
-  //Set the sorting direction to ascending:
-  dir = "asc";
-  /*Make a loop that will continue until
-  no switching has been done:*/
-  while (switching) {
-    //start by saying: no switching is done:
-    switching = false;
-    rows = table.getElementsByTagName("TR");
-    /*Loop through all table rows (except the
-    first, which contains table headers):*/
-    for (i = 1; i < (rows.length - 1); i++) {
-      //start by saying there should be no switching:
-      shouldSwitch = false;
-      /*Get the two elements you want to compare,
-      one from current row and one from the next:*/
-      x = rows[i].getElementsByTagName("TD")[n];
-      y = rows[i + 1].getElementsByTagName("TD")[n];
-      /*check if the two rows should switch place,
-      based on the direction, asc or desc:*/
-      if (dir == "asc") {
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          //if so, mark as a switch and break the loop:
-          shouldSwitch= true;
-          break;
-        }
-      } else if (dir == "desc") {
-        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-          //if so, mark as a switch and break the loop:
-          shouldSwitch = true;
-          break;
-        }
-      }
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("mytable");
+    switching = true;
+    //Set the sorting direction to ascending:
+    dir = "asc";
+    /*Make a loop that will continue until
+    no switching has been done:*/
+    while (switching) {
+        //start by saying: no switching is done:
+        switching = false;
+        rows = table.getElementsByTagName("TR");
+        /*Loop through all table rows (except the
+        first, which contains table headers):*/
+        for (i = 1; i < (rows.length - 1); i++) {
+            //start by saying there should be no switching:
+            shouldSwitch = false;
+            /*Get the two elements you want to compare,
+            one from current row and one from the next:*/
+            x = rows[i].getElementsByTagName("TD")[n];
+            y = rows[i + 1].getElementsByTagName("TD")[n];
+            /*check if the two rows should switch place,
+            based on the direction, asc or desc:*/
+            if (dir == "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    //if so, mark as a switch and break the loop:
+                    shouldSwitch= true;
+                break;
+                }
+          } else if (dir == "desc") {
+            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+              //if so, mark as a switch and break the loop:
+              shouldSwitch = true;
+              break;
+            }
+          }
     }
     if (shouldSwitch) {
       /*If a switch has been marked, make the switch

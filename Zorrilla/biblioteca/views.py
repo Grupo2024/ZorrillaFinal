@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import *
 from .forms import DocumentForm
 from django.http import JsonResponse
 import datetime
-import os
+from .decorators import *
+
 
 def filter_books(request):
     return render(request, 'filter_books.html')
@@ -77,20 +79,22 @@ def cargado(request):
 # Function that changes the document habilitado attribute to False, it does not delete the book,
 # only Directora can do it.
 
-#Decorator missing.
 def eliminar_libro(request, id_documento):
     document = Document.objects.get(id=id_documento)
     estado = Estado(document=document, user=request.user, modificacion="Deshabilitar")
     document.change()
     document.save()
     estado.save()
-    """
-    rout = "../media/" + str(document.document)
-    os.remove(rout)
-    """   
-    data = {
-        'estado': "El libro " + str(document.title) + " ha sido eliminado"
-    }
+    if request.user.groups.filter(name="Director").exists():   
+        document.delete()
+        print "es director"
+        data = {
+            'estado': "El libro " + str(document.title) + " y todos los registros del mismo han sido eliminados"
+        }
+    else:
+        data = {
+            'estado': "El libro " + str(document.title) + "  ha sido eliminado"
+        }
     return JsonResponse(data, safe=True)
 
 def info_libro(request, id_documento):
