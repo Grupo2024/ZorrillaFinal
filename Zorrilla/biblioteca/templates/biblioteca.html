@@ -32,19 +32,23 @@
       <a href="{% url 'filtered_books' 'genero' 50 %}">50 libros</a>
       <a href="{% url 'filtered_books' 'genero' 100 %}">100 libros</a>
     </div>
-    <button class="dropdown-btn">Habilitado<i class="fa fa-caret-down"></i></button>
-    <div class="dropdown-container">
-      <a href="#">5 libros</a>
-      <a href="#">10 libros</a>
-      <a href="#">25 libros</a>
-      <a href="#">50 libros</a>
-      <a href="#">100 libros</a>
-    </div>
+    {% if request.user|has_group:"Director" %} 
+        <button class="dropdown-btn">Habilitado<i class="fa fa-caret-down"></i></button>
+        <div class="dropdown-container">
+          <a href="{% url 'libros_habilitados' 5 %}">5 libros</a>
+          <a href="{% url 'libros_habilitados' 10 %}">10 libros</a>
+          <a href="{% url 'libros_habilitados' 25 %}">25 libros</a>
+          <a href="{% url 'libros_habilitados' 50 %}">50 libros</a>
+          <a href="{% url 'libros_habilitados' 100 %}">100 libros</a>
+        </div>
+    {% endif %}
     <a href="{% url 'all_the_books' %}">Todos</a>
     {% if user.is_authenticated %}
         <button class="btn btn-success boton_cargar btn-lg btn-block"  data-toggle="modal" data-target="#myModal">Añadir libro</button>
     {% endif %}
-    
+    {% if request.user|has_group:"Director" %} 
+        <button class="btn btn-success boton_cargar btn-lg btn-block" onclick="informe('{% url 'informe' %}')">Estadisticas</button>
+    {% endif %}
   </div>
 
   
@@ -54,7 +58,6 @@
     <br>
     <center><h2>BIBLIOTECA</h2></center>
     <br>
-    
     
   <div class="container">
     <div class="row">
@@ -86,7 +89,9 @@
             <th>Borrar</th>
         {% endif %}
         <th>Ver Libro</th>
-        <th>Historia</th>
+        {% if request.user|has_group:"Director" %}
+            <th>Historia</th>
+        {% endif %}
     </thead>
     <tbody>
         {% for doc in documentos %}
@@ -99,12 +104,12 @@
                 {% if user.is_authenticated %}
                     <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book">
                     <i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
-                 {% endif %}
-                {% if request.user|has_group:"Director" %} 
-                    <td><button class="btn btn-danger" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book">
-                    <i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
                 {% endif %}
                 <td><a type="button" class="btn btn-outline-primary" href="{{ doc.document.url }}">Abrir</a></td>
+                {% if request.user|has_group:"Director" %} 
+                    <td><button class="btn btn-primary" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book">
+                    <i style="font-size:15px" class="fa">&#xf05a;</i></button></td>
+                {% endif %}
             </tr>
           {% endfor %}
       </tbody>
@@ -200,12 +205,12 @@
                 <hr>  
                   </div>
                     </form>
-           
+              </div>
               <button class="btn btn-success" align="center"  onclick="load_book()">Cargar</button>                 
-  
+              </div>
             </div>
         </div>
-      </div>
+      
 
     <div class="modal fade" id="modal_info">
         <div id="datos_modal">
@@ -214,6 +219,11 @@
               
     <div class="modal fade" id="modal_historia">
         <div id="modal_historia_info">
+        </div>
+    </div>
+              
+    <div class="modal fade" id="modal_estadistica">
+        <div id="modal_estadistica_info">
         </div>
     </div>
 
@@ -365,7 +375,21 @@ function info_libro(url, alum) {
         $('#modal_info').modal('show'); 
     });
 };
-    
+   
+function informe(url) {
+    $.ajax({
+        method: "POST",
+        url: url,
+        data: {
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        }
+    })
+    .done(function (documentos) {
+        $("#modal_estadistica_info").html(documentos);
+        $('#modal_estadistica').modal('show'); 
+    });
+};
+  
 function historia_libro(url, alum) {
     $.ajax({
         method: "POST",

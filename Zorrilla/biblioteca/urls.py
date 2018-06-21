@@ -11,7 +11,8 @@ urlpatterns = [
     url(r'^info_libro/(?P<id_documento>\d+)$', info_libro, name="info_libro"),
     url(r'^historia_libro/(?P<id_documento>\d+)$', historia_libro, name="historia_libro"),
     url(r'^filtered_books/(?P<attribute>[\w\-]+)-(?P<cantidad>\d+)$', filtered_books, name="filtered_books"),
+    url(r'^libros_habilitados/(?P<cantidad>\d+)$', libros_habilitados, name="libros_habilitados"),
     url(r'^cargado/', cargado, name="cargado"),
+    url(r'^informe/', informe, name="informe"),
     url(r'^all_the_books/', all_the_books, name="all_the_books")
-    
 ]

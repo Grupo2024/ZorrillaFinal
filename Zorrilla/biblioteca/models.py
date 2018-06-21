@@ -29,6 +29,13 @@ class Document(models.Model):
             self.save()
             return self.habilitado
         
+    def cantidad_habilitados():
+        return Document.objects.filter(habilitado=True).count()
+    
+    def cantidad_deshabilitados():
+        return Document.objects.filter(habilitado=False).count()
+    
+        
 class Estado(models.Model):
 
     HA = 'Habilitar'

@@ -26,11 +26,29 @@ def biblioteca(request):
     return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
 
 @user_passes_test(check_Director)
+def informe(request):
+    documents = Document.objects.all()
+    ducuments_habiltiados = Document.objects.filter(habilitado=True).count()
+    ducuments_deshabiltiados = Document.objects.filter(habilitado=False).count()
+    documentos = {
+        'cantidad':documents.count(),
+        'habilitados':ducuments_habiltiados,
+        'deshabilitados':ducuments_deshabiltiados
+    }
+    return render(request, 'informe.html', {'documentos':documentos})
+    
+@user_passes_test(check_Director)
 def historia_libro(request, id_documento):
     if request.method == 'POST':
-        estados = Estado.objects.filter(document__id=id_documento)
+        estados = Estado.objects.filter(document__id=id_documento).order_by('-id')
         return render(request, 'estados.html', {'estados':estados})
 
+@user_passes_test(check_Director)
+def libros_habilitados(request, cantidad):
+    documents = Document.objects.filter(habilitado=False).order_by('-title')[:cantidad]
+    form = DocumentForm()
+    return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
+    
 def cargado(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
