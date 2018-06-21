@@ -41,3 +41,7 @@ def login(request):
         else:           
             return HttpResponse("No Existe ese User")
     return HttpResponse("Tenes que entrar por Post")
+
+
+def dmain(request):
+    return render(request, 'templates_directora/directora_main.html')
