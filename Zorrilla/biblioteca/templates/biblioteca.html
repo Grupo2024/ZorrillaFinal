@@ -86,6 +86,7 @@
             <th>Borrar</th>
         {% endif %}
         <th>Ver Libro</th>
+        <th>Historia</th>
     </thead>
     <tbody>
         {% for doc in documentos %}
@@ -99,6 +100,10 @@
                     <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book">
                     <i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
                  {% endif %}
+                {% if request.user|has_group:"Director" %} 
+                    <td><button class="btn btn-danger" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book">
+                    <i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
+                {% endif %}
                 <td><a type="button" class="btn btn-outline-primary" href="{{ doc.document.url }}">Abrir</a></td>
             </tr>
           {% endfor %}
@@ -206,8 +211,11 @@
         <div id="datos_modal">
         </div>
     </div>
-
-
+              
+    <div class="modal fade" id="modal_historia">
+        <div id="modal_historia_info">
+        </div>
+    </div>
 
 <script>
     
@@ -355,6 +363,20 @@ function info_libro(url, alum) {
         console.log("llega");
         $("#datos_modal").html(data);
         $('#modal_info').modal('show'); 
+    });
+};
+    
+function historia_libro(url, alum) {
+    $.ajax({
+        method: "POST",
+        url: url,
+        data: {
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        }
+    })
+    .done(function (data) {
+        $("#modal_historia_info").html(data);
+        $('#modal_historia').modal('show'); 
     });
 };
 

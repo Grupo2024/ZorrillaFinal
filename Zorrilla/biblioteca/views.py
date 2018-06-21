@@ -9,7 +9,6 @@ from django.http import JsonResponse
 import datetime
 from .decorators import *
 
-
 def filter_books(request):
     return render(request, 'filter_books.html')
 
@@ -25,6 +24,12 @@ def biblioteca(request):
     else:
         form = DocumentForm()
     return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
+
+@user_passes_test(check_Director)
+def historia_libro(request, id_documento):
+    if request.method == 'POST':
+        estados = Estado.objects.filter(document__id=id_documento)
+        return render(request, 'estados.html', {'estados':estados})
 
 def cargado(request):
     if request.method == 'POST':
