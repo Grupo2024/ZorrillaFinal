@@ -34,7 +34,7 @@
       <a href="{% url 'filtered_books' 'genero' 100 %}">100 libros</a>
     </div>
     {% if request.user|has_group:"Director" %} 
-        <button class="dropdown-btn">Habilitado<i class="fa fa-caret-down"></i></button>
+        <button class="dropdown-btn">Deshabilitado<i class="fa fa-caret-down"></i></button>
         <div class="dropdown-container">
           <a href="{% url 'libros_habilitados' 5 %}">5 libros</a>
           <a href="{% url 'libros_habilitados' 10 %}">10 libros</a>
@@ -44,12 +44,20 @@
         </div>
     {% endif %}
     <a href="{% url 'all_the_books' %}">Todos</a>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    {% if request.user|has_group:"Director" %}
+        <button class="btn btn-dark boton_informe btn-lg btn-block" onclick="informe('{% url 'informe' %}')">Informe</button>
+    {% endif %}
     {% if user.is_authenticated %}
         <button class="btn btn-success boton_cargar btn-lg btn-block"  data-toggle="modal" data-target="#myModal">Añadir libro</button>
     {% endif %}
-    {% if request.user|has_group:"Director" %} 
-        <button class="btn btn-success boton_cargar btn-lg btn-block" onclick="informe('{% url 'informe' %}')">Estadisticas</button>
-    {% endif %}
+
   </div>
 
   
@@ -99,6 +107,9 @@
         {% if request.user|has_group:"Director" %}
             <th>Historia</th>
         {% endif %}
+        {% if request.user|has_group:"Director" %}
+            <th>Estado</th>
+        {% endif %}
     </thead>
     <tbody>
         {% for doc in documentos %}
@@ -116,6 +127,7 @@
                 {% if request.user|has_group:"Director" %} 
                     <td><button class="btn btn-primary" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book">
                     <i style="font-size:15px" class="fa">&#xf05a;</i></button></td>
+                    <td><button class="btn btn-primary" onclick="deshabilitar_libro('{% url 'cambiar_estado_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf05a;</i></button></td>
                 {% endif %}
             </tr>
           {% endfor %}
@@ -207,13 +219,13 @@
                         {{ form.genero}}
                       </div>
                     </div>
-                    <span id="estado" style="color:red"></span>
+                      <span id="estado" style="color:red"></span>
+
                   <!-- Modal footer -->
-                <hr>  
                   </div>
                     </form>
-              </div>
-              <button class="btn btn-success" align="center"  onclick="load_book()">Cargar</button>                 
+              <button class="btn btn-success" align="center"  onclick="load_book()">Cargar</button>
+                </div>
               </div>
             </div>
         </div>
@@ -359,6 +371,29 @@ function eliminar_docente(url, alum) {
       var y = document.getElementById("snackbar");
       y.className = "show";
       document.getElementById("span_result").innerHTML = data.resultado;
+      setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
+      updateDiv();
+    });
+  } else {
+    return;
+  }
+
+};
+
+function deshabilitar_libro(url, alum) {
+  var r = confirm("Cambiar Estado del Libro ?");
+  if (r == true) {
+    $.ajax({
+      method: "POST",
+      url: url,
+      data: {
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+      }
+    })
+    .done(function (data) {
+      var y = document.getElementById("snackbar");
+      y.className = "show";
+      document.getElementById("span_result").innerHTML = data.estado;
       setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
       updateDiv();
     });
