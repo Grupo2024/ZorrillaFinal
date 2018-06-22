@@ -49,6 +49,8 @@ def libros_habilitados(request, cantidad):
     form = DocumentForm()
     return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
     
+    
+@user_passes_test(check_Director_or_Profesor)
 def cargado(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
@@ -101,7 +103,7 @@ def cargado(request):
     
 # Function that changes the document habilitado attribute to False, it does not delete the book,
 # only Directora can do it.
-
+@user_passes_test(check_Director_or_Profesor)
 def eliminar_libro(request, id_documento):
     document = Document.objects.get(id=id_documento)
     estado = Estado(document=document, user=request.user, modificacion="Deshabilitar")
@@ -120,6 +122,7 @@ def eliminar_libro(request, id_documento):
         }
     return JsonResponse(data, safe=True)
 
+@user_passes_test(check_Director)
 def cambiar_estado_libro(request, id_documento):
     document = Document.objects.get(id=id_documento)
     estado = Estado(document=document, user=request.user, modificacion=document.reverse())
