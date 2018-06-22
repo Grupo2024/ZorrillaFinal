@@ -6,15 +6,42 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib.auth import authenticate, login, logout
+from .models import *
 
 def cursos1(request):
     return render(request, 'templates_cursos/cursos1.html')
 
-def cursos2(request):
-    return render(request, 'templates_cursos/cursos2.html')
+"""
+def cursos2(request, turno):
+    if turno == 'Maniana':
+        turno = False
+    else:
+        turno = True
+    grados = Grado.objects.filter(turno_asignado__hora = turno)
+    for grado in grados:
+        if turno:
+            grado.turno = "Tarde"
+        else:
+            grado.turno = "Maniana"
+    return render(request, 'templates_cursos/cursos2.html', {'todos_los_grados':grados})
 
-def cursos3(request):
-    return render(request, 'templates_cursos/cursos3.html')
+"""
+
+def cursos2(request, turno):
+    print turno
+    if turno == "Maniana":
+        turno = False
+    else:
+        turno = True
+    grados = Grado.objects.filter(turno_asignado__hora=turno)
+    return render(request, 'templates_cursos/cursos2.html', {'todos_los_grados':grados}, {'turno':turno} )
+
+def cursos3(request, id_grado):
+    grado = Grado.objects.get(pk=id_grado)
+    seccion = Seccion.objects.filter(grado_asignado = grado)
+    return render(request, 'templates_cursos/cursos3.html', {'secciones_de_grados':seccion})
+
+
 
 def cursos4(request):
     return render(request, 'templates_cursos/cursos4.html')

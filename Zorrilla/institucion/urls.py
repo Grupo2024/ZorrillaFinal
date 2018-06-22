@@ -6,9 +6,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^turnos', cursos1, name="cursos1"),
-    url(r'^grados', cursos2, name="cursos2"),
-    url(r'^seccion', cursos3, name="cursos3"),
+    url(r'^grados/(?P<turno>[\w\-]+)$', cursos2, name="cursos2"),
+    url(r'^seccion/(?P<id_grado>\d+)$', cursos3, name="cursos3"),
     url(r'^alumnos', cursos4, name="cursos4"),
+
     url(r'^docentes',docentes, name="docentes"),
     url(r'^perfilProfesor/(\d+)/$', profesor, name="profesor"),
     url(r'^dlt_profesor/(\d+)/$', eliminar_docente, name="eliminar_docente"),

@@ -6,7 +6,7 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page">Home</li>
+        <li class="breadcrumb-item" aria-current="page">Home</li>
     </ol>
 </nav>
 <table class="table">
@@ -17,10 +17,10 @@
     </thead>
     <tbody>
     <tr>
-    <td><a href="{%url 'cursos2'%}">Mañana</a></td>
+    <td><a href="{%url 'cursos2' 'Maniana' %}">Mañana</a></td>
     </tr>
     <tr>
-    <td><a href="{%url 'cursos2'%}">Tarde</a></td>
+    <td><a href="{%url 'cursos2' 'Tarde' %}">Tarde</a></td>
     </tr>
     </tbody>
 </table>

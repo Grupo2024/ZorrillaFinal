@@ -23,7 +23,7 @@ class Turno(models.Model):
     hora = models.BooleanField('Clickea para seleccionar turno "Tarde"', null=False)
 
     def que_hora(self):
-        aux = 'Mañana'
+        aux = 'Maniana'
         if self.hora:
             aux = 'Tarde'
             return aux
