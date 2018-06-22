@@ -28,6 +28,12 @@ class Document(models.Model):
             self.habilitado = True
             self.save()
             return self.habilitado
+    
+    def reverse(self):
+        if self.habilitado:
+            return "Deshabilitado"
+        else:
+            return "Habilitado"
         
     def cantidad_habilitados():
         return Document.objects.filter(habilitado=True).count()

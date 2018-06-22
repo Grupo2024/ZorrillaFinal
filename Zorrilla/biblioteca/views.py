@@ -40,7 +40,7 @@ def informe(request):
 @user_passes_test(check_Director)
 def historia_libro(request, id_documento):
     if request.method == 'POST':
-        estados = Estado.objects.filter(document__id=id_documento).order_by('-id')
+        estados = Estado.objects.filter(document__id=id_documento).order_by('id')
         return render(request, 'estados.html', {'estados':estados})
 
 @user_passes_test(check_Director)
@@ -120,13 +120,28 @@ def eliminar_libro(request, id_documento):
         }
     return JsonResponse(data, safe=True)
 
+def cambiar_estado_libro(request, id_documento):
+    document = Document.objects.get(id=id_documento)
+    estado = Estado(document=document, user=request.user, modificacion=document.reverse())
+    document.change()
+    document.save()
+    estado.save()
+    aux = "Deshabilitado"
+    if document.habilitado:
+        aux = "Habilitado"
+    data = {
+        'estado':'El libro ' + str(document.title) + " ha cambiado su estado a " + str(aux)
+    }
+    return JsonResponse(data, safe=True)
+     
+
 def info_libro(request, id_documento):
     if request.method == 'POST':
         document = Document.objects.get(id=id_documento)
         return render(request, 'book_info.html', {'doc':document})
 
 def all_the_books(request):
-    documents = Document.objects.all()
+    documents = Document.objects.filter(habilitado=True)
     form = DocumentForm()
     return render (request, 'biblioteca.html', {'documentos':documents, 'form':form})
 

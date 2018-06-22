@@ -380,6 +380,11 @@ input[type=text]{
     bottom:   5%;
 }
 
+.boton_informe{
+    position: static;
+    bottom:   3%;
+}
+
 /* end side bar */
 
 
