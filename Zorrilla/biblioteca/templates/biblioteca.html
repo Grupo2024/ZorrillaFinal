@@ -3,6 +3,7 @@
 {% block navbar %}
 {% endblock navbar %}
 {% block body %}
+
 {% load poll_extras %}
 
 <div class="sidenav">
@@ -50,6 +51,12 @@
   
   
 <div class="main">
+
+    {% if request.user|has_group:"" %}
+        <p><strong>User belongs to my group</strong></p>
+    {% else %}
+        <p>User doesn't belong to mygroup</p>
+    {% endif %}
 
     <br>
     <center><h2>BIBLIOTECA</h2></center>
@@ -328,8 +335,8 @@ function myFunction() {
 
 
 
-function eliminar_libro(url, alum) {
-  var r = confirm("Eliminar Libro ?");
+function eliminar_docente(url, alum) {
+  var r = confirm("Eliminar Docente ?");
   if (r == true) {
     $.ajax({
       method: "POST",
@@ -341,7 +348,7 @@ function eliminar_libro(url, alum) {
     .done(function (data) {
       var y = document.getElementById("snackbar");
       y.className = "show";
-      document.getElementById("span_result").innerHTML = data.estado;
+      document.getElementById("span_result").innerHTML = data.resultado;
       setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
       updateDiv();
     });

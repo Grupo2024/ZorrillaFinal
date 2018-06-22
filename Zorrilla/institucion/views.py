@@ -29,6 +29,18 @@ def profesor(request, id_profesor):
     profesor.sexo = profesor.genero()
     return render(request, 'templates_docentes/perfilProfesor.html', {'profesor':profesor})
 
+def eliminar_docente(request, id_profesor):
+    profesor = Profesor.objects.get(dni=id_profesor)
+    if profesor.delete():
+        data = {
+            'resultado': "El profesor fue eliminado"
+        }
+    else:
+        data = {
+            'resultado': "Hubo un error"
+        }
+    return JsonResponse(data, safe=True)
+
 
 def login(request):
     if request.method == 'POST':
