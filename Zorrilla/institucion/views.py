@@ -42,14 +42,3 @@ def eliminar_docente(request, id_profesor):
     return JsonResponse(data, safe=True)
 
 
-def login(request):
-    if request.method == 'POST':
-        username = request.POST['user']
-        password = request.POST['pass']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            auth.login(request, user)
-            return redirect('index')
-        else:           
-            return HttpResponse("No Existe ese User")
-    return HttpResponse("Tenes que entrar por Post")
