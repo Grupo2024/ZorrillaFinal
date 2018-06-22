@@ -351,8 +351,8 @@ function myFunction() {
 
 
 
-function eliminar_docente(url, alum) {
-  var r = confirm("Eliminar Docente ?");
+function eliminar_libro(url, alum) {
+  var r = confirm("Eliminar Libro ?");
   if (r == true) {
     $.ajax({
       method: "POST",
@@ -364,7 +364,7 @@ function eliminar_docente(url, alum) {
     .done(function (data) {
       var y = document.getElementById("snackbar");
       y.className = "show";
-      document.getElementById("span_result").innerHTML = data.resultado;
+      document.getElementById("span_result").innerHTML = data.estado;
       setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
       updateDiv();
     });
