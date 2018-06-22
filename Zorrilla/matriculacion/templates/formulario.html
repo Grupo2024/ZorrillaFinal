@@ -1,73 +1,116 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block body %}
-<form id="create_student" action="{% url 'crear_alumno' %}" method="post">
-    {% csrf_token %}
-    <label for="usr">Name:</label>
-    <input type="text" class="form-control" id="alumno_nombre" name="alumno_nombre">
-    <label for="usr">Apellido:</label>
-    <input type="text" class="form-control" id="alumno_apellido" name="alumno_apellido">
-    <label for="usr">DNI:</label>
-    <input type="text" class="form-control" id="alumno_dni" name="alumno_dni">
-    <label for="usr">Lugar de nacimiento:</label>
-    <input type="text" class="form-control" id="alumno_lugar_nacimiento" name="alumno_lugar_nacimiento">
-    <label for="usr">Fecha de nacimiento:</label>
-    <input type="date" class="form-control" id="alumno_fecha_nacimiento" name="alumno_fecha_nacimiento">
-    <label for="usr">Domicilio:</label>
-    <input type="text" class="form-control" id="alumno_domicilio" name="alumno_domicilio">
-    <label for="usr">Email:</label>
-    <input type="text" class="form-control" id="alumno_email" name="alumno_email">
-    <label for="sel1">Sexo:</label>
+<style>
+input {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display:inline-block;   /* for IE7*/
+    zoom:1;              /* for IE7*/
+    vertical-align:middle;
+    
+    margin-left:60px
+}
+label {
+    display:inline-block;
+    zoom:1;              /* for IE7*/
+    float: left;
+    padding-top: 5px;
+    text-align: left;
+    width: 200px;
+}
+</style>
+<form  id="create_student" action="{% url 'crear_alumno' %}" method="post">
+{% csrf_token %}
+<div class="container">
 
-    <!-- Inputs que definen el Sexo del Alumno -->
-
-    <label><input type="radio" id="alumno_sexo_true" name="alumno_sexo_true">Hombre</label>
-    <label><input type="radio" id="alumno_sexo_false" name="alumno_sexo_false">Mujer</label>
-    <input id="alumno_sexo" name="alumno_sexo" value=True type="hidden">
-    <br>
-    <label for="usr">Telefono de casa:</label>
-    <input type="text" class="form-control" id="alumno_telefono_casa" name="alumno_telefono_casa">
-    <label for="usr">Telefono del padre:</label>
-    <input type="text" class="form-control" id="alumno_telefono_padre" name="alumno_telefono_padre">
-    <label for="usr">Telefono de la madre:</label>
-    <input type="text" class="form-control" id="alumno_telefono_madre" name="alumno_telefono_madre">
-    <label for="usr">Telefono de un familiar:</label>
-    <input type="text" class="form-control" id="alumno_telefono_familiar" name="alumno_telefono_familiar">
-    <label for="usr">Telefono de un vecino:</label>
-    <input type="text" class="form-control" id="alumno_telefono_vecino" name="alumno_telefono_vecino">
-    <label for="usr">Enfermedad relevante:</label>
-    <textarea class="form-control" rows="5" id="alumno_enfermedad_relevante" name="alumno_enfermedad_relevante"></textarea>
-    <label for="usr">Con quien vive:</label>
-    <input type="text" class="form-control" id="alumno_con_quien_vive" name="alumno_con_quien_vive">
-    <label for="usr">Quien lo trae:</label>
-    <input type="text" class="form-control" id="alumno_quien_lo_trae" name="alumno_quien_lo_trae">
-    <label for="usr">Telefono de quien lo trae:</label>
-    <input type="text" class="form-control" id="alumno_telefono_que_lo_trae" name="alumno_telefono_que_lo_trae">
-
-    <!-- Inputs que definen si el Alumno Utiliza Transporte -->
-
-    <label for="usr">Utiliza transporte:</label>
-    <ul>
-        <label><input type="radio" id="alumno_utiliza_transporte_SI" name="alumno_utiliza_transporte_SI">Si</label>
-        <label><input type="radio" id="alumno_utiliza_transporte_NO" name="alumno_utiliza_transporte_NO">No</label>
-    </ul>
-    <input id="alumno_utiliza_transporte" name="alumno_utiliza_transporte" value=True type="hidden">
-
-    <!-- Inputs que definen si el Alumno tiene Obra Social -->
-
-    <label for="usr">Tiene obra social:</label>
-    <ul>
-        <label><input type="radio" id="alumno_tiene_obra_social_SI" name="alumno_tiene_obra_social_SI">Si</label>
-        <label><input type="radio" id="alumno_tiene_obra_social_NO" name="alumno_tiene_obra_social_NO">No</label>
-    </ul>
-    <input id="alumno_tiene_obra_social" name="alumno_tiene_obra_social" value=True type="hidden">
-    <label for="usr">Nombre de la obra social:</label>
-    <input type="text" class="form-control" id="alumno_obra_social_nombre" name="alumno_obra_social_nombre">
-    <label for="usr">Numero de la obra social:</label>
-    <input type="text" class="form-control" id="alumno_obra_social_numero" name="alumno_obra_social_numero">
-    <button type="submit">Cargar</button>
-</form>
-
-
-
+  <br></br>
+    <div class="card bg-light" style="height:auto">
+        <div class="card-body text-center">
+            <p class="card-text">
+              <CENTER><h4>FORMULARIO DE REGISTRO DE ALUMNOS</h4></CENTER>
+            <br></br>
+            <form action="/action_page.php">
+            <div class="row">
+                <div style="margin-left: 4%">
+                    <div class="form-group">
+                        <label>Nombre:</label>
+                        <input placeholder= "Nombre del alumno" id="">
+                    </div>
+                    <div class="form-group">                
+                        <label>Apellido:</label>
+                        <input placeholder= "Apellido del alumno" id="">
+                    </div>
+                    <div class="form-group">                
+                        <label>DNI:</label>
+                        <input placeholder= "00000000" id="">
+                    </div>
+                    <div class="form-group">                
+                        <label>Fecha de nacimiento:</label>
+                        <input type="date" id="">
+                    </div>
+                    <div class="form-group">                
+                        <label>Lugar de nacimiento:</label>
+                        <input placeholder= "ej:Córdoba" id="">
+                    </div>
+                    <div class="form-group">                
+                        <label>Telefono de la madre:</label>
+                        <input placeholder= "ej:3510000000" id="">
+                    </div>
+                    <div class="form-group">                
+                        <label>Telefono del padre/tutor:</label>
+                        <input placeholder= "ej:3510000000" id="">
+                    </div>
+                    <div class="form-group">                
+                        <label>Telefono de la casa:</label>
+                        <input placeholder= "ej:123456" id="">
+                    </div>
+                    <div class="form-group">                
+                        <label>Telefono de un familiar:</label>
+                        <input placeholder= "ej:3510000000" id="">
+                    </div>
+                </div>
+                <div style="margin-left: 5%">
+                    <div class="form-group">               
+                        <label>Domicilio:</label>
+                        <input placeholder= "ej:123456" id="">
+                    </div>
+                    <div class="form-group">               
+                        <label>Sexo:</label>
+                        <input type="radio" name="gender" value="male" checked> Masculino<br>
+                        <input type="radio" name="gender" value="female"> Femenino<br>
+                    </div>
+                    <div class="form-group">               
+                        <label>Email:</label>
+                        <input placeholder= "pepe123@ejemplo.com" id="">
+                    </div>
+                    <div class="form-group">               
+                        <label>Enfermedad relevante:</label>
+                        <input type="radio" name="gender" value="male" checked> SI<br>
+                        <input type="radio" name="gender" value="female">NO<br>
+                    </div>
+                    <div class="form-group">               
+                        <label>Con quien vive:</label>
+                        <input placeholder= "pepe123@ejemplo.com" id="">
+                    </div>
+                    <div class="form-group">               
+                        <label>Telefono de quien lo trae:</label>
+                        <input placeholder= "ej:3510000000" id="">
+                    </div>
+                    <div class="form-group">               
+                        <label>Nombre de la obra social:</label>
+                        <input placeholder= "ej:osde" id="">
+                    </div>
+                    <div class="form-group">               
+                        <label>Numero de la obra social:</label>
+                        <input placeholder= "ej:12345678" id="">
+                    </div>
+                    <br></br>
+                </div>
+            </div>
+            </form> 
+            <button type="button" class="btn btn-success" style="width:50%">Confirmar</button>
+        </div>
+    </div>
+  </div>
 {% endblock body %}
