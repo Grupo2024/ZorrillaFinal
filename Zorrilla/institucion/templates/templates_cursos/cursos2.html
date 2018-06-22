@@ -7,7 +7,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{%url 'cursos1'%}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Turno</li>
+        <li class="breadcrumb-item " aria-current="page">{{turno}}</li>
     </ol>
 </nav>
 <table class="table">
@@ -17,24 +17,11 @@
     </tr>
     </thead>
     <tbody>
+    {% for grado in todos_los_grados %}
     <tr>
-        <td><a href="{%url 'cursos3'%}">1er Grado</a></td>
+        <td><a href="{% url 'cursos3' grado.id %}">{{grado.aNo}} de turno {{grado.turno_asignado.que_hora}}</a></td>
     </tr>
-    <tr>
-        <td><a href="{%url 'cursos3'%}">2do Grado</a></td>
-    </tr>
-    <tr>
-        <td><a href="{%url 'cursos3'%}">3er Grado</a></td>
-    </tr>
-    <tr>
-        <td><a href="{%url 'cursos3'%}">4to Grado</a></td>
-    </tr>
-    <tr>
-        <td><a href="{%url 'cursos3'%}">5to Grado</a></td>
-    </tr>
-    <tr>
-        <td><a href="{%url 'cursos3'%}">6to Grado</a></td>
-    </tr>
+    {% endfor %}
     </tbody>
 </table>
 
