@@ -4,7 +4,9 @@ from .models import *
 from .creation import *
 from .test_model import *
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 from django.contrib import auth
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 
@@ -50,3 +52,18 @@ def alumno(request, id_alumno):
     alumno = Alumno.objects.get(dni=id_alumno)
     alumno.sexo = alumno.genero()
     return render(request, 'perfilAlumno.html', {'alumno':alumno})
+
+def login(request):
+    if request.method == 'POST':
+        username = request.POST['user']
+        password = request.POST['pass']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+            return redirect('index')
+        else:           
+            data = {
+            'estado': "nombre de usuario o contraseña no son correctos",
+            'error': True
+            }
+    return JsonResponse(data, safe=True)

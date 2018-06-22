@@ -67,8 +67,6 @@ def eliminar_docente(request, id_profesor):
             'resultado': "Hubo un error"
         }
     return JsonResponse(data, safe=True)
-
-
 def login(request):
     if request.method == 'POST':
         username = request.POST['user']
@@ -78,5 +76,8 @@ def login(request):
             auth.login(request, user)
             return redirect('index')
         else:           
-            return HttpResponse("No Existe ese User")
-    return HttpResponse("Tenes que entrar por Post")
+            data = {
+            'estado': "nombre de usuario o contraseña no son correctos",
+            'error': True
+            }
+    return JsonResponse(data, safe=True)

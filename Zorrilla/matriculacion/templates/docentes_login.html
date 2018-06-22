@@ -10,15 +10,15 @@
     <h4 class="card-title text-center mb-4 mt-1">Sign in</h4>
     <hr>
     <p class="text-success text-center"></p>
-    <form action="{% url 'login' %}" method="POST">
+    <form method="POST" action = '{% url 'index' %}'id=login_form>
         {% csrf_token %}
-    <div class="form-group">
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-         </div>
-        <input name="user" class="form-control" placeholder="Nombre de Usuario" type="username">
-    </div> <!-- input-group.// -->
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                </div>
+                <input name="user" class="form-control" placeholder="Nombre de Usuario" type="username">
+                </div> <!-- input-group.// -->
     </div> <!-- form-group// -->
     <div class="form-group">
     <div class="input-group">
@@ -29,13 +29,44 @@
     </div> <!-- input-group.// -->
     </div> <!-- form-group// -->
     <div class="form-group">
-    <button type="submit" class="btn btn-primary btn-block"> Iniciar sesion  </button>
+    </form>
     </div> <!-- form-group// -->
     <p class="text-center"><a href="#" class="btn">Olvidaste tu contrasena?</a></p>
-    </form>
+    
 </article>
+<button onclick="log_in()" class="btn btn-primary btn-block"> Iniciar sesion  </button>
 </div>
 
+<div id="snackbarlogin"><span id="span_result"></span></div>
+
+<form id="form" action="{% url 'index' %}">
+</form>
+
+<script>
+
+    function log_in(){
+        var myForm = document.getElementById('login_form');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: '/login/',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                console.log(data.error);
+                if (data.error){
+                    var y = document.getElementById("snackbarlogin");
+                    y.className = "show";
+                    document.getElementById("span_result").innerHTML = data.estado;
+                    setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
+                }
+            }
+        });
+    }
+
+
+</script>
 
 
 {% endblock body %}
