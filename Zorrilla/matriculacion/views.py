@@ -55,6 +55,7 @@ def alumno(request, id_alumno):
 
 def login(request):
     if request.method == 'POST':
+        print "llegea el login"
         username = request.POST['user']
         password = request.POST['pass']
         user = authenticate(request, username=username, password=password)

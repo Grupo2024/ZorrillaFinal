@@ -45,10 +45,11 @@
 <script>
 
     function log_in(){
+        console.log("llegamoaoas");
         var myForm = document.getElementById('login_form');
         formData = new FormData(myForm);
         $.ajax({
-            url: '/login/',
+            url: 'login/',
             data: formData,
             processData: false,
             contentType: false,
