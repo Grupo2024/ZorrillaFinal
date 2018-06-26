@@ -45,7 +45,6 @@
 <script>
 
     function log_in(){
-        console.log("llegamoaoas");
         var myForm = document.getElementById('login_form');
         formData = new FormData(myForm);
         $.ajax({
@@ -61,6 +60,9 @@
                     y.className = "show";
                     document.getElementById("span_result").innerHTML = data.estado;
                     setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
+                }else{
+                    var aux = document.getElementById("form")
+                    aux.submit();
                 }
             }
         });
