@@ -9,7 +9,7 @@ class Persona(models.Model):
     apellido = models.CharField('Apellido de la Persona', max_length=40)
     dni = models.IntegerField('Dni de la persona', primary_key=True)
     lugar_nacimiento = models.CharField('Lugar de Nacimiento', max_length=150, blank=True)
-    fecha_nacimiento = models.DateTimeField('Fecha Nacimiento', blank=True)
+    fecha_nacimiento = models.DateField('Fecha Nacimiento', blank=True)
     domicilio = models.CharField('Domicilio de la Persona', max_length=150, blank=True)
     email = models.EmailField('Email de la Persona', max_length=70, blank=True)
     sexo = models.BooleanField('Sexo de la Persona(True = Hombre)', null = False)#True = Hombre, False = Madre
@@ -43,9 +43,9 @@ class Profesor(Persona):
     telefono_laboral_p = models.IntegerField('Telefono Laboral del Profesor')
     telefono_familiar_p = models.IntegerField('Telefono de algun Familiar del Profesor')
     datos_familiares_cargo = models.TextField('Nombre y Apellido de familiar del docente', max_length=300)
-    fecha_inicio_actividad = models.DateTimeField('Fecha de Inicio de Clases en el Colegio')
+    fecha_inicio_actividad = models.DateField('Fecha de Inicio de Clases en el Colegio')
     antecedentes_laborales = models.TextField('Datos de Trabajos Previos', max_length=300)
-    antiguedad_en_empresa = models.DateTimeField('Antiguedad en la Empresa')
+    antiguedad_en_empresa = models.DateField('Antiguedad en la Empresa')
     estudios_cursados = models.TextField('Estudios del Profesor', max_length=300)
 
     def __str__(self):
