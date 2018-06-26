@@ -6,7 +6,42 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib.auth import authenticate, login, logout
+from django.core.mail import send_mail
+from django.conf import settings
 from .models import *
+from .forms import *
+import random
+
+def email_for_logIn(request):
+    if request.method == 'POST':
+        form = clave_DocenteForm(request.POST)
+        if form.is_valid():
+            docente_email = form.cleaned_data['email_docente']
+            docente_dni = form.cleaned_data['dni_docente']
+            clave = request.POST['claveDoc']
+            ingresado = False
+            clave_Docente2 = clave_Docente(clave_logIn=clave, email_docente=docente_email, dni_docente=docente_dni, ingresado=ingresado)
+            clave_Docente2.save()
+            subject = "Su hijo es un auto"
+            message = "En el dia de la fecha el instituto Zorrilla le notifica que " + str(docente_email) + str(docente_dni) + str(clave)
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [docente_email]
+            send_mail( subject, message, email_from, recipient_list )
+            return redirect('template_email_docente')
+    else:
+        print "no funca"
+    return render(request, 'templates_docentes/emailDocente.html')
+
+def template_email_docente(request):
+    
+    ran = random.randrange(10**80)
+    myhex = "%064x" % ran
+    clave = myhex[:10].upper()
+    dic = {
+        'clave':clave
+    }
+    form = clave_DocenteForm()
+    return render(request, 'templates_docentes/emailDocente.html', {'form':form, 'clave':dic})
 
 def cursos1(request):
     return render(request, 'templates_cursos/cursos1.html')
@@ -66,18 +101,4 @@ def eliminar_docente(request, id_profesor):
         data = {
             'resultado': "Hubo un error"
         }
-    return JsonResponse(data, safe=True)
-def login(request):
-    if request.method == 'POST':
-        username = request.POST['user']
-        password = request.POST['pass']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            auth.login(request, user)
-            return redirect('index')
-        else:           
-            data = {
-            'estado': "nombre de usuario o contraseña no son correctos",
-            'error': True
-            }
     return JsonResponse(data, safe=True)

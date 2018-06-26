@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+    <form method="POST" action="{% url 'email_for_logIn' %}">
+        {% csrf_token %}
+        <input type="hidden" value={{clave.clave}} id="claveDoc" name="claveDoc">
+        <p>Clave Log In:</p><p id="asdf">{{clave.clave}}</p>
+        <br>
+        <label class="form_biblo">email_docente</label>
+          <div style="margin-left: 3%;">
+              {{form.email_docente}}
+          </div>
+        <label class="form_biblo">dni_docente</label>
+          <div style="margin-left: 3%;">
+              {{form.dni_docente}}
+          </div>
+    <button type="submit">Mandar</button>
+  </form>
+
+{% endblock body %}

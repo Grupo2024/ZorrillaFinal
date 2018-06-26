@@ -10,6 +10,8 @@ urlpatterns = [
     url(r'^seccion/(?P<id_grado>\d+)$', cursos3, name="cursos3"),
     url(r'^alumnos', cursos4, name="cursos4"),
     url(r'^docentes',docentes, name="docentes"),
+    url(r'^template_email_docente',template_email_docente, name="template_email_docente"),
+    url(r'^email_for_logIn',email_for_logIn, name="email_for_logIn"),
     url(r'^perfilProfesor/(\d+)/$', profesor, name="profesor"),
     url(r'^dlt_profesor/(\d+)/$', eliminar_docente, name="eliminar_docente"),
 ]

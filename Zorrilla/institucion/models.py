@@ -2,10 +2,27 @@
 from __future__ import unicode_literals
 
 from django.db import models
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 from matriculacion.models import *
 
 # Create your models here.
+
+class clave_Docente(models.Model):
+    clave_logIn = models.CharField(null=False, max_length=10)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    email_docente = models.EmailField(null=False)
+    dni_docente = models.IntegerField(null=False)
+    ingresado = models.BooleanField(default=False)#False hasta que se ingrese el docente al sistema.
+    
+    def change(self):
+        if self.ingresado:
+            self.ingresado = False
+            self.save()
+            return self.ingresado
+        else:
+            self.ingresado = True
+            self.save()
+            return self.ingresado
 
 class Director(Profesor):
     

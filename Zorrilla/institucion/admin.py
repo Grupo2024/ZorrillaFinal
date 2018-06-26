@@ -8,4 +8,5 @@ from .models import *
 admin.site.register(Turno)
 admin.site.register(Seccion)
 admin.site.register(Grado)
+admin.site.register(clave_Docente)
 # Register your models here.
