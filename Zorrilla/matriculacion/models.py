@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+from institucion.models import *
+
 # Create your models here.
 
 class Persona(models.Model):
@@ -36,23 +38,6 @@ class Persona(models.Model):
 
 
 
-class Profesor(Persona):
-    #foto = models.ImageField(upload_to=get_image_path, blank=True, null=True)
-    #BUSCAR LO DE FOTOS
-    telefono_particular_p = models.IntegerField('Telefono Personal del Profesor')
-    telefono_laboral_p = models.IntegerField('Telefono Laboral del Profesor')
-    telefono_familiar_p = models.IntegerField('Telefono de algun Familiar del Profesor')
-    datos_familiares_cargo = models.TextField('Nombre y Apellido de familiar del docente', max_length=300)
-    fecha_inicio_actividad = models.DateTimeField('Fecha de Inicio de Clases en el Colegio')
-    antecedentes_laborales = models.TextField('Datos de Trabajos Previos', max_length=300)
-    antiguedad_en_empresa = models.DateTimeField('Antiguedad en la Empresa')
-    estudios_cursados = models.TextField('Estudios del Profesor', max_length=300)
-
-    def __str__(self):
-        return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre, self.apellido, self.dni, self.sexo)
-
-
-
 class Autorizado(Persona):
     autorizacion = models.BooleanField('Esta autorizado o no')
 
@@ -81,6 +66,7 @@ class Padre_madre(Persona):
 
 
 class Alumno(Persona):
+    seccion_asignada = models.ForeignKey(Seccion, null=True)
     telefono_casa = models.IntegerField('Telefono de la Casa')
     telefono_padre = models.IntegerField('Telefono del Padre', null=True)
     telefono_madre = models.IntegerField('Telefono de la Madre', null=True)
