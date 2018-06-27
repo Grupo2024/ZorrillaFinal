@@ -10,10 +10,10 @@
 
         <center><h2>DOCENTES</h2></center>
 
-        <div class="container">
+        <div style="margin-left: 2%; width: 94%">
             <div class="row">
                 <input type="text"placeholder="Docente que desee buscar" id="input" onkeyup="filtrado()">
-                <select class="selectpicker" id="filter_by">
+                <select style="height: 5%" class="selectpicker btn btn-outline-dark" id="filter_by">
                     <option value=0>Nombre</option>
                     <option value=1>Apellido</option>
                     <option value=2>DNI</option>
@@ -25,9 +25,9 @@
                     <div class="table-responsive">
 
 
-                        <table id="mytable" class="table table-bordred table-striped">
+                        <table id="mytable" class="table table-hover">
 
-                            <thead>
+                            <thead class="thead-dark">
                                 <th>Nombre</th>
                                 <th>Apellido</th>
                                 <th>DNI</th>
@@ -36,8 +36,8 @@
                                 <th>Domicilio</th>
                                 <th>Email</th>
                                 <th>Sexo</th>
-                                <th>Info</th>
-                                <th>Borrar</th>
+                                <th></th>
+                                <th></th>
                             </thead>
                             {% for p in profesores %}
                             <tbody>
@@ -51,9 +51,9 @@
                                     <td>{{p.domicilio}}</td>
                                     <td>{{p.email}}</td>
                                     <td>{{p.sexo}}</td>
-                                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="{% url 'profesor' p.dni %}" class="btn btn-info"><i style="font-size:15px" class="fa">&#xf013;</i></a></p></td>
+                                    <td><button href="{% url 'profesor' p.dni %}" class="btn btn-outline-info">Abrir</button></td>
 
-                                    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><a onclick="eliminar_docente('{% url 'eliminar_docente' p.dni %}', {{p.dni}})" type="button" class="btn btn-danger"><i style="font-size:15px" class="fa">&#xf00d;</i></button></p></td>
+                                    <td><button onclick="eliminar_docente('{% url 'eliminar_docente' p.dni %}', {{p.dni}})" class="btn btn-outline-danger">Eliminar</button></td>
 
                                 </tr>
 
