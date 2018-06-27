@@ -4,15 +4,36 @@ from django.contrib.auth.models import User
 from django.db import models
 
 class Document(models.Model):
-    description = models.CharField(max_length=255, blank=True)
+
+
+    DR = 'Drama'
+    RO = 'Romance'
+    AC = 'Accion'
+    CF = 'Ciencia Ficcion'
+    TR = 'Terror'
+    AV = 'Aventura'
+    PO = 'Policial'
+    PL = 'Politica'
+    FA = 'Fantacia'
+    OT = 'Otros'
+
+    GENERO_CHOICES = (
+        (DR , 'Drama'),
+        (RO , 'Romance'),
+        (AC , 'Accion'),
+        (CF , 'Ciencia Ficcion'),
+        (TR , 'Terror'),
+        (AV , 'Aventura'),
+        (PO , 'Policial'),
+        (PL , 'Politica'),
+        (FA , 'Fantacia'),
+        (OT , 'Otros')
+    )
+
+    description = models.CharField(max_length=255, null=False)
     document = models.FileField(upload_to='')
-    title = models.CharField(max_length=60, blank=False)
-    tipo = models.CharField('Libro, Texto, Ejercicios, etc', max_length=50)
-    autor = models.CharField(max_length=120)
-    editorial = models.CharField(max_length=120, null=True)
-    fecha_lanzamiento = models.DateTimeField(null=True)
-    cantidad_paginas = models.IntegerField(null=True)
-    genero = models.CharField(max_length=60, null=True)
+    title = models.CharField(max_length=60, blank=False, null=False)
+    genero = models.CharField('Modificacion', max_length=15, choices=GENERO_CHOICES)
     habilitado = models.BooleanField(default=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
