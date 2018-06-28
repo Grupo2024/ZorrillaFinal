@@ -10,7 +10,7 @@ class Trabajador(models.Model):
     apellido_t = models.CharField('Apellido del trabajador', max_length=40)
     dni_t = models.IntegerField('Dni del trabajador', primary_key=True)
     lugar_nacimiento_t = models.CharField('Lugar de Nacimiento', max_length=150, blank=True)
-    fecha_nacimiento_t = models.DateTimeField('Fecha Nacimiento', blank=True)
+    fecha_nacimiento_t = models.DateField('Fecha Nacimiento', blank=True)
     domicilio_t = models.CharField('Domicilio del trabajador', max_length=150, blank=True)
     email_t = models.EmailField('Email del trabajador', max_length=70, blank=True)
     sexo_t = models.BooleanField('Sexo del trabajador(True = Hombre)', null = False)#True = Hombre, False = Madre
@@ -21,9 +21,9 @@ class Trabajador(models.Model):
     telefono_laboral = models.IntegerField('Telefono Laboral del Trabajador')
     telefono_familiar = models.IntegerField('Telefono de algun Familiar del Trabajador')
     datos_familiares_cargo = models.TextField('Nombre y Apellido de familiar del Trabajador', max_length=300)
-    fecha_inicio_actividad = models.DateTimeField('Fecha de Inicio de Clases en el Colegio')
+    fecha_inicio_actividad = models.DateField('Fecha de Inicio de Clases en el Colegio')
     antecedentes_laborales = models.TextField('Datos de Trabajos Previos', max_length=300)
-    antiguedad_en_empresa = models.DateTimeField('Antiguedad en la Empresa')
+    antiguedad_en_empresa = models.DateField('Antiguedad en la Empresa')
     estudios_cursados = models.TextField('Estudios del Trabajador', max_length=300)
 
     def genero(self):
@@ -90,8 +90,15 @@ class Grado(models.Model):
 
 class Seccion(models.Model):
     curso = models.CharField('A-B-C-D', max_length=1)
-    prof_asignado = models.ForeignKey(Profesor, null=False)
     grado_asignado = models.ForeignKey(Grado, null=False)
 
     def __str__(self):
-       return 'El curso {} {} turno {} tiene como profesor asignado a {} {}'.format(self.curso, self.grado_asignado.aNo, self.grado_asignado.turno_asignado.que_hora, self.prof_asignado.apellido, self.prof_asignado.nombre)
+       return 'El curso {} {} turno {}'.format(self.grado_asignado.aNo, self.curso, self.grado_asignado.turno_asignado.que_hora())
+
+
+class Asignacion(models.Model):
+    prof_asignado = models.ForeignKey(Profesor)
+    seccion_asignada = models.ForeignKey(Seccion)
+
+    def __str__(self):
+       return 'El profesor {} {} asiste al curso: {} {} turno {}'.format(self.prof_asignado.nombre_t, self.prof_asignado.apellido_t, self.seccion_asignada.grado_asignado.aNo, self.seccion_asignada.curso, self.seccion_asignada.grado_asignado.turno_asignado.que_hora())

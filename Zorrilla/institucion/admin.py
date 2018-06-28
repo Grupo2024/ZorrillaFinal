@@ -11,4 +11,5 @@ admin.site.register(Secretaria)
 admin.site.register(Turno)
 admin.site.register(Seccion)
 admin.site.register(Grado)
+admin.site.register(Asignacion)
 # Register your models here.
