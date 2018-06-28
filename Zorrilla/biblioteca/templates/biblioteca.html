@@ -17,14 +17,6 @@
       <a href="{% url 'filtered_books' 'title' 50 %}">50 libros</a>
       <a href="{% url 'filtered_books' 'title' 100 %}">100 libros</a>
     </div>
-    <button class="dropdown-btn">Fecha de Lanzamiento<i class="fa fa-caret-down"></i></button>
-    <div class="dropdown-container">
-      <a href="{% url 'filtered_books' 'fecha_lanzamiento' 5 %}">5 libros</a>
-      <a href="{% url 'filtered_books' 'fecha_lanzamiento' 10 %}">10 libros</a>
-      <a href="{% url 'filtered_books' 'fecha_lanzamiento' 25 %}">25 libros</a>
-      <a href="{% url 'filtered_books' 'fecha_lanzamiento' 50 %}">50 libros</a>
-      <a href="{% url 'filtered_books' 'fecha_lanzamiento' 100 %}">100 libros</a>
-    </div>
     <button class="dropdown-btn">Genero<i class="fa fa-caret-down"></i></button>
     <div class="dropdown-container">
       <a href="{% url 'filtered_books' 'genero' 5 %}">5 libros</a>
@@ -63,11 +55,7 @@
   
   
 <div class="main">
-
-    <br>
-    <center><h2>BIBLIOTECA</h2></center>
-    <br>
-    
+  <br>
   <div class="container">
     <div class="row">
       <div class="">
