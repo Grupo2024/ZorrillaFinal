@@ -1,0 +1,19 @@
+<html>
+
+    <head>
+    
+        <title> Crear Alumno </title>
+        
+    </head>
+    
+    <body>
+    
+        <form id="form_alumno">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Upload</button>
+        </form>
+        
+    </body>
+
+</html>
