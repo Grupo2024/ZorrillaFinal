@@ -55,11 +55,8 @@ def cargado(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-            autor = form.cleaned_data['autor']
-            tipo = form.cleaned_data['tipo']
             title = form.cleaned_data['title']
             document = form.cleaned_data['document']
-            fecha = form.cleaned_data['fecha_lanzamiento']
             error = False
             aux = Document.objects.filter(title=title)
             if aux:
@@ -84,19 +81,9 @@ def cargado(request):
                     'error': False
                 }
         else:
-            cantidad_paginas = form.data['cantidad_paginas']
-            fecha_lanzamiento = form.data['fecha_lanzamiento']
-            mistake= ""
-            if type(fecha_lanzamiento) is not datetime.date:
-                mistake = "Fecha tiene el formato, Ej: 2010-12-31"
-            fallo = ""
-            try:
-                value = int(cantidad_paginas)
-            except ValueError:
-                fallo = "Cantidad de Paginas es con numeros "
             print "No es valido"
             data = {
-                'estado': str(mistake) + " " + str(fallo),
+                'estado': "Hubo un error " ,
                 'error': True
             }
     return JsonResponse(data)
