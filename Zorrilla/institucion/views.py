@@ -6,6 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib.auth import authenticate, login, logout
+from .crear_docente import *
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import *
@@ -83,6 +84,8 @@ def cursos4(request):
 
 def docentes(request):
     profesores = Profesor.objects.all()
+    for a in profesores:
+        a.sexo = a.genero()
     return render(request, 'templates_docentes/docentes.html', {'profesores':profesores})
 
 
