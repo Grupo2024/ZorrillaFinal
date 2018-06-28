@@ -5,8 +5,12 @@ from django.contrib import admin
 
 from .models import *
 
+admin.site.register(Profesor)
+admin.site.register(Director)
+admin.site.register(Secretaria)
 admin.site.register(Turno)
 admin.site.register(Seccion)
 admin.site.register(Grado)
 admin.site.register(clave_Docente)
+admin.site.register(Asignacion)
 # Register your models here.
