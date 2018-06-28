@@ -1,18 +1,17 @@
 from __future__ import unicode_literals
-
 from django.db import models
 
 # Create your models here.
 
 class Persona(models.Model):
-    nombre = models.CharField('Nombre de la Persona', max_length=40)
-    apellido = models.CharField('Apellido de la Persona', max_length=40)
-    dni = models.IntegerField('Dni de la persona', primary_key=True)
+    nombre = models.CharField('Nombre', max_length=40)
+    apellido = models.CharField('Apellido', max_length=40)
+    dni = models.IntegerField('Dni', primary_key=True)
     lugar_nacimiento = models.CharField('Lugar de Nacimiento', max_length=150, blank=True)
-    fecha_nacimiento = models.DateTimeField('Fecha Nacimiento', blank=True)
-    domicilio = models.CharField('Domicilio de la Persona', max_length=150, blank=True)
-    email = models.EmailField('Email de la Persona', max_length=70, blank=True)
-    sexo = models.BooleanField('Sexo de la Persona(True = Hombre)', null = False)#True = Hombre, False = Madre
+    fecha_nacimiento = models.DateField('Fecha de nacimiento', default="2000-10-10")
+    domicilio = models.CharField('Domicilio', max_length=150, blank=True)
+    email = models.EmailField('Email', max_length=70, blank=True)
+    sexo = models.BooleanField('Sexo', null = False)#True = Hombre, False = Madre
     #Datos estandares de persona, estos van a ser heredados x cualquier profesor o alumno
 
     def genero(self):
@@ -96,7 +95,7 @@ class Alumno(Persona):
     padres = models.ForeignKey(Padre_madre, null=True)
     tiene_obra_social = models.BooleanField('Tiene obra o no')
     obra_social_nombre = models.CharField('Nombre Obra Social', max_length=40, null=True)
-    obra_social_numero = models.IntegerField('Num Obra Social')#Numero de afiliacion a la ora social
+    obra_social_numero = models.IntegerField('Num Obra Social')#Numero de afiliacion a la obra social
     matriculado = models.BooleanField('Esta matriculado o no')
 
     def __str__(self):

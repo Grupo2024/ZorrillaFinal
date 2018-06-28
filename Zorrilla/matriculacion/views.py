@@ -7,8 +7,12 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib.auth import authenticate, login, logout
-
+from .forms import *
 # Create your views here.
+
+def asdf(request):
+    alumno = AlumnoForm
+    return render(request, 'test.html', {'form':alumno})
 
 def index(request):
     return render(request, 'index.html')
