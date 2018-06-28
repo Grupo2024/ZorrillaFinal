@@ -9,7 +9,7 @@ class Persona(models.Model):
     dni = models.IntegerField('Dni', primary_key=True)
     lugar_nacimiento = models.CharField('Lugar de Nacimiento', max_length=150, blank=True)
     fecha_nacimiento = models.DateField('Fecha de nacimiento', default="2000-10-10")
-    domicilio = models.CharField('Domicili', max_length=150, blank=True)
+    domicilio = models.CharField('Domicilio', max_length=150, blank=True)
     email = models.EmailField('Email', max_length=70, blank=True)
     sexo = models.BooleanField('Sexo', null = False)#True = Hombre, False = Madre
     #Datos estandares de persona, estos van a ser heredados x cualquier profesor o alumno
