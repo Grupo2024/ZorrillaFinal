@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^$', index, name="index"),
     url(r'^form', formulario, name="form"),
+    url(r'^docente', crear_docente, name="crear_docente"),
     url(r'^cursos', cursos, name="cursos"),
     url(r'^logIn', logIn, name="logIn"),
     url(r'^logout_me_out', logout_me_out, name="logout_me_out"),

@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+{% csrf_token %}
+<style>
+  .form-horizontal .control-label{
+    text-align: left;
+}
+</style>
+<div class="container">
+  <br>
+  <div class="card bg-light" style="height:auto">
+      <div class="card-body text-center">
+        <p class="card-text"> 
+        <h4><b><center>Registrar Docente</center></b></h4>
+      </div>
+  </div>
+  <br>     
+  <form id="contact-form" method="post" action="contact.php" role="form">
+  <div class="card bg-light" style="height:auto">
+    <div class="card-body text-center">
+      <p class="card-text">  
+      <div class="controls">
+          <h5><b><center>Datos Personales</center></b></h5>   
+          <br>
+          <div class="row justify-content-center">
+                <div class="col-sm-5">
+                    <div class="form-group row">                        
+                        <label for="nombre">Nombre</label>
+                        <input id="nombre" type="text" name="nombre" class="form-control" placeholder="Ingrese el Nombre del docente">
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group row">                        
+                        <label for="apellido">Apellido</label>
+                        <input id="apellido" type="text" name="apellido" class="form-control" placeholder="Ingrese el Apellido del docente" >
+                    </div>
+                </div>
+              </div>
+              <br>
+              <div class="row justify-content-center">
+                <div class="col-sm-5">
+                  <div class="form-group row">                                                     
+                      <label for="cargo">Cargo</label>
+                      <div class="col-md-9">                                            
+                      <input id="cargo" type="text" name="cargo" class="form-control" placeholder="Ingrese el cargo que desempeña" >
+                  </div>
+                  </div>
+                </div>
+                <div class="col-sm-5">                        
+                  <div class="form-group row">
+                    <label>Dia que desempeña actividad en la escuela:</label>
+                    <div class="form-group">
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="">
+                        Lunes
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="">
+                        Martes
+                      </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                          <input class="form-check-input" type="checkbox" value="">
+                          Miercoles
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <label class="form-check-label">
+                          <input class="form-check-input" type="checkbox" value="">
+                          Jueves
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <label class="form-check-label">
+                          <input class="form-check-input" type="checkbox" value="">
+                          Viernes
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                  <div class="col-sm-5">                        
+                    <div class="form-group row">         
+                        <label for="lugar_nacimiento">Lugar</label>
+                        <div class="col-md-9">                                              
+                        <input id="lugar_nacimiento" type="text" name="lugar_nacimiento" class="form-control" placeholder="Ingrese Lugar.">
+                </div>
+                    </div>
+              </div>                
+                <div class="col-sm-5">
+                    <div class="form-group row">
+                        <label for="fecha_nacimiento">Fecha</label>
+                        <div class="col-md-9">
+                        <input id="fecha_nacimiento" type="date" name="fecha_nacimiento" class="form-control" placeholder="Ingrese Fecha.">
+                      </div>          
+                    </div>              
+                </div>
+            </div>     
+            <br>                 
+            <div class="row justify-content-center">
+              <div class="col-sm-5">                        
+                <div class="form-group row">              
+                    <label for="dni">D.N.I</label>
+                    <div class="col-md-9">                                          
+                    <input id="dni" type="text" name="dni" class="form-control" placeholder="Ingrese D.N.I.">
+                </div>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="form-group row">
+                    <label for="domicilio">Domicilio</label>
+                    <input id="domicilio" type="text" name="domicilio" class="form-control" placeholder="Ingrese Domicilio.">
+                </div>
+            </div>
+        </div>
+        <br>                 
+        <div class="row justify-content-center">
+          <div class="col-sm-5">                        
+            <div class="form-group row">              
+                <label for="telefono">Telefono</label>             
+                <div class="col-md-8">                  
+                <input id="telefono" type="tel" name="telefono" class="form-control" placeholder="Ingrese Telefono.">
+            </div>
+            </div>
+          </div>
+          <div class="col-sm-5">
+            <div class="form-group row">
+                <label for="celular">Celular</label>          
+                <div class="col-md-9">                  
+                <input id="celular" type="tel" name="celular" class="form-control" placeholder="Ingrese Celular." >
+            </div>
+            </div>
+          </div>
+        </div>
+        <br>                 
+        <div class="row justify-content-center">
+          <div class="col-sm-5">
+            <div class="form-group row">
+              <label for="email">Email</label>
+              <div class="col-md-9">                                  
+              <input id="email" type="email" name="email" class="form-control" placeholder="Ingrese email." >
+            </div>
+            </div>
+          </div>
+        </div>  
+      <br>
+      <h5><b><center>Datos de la Pareja</center></b></h5> 
+      <br>
+      <div class="row justify-content-center">
+        <div class="col-sm-5">
+            <div class="form-group row">
+                <label for="nombre_pareja">Nombre</label>
+                <input id="nombre_pareja" type="text" name="nombre_pareja" class="form-control" placeholder="Ingrese el Nombre de la Pareja.">
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="form-group row">
+                <label for="apellido_pereja">Apellido</label>
+                <input id="apellido_pareja" type="text" name="apellido_pareja" class="form-control" placeholder="Ingrese el Apellido de la Pareja.">
+            </div>
+        </div>
+    </div>
+    <br>                       
+      <div class="row justify-content-center">
+        <div class="col-sm-5">                        
+          <div class="form-group row">              
+              <label for="telefono_particular_pareja">Telefono Particular</label>
+              <div class="col-md-7">                                           
+              <input id="telefono_particular_pareja" type="tel" name="telefono_particular_pareja" class="form-control" placeholder="Ingrese Telefono Particular.">
+          </div>
+          </div>
+      </div>
+      <div class="col-sm-5">
+          <div class="form-group row">
+              <label for="telefono_laboral_pareja">Telefono Laboral</label>
+              <div class="col-sm-7">                         
+              <input id="telefono_laboral_pareja" type="tel" name="telefono_laborarl_pareja" class="form-control" placeholder="Ingrese Telefono Laboral." >
+              </div>
+          </div>
+      </div>
+      </div>
+      <br>                       
+      <div class="row justify-content-center">
+      <div class="col-sm-6">                        
+      <div class="form-group row">              
+          <label for="telefono_particular_pareja">Telefono de otro Familiar</label>
+          <div class="col-md-8">                                           
+          <input id="telefono_particular_pareja" type="tel" name="telefono_particular_pareja" class="form-control" placeholder="Ingrese un Telefono Particular.">
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <h5><b><center>Datos Laborales</center></b></h5> 
+    <br>
+    <div class="row justify-content-center">      
+      <div class="col-sm-5">                        
+        <div class="form-group row">              
+            <label for="fecha_inicio_actividad">Fecha de Inicio de actividad:</label>
+            <div class="col-sm-16">                                           
+            <input id="fecha_inicio_actividad" type="date" name="fecha_inicio_actividad" class="form-control" >
+          </div>
+        </div>
+      </div>      
+        <div class="col-md-5">                        
+          <div class="form-group row">              
+              <label for="antecedentes_laborales">Antecedentes laborales:</label>
+              <div class="col-md-18">                                           
+              <textarea class="form-control" rows="4" id="antecedentes_laborales" placeholder="Ingrese Antecedentes Laborales..."></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row justify-content-center">      
+        <div class="col-sm-5">                     
+        <div class="form-group row">
+              <label for="antiguedad_empresa">Antiguedad de la Empresa:</label>
+              <div class="col-sm-16">                                           
+              <input id="antiguedad_empresa" type="date" name="antiguedad_empresa" class="form-control" >
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <div class="form-group row">                
+              <label for="antiguedad_en_escuela">Antiguedad en esta Escuela:</label>
+              <div class="col-sm-16">                                           
+              <input id="antiguedad_en_escuela" type="date" name="antiguedad_en_escuela" class="form-control" >
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row justify-content-center">      
+          <div class="col-sm-5">
+          <div class="form-group row">              
+              <label for="cargo">Ingrese el Cargo:</label>                                      
+              <input id="cargo" type="text" name="cargo" class="form-control" placeholder="Ingrse el Cargo">
+            </div>
+          </div> 
+          <div class="col-sm-5">                        
+            <div class="form-group row">
+              <label>Situacion:</label>
+              <div class="form-group">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="radio" value="interno">
+                  Interno
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="radio" value="titular">
+                  Titular
+                </label>
+              </div>
+              <div class="form-check">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" value="suplente">
+                    Suplente
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row justify-content-center">               
+        <div class="col-sm-3">                                      
+        <div class="form-group row">
+          <label>¿Recibe salario Familiar?</label>
+              <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="salario_familiar_si" id="salario_familiar_si" value="si" checked>
+                  <label class="form-check-label">SI</label>
+              </div>
+              <div class="form-check">
+                  <input class="form-check-input" type="radio" name="salario_familiar_no" id="salario_familiar_no" value="no">
+                  <label class="form-check-label">NO</label>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row justify-content-center">      
+          <div class="col-sm-6">                        
+            <div class="form-group col-md-9">              
+                <label for="calles_principales">Calles principales para acceder a su Hogar:</label>
+                <div class="col-sm-12">                                           
+                <input id="calles_principales" type="text" name="calles_principales" class="form-control" placeholder="Ingrese calles Principales">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-5">                        
+            <div class="form-group col-md-9">              
+                <label for="Titulos">Estudios/Titulos/Cursos que posee:</label>
+                <div class="col-sm-12">                                           
+                <input id="Titulos" type="text" name="Titulos" class="form-control" placeholder="Ingrese Titulos">
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="form-group justify-content-center">
+              <button type="submit" class="btn btn-primary">Registrar</button>
+          </div>
+      </div>
+  </div>  
+    </form>
+</div>
+
+{% endblock body %}

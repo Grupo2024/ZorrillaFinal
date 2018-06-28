@@ -14,6 +14,9 @@ def index(request):
 def formulario(request):
     return render(request, 'formulario.html')
 
+def crear_docente(request):
+    return render(request, 'crear_docente.html')
+
 def cursos(request):
     return render(request, 'cursos.html')
 
