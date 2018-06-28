@@ -17,9 +17,9 @@ class Trabajador(models.Model):
     #Datos estandares del trabajador, estos van a ser heredados x cualquier profesor, director o secretaria
     #foto = models.ImageField(upload_to=get_image_path, blank=True, null=True)
     #BUSCAR LO DE FOTOS
-    telefono_particular_t = models.IntegerField('Telefono Personal del Trabajador')
-    telefono_laboral_t = models.IntegerField('Telefono Laboral del Trabajador')
-    telefono_familiar_t = models.IntegerField('Telefono de algun Familiar del Trabajador')
+    telefono_particular = models.IntegerField('Telefono Personal del Trabajador')
+    telefono_laboral = models.IntegerField('Telefono Laboral del Trabajador')
+    telefono_familiar = models.IntegerField('Telefono de algun Familiar del Trabajador')
     datos_familiares_cargo = models.TextField('Nombre y Apellido de familiar del Trabajador', max_length=300)
     fecha_inicio_actividad = models.DateTimeField('Fecha de Inicio de Clases en el Colegio')
     antecedentes_laborales = models.TextField('Datos de Trabajos Previos', max_length=300)
