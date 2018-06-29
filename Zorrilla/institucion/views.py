@@ -105,3 +105,9 @@ def eliminar_docente(request, id_profesor):
             'resultado': "Hubo un error"
         }
     return JsonResponse(data, safe=True)
+
+def dmain(request):
+    return render(request, 'templates_admin/index_admin.html')
+
+def formProfesor(request):
+    return render(request, 'templates_docentes/formProfesor.html')
