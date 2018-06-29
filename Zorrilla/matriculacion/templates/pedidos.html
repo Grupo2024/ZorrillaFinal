@@ -18,7 +18,7 @@
 	      	</ul>
 	    	<br>
 	    	<a class="btn btn-outline-dark" href="{% url 'alumno' m.alumno.dni %}">Ver mas</a>
-	      	<a onclick="aceptar_matriculacion('{% url 'aceptar_matriculacion' m.id %}', {{m.id}})" class="btn btn-outline-dark">Matricular</a>
+	      	<a onclick="traer_secciones('{% url 'get_Secciones' m.alumno.dni %}, {{m.alumno.dni}}')" class="btn btn-outline-dark">Matricular</a>
 	    </div>
 	    <div class="card-footer">
 	      	<small class="text-muted">Fecha de pedido: {{m.fecha_matriculacion|date:"d/M/Y"}}</small>
@@ -30,7 +30,11 @@
 
 <div id="snackbar"><span id="span_result"></span></div>
     
-
+<div class="modal fade" id="modal_cursos">
+        <div id="datos_modal">
+        </div>
+</div>
+             
 
 <script>
 
@@ -39,23 +43,23 @@
       $( "#students" ).load(window.location.href + " #students" );
     }
     
-    function aceptar_matriculacion(url, alum){
+    function curso(e) {
+        document.getElementById("selected_curso").value = e.target.value
+    }
+       
+    function traer_secciones(url, alum){
         $.ajax({
-        method: "POST",
-        url: url,
-        data: {
-            csrfmiddlewaretoken: '{{ csrf_token }}'
-        }
-    })
-    .done(function (data) {
-        var y = document.getElementById("snackbar");
-        y.className = "show";
-        document.getElementById("span_result").innerHTML = data.estado;
-        setTimeout(function(){ y.className = y.className.replace("show", ""); }, 4000);
-        updateDiv();
-    });
-};
-
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+        .done(function (data) {
+            $("#datos_modal").html(data);
+            $('#modal_cursos').modal('show'); 
+        });
+    }
 
 </script>
 

@@ -115,7 +115,7 @@ class Seccion(models.Model):
     grado_asignado = models.ForeignKey(Grado, null=False)
 
     def __str__(self):
-       return 'El curso {} {} turno {}'.format(self.grado_asignado.aNo, self.curso, self.grado_asignado.turno_asignado.que_hora())
+       return '{}-{}-{}'.format(self.grado_asignado.aNo, self.curso, self.grado_asignado.turno_asignado.que_hora())
 
 
 class Asignacion(models.Model):
