@@ -3,71 +3,135 @@
 {% block navbar %}
 {% endblock navbar %}
 {% block body %}
+<style type="text/css">
+    .asd{
+            width:50%;
+            margin-top: 1%;
+        }
+</style>
+{% if user.is_authenticated %}
+    <div id="accordion" align="center" style="width: 40%; margin-left: 30%; margin-top: 5%">
+      <div class="card">
+        <div class="card-header btn collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" id="headingOne">
+          <h5 class="mb-0">
+            <a>Alumnos</a>
+          </h5>
+        </div>
 
-<div class="parallax">
-    <br>
-    <br>
-    <br>
-    <br>
-    <h1 class="display-1 font-weight-bold text-center text-white" style="margin-top: 6%;">Primario Zorrilla</h1>
-
-        <button class="btn btn-light btn-lg align-bottom d-block mx-auto " onclick="scrollWin()" style="width: 20%; margin-top: 10%;">Ver Mas</button>
-
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body">
+            <a href="{% url 'form' %}" class="btn btn-success asd">Agregar alumnos</a>
+            <br>
+            <br>
+            <a href="{% url 'pedidos' %}" class="btn btn-primary asd">Matricular alumnos</a>
+            <br>
+            <br>
+            <a href="{% url 'cursos1' %}" class="btn btn-danger asd">Editar alumnos</a>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" id="headingTwo">
+          <h5 class="mb-0">
+            <a>Docentes</a>
+          </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+          <div class="card-body">
+            <a href="{% url 'formProfesor' %}" class="btn btn-success asd">Matricular docente</a>
+            <br>
+            <br>
+            <a href="{% url 'docentes' %}" class="btn btn-primary asd">Mostrar docentes</a>
+            <br>
+            <br>
+            <a href="{% url 'docentes' %}" class="btn btn-danger asd">Editar docentes</a>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" id="headingThree">
+          <h5 class="mb-0">
+            <a>Biblioteca</a>
+          </h5>
+        </div>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+          <div class="card-body">
+            <a href="{% url 'biblioteca' %}" class="btn btn-success asd">Agregar libro</a>
+            <br>
+            <br>
+            <a href="{% url 'biblioteca' %}" class="btn btn-primary asd">Mostrar libros</a>
+          </div>
+        </div>
+      </div>
     </div>
 
-<div class="parallax_blur">
-    <br>
-    <br>
-    <br>
+{% else %}
 
-    <div class="row justify-content-around">
-        <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-            <div class="mainflip">
-                <div class="frontside">
-                    <div class="card" style="width:160%;">
-                        <img class="card-img-top img- fluid" src="{% static "img/3zorrilla.jpeg" %}" alt="card image">
-                        <div class="card-body">
-                            <h4 class="card-title">Juan Zorrilla de San Martín</h4>
+    <div class="parallax">
+        <br>
+        <br>
+        <br>
+        <br>
+        <h1 class="display-1 font-weight-bold text-center text-white" style="margin-top: 6%;">Primario Zorrilla</h1>
+
+            <button class="btn btn-light btn-lg align-bottom d-block mx-auto " onclick="scrollWin()" style="width: 20%; margin-top: 10%;">Ver Mas</button>
+
+        </div>
+
+    <div class="parallax_blur">
+        <br>
+        <br>
+        <br>
+
+        <div class="row justify-content-around">
+            <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card" style="width:160%;">
+                            <img class="card-img-top img- fluid" src="{% static "img/3zorrilla.jpeg" %}" alt="card image">
+                            <div class="card-body">
+                                <h4 class="card-title">Juan Zorrilla de San Martín</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card" style="width:160%;">
+                            <div class="card-header">
+                                <h2>Historia</h2>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">¿Quién fue?</h4>
+                                <p class="card-text">Juan Zorrilla de San Martín (Montevideo, 28 de diciembre de 1855 - 3 de noviembre de 1931) fue un escritor, periodista, docente y diplomático uruguayo.
+                                    Junto a su hermano Alejandro, en 1865 fue llevado por su padre a cursar sus estudios en el Colegio de la Inmaculada Concepción de Santa Fe, República Argentina. Entre 1867 y 1872 estudió en el Colegio de los Padres Bayoneses, en Montevideo, lugar en el que comenzó sus estudios universitarios. Se recibió de bachiller en Santa Fe, en 1872. Entre 1874 y 1877 estudió en el Colegio de los Padres Jesuitas de Santiago de Chile hasta completar sus estudios como Licenciado en Letras y Ciencias Políticas. En ese período colaboró en la redacción de “La estrella de Chile” y publicó “Notas de un Himno”. En Chile recibió la influencia de las lecturas románticas de José Zorrilla, José de Espronceda y sobre todo, Gustavo Adolfo Bécquer.
+                                    En 1907 el gobierno uruguayo le encargó la creación de un ensayo histórico sobre la figura de José Gervasio Artigas, que tendría la finalidad de aportar datos a los artistas interesados en presentarse en un concurso de creación de una escultura al prócer. Dicho ensayo fue editado finalmente en 1910 y se tituló "La epopeya de Artigas".
+                                </p>
+                                <br>
+                                <a href="https://es.wikipedia.org/wiki/Juan_Zorrilla_de_San_Mart%C3%ADn" class="btn btn-info btn-md">Info Button</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="backside">
-                    <div class="card" style="width:160%;">
-                        <div class="card-header">
-                            <h2>Historia</h2>
-                        </div>
-                        <div class="card-body">
-                            <h4 class="card-title">¿Quién fue?</h4>
-                            <p class="card-text">Juan Zorrilla de San Martín (Montevideo, 28 de diciembre de 1855 - 3 de noviembre de 1931) fue un escritor, periodista, docente y diplomático uruguayo.
-                                Junto a su hermano Alejandro, en 1865 fue llevado por su padre a cursar sus estudios en el Colegio de la Inmaculada Concepción de Santa Fe, República Argentina. Entre 1867 y 1872 estudió en el Colegio de los Padres Bayoneses, en Montevideo, lugar en el que comenzó sus estudios universitarios. Se recibió de bachiller en Santa Fe, en 1872. Entre 1874 y 1877 estudió en el Colegio de los Padres Jesuitas de Santiago de Chile hasta completar sus estudios como Licenciado en Letras y Ciencias Políticas. En ese período colaboró en la redacción de “La estrella de Chile” y publicó “Notas de un Himno”. En Chile recibió la influencia de las lecturas románticas de José Zorrilla, José de Espronceda y sobre todo, Gustavo Adolfo Bécquer.
-                                En 1907 el gobierno uruguayo le encargó la creación de un ensayo histórico sobre la figura de José Gervasio Artigas, que tendría la finalidad de aportar datos a los artistas interesados en presentarse en un concurso de creación de una escultura al prócer. Dicho ensayo fue editado finalmente en 1910 y se tituló "La epopeya de Artigas".
-                            </p>
-                            <br>
-                            <a href="https://es.wikipedia.org/wiki/Juan_Zorrilla_de_San_Mart%C3%ADn" class="btn btn-info btn-md">Info Button</a>
-                        </div>
-                    </div>
+            </div>      
+            <div class="card text-white bg-primary  text-center p-2" style="width: 30%;">
+                <div class="card-header">INFORMACION</div>
+                <div class="card-body">
+                    <h5 class="card-title">Telefonos</h5>
+                    <h6>Cecilia: 73456321</h6>
+                    <h6>Roberto: 54623245</h6>
+                    <br>
+                    <h5 class="card-title">Mails</h5>
+                    <h6>nose@gmail.com</h6>
+                    <h6>nose2@gmail.com</h6>
+                    <br>
+                    <h5>Ubicacion</h5>
+                    <div id="map"></div>
                 </div>
-            </div>
-        </div>      
-        <div class="card text-white bg-primary  text-center p-2" style="width: 30%;">
-            <div class="card-header">INFORMACION</div>
-            <div class="card-body">
-                <h5 class="card-title">Telefonos</h5>
-                <h6>Cecilia: 73456321</h6>
-                <h6>Roberto: 54623245</h6>
-                <br>
-                <h5 class="card-title">Mails</h5>
-                <h6>nose@gmail.com</h6>
-                <h6>nose2@gmail.com</h6>
-                <br>
-                <h5>Ubicacion</h5>
-                <div id="map"></div>
             </div>
         </div>
+    <br>
+    <br>
     </div>
-<br>
-<br>
-</div>
+{% endif %}
 
 <script>
 function scrollWin() {
