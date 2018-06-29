@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^dlt_profesor/(\d+)/$', eliminar_docente, name="eliminar_docente"),
     url(r'^logged', login, name="login"),
     url(r'crear_profesor/', crear_profesor, name="crear_profesor"),
+    url(r'^formProfesor', formProfesor, name="formProfesor"),
 ]
