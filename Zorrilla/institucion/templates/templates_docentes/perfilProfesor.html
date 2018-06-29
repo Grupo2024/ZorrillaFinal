@@ -51,7 +51,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento</span>
               </div>
-              <input style="margin-left: 0px; height: 31px" type="date" class="form-control" aria-label="Small" value="{{profesor.fecha_nacimiento}}" aria-describedby="inputGroup-sizing-sm" id="profesor_fecha_nacimiento" name="profesor_fecha_nacimiento">
+              <input style="margin-left: 0px; height: 31px" type="date" class="form-control" aria-label="Small" value="{{profesor.fecha_nacimiento|date:'d/M/Y'}}" aria-describedby="inputGroup-sizing-sm" id="profesor_fecha_nacimiento" name="profesor_fecha_nacimiento">
             </div>
 
             <div class="input-group input-group-sm mb-3 form-group">
