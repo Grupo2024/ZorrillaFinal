@@ -9,44 +9,26 @@
         <li class="breadcrumb-item"><a href="{%url 'cursos1'%}">Home</a></li>
         <li class="breadcrumb-item"><a>Turno</a></li>
         <li class="breadcrumb-item"><a>Grado</a></li>
-        <li class="breadcrumb-item " aria-current="page">(grado) Seccion</li>
+        <li class="breadcrumb-item "aria-current="page">(grado) Seccion</li>
     </ol>
 </nav>
 <table class="table">
     <thead class="thead-dark">
     <tr>
-    <th>#</th>
-    <th>nombre apellido</th>
-    <th>edad</th>
+    <th>Dni</th>
+    <th>Apellido y Nombre</th>
+    <th>Fecha de Nacimiento</th>
     <th></th>
     </tr>
     </thead>
     <tbody>
+        {% for alumno in alumnos %}
     <tr>
-        <td>1</td>
-        <td><a href="#">alumno1</a></td>
-        <td>11</td>
+        <td>{{alumno.dni}}</td>
+        <td><a href="#">{{alumno.apellido|title}} {{alumno.nombre|title}}</a></td>
+        <td>{{alumno.fecha_nacimiento}}</td>
     </tr>
-    <tr>
-        <td>2</td>
-        <td><a href="#">alumno2</a></td>
-        <td>12</td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td><a href="#">alumno3</a></td>
-        <td>10</td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td><a href="#">alumno4</a></td>
-        <td>12</td>
-    </tr>
-    <tr>
-        <td><a href="#">etc</a></td>
-        <td></td>
-        <td></td>
-    </tr>
+        {% endfor %}
     </tbody>
 </table>
 
