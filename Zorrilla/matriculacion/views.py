@@ -32,7 +32,7 @@ def logout_me_out(request):
 
 def get_Secciones(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    seccion = Seccion.objects.all()
+    seccion = Seccion.objects.filter('grado_asignado.aNo','curso')
     return render(request, 'select_curso.html', {'secciones':seccion, 'alumno':alumno})
 
 def aceptar_matriculaciones(request):

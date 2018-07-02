@@ -13,7 +13,6 @@
             <div class="modal-body">
                 <span class="badge badge-secondary">Cursos:</span>
                 <select name="" onchange="curso(event)">
-                    <option disabled selected>Choose Database Type</option>
                     {% for seccion in secciones %}
                         <option value="{{seccion.id}}">{{seccion}}</option>
                     {% endfor %}
