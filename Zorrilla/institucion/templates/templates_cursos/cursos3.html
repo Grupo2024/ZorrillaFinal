@@ -8,7 +8,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{%url 'cursos1'%}">Home</a></li>
         <li class="breadcrumb-item"><a href="#">Turno</a></li>
-        <li class="breadcrumb-item " aria-current="page">Grado</li>
+        <li class="breadcrumb-item "aria-current="page">Grado</li>
     </ol>
 </nav>
 <table class="table">
@@ -20,7 +20,7 @@
     <tbody>
     {% for a in secciones_de_grados %}
     <tr>
-        <td><a href="{% url 'cursos4'%}">{{a.grado_asignado.aNo}} {{a.curso}}</a></td>
+        <td><a href="{% url 'cursos4' a.id %}">{{a.grado_asignado.aNo}} {{a.curso}}</a></td>
     </tr>
     {% endfor %}
     </tbody>

@@ -1,6 +1,8 @@
 <html>
         <head>
             {% load static %}
+            <meta charset="ISO-8859-1">
+
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
             <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -53,15 +55,15 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             {% if user.is_authenticated %}
-                                    <li class="nav-item ">
+                                    <li class="nav-item">
                                         <a class="nav-link" href="{% url 'cursos1' %}">CURSOS</a>
                                     </li>
-                                    <li class="nav-item dropdown ">
-                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">OPCIONES DE SESION
+                                    <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">OPCIONES DE SESION
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                <a class="dropdown-item" href="{% url 'docentes' %}">Perfil</a>
-                                                <a class="dropdown-item" href="{% url 'logout_me_out' %}">Logout</a>
+                                                <a class="dropdown-item" href="{% url 'docentes' %}">Ver perfil</a>
+                                                <a class="dropdown-item" href="{% url 'logout_me_out' %}">Cerrar sesion</a>
                                             </div>
                                     </li>
                             {% else %}

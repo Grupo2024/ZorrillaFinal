@@ -77,10 +77,10 @@ def cursos3(request, id_grado):
     seccion = Seccion.objects.filter(grado_asignado = grado)
     return render(request, 'templates_cursos/cursos3.html', {'secciones_de_grados':seccion})
 
-
-
-def cursos4(request):
-    return render(request, 'templates_cursos/cursos4.html')
+def cursos4(request, id_seccion):
+    seccion = Seccion.objects.get(id=id_seccion)
+    alumnos = Alumno.objects.filter(seccion_asignada=seccion)
+    return render(request, 'templates_cursos/cursos4.html',{'alumnos':alumnos})
 
 def docentes(request):
     profesores = Profesor.objects.all()
@@ -105,3 +105,6 @@ def eliminar_docente(request, id_profesor):
             'resultado': "Hubo un error"
         }
     return JsonResponse(data, safe=True)
+
+def formProfesor(request):
+    return render(request, 'templates_docentes/formProfesor.html')

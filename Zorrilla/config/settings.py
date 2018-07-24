@@ -26,8 +26,6 @@ SECRET_KEY = 'uyx6*j3*qk)zetyw%gqaxjhz$&4#j(j)msbbhd=d&zq405v_+i'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-ALLOWED_HOSTS = []
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'primariozorrilla@gmail.com'

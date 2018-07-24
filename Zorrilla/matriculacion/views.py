@@ -27,30 +27,43 @@ def logIn(request):
     return render(request, 'docentes_login.html')
 
 def logout_me_out(request):
-    print "logueate gato"
     auth.logout(request)
     return redirect ('index')
+
+def get_Secciones(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    seccion = Seccion.objects.filter('grado_asignado.aNo','curso')
+    return render(request, 'select_curso.html', {'secciones':seccion, 'alumno':alumno})
 
 def aceptar_matriculaciones(request):
     alumnos = Alumno.objects.all()
     matriculaciones = Matriculacion.objects.filter(matriculado=False)
     return render(request, 'pedidos.html', {'matriculaciones':matriculaciones})
 
-def aceptar_matriculacion(request, id_matriculacion):
-    print "eentra"
-    matriculacion = Matriculacion.objects.get(id=id_matriculacion)
-    matriculacion.matriculado = True
-    matriculacion.save()
-    if matriculacion_estado(id_matriculacion):
-        data = {
-            'estado': "El alumno " + str(matriculacion.alumno.apellido) + " " + str(matriculacion.alumno.nombre) + " esta matriculado"
-        }
-    else:
-        fallo_matriculando(id_matriculacion)
-        data = {
-            'estado':"La matriculacion falló"
-        }
-    return JsonResponse(data, safe=False)
+def aceptar_matriculacion(request):
+    if request.method == 'POST':
+        dni_alumno = request.POST['dni_alumno']
+        print dni_alumno
+        selected_curso = request.POST['selected_curso']
+        print selected_curso
+        seccion = Seccion.objects.get(id=selected_curso)
+        alumno = Alumno.objects.get(dni=dni_alumno)
+        matriculacion = Matriculacion.objects.get(alumno=alumno)
+        matriculacion.matriculado = True
+        matriculacion.save()
+        alumno.seccion_asignada = seccion
+        alumno.save()
+        if alumno.seccion_asignada is not None:
+            data = {
+                'estado': "El alumno " + str(alumno.apellido) + "" + str(alumno.nombre) + " asiste al curso " + str(alumno.seccion_asignada),
+                'error': False
+            }
+        else:
+            data = {
+                'estado':'Hubo un error',
+                'error': True
+            }
+    return JsonResponse(data, safe=True)
 
 def alumno(request, id_alumno):
     alumno = Alumno.objects.get(dni=id_alumno)
