@@ -99,17 +99,14 @@
                 <td>{{doc.title}}</td>
                 <td>{{doc.description}}</td>
                 <td>{{doc.uploaded_at}}</td>
-                <td><button class="btn btn-info" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book">
-                <i style="font-size:15px" class="fa">&#xf013;</i></button></td>
+                <td><button class="btn btn-primary" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></button></td>
                 {% if user.is_authenticated %}
-                    <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book">
-                    <i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
+                    <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
                 {% endif %}
-                <td><a type="button" class="btn btn-outline-primary" href="{{ doc.document.url }}">Abrir</a></td>
+                <td><a type="button" class="btn btn-primary text-white" href="{{ doc.document.url }}">Abrir</a></td>
                 {% if request.user|has_group:"Director" %} 
-                    <td><button class="btn btn-primary" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book">
-                    <i style="font-size:15px" class="fa">&#xf05a;</i></button></td>
-                    <td><button class="btn btn-primary" onclick="deshabilitar_libro('{% url 'cambiar_estado_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf05a;</i></button></td>
+                    <td><button class="btn btn-primary fa fa-history" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book">
+                    <td><button class="btn btn-primary" onclick="deshabilitar_libro('{% url 'cambiar_estado_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf085;</i></button></td>
                 {% endif %}
             </tr>
           {% endfor %}
@@ -157,6 +154,13 @@
                       <label class="form_biblo">Genero:</label>
                       <div style="margin-left: 3%;">
                         {{ form.genero}}
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="form_biblo">Autor:</label>
+                      <div>
+                        {{ form.autor}}
                       </div>
                     </div>
                       <span id="estado" style="color:red"></span>

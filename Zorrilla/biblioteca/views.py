@@ -28,12 +28,12 @@ def biblioteca(request):
 @user_passes_test(check_Director)
 def informe(request):
     documents = Document.objects.all()
-    ducuments_habiltiados = Document.objects.filter(habilitado=True).count()
-    ducuments_deshabiltiados = Document.objects.filter(habilitado=False).count()
+    documents_habiltiados = Document.objects.filter(habilitado=True).count()
+    documents_deshabiltiados = Document.objects.filter(habilitado=False).count()
     documentos = {
         'cantidad':documents.count(),
-        'habilitados':ducuments_habiltiados,
-        'deshabilitados':ducuments_deshabiltiados
+        'habilitados':documents_habiltiados,
+        'deshabilitados':documents_deshabiltiados
     }
     return render(request, 'informe.html', {'documentos':documentos})
     

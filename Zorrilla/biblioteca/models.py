@@ -14,7 +14,7 @@ class Document(models.Model):
     AV = 'Aventura'
     PO = 'Policial'
     PL = 'Politica'
-    FA = 'Fantacia'
+    FA = 'Fantasia'
     OT = 'Otros'
 
     GENERO_CHOICES = (
@@ -26,7 +26,7 @@ class Document(models.Model):
         (AV , 'Aventura'),
         (PO , 'Policial'),
         (PL , 'Politica'),
-        (FA , 'Fantacia'),
+        (FA , 'Fantasia'),
         (OT , 'Otros')
     )
 
@@ -34,6 +34,7 @@ class Document(models.Model):
     document = models.FileField(upload_to='')
     title = models.CharField(max_length=60, blank=False, null=False)
     genero = models.CharField('Modificacion', max_length=15, choices=GENERO_CHOICES)
+    autor = models.CharField(max_length=60, blank=False, null=False)
     habilitado = models.BooleanField(default=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
@@ -70,7 +71,7 @@ class Estado(models.Model):
     EL = 'Eliminar'
     CR = 'Crear'
     ED = 'Editar'
-
+    
     MODIFICACION_CHOICES = (
         (HA , 'Habilitar'),
         (DH , 'Deshabilitar'),

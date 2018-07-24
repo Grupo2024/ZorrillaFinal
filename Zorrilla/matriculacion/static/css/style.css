@@ -1,4 +1,6 @@
-    
+ 
+input.input_sm_number { width:100%; }
+
 body, html {
     height: 100%;
 }
