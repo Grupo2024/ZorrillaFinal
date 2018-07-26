@@ -34,7 +34,6 @@ def email_for_logIn(request):
     return render(request, 'templates_docentes/emailDocente.html')
 
 def template_email_docente(request):
-    
     ran = random.randrange(10**80)
     myhex = "%064x" % ran
     clave = myhex[:10].upper()

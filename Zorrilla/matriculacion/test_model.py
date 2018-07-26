@@ -15,3 +15,23 @@ def fallo_matriculando(id_matriculacion):
         matriculacion.save()
     else:
         pass
+
+def docente_existe(email, apellido, nombre, dni):
+    incoherencias = []
+    if docente == Docente.objects.get(dni=dni):
+        pass
+    else:
+        incoherencias.append("Dni")
+    if docente == Docente.objects.get(nombre=nombre):
+        pass
+    else:
+        incoherencias.append(" Nombre")
+    if docente == Docente.objects.get(apellido=apellido):
+        pass
+    else:
+        incoherencias.append(" Apellido")
+    if docente == Docente.objects.get(email=email):
+        pass
+    else:
+        incoherencias.append(" Email")
+    return incoherencias

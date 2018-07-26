@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'crear_alumno/', crear_alumno, name="crear_alumno"),
     url(r'^aceptar_matriculacion/$', aceptar_matriculacion, name="aceptar_matriculacion"),
     url(r'^perfilAlumno/(\d+)/$', alumno, name="alumno"),
+    url(r'^recuperar/$', template_get_pass, name="template_get_pass"),
 ]
