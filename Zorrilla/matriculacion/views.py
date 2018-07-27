@@ -11,42 +11,6 @@ from django.core.mail import send_mail
 from .forms import *
 # Create your views here.
 
-def template_get_pass(request):
-    form = get_Password()
-    return render (request, 'new_password/my_info.html', {'form':form})
-
-def find_User(request):
-    if request.method == "POST":
-        form = get_Password(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            apellido = form.cleaned_data['apellido']
-            nombre = form.cleaned_data['apellido']
-            dni = form.cleaned_data['dni']
-            errores = docente_existe(email, apellido, nombre, dni)
-            if errores.length != 0:
-                error = ""
-                espacio = "-"
-                for a in errores:
-                    error = error + espacio + a
-                data = {
-                    'resultado': error
-                }
-                return JsonResponse(data)
-            else:
-                #Genero pass nueva y modifico al User con fk al docente
-                subject = "Recuperar Contraseña"
-                message = "El usuario " + str(username) + " relacion con esta direccion " + str(email) + " utilizara la siguiente contraseña " + str(dni)
-                #HACER LA NUEVA CLAVE
-                email_from = settings.EMAIL_HOST_USER
-                recipient_list = [email]
-                if send_mail( subject, message, email_from, recipient_list):
-                    data = {
-                        'usuario': username,
-                        'email': email
-                    }
-                    return render (request, 'new_password/done.html', {'info':data})
-
 def asdf(request):
     alumno = AlumnoForm
     return render(request, 'test.html', {'form':alumno})
@@ -123,3 +87,43 @@ def login(request):
             'error': True
             }
     return JsonResponse(data, safe=True)
+
+
+def template_get_pass(request):
+    form = get_Password()
+    return render (request, 'new_password/my_info.html', {'form':form})
+
+def find_User(request):
+    if request.method == "POST":
+        form = get_Password(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            apellido = form.cleaned_data['apellido']
+            nombre = form.cleaned_data['apellido']
+            dni = form.cleaned_data['dni']
+            errores = docente_existe(email, apellido, nombre, dni)
+            if errores.length != 0:
+                error = ""
+                espacio = "-"
+                for a in errores:
+                    error = error + espacio + a
+                data = {
+                    'resultado': error
+                }
+                return JsonResponse(data)
+            else:
+                docente = Docente.objects.get(dni=dni)
+                usuario = UserDocente.objects.get(docente=docente)
+                #Genero pass nueva y modifico al User con fk al docente
+                usuario.password = new_Password(docente.dni)
+                usuario.save()
+                subject = "Recuperar Contraseña"
+                message = "El usuario " + str(usuario.username) + " relacion con esta direccion " + str(docente.email) + " utilizara la siguiente contraseña " + str(usuario.password)
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [docente.email]
+                if send_mail( subject, message, email_from, recipient_list):
+                    data = {
+                        'usuario': username,
+                        'email': email
+                    }
+                    return render (request, 'new_password/done.html', {'info':data})
