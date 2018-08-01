@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'matriculacion',
     'biblioteca',
     'institucion',
-    'widget_tweaks',
+    #'widget_tweaks',
 ]
 
 MIDDLEWARE = [

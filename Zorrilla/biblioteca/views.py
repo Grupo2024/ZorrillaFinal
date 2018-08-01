@@ -1,13 +1,43 @@
-
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import *
 from .forms import DocumentForm
 from django.http import JsonResponse
 import datetime
 from .decorators import *
+import xlwt
+
+def export_books(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="reporte_biblioteca.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Books')
+
+    # Sheet header, first row
+    row_num = 0
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['Titulo', 'Autor', 'Genero', 'Habilitado', 'Fecha de Subida']
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+        
+    rows = Document.objects.all().order_by('title','estado').values_list('title', 'autor', 'genero', 'habilitado', 'uploaded_at')
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
+
+    wb.save(response)
+    return response
 
 def filter_books(request):
     return render(request, 'filter_books.html')
