@@ -89,6 +89,7 @@ def login(request):
     return JsonResponse(data, safe=True)
 
 
+#Function that render my_info Template wuth a form to get my new password.
 def template_get_pass(request):
     form = get_Password()
     return render (request, 'new_password/my_info.html', {'form':form})
@@ -118,7 +119,7 @@ def find_User(request):
                 usuario.password = new_Password(docente.dni)
                 usuario.save()
                 subject = "Recuperar Contraseña"
-                message = "El usuario " + str(usuario.username) + " relacion con esta direccion " + str(docente.email) + " utilizara la siguiente contraseña " + str(usuario.password)
+                message = "El usuario " + str(usuario.username) + " utilizara la siguiente contraseña " + str(usuario.password)
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [docente.email]
                 if send_mail( subject, message, email_from, recipient_list):
