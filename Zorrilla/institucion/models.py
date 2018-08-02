@@ -107,25 +107,43 @@ class Turno(models.Model):
 class Grado(models.Model):
     aNo = models.CharField('1ero, 2do, etc...', max_length=5)
     turno_asignado = models.ForeignKey(Turno, null=False)
+    seccion = models.BooleanField('True = A o C, dependiendo de si es mañana o tarde', null=False)
+
+    def que_seccion(self):
+        if (turno_asignado.hora == True):
+            aux = 'B'
+            if self.seccion:
+                aux = 'A'
+                return aux
+            else:
+                return aux
+        elif (turno_asignado.hora == False):
+            aux = 'D'
+            if self.seccion:
+                aux = 'C'
+                return aux
+            else:
+                return aux
 
     def __str__(self):
-        return 'El Grado {} asiste al turno {}'.format(self.aNo, self.turno_asignado.que_hora())
+        return 'El Grado {} {} asiste al turno {}'.format(self.aNo, self.que_seccion ,self.turno_asignado.que_hora())
 
 
-class Seccion(models.Model):
-    curso = models.CharField('A-B-C-D', max_length=1)
-    grado_asignado = models.ForeignKey(Grado, null=False)
+#class Seccion(models.Model):
+#    curso = models.CharField('A-B-C-D', max_length=1)
+#    grado_asignado = models.ForeignKey(Grado, null=False)
 
-    def __str__(self):
-       return '{}-{}-{}'.format(self.grado_asignado.aNo, self.curso, self.grado_asignado.turno_asignado.que_hora())
+#    def __str__(self):
+#       return '{}-{}-{}'.format(self.grado_asignado.aNo, self.curso, self.grado_asignado.turno_asignado.que_hora())
 
 
 class Asignacion(models.Model):
     prof_asignado = models.ForeignKey(Profesor)
-    seccion_asignada = models.ForeignKey(Seccion)
+    #seccion_asignada = models.ForeignKey(Seccion)
+    grado = models.ForeignKey(Grado)
 
     def __str__(self):
-       return 'El profesor {} {} asiste al curso: {} {} turno {}'.format(self.prof_asignado.nombre_t, self.prof_asignado.apellido_t, self.seccion_asignada.grado_asignado.aNo, self.seccion_asignada.curso, self.seccion_asignada.grado_asignado.turno_asignado.que_hora())
+       return 'El profesor {} {} asiste al curso: {} {} turno {}'.format(self.prof_asignado.nombre_t, self.prof_asignado.apellido_t, self.grado_asignado.aNo, self.grado_asignado.seccion.que_seccion, self.grado_asignado.turno_asignado.que_hora())
 
 
 
