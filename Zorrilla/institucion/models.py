@@ -129,7 +129,11 @@ class Asignacion(models.Model):
 
 
 
-class user_Docente(User):
+class user_Docente(models.Model):
+    user = models.OneToOneField(User)
+    docente_referenciado = models.OneToOneField(Profesor, on_delete=models.CASCADE)
 
-    class Meta:
-        proxy = True
+
+class user_Secretaria(models.Model):
+    user = models.OneToOneField(User)
+    secreataria_referenciada = models.OneToOneField(Secretaria, on_delete=models.CASCADE)
