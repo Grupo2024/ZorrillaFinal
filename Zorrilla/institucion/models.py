@@ -5,6 +5,8 @@ from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from matriculacion.models import *
 
+from django.contrib.auth.models import User #Para el user
+
 # Create your models here.
 
 class clave_Docente(models.Model):
@@ -124,3 +126,10 @@ class Asignacion(models.Model):
 
     def __str__(self):
        return 'El profesor {} {} asiste al curso: {} {} turno {}'.format(self.prof_asignado.nombre_t, self.prof_asignado.apellido_t, self.seccion_asignada.grado_asignado.aNo, self.seccion_asignada.curso, self.seccion_asignada.grado_asignado.turno_asignado.que_hora())
+
+
+
+class user_Docente(User):
+
+    class Meta:
+        proxy = True
