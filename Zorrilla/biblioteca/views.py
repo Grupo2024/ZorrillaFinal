@@ -17,12 +17,12 @@ def export_books(request):
     ws = wb.add_sheet('Books')
 
     # Sheet header, first row
-    row_num = 0
+    row_num = 3
 
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
 
-    columns = ['Titulo', 'Autor', 'Genero', 'Habilitado', 'Fecha de Subida']
+    columns = ['Id','Titulo', 'Autor', 'Genero', 'Habilitado']
 
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -30,7 +30,7 @@ def export_books(request):
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
         
-    rows = Document.objects.all().order_by('title','estado').values_list('title', 'autor', 'genero', 'habilitado', 'uploaded_at')
+    rows = Document.objects.all().order_by('title','estado').values_list('id','title', 'autor', 'genero', 'habilitado')
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
