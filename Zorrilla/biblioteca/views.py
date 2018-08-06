@@ -98,7 +98,6 @@ def eliminar_libro(request, id_documento):
     document.save()
     estado.save()
     if request.user.groups.filter(name="Director").exists():   
-        document.delete()
         print "es director"
         data = {
             'estado': "El libro " + str(document.title) + " y todos los registros del mismo han sido eliminados"
@@ -123,7 +122,6 @@ def cambiar_estado_libro(request, id_documento):
         'estado':'El libro ' + str(document.title) + " ha cambiado su estado a " + str(aux)
     }
     return JsonResponse(data, safe=True)
-
 
 def info_libro(request, id_documento):
     if request.method == 'POST':
