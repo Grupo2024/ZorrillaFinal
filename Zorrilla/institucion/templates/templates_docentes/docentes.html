@@ -36,24 +36,24 @@
                                 <th>Domicilio</th>
                                 <th>Email</th>
                                 <th>Sexo</th>
-                                <th></th>
-                                <th></th>
+                                <th>Datos</th>
+                                <th>Eliminar</th>
                             </thead>
                             {% for p in profesores %}
                             <tbody>
 
                                 <tr>
-                                    <td>{{p.nombre}}</td>
-                                    <td>{{p.apellido}}</td>
-                                    <td>{{p.dni}}</td>
-                                    <td>{{p.lugar_nacimiento}}</td>
-                                    <td>{{p.fecha_nacimiento}}</td>
-                                    <td>{{p.domicilio}}</td>
-                                    <td>{{p.email}}</td>
-                                    <td>{{p.sexo}}</td>
-                                    <td><button href="{% url 'profesor' p.dni %}" class="btn btn-outline-info">Abrir</button></td>
+                                    <td>{{p.nombre_t}}</td>
+                                    <td>{{p.apellido_t}}</td>
+                                    <td>{{p.dni_t}}</td>
+                                    <td>{{p.lugar_nacimiento_t}}</td>
+                                    <td>{{p.fecha_nacimiento_t}}</td>
+                                    <td>{{p.domicilio_t}}</td>
+                                    <td>{{p.email_t}}</td>
+                                    <td>{{p.sexo_t}}</td>
+                                    <td><a href="{% url 'profesor' p.dni_t %}" class="btn btn-outline-info">Abrir</a></td>
 
-                                    <td><button onclick="eliminar_docente('{% url 'eliminar_docente' p.dni %}', {{p.dni}})" class="btn btn-outline-danger">Eliminar</button></td>
+                                    <td><button class="btn btn-outline-danger">Eliminar</button></td>
 
                                 </tr>
 

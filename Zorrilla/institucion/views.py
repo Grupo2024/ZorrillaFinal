@@ -86,11 +86,12 @@ def docentes(request):
     profesores = Profesor.objects.all()
     for a in profesores:
         a.sexo = a.genero()
+        print a.nombre_t
     return render(request, 'templates_docentes/docentes.html', {'profesores':profesores})
 
 
 def profesor(request, id_profesor):
-    profesor = Profesor.objects.get(dni=id_profesor)
+    profesor = Profesor.objects.get(dni_t=id_profesor)
     profesor.sexo = profesor.genero()
     return render(request, 'templates_docentes/perfilProfesor.html', {'profesor':profesor})
 
