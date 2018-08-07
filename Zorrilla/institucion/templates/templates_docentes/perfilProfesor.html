@@ -3,10 +3,12 @@
 {% block navbar %}
 {% endblock navbar %}
 {% block body %}
-<br>
-<h1 class="card-title" align="center">{{profesor.nombre}} {{profesor.apellido}}</h1>
+{% load poll_extras %}
 
-{% if user.is_authenticated %}
+<br>
+<h1 class="card-title" align="center">{{profesor.nombre_t}} {{profesor.apellido_t}}</h1>
+
+{% if request.user|has_group:"Profesor" %}
 
 <form  id="create_teacher" action="{% url 'crear_profesor' %}" method="post">
 {% csrf_token %}
@@ -72,7 +74,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Sexo</span>
               </div>
-              <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_mail" name="profesor_sexo" value={{profesor.sexo_t}}>
+              <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_mail" name="profesor_sexo" value={{profesor.genero}}>
             </div>
 
           </li>
@@ -176,22 +178,23 @@
     </div>
   </div>
 </div>
-<button class="btn btn-success" style="margin-left: 40%; width: 20%" align="center" type="submit">Modificar datos</button>
+    <button class="btn btn-success" style="margin-left: 40%; width: 20%" align="center" type="submit">Modificar datos</button>
 </form>
 
-{% else %}
+{% endif %}    
+{% if request.user|has_group:"Director" %}
 
-<div class='row'>
+    <div class='row'>
     <div class="card text-center" style="width: 30%; margin-left: 3%">
     <div class="card-body">
     <h4 class="card-title">Datos personales</h4>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">DNI: {{profesor.dni}}</li>
-          <li class="list-group-item">Lugar nacimiento: {{profesor.lugar_nacimiento}}</li>
-          <li class="list-group-item">Fecha de nacimiento: {{profesor.fecha_nacimiento}}</li>
-          <li class="list-group-item">Domicilio: {{profesor.domicilio}}</li>
-          <li class="list-group-item">mail: {{profesor.email}}</li>
-          <li class="list-group-item">Sexo: {{profesor.sexo}}</li>
+          <li class="list-group-item">DNI: {{profesor.dni_t}}</li>
+          <li class="list-group-item">Lugar nacimiento: {{profesor.lugar_nacimiento_t}}</li>
+          <li class="list-group-item">Fecha de nacimiento: {{profesor.fecha_nacimiento_t}}</li>
+          <li class="list-group-item">Domicilio: {{profesor.domicilio_t}}</li>
+          <li class="list-group-item">Email: {{profesor.email_t}}</li>
+          <li class="list-group-item">Sexo: {{profesor.genero}}</li>
         </ul>
     </div>
   </div>
@@ -200,9 +203,9 @@
     <div class="card-body">
       <h4 class="card-title">Datos de contacto</h4>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">Telefono particular: {{profesor.telefono_particular_p}}</li>
-          <li class="list-group-item">Telefono laboral: {{profesor.telefono_laboral_p}}</li>
-          <li class="list-group-item">Telefono de familiar: {{profesor.telefono_familiar_p}}</li>
+          <li class="list-group-item">Telefono particular: {{profesor.telefono_particular}}</li>
+          <li class="list-group-item">Telefono laboral: {{profesor.telefono_laboral}}</li>
+          <li class="list-group-item">Telefono de familiar: {{profesor.telefono_familiar}}</li>
           <li class="list-group-item">Datos de familiar: {{profesor.datos_familiares_cargo}}</li>
         </ul>
     </div>
@@ -220,6 +223,5 @@
     </div>
   </div>
 </div>
-
-{% endif %}
+{% endif %}    
 {% endblock body %}

@@ -85,7 +85,7 @@ def cursos4(request, id_seccion):
 def docentes(request):
     profesores = Profesor.objects.all()
     for a in profesores:
-        a.sexo = a.genero()
+        a.genero = a.genero()
         print a.nombre_t
     return render(request, 'templates_docentes/docentes.html', {'profesores':profesores})
 
