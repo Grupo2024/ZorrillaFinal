@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+    <form id="GetDataForPassword" method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label class="form_biblo">Apellido:</label>
+            <div>
+                {{ form.apellido }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form_biblo">Nombre:</label>
+            <div>
+                {{ form.nombre }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form_biblo">Dni:</label>
+            <div>
+                {{ form.dni }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form_biblo">Email:</label>
+            <div>
+                {{ form.email }}
+            </div>
+        </div>
+
+    </form>
+
+    <button class="btn btn-success" align="center"  onclick="new_pass('{% url 'userDocente' %}')">Buscar</button>
+
+<script>
+    
+    function new_pass(url){
+        var myForm = document.getElementById('GetDataForPassword');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',            
+            success: function(data){
+                console.log(data.error);
+                if (data.error){
+                    var x = document.getElementById("estado");
+                    estado.innerHTML = data.estado
+                }else{
+                    var x = document.getElementById("myModal");
+                    $(x).modal('hide');
+                    updateDiv();
+                    var y = document.getElementById("snackbar");
+                    y.className = "show";
+                    document.getElementById("span_result").innerHTML = data.estado;
+                    setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
+                }
+            }
+        });
+    }
+</script>
+
+{% endblock body %}

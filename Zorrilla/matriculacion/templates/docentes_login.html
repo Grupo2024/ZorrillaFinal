@@ -31,10 +31,10 @@
     <div class="form-group">
     </form>
     </div> <!-- form-group// -->
-    <p class="text-center"><a href="#" class="btn">Olvidaste tu contrasena?</a></p>
+    <p class="text-center"><a href="{% url 'template_get_pass' %}" class="btn">Olvidaste tu contrasena?</a></p>
     
 </article>
-<button onclick="log_in()" class="btn btn-primary btn-block"> Iniciar sesion  </button>
+<button onclick="log_in('login')" class="btn btn-primary btn-block"> Iniciar sesion  </button>
 </div>
 
 <div id="snackbarlogin"><span id="span_result"></span></div>
@@ -44,11 +44,11 @@
 
 <script>
 
-    function log_in(){
+    function log_in(url){
         var myForm = document.getElementById('login_form');
         formData = new FormData(myForm);
         $.ajax({
-            url: 'login/',
+            url: url,
             data: formData,
             processData: false,
             contentType: false,
