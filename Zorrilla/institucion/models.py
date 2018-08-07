@@ -88,55 +88,46 @@ class Secretaria(Trabajador):
         return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre_t, self.apellido_t, self.dni_t, self.sexo_t)
 
 
-class Turno(models.Model):
+class Curso(models.Model):
     hora = models.BooleanField('Clickea para seleccionar turno "Tarde"', null=False)
+    aNo = models.CharField('1ero, 2do, etc...', max_length=5)
+    seccion = models.BooleanField('True = B o D, dependiendo de si es turno mañana o tarde', null=False)
 
-    def que_hora(self):
+    def que_turno(self):
         aux = 'Maniana'
-        if self.hora:
+        if (self.hora == True):
             aux = 'Tarde'
             return aux
         else:
             return aux
 
-    def __str__(self):
-        return 'Turno {}'.format(self.que_hora())
-
-
-
-class Grado(models.Model):
-    aNo = models.CharField('1ero, 2do, etc...', max_length=5)
-    turno_asignado = models.ForeignKey(Turno, null=False)
-    seccion = models.BooleanField('True = A o C, dependiendo de si es mañana o tarde', null=False)
-
     def que_seccion(self):
-        if (turno_asignado.hora == True):
-            aux = 'B'
-            if self.seccion:
-                aux = 'A'
+        if (self.hora == True):
+            aux = 'C'
+            if (self.seccion == True):
+                aux = 'D'
                 return aux
             else:
                 return aux
-        elif (turno_asignado.hora == False):
-            aux = 'D'
-            if self.seccion:
-                aux = 'C'
+        else:
+            aux = 'A'
+            if (self.seccion == True):
+                aux = 'B'
                 return aux
             else:
                 return aux
 
     def __str__(self):
-        return 'El Grado {} {} asiste al turno {}'.format(self.aNo, self.que_seccion ,self.turno_asignado.que_hora())
+        return 'El Grado {} {} asiste al turno {}'.format(self.aNo, self.que_seccion() ,self.que_turno())
 
 
 
 class Asignacion(models.Model):
     prof_asignado = models.ForeignKey(Profesor)
-    #seccion_asignada = models.ForeignKey(Seccion)
-    grado = models.ForeignKey(Grado)
+    curso = models.ForeignKey(Curso)
 
     def __str__(self):
-       return 'El profesor {} {} asiste al curso: {} {} turno {}'.format(self.prof_asignado.nombre_t, self.prof_asignado.apellido_t, self.grado_asignado.aNo, self.grado_asignado.seccion.que_seccion, self.grado_asignado.turno_asignado.que_hora())
+       return 'El profesor {} {} asiste al curso: {} {} turno {}'.format(self.prof_asignado.nombre_t, self.prof_asignado.apellido_t, self.curso.aNo, self.curso.seccion.que_seccion, self.curso.turno_asignado.que_hora())
 
 
 

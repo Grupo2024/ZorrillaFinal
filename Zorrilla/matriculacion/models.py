@@ -65,7 +65,7 @@ class Padre_madre(Persona):
 
 
 class Alumno(Persona):
-    grado_asignado = models.ForeignKey(Grado, blank=True)
+    curso = models.ForeignKey(Curso, blank=True)
     telefono_casa = models.IntegerField('Telefono de la Casa')
     telefono_padre = models.IntegerField('Telefono del Padre', null=True)
     telefono_madre = models.IntegerField('Telefono de la Madre', null=True)
