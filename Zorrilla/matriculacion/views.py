@@ -15,11 +15,13 @@ from django.core.mail import send_mail
 # Create your views here.
 
 def asdf(request):
-    alumno = AlumnoForm
+    alumno = AlumnoForm()
     return render(request, 'test.html', {'form':alumno})
 
 def index(request):
     print "index"
+    user2 = User.objects.get(username="profesor")
+    print user2.password
     return render(request, 'index.html')
 
 def formulario(request):
@@ -76,10 +78,12 @@ def alumno(request, id_alumno):
     return render(request, 'perfilAlumno.html', {'alumno':alumno})
 
 def login(request):
-    print "enrea"
+    print "enreaas"
     if request.method == 'POST':
         username = request.POST['user']
         password = request.POST['pass']
+        print username
+        print password
         user = authenticate(request, username=username, password=password)
         if user is not None:
             auth.login(request, user)
@@ -135,8 +139,10 @@ def userDocente(request):
                     }
                 print "funciona"
                 userd = User.objects.get(username=userD.user.username)
-                userd.password = new_pass
+                print "Vieja Pass" + str(userd.password)
+                userd.set_password(new_pass)
                 userd.save()
+                print "nueva pass" + str(userd.password)
                 return render (request, 'new_password/done.html', {'info':data})
                 
         else:
