@@ -19,22 +19,22 @@ def fallo_matriculando(id_matriculacion):
     
 def docente_existe(email, apellido, nombre, dni):
     incoherencias = []
-    docente = Profesor.objects.get(dni_t=dni)
+    docente = Profesor.objects.filter(dni_t=dni)
     if docente:
         pass
     else:
         incoherencias.append("Dni")
-    docente = Profesor.objects.get(nombre_t=nombre)
+    docente = Profesor.objects.filter(nombre_t=nombre)
     if docente:
         pass
     else:
         incoherencias.append(" Nombre")
-    docente = Profesor.objects.get(apellido_t=apellido)
+    docente = Profesor.objects.filter(apellido_t=apellido)
     if docente:
         pass
     else:
         incoherencias.append(" Apellido")
-    docente = Profesor.objects.get(email_t=email)
+    docente = Profesor.objects.filter(email_t=email)
     if docente:
         pass
     else:

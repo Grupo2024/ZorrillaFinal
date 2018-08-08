@@ -4,6 +4,7 @@
 {% endblock navbar %}
 {% block body %}
 
+<div id="form_Pass">
     <form id="GetDataForPassword" method="post">
         {% csrf_token %}
 
@@ -37,7 +38,10 @@
 
     </form>
 
+</div>
+
     <button class="btn btn-success" align="center"  onclick="new_pass('{% url 'userDocente' %}')">Buscar</button>
+    <span id="resultado"></span>
 
 <script>
     
@@ -53,16 +57,13 @@
             success: function(data){
                 console.log(data.error);
                 if (data.error){
-                    var x = document.getElementById("estado");
-                    estado.innerHTML = data.estado
+                    var x = document.getElementById("resultado");
+                    x.innerHTML = data.resultado;
                 }else{
-                    var x = document.getElementById("myModal");
-                    $(x).modal('hide');
-                    updateDiv();
-                    var y = document.getElementById("snackbar");
-                    y.className = "show";
-                    document.getElementById("span_result").innerHTML = data.estado;
-                    setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
+                    var x = document.getElementById("form_Pass")
+                    x.style.display = "block";
+                    var y = document.getElementById("resultado");
+                    y.innerHTML = data.resultado;
                 }
             }
         });

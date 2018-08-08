@@ -114,12 +114,12 @@ def userDocente(request):
             dni = form.cleaned_data['dni']
             errores = docente_existe(email, apellido, nombre, dni)
             if len(errores) != 0:
-                error = ""
-                espacio = "-"
+                error = "Error en: "
                 for a in errores:
-                    error = error + espacio + a
+                    error = error + a 
                 data = {
-                    'resultado': error
+                    'resultado': error,
+                    'error': True
                 }
                 return JsonResponse(data)
             else:
@@ -134,16 +134,18 @@ def userDocente(request):
                 recipient_list = [profesor.email_t]
                 if send_mail( subject, message, email_from, recipient_list):
                     data = {
-                        'usuario': userD.user.username,
-                        'email': profesor.email_t
+                        'resultado': message,
+                        'error': False
                     }
-                print "funciona"
-                userd = User.objects.get(username=userD.user.username)
-                print "Vieja Pass" + str(userd.password)
-                userd.set_password(new_pass)
-                userd.save()
-                print "nueva pass" + str(userd.password)
-                return render (request, 'new_password/done.html', {'info':data})
+                    print "funciona"
+                    userd = User.objects.get(username=userD.user.username)
+                    print "Vieja Pass" + str(userd.password)
+                    userd.set_password(new_pass)
+                    userd.save()
+                    print "nueva pass" + str(userd.password)
+                    return JsonResponse(data)
                 
         else:
-            return HttpResponse("Esta mal xd")
+            print "error"
+            form = get_Password()
+            return render(request, 'new_password/my_info.html', {'form':form})
