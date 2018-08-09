@@ -24,7 +24,6 @@ def docente_existe(email, dni):
         pass
     else:
         incoherencias.append("Dni")
-    docente = Profesor.objects.filter(nombre_t=nombre)
     if docente:
         pass
     else:
