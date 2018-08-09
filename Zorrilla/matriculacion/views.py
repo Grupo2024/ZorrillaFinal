@@ -25,7 +25,16 @@ def index(request):
     return render(request, 'index.html')
 
 def formulario(request):
-    return render(request, 'formulario.html')
+    if request.method == 'POST':
+        form = AlumnoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            form = AlumnoForm()
+            return render(request, 'formulario.html', {'form':form})
+
+    else:
+        form = AlumnoForm()
+    return render(request, 'formulario.html', {'form':form})
 
 def cursos(request):
     return render(request, 'cursos.html')
