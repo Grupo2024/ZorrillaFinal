@@ -18,7 +18,5 @@ class AlumnoForm(forms.ModelForm):
         }
         
 class get_Password(forms.Form):
-    nombre = forms.CharField(max_length=40, required=True)
-    apellido = forms.CharField(max_length=40, required=True)
     dni = forms.IntegerField(required=True)
     email = forms.EmailField(required=True)

@@ -109,10 +109,8 @@ def userDocente(request):
         if form.is_valid():
             print "es valido"
             email = form.cleaned_data['email']
-            apellido = form.cleaned_data['apellido']
-            nombre = form.cleaned_data['nombre']
             dni = form.cleaned_data['dni']
-            errores = docente_existe(email, apellido, nombre, dni)
+            errores = docente_existe(email, dni)
             if len(errores) != 0:
                 error = "Error en: "
                 for a in errores:
