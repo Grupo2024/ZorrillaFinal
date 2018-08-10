@@ -5,6 +5,8 @@ from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from matriculacion.models import *
 
+from django.contrib.auth.models import User #Para el user
+
 # Create your models here.
 
 class clave_Docente(models.Model):
@@ -86,41 +88,54 @@ class Secretaria(Trabajador):
         return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre_t, self.apellido_t, self.dni_t, self.sexo_t)
 
 
-class Turno(models.Model):
+class Curso(models.Model):
     hora = models.BooleanField('Clickea para seleccionar turno "Tarde"', null=False)
+    aNo = models.CharField('1ero, 2do, etc...', max_length=5)
+    seccion = models.BooleanField('True = B o D, dependiendo de si es turno mañana o tarde', null=False)
 
-    def que_hora(self):
+    def que_turno(self):
         aux = 'Maniana'
-        if self.hora:
+        if (self.hora == True):
             aux = 'Tarde'
             return aux
         else:
             return aux
 
+    def que_seccion(self):
+        if (self.hora == True):
+            aux = 'C'
+            if (self.seccion == True):
+                aux = 'D'
+                return aux
+            else:
+                return aux
+        else:
+            aux = 'A'
+            if (self.seccion == True):
+                aux = 'B'
+                return aux
+            else:
+                return aux
+
     def __str__(self):
-        return 'Turno {}'.format(self.que_hora())
+        return 'El Grado {} {} asiste al turno {}'.format(self.aNo, self.que_seccion() ,self.que_turno())
 
-
-
-class Grado(models.Model):
-    aNo = models.CharField('1ero, 2do, etc...', max_length=5)
-    turno_asignado = models.ForeignKey(Turno, null=False)
-
-    def __str__(self):
-        return 'El Grado {} asiste al turno {}'.format(self.aNo, self.turno_asignado.que_hora())
-
-
-class Seccion(models.Model):
-    curso = models.CharField('A-B-C-D', max_length=1)
-    grado_asignado = models.ForeignKey(Grado, null=False)
-
-    def __str__(self):
-       return '{}-{}-{}'.format(self.grado_asignado.aNo, self.curso, self.grado_asignado.turno_asignado.que_hora())
 
 
 class Asignacion(models.Model):
     prof_asignado = models.ForeignKey(Profesor)
-    seccion_asignada = models.ForeignKey(Seccion)
+    curso = models.ForeignKey(Curso)
 
     def __str__(self):
-       return 'El profesor {} {} asiste al curso: {} {} turno {}'.format(self.prof_asignado.nombre_t, self.prof_asignado.apellido_t, self.seccion_asignada.grado_asignado.aNo, self.seccion_asignada.curso, self.seccion_asignada.grado_asignado.turno_asignado.que_hora())
+       return 'El profesor {} {} asiste al curso: {} {} turno {}'.format(self.prof_asignado.nombre_t, self.prof_asignado.apellido_t, self.curso.aNo, self.curso.seccion.que_seccion, self.curso.turno_asignado.que_hora())
+
+
+
+class user_Docente(models.Model):
+    user = models.OneToOneField(User)
+    docente_referenciado = models.OneToOneField(Profesor, on_delete=models.CASCADE)
+
+
+class user_Secretaria(models.Model):
+    user = models.OneToOneField(User)
+    secreataria_referenciada = models.OneToOneField(Secretaria, on_delete=models.CASCADE)
