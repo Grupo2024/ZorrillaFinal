@@ -17,9 +17,9 @@
     </tr>
     </thead>
     <tbody>
-    {% for grado in todos_los_grados %}
+    {% for curso in todos_los_cursos %}
     <tr>
-        <td><a href="{% url 'cursos3' grado.id %}">{{grado.aNo}} de turno {{grado.turno_asignado.que_hora}}</a></td>
+        <td><a href="{% url 'cursos3' curso.id %}">{{curso.aNo}} de turno {{curso.turno}}</a></td>
     </tr>
     {% endfor %}
     </tbody>
