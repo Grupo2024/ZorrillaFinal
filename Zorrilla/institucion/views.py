@@ -109,4 +109,5 @@ def eliminar_docente(request, id_profesor):
     return JsonResponse(data, safe=True)
 
 def formProfesor(request):
-    return render(request, 'templates_docentes/formProfesor.html')
+    profesor = form_Profesor()
+    return render(request, 'templates_docentes/formProfesor.html', {'form':profesor})

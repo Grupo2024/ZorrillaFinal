@@ -30,6 +30,15 @@ class clave_Docente(models.Model):
 # Create your models here.
 
 class Trabajador(models.Model):
+
+    HO = 'Hombre'
+    MU = 'Mujer'
+
+    GENERO_CHOICES = (
+        (HO , 'Hombre'),
+        (MU , 'Mujer')
+    )
+
     nombre_t = models.CharField('Nombre del trabajador', max_length=40)
     apellido_t = models.CharField('Apellido del trabajador', max_length=40)
     dni_t = models.IntegerField('Dni del trabajador', primary_key=True)
@@ -37,9 +46,7 @@ class Trabajador(models.Model):
     fecha_nacimiento_t = models.DateField('Fecha Nacimiento', blank=True)
     domicilio_t = models.CharField('Domicilio del trabajador', max_length=150, blank=True)
     email_t = models.EmailField('Email del trabajador', max_length=70, blank=True)
-    sexo_t = models.BooleanField('Sexo del trabajador(True = Hombre)', null = False)#True = Hombre, False = Madre
-    #Datos estandares del trabajador, estos van a ser heredados x cualquier profesor, director o secretaria
-    #foto = models.ImageField(upload_to=get_image_path, blank=True, null=True)
+    sexo_t =models.CharField('Sexo', max_length=15, choices=GENERO_CHOICES)
     #BUSCAR LO DE FOTOS
     telefono_particular = models.IntegerField('Telefono Personal del Trabajador')
     telefono_laboral = models.IntegerField('Telefono Laboral del Trabajador')
