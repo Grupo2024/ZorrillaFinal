@@ -81,6 +81,10 @@ def get_alumno(request, string, dni_alumno):
             return render(request, 'templates_cursos/perfil_alumno.html', {'alumno':alumno})
     return HttpResponse("SOlo podes entrar por post")
 
+def datos_alumno(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    alumno.sexo = alumno.genero()
+    return render(request, 'perfilAlumno.html', {'alumno':alumno})
 
 def docentes(request):
     profesores = Profesor.objects.all()

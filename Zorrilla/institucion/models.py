@@ -121,7 +121,7 @@ class Curso(models.Model):
         if self.hora:
             self.turno = "Tarde"
         else:
-            self.turno = "Mañana"
+            self.turno = "Maniana"
         return self.turno
 
     def __str__(self):

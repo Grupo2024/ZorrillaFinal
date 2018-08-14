@@ -27,10 +27,11 @@
         {% for alumno in todos_los_alumnos %}
     <tr>
         <td>{{alumno.dni}}</td>
-        <td>{{alumno.apellido|title}} {{alumno.nombre|title}}"</td>
+        <td>{{alumno.apellido|title}} {{alumno.nombre|title}}</td>
         <td>{{alumno.fecha_nacimiento}}</td>
         <td><button class="btn btn-primary" onclick="get_alumno('{% url 'get_alumno' 'telefonos' alumno.dni %}')" id="info_book"><i style="font-size:15px" class="fa">&#xe182;</i></button></td>
         <td><button class="btn btn-primary" onclick="get_alumno('{% url 'get_alumno' 'otros' alumno.dni %}')" id="info_book"><i style="font-size:15px" class="fa">&#xe182;</i></button></td>
+        <td><a class="btn btn-primary" href="{% url 'datos_alumno' alumno.dni %}" id="info_book"><i style="font-size:15px" class="fa">&#xe182;</i></a></td>
     </tr>
         {% endfor %}
     </tbody>
