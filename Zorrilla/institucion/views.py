@@ -11,6 +11,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import *
 from .forms import *
+from .decorators import *
 import random
 
 def email_for_logIn(request):
@@ -35,7 +36,6 @@ def email_for_logIn(request):
     return render(request, 'templates_docentes/emailDocente.html')
 
 def template_email_docente(request):
-    
     ran = random.randrange(10**80)
     myhex = "%064x" % ran
     clave = myhex[:10].upper()
@@ -48,40 +48,43 @@ def template_email_docente(request):
 def cursos1(request):
     return render(request, 'templates_cursos/cursos1.html')
 
-"""
-def cursos2(request, turno):
-    if turno == 'Maniana':
-        turno = False
-    else:
-        turno = True
-    grados = Grado.objects.filter(turno_asignado__hora = turno)
-    for grado in grados:
-        if turno:
-            grado.turno = "Tarde"
-        else:
-            grado.turno = "Maniana"
-    return render(request, 'templates_cursos/cursos2.html', {'todos_los_grados':grados})
-
-"""
-
 def cursos2(request, turno):
     print turno
     if turno == "Maniana":
         turno = False
     else:
         turno = True
-    grados = Grado.objects.filter(turno_asignado__hora=turno)
-    return render(request, 'templates_cursos/cursos2.html', {'todos_los_grados':grados}, {'turno':turno} )
+    curso = Curso.objects.filter(hora=turno).order_by('aNo')
+    for a in curso:
+        a.new_turno()
+    return render(request, 'templates_cursos/cursos2.html', {'todos_los_cursos':curso}, {'turno':turno} )
 
-def cursos3(request, id_grado):
-    grado = Grado.objects.get(pk=id_grado)
-    seccion = Seccion.objects.filter(grado_asignado = grado)
-    return render(request, 'templates_cursos/cursos3.html', {'secciones_de_grados':seccion})
+def cursos3(request, id_curso):
+    curso = Curso.objects.get(pk=id_curso)
+    alumno = Alumno.objects.filter(curso=curso)
+    data_curso = {
+        'turno':curso.que_turno(),
+        'año':curso.aNo,
+        'seccion':curso.que_seccion()
+    }
+    return render(request, 'templates_cursos/cursos3.html', {'todos_los_alumnos':alumno, 'curso':data_curso})
 
-def cursos4(request, id_seccion):
-    seccion = Seccion.objects.get(id=id_seccion)
-    alumnos = Alumno.objects.filter(seccion_asignada=seccion)
-    return render(request, 'templates_cursos/cursos4.html',{'alumnos':alumnos})
+def get_alumno(request, string, dni_alumno):
+    if request.method == 'POST':
+        alumno = Alumno.objects.get(dni=dni_alumno)
+        alumno.genero = alumno.genero()
+        if string == "telefonos":
+            print "telefono"
+            return render(request, 'templates_cursos/telefonos_alumno.html', {'alumno':alumno})
+        else:
+            print "otro"
+            return render(request, 'templates_cursos/perfil_alumno.html', {'alumno':alumno})
+    return HttpResponse("SOlo podes entrar por post")
+
+def datos_alumno(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    alumno.sexo = alumno.genero()
+    return render(request, 'perfilAlumno.html', {'alumno':alumno})
 
 def docentes(request):
     profesores = Profesor.objects.all()
@@ -94,7 +97,23 @@ def docentes(request):
 def profesor(request, id_profesor):
     profesor = Profesor.objects.get(dni_t=id_profesor)
     profesor.sexo = profesor.genero()
-    return render(request, 'templates_docentes/perfilProfesor.html', {'profesor':profesor})
+    return render(request, 'templates_docentes/perfilProfesor.html', {'trabajador':profesor})
+
+
+def mi_perfil(request):
+    user = User.objects.get(username=request.user)
+    if check_Profesor(user):
+        udocente = user_Docente.objects.get(user=user)
+        trabajador = Profesor.objects.get(dni_t=udocente.docente_referenciado.dni_t)
+        return render(request, 'templates_docentes/mi_perfil.html',{'trabajador':trabajador})
+    elif check_Director(user):
+        udirector = user_Director.objects.get(user=user)
+        trabajador = Director.objects.get(dni_t=udirector.director_referenciado.dni_t)
+        return render(request, 'templates_docentes/mi_perfil.html',{'trabajador':trabajador})
+    elif check_Secretaria(user):
+        usecretaria = user_Secretaria.objects.get(user=user)
+        trabajador = Secretaria.objects.get(dni_t=usecretaria.secretaria_referenciada.dni_t)
+        return render(request, 'templates_docentes/mi_perfil.html',{'trabajador':trabajador})
 
 def eliminar_docente(request, id_profesor):
     profesor = Profesor.objects.get(dni=id_profesor)
@@ -107,6 +126,11 @@ def eliminar_docente(request, id_profesor):
             'resultado': "Hubo un error"
         }
     return JsonResponse(data, safe=True)
+
+def volver_curso(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    id_curso = alumno.curso.id
+    return redirect(cursos3, id_curso)
 
 def formProfesor(request):
     return render(request, 'templates_docentes/formProfesor.html')

@@ -14,10 +14,6 @@ from django.core.mail import send_mail
 
 # Create your views here.
 
-def asdf(request):
-    alumno = AlumnoForm()
-    return render(request, 'test.html', {'form':alumno})
-
 def index(request):
     print "index"
     user2 = User.objects.get(username="profesor")

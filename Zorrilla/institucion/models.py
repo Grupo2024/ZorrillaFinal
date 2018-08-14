@@ -94,7 +94,7 @@ class Curso(models.Model):
     seccion = models.BooleanField('True = B o D, dependiendo de si es turno mañana o tarde', null=False)
 
     def que_turno(self):
-        aux = 'Maniana'
+        aux = 'Mañana'
         if (self.hora == True):
             aux = 'Tarde'
             return aux
@@ -117,6 +117,13 @@ class Curso(models.Model):
             else:
                 return aux
 
+    def new_turno(self):
+        if self.hora:
+            self.turno = "Tarde"
+        else:
+            self.turno = "Maniana"
+        return self.turno
+
     def __str__(self):
         return 'El Grado {} {} asiste al turno {}'.format(self.aNo, self.que_seccion() ,self.que_turno())
 
@@ -135,7 +142,10 @@ class user_Docente(models.Model):
     user = models.OneToOneField(User)
     docente_referenciado = models.OneToOneField(Profesor, on_delete=models.CASCADE)
 
-
 class user_Secretaria(models.Model):
     user = models.OneToOneField(User)
-    secreataria_referenciada = models.OneToOneField(Secretaria, on_delete=models.CASCADE)
+    secretaria_referenciada = models.OneToOneField(Secretaria, on_delete=models.CASCADE)
+
+class user_Director(models.Model):
+    user = models.OneToOneField(User)
+    director_referenciado = models.OneToOneField(Director, on_delete=models.CASCADE)
