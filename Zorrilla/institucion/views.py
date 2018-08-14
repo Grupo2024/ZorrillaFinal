@@ -111,5 +111,10 @@ def eliminar_docente(request, id_profesor):
         }
     return JsonResponse(data, safe=True)
 
+def volver_curso(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    id_curso = alumno.curso.id
+    return redirect(cursos3, id_curso)
+
 def formProfesor(request):
     return render(request, 'templates_docentes/formProfesor.html')
