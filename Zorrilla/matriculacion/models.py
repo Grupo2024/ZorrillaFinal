@@ -6,6 +6,15 @@ from institucion.models import *
 # Create your models here.
 
 class Persona(models.Model):
+    
+    HO = 'Hombre'
+    MU = 'Mujer'
+    
+    GENERO_CHOICES = (
+        (HO , 'Hombre'),
+        (MU , 'Mujer'),
+    )
+    
     nombre = models.CharField('Nombre', max_length=40)
     apellido = models.CharField('Apellido', max_length=40)
     dni = models.IntegerField('Dni', primary_key=True)
@@ -13,7 +22,7 @@ class Persona(models.Model):
     fecha_nacimiento = models.DateField('Fecha de nacimiento', default="2000-10-10")
     domicilio = models.CharField('Domicilio', max_length=150, blank=True)
     email = models.EmailField('Email', max_length=70, blank=True)
-    sexo = models.BooleanField('Sexo', null = False)#True = Hombre, False = Madre
+    sexo = models.CharField('Sexo', max_length=6, choices=GENERO_CHOICES)
 
     #Datos estandares de persona, estos van a ser heredados x cualquier profesor o alumno
 
