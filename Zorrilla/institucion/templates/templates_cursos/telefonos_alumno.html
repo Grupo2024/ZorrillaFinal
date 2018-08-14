@@ -12,7 +12,6 @@
             <span class="badge badge-secondary">Apellido:</span><div class="alert alert-secondary" role="alert">{{alumno.apellido}}</div>
             <span class="badge badge-secondary">Nombre:</span><div class="alert alert-secondary" role="alert">{{alumno.nombre}}</div>
             <span class="badge badge-secondary">Dni:</span><div class="alert alert-secondary" role="alert">{{alumno.dni}}</div>
-            <span class="badge badge-secondary">Domicilio:</span><div class="alert alert-secondary" role="alert">{{alumno.domicilio}}</div>
             <span class="badge badge-secondary">Telefono Casa:</span><div class="alert alert-secondary" role="alert">{{alumno.telefono_casa}}</div>
             <span class="badge badge-secondary">Telefono Padre:</span><div class="alert alert-secondary" role="alert">{{alumno.telefono_padre}}</div>
             <span class="badge badge-secondary">Telefono Casa:</span><div class="alert alert-secondary" role="alert">{{alumno.telefono_madre}}</div>
@@ -26,12 +25,3 @@
 
     </div>
 </div>
-
-    nombre = models.CharField('Nombre', max_length=40)
-    apellido = models.CharField('Apellido', max_length=40)
-    dni = models.IntegerField('Dni', primary_key=True)
-    lugar_nacimiento = models.CharField('Lugar de Nacimiento', max_length=150, blank=True)
-    fecha_nacimiento = models.DateField('Fecha de nacimiento', default="2000-10-10")
-    domicilio = models.CharField('Domicilio', max_length=150, blank=True)
-    email = models.EmailField('Email', max_length=70, blank=True)
-    sexo = models.BooleanField('Sexo', null = False)

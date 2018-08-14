@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^email_for_logIn',email_for_logIn, name="email_for_logIn"),
     url(r'^perfilProfesor/(\d+)/$', profesor, name="profesor"),
     url(r'^dlt_profesor/(\d+)/$', eliminar_docente, name="eliminar_docente"),
-    url(r'^perfil_alumno/(\d+)/$', perfil_alumno, name="perfil_alumno"),
+    url(r'^get_alumno/(?P<string>[\w\-]+)-(?P<dni_alumno>\d+)$$', get_alumno, name="get_alumno"),
     url(r'crear_profesor/', crear_profesor, name="crear_profesor"),
     url(r'^formProfesor', formProfesor, name="formProfesor"),
 ]

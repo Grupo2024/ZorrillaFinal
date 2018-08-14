@@ -69,13 +69,16 @@ def cursos3(request, id_curso):
     }
     return render(request, 'templates_cursos/cursos3.html', {'todos_los_alumnos':alumno, 'curso':data_curso})
 
-def perfil_alumno(request, dni_alumno, string):
+def get_alumno(request, string, dni_alumno):
     if request.method == 'POST':
         alumno = Alumno.objects.get(dni=dni_alumno)
-        if string:
+        alumno.genero = alumno.genero()
+        if string == "telefonos":
+            print "telefono"
             return render(request, 'templates_cursos/telefonos_alumno.html', {'alumno':alumno})
         else:
-            return render(request, 'templates_cursos/datos_alumno.html', {'alumno':alumno})
+            print "otro"
+            return render(request, 'templates_cursos/perfil_alumno.html', {'alumno':alumno})
     return HttpResponse("SOlo podes entrar por post")
 
 
