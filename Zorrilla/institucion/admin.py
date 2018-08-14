@@ -13,4 +13,5 @@ admin.site.register(clave_Docente)
 admin.site.register(Asignacion)
 admin.site.register(user_Docente)
 admin.site.register(user_Secretaria)
+admin.site.register(user_Director)
 # Register your models here.

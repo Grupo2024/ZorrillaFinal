@@ -11,6 +11,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import *
 from .forms import *
+from .decorators import *
 import random
 
 def email_for_logIn(request):
@@ -35,7 +36,6 @@ def email_for_logIn(request):
     return render(request, 'templates_docentes/emailDocente.html')
 
 def template_email_docente(request):
-    
     ran = random.randrange(10**80)
     myhex = "%064x" % ran
     clave = myhex[:10].upper()
@@ -98,6 +98,22 @@ def profesor(request, id_profesor):
     profesor = Profesor.objects.get(dni_t=id_profesor)
     profesor.sexo = profesor.genero()
     return render(request, 'templates_docentes/perfilProfesor.html', {'trabajador':profesor})
+
+
+def mi_perfil(request):
+    user = User.objects.get(username=request.user)
+    if check_Profesor(user):
+        udocente = user_Docente.objects.get(user=user)
+        trabajador = Profesor.objects.get(dni_t=udocente.docente_referenciado.dni_t)
+        return render(request, 'templates_docentes/mi_perfil.html',{'trabajador':trabajador})
+    elif check_Director(user):
+        udirector = user_Director.objects.get(user=user)
+        trabajador = Director.objects.get(dni_t=udirector.director_referenciado.dni_t)
+        return render(request, 'templates_docentes/mi_perfil.html',{'trabajador':trabajador})
+    elif check_Secretaria(user):
+        usecretaria = user_Secretaria.objects.get(user=user)
+        trabajador = Secretaria.objects.get(dni_t=usecretaria.secretaria_referenciada.dni_t)
+        return render(request, 'templates_docentes/mi_perfil.html',{'trabajador':trabajador})
 
 def eliminar_docente(request, id_profesor):
     profesor = Profesor.objects.get(dni=id_profesor)

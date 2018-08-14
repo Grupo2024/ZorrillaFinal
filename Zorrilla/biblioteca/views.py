@@ -9,6 +9,7 @@ import datetime
 from .decorators import *
 import xlwt
 
+@user_passes_test(check_Director)
 def export_books(request):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="reporte_biblioteca.xls"'

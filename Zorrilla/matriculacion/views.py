@@ -20,20 +20,6 @@ def index(request):
     print user2.password
     return render(request, 'index.html')
 
-def mi_perfil(request):
-    print request.user
-    user2 = User.objects.get(username=request.user)
-    user_model= user_Docente.objects.get(user=user2)
-    if user_model:
-        resultado = "Es un Docente"
-    user_model = user_Secretaria.objects.filter(user=user2)
-    if user_model:
-        resultado = "No es Docente"
-    data = {
-        'asdf':resultado
-    }
-    return JsonResponse(data)
-
 def formulario(request):
     return render(request, 'formulario.html')
 

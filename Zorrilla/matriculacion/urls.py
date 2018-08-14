@@ -14,7 +14,6 @@ urlpatterns = [
     url(r'^get_Secciones/(\d+)/', get_Secciones, name="get_Secciones"),
     url(r'^logout_me_out', logout_me_out, name="logout_me_out"),
     url(r'^pedidos', aceptar_matriculaciones, name="pedidos"),
-    url(r'^mi_perfil', mi_perfil, name="mi_perfil"),
     url(r'crear_alumno/', crear_alumno, name="crear_alumno"),
     url(r'^aceptar_matriculacion/$', aceptar_matriculacion, name="aceptar_matriculacion"),
     url(r'^perfilAlumno/(\d+)/$', alumno, name="alumno"),

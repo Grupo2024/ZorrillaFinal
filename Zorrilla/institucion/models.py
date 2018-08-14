@@ -142,7 +142,10 @@ class user_Docente(models.Model):
     user = models.OneToOneField(User)
     docente_referenciado = models.OneToOneField(Profesor, on_delete=models.CASCADE)
 
-
 class user_Secretaria(models.Model):
     user = models.OneToOneField(User)
-    secreataria_referenciada = models.OneToOneField(Secretaria, on_delete=models.CASCADE)
+    secretaria_referenciada = models.OneToOneField(Secretaria, on_delete=models.CASCADE)
+
+class user_Director(models.Model):
+    user = models.OneToOneField(User)
+    director_referenciado = models.OneToOneField(Director, on_delete=models.CASCADE)
