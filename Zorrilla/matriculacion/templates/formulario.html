@@ -4,6 +4,14 @@
 {% endblock navbar %}
 {% block body %}
 
+<style type="text/css">
+  input{
+    width: 140%
+  }
+  #a{
+    width: 75%
+  }
+</style>
 
   <form method="post" enctype="multipart/form-data" action="{% url 'crear_alumno' %}" id="form_alumno">
   {% csrf_token %}
@@ -49,7 +57,7 @@
                   <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
                 </div>
                 <br>
-                <div style="margin-left:-2.4%">{{ form.fecha_nacimiento }}</div>
+                <div id="a"  style="margin-left:-2.4%">{{ form.fecha_nacimiento }}</div>
             </div>
             <div class="input-group input-group-sm mb-3 form-group">
                 <div class="input-group-prepend">
@@ -57,6 +65,13 @@
                 </div>
                 <br>
                 <div style="margin-left:-7%">{{ form.domicilio }}</div>
+            </div>
+
+            <div class="input-group input-group-sm mb-3 form-group">
+                <div class="input-group-prepend">
+                  <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
+                </div>
+                <div style="margin-left: -8%">{{ form.sexo }}</div>
             </div>
           </li>
 
