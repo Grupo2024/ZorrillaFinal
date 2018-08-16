@@ -47,22 +47,6 @@ def template_email_docente(request):
 def cursos1(request):
     return render(request, 'templates_cursos/cursos1.html')
 
-"""
-def cursos2(request, turno):
-    if turno == 'Maniana':
-        turno = False
-    else:
-        turno = True
-    grados = Grado.objects.filter(turno_asignado__hora = turno)
-    for grado in grados:
-        if turno:
-            grado.turno = "Tarde"
-        else:
-            grado.turno = "Maniana"
-    return render(request, 'templates_cursos/cursos2.html', {'todos_los_grados':grados})
-
-"""
-
 def cursos2(request, turno):
     print turno
     if turno == "Maniana":

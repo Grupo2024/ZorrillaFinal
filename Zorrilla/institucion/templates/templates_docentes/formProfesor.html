@@ -17,7 +17,7 @@
   }
 </style>
 
-  <form method="post" enctype="multipart/form-data" action="{% url 'crear_alumno' %}" id="form_alumno">
+  <form method="post" enctype="multipart/form-data" id="form_alumno">
   {% csrf_token %}
   <div class='row' style="margin-top:2%">
     <div class="card text-center" style="width: 26%; margin-left: 6%">
@@ -75,7 +75,7 @@
                   <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
                 </div>
                 <br>
-                <div style="margin-left:-7%">{{ form.sexo_t }}</div>
+                <div style="margin-left:-1%">{{ form.sexo_t }}</div>
             </div>
           </li>
 
@@ -117,7 +117,7 @@
                   <span style="margin-left: -22%;" class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
                 </div>
                 <br>
-                <div style="margin-left:4.1%">{{ form.email_t }}</div>
+                <div style="margin-left:-2.129999%">{{ form.email_t }}</div>
             </div>
      </div>
    </div>
@@ -142,7 +142,13 @@
                 <br>
                 <div style="margin-left:-5%">{{ form.antecedentes_laborales }}</div>
             </div>
-
+            <div class="input-group input-group-sm mb-3 form-group">
+                <div class="input-group-prepend">
+                  <span style="margin-left: -7.5%;" class="input-group-text" id="inputGroup-sizing-sm">Clave Unica:</span>
+                </div>
+                <br>
+                <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" value="" aria-describedby="inputGroup-sizing-sm" id="profesor_clave" name="profesor_clave">
+            </div>
           </li>
         </ul>
       </div>
@@ -150,6 +156,35 @@
     </div>
 
   </form> 
-  <center><button type="submit" class="btn btn-success" style="width:30%">Cargar</button></center>
+  <center><button onclick="crear_Profesor()" class="btn btn-success" style="width:30%">Cargar</button></center>
+      <div id="snackbar"><span id="span_result"></span></div>
+      
+    <script>
+      
+      function crear_Profesor(){
+        var myForm = document.getElementById('form_alumno');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: 'login/',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                console.log(data.error);
+                if (data.error){
+                    var y = document.getElementById("snackbar");
+                    y.className = "show";
+                    document.getElementById("span_result").innerHTML = data.estado;
+                    setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
+                }else{
+                    
+                }
+            }
+        });
+    }
+
+      
+      </script>
 
 {% endblock body %}

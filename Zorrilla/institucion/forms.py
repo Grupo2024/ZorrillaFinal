@@ -12,7 +12,7 @@ class ProfesorFrom(forms.ModelForm):
     class Meta:
         model = Profesor
         fields =('nombre_t','apellido_t','dni_t','fecha_nacimiento_t','lugar_nacimiento_t','domicilio_t','email_t','sexo_t','telefono_particular','telefono_laboral',
- 'telefono_familiar','datos_familiares_cargo','fecha_inicio_actividad','antecedentes_laborales','antiguedad_en_empresa','estudios_cursados')
+ 'telefono_familiar','datos_familiares_cargo','fecha_inicio_actividad','antecedentes_laborales','estudios_cursados')
         widgets = {
             'fecha_nacimiento_t': DateInput()
         }

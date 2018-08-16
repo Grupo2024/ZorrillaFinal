@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from matriculacion.models import *
+import random
 
 # Create your models here.
 
@@ -28,6 +29,15 @@ class clave_Docente(models.Model):
 # Create your models here.
 
 class Trabajador(models.Model):
+    
+    HO = 'Hombre'
+    MU = 'Mujer'
+    
+    GENERO_CHOICES = (
+        (HO , 'Hombre'),
+        (MU , 'Mujer')
+    )
+    
     nombre_t = models.CharField('Nombre del trabajador', max_length=40)
     apellido_t = models.CharField('Apellido del trabajador', max_length=40)
     dni_t = models.IntegerField('Dni del trabajador', primary_key=True)
@@ -35,7 +45,7 @@ class Trabajador(models.Model):
     fecha_nacimiento_t = models.DateField('Fecha Nacimiento', blank=True)
     domicilio_t = models.CharField('Domicilio del trabajador', max_length=150, blank=True)
     email_t = models.EmailField('Email del trabajador', max_length=70, blank=True)
-    sexo_t = models.BooleanField('Sexo del trabajador(True = Hombre)', null = False)#True = Hombre, False = Madre
+    sexo_t = models.CharField('Sexo', max_length=15, choices=GENERO_CHOICES)
     #Datos estandares del trabajador, estos van a ser heredados x cualquier profesor, director o secretaria
     #foto = models.ImageField(upload_to=get_image_path, blank=True, null=True)
     #BUSCAR LO DE FOTOS
@@ -45,7 +55,7 @@ class Trabajador(models.Model):
     datos_familiares_cargo = models.TextField('Nombre y Apellido de familiar del Trabajador', max_length=300)
     fecha_inicio_actividad = models.DateField('Fecha de Inicio de Clases en el Colegio')
     antecedentes_laborales = models.TextField('Datos de Trabajos Previos', max_length=300)
-    antiguedad_en_empresa = models.DateField('Antiguedad en la Empresa')
+    antiguedad_en_empresa = models.DateField('Antiguedad en la Empresa', null=True)
     estudios_cursados = models.TextField('Estudios del Trabajador', max_length=300)
 
     def genero(self):
@@ -72,6 +82,22 @@ class Profesor(Trabajador):
 
     def __str__(self):
         return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre_t, self.apellido_t, self.dni_t, self.sexo_t)
+    
+    
+    def create_pass_user(self):
+        name_f = ""
+        cantidad = 0
+        r = random.randint(1111,9999)
+        for a in self.nombre_t:
+            cantidad = cantidad + 1
+            if cantidad == 1:
+                name_f = a
+                break
+            else:
+                pass
+        password = name_f + str(r) + self.apellido_t 
+        username = name_f + self.apellido_t
+    return password, username
 
 
 class Director(Trabajador):
