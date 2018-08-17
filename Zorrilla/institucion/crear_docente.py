@@ -7,6 +7,8 @@ from matriculacion.models import *
 from .forms import *
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth.models import Group
+
 
 def crear_profesor(request):
     if request.method == 'POST':
@@ -39,6 +41,8 @@ def crear_profesor(request):
                 password = profesor.create_pass_user()
                 user_d = User.objects.create_user(username=profesor.create_username(), password=password)
                 print password
+                my_group = Group.objects.get(name='Profesor') 
+                my_group.user_set.add(user_d)
                 user_d.save()
                 profesor.save()
                 user_docente = user_Docente(user=user_d, docente_referenciado=profesor)

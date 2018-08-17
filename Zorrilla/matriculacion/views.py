@@ -108,6 +108,7 @@ def template_get_pass(request):
     form = get_Password()
     return render (request, 'new_password/my_info.html', {'form':form})
 
+#Funcion para cambiar la password del usuario.
 def userDocente(request):
     if request.method == "POST":
         form = get_Password(request.POST)

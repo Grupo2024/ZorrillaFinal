@@ -22,12 +22,10 @@ def email_for_logIn(request):
             docente_email = form.cleaned_data['email_docente']
             docente_dni = form.cleaned_data['dni_docente']
             clave = request.POST['claveDoc']
-            profesor = Profesor.objects.get(email_t=docente_email)
-            ingresado = False
-            clave_Docente2 = clave_Docente(clave_logIn=clave, email_docente=docente_email, dni_docente=docente_dni, ingresado=ingresado)
+            clave_Docente2 = clave_Docente(clave_logIn=clave, email_docente=docente_email, dni_docente=docente_dni)
             clave_Docente2.save()
-            subject = "Cambio de clave"
-            message = "En el dia de la fecha el instituto Zorrilla le notifica que al usuario con direccion" + str(profesor.email_t) + " de dni: " + str(profesor.dni_t) + " se le ha cambiado la contraseña a " + str(clave)
+            subject = "Clave para Iniciar"
+            message = "En el dia de la fecha el instituto Zorrilla le notifica que ya tiene disponible el ingreso al formulario para cargar sus datos en nuestro sistema con la clave " + str(clave)
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [docente_email]
             send_mail( subject, message, email_from, recipient_list )
