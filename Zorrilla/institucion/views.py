@@ -6,14 +6,14 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib.auth import authenticate, login, logout
-from .crear_docente import *
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import *
 from .forms import *
-from .decorators import *
+from biblioteca.decorators import *
 from .crear_docente import *
 import random
+import datetime
 
 def email_for_logIn(request):
     if request.method == 'POST':
@@ -30,9 +30,9 @@ def email_for_logIn(request):
             recipient_list = [docente_email]
             send_mail( subject, message, email_from, recipient_list )
             return redirect('template_email_docente')
-    else:
-        print "no funca"
-    return render(request, 'templates_docentes/emailDocente.html')
+        else:
+            print "no funca"
+        return render(request, 'templates_docentes/emailDocente.html')
 
 def template_email_docente(request):
     ran = random.randrange(10**80)
@@ -87,17 +87,18 @@ def datos_alumno(request, dni_alumno):
 
 def docentes(request):
     profesores = Profesor.objects.all()
-    for a in profesores:
-        a.genero = a.genero()
-        print a.nombre_t
     return render(request, 'templates_docentes/docentes.html', {'profesores':profesores})
 
 
 def profesor(request, id_profesor):
     profesor = Profesor.objects.get(dni_t=id_profesor)
-    profesor.sexo = profesor.genero()
     return render(request, 'templates_docentes/perfilProfesor.html', {'trabajador':profesor})
 
+@user_passes_test(check_Profesor)
+def modificar_profesor(request):
+    print request.user
+    udocente = user_Docente.objects.get(user__username=request.user)
+    return render(request, 'templates_docentes/perfilProfesor.html', {'trabajador':udocente.docente_referenciado})
 
 def mi_perfil(request):
     user = User.objects.get(username=request.user)

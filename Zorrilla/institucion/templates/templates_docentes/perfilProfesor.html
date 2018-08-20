@@ -10,7 +10,7 @@
 
 {% if request.user|has_group:"Profesor" %}
 
-<form  id="create_teacher" action="{% url 'crear_profesor' %}" method="post">
+<form id="modify_teacher" method="post">
     {% csrf_token %}
     <div class='row'>
         <div class="card text-center" style="width: 30%; height: 77%; margin-left: 3%">
@@ -65,16 +65,9 @@
 
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Email</span>
-                            </div>
-                            <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_mail" name="profesor_mail" value={{trabajador.email_t}}>
-                        </div>
-
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Sexo</span>
                             </div>
-                            <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_mail" name="profesor_sexo" value={{trabajador.genero}}>
+                            <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_mail" name="profesor_sexo" value={{trabajador.sexo_t}}>
                         </div>
 
                     </li>
@@ -124,6 +117,13 @@
                                    value={{trabajador.datos_familiares_cargo}}>
                         </div>
 
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Email</span>
+                            </div>
+                            <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_mail" name="profesor_mail" value={{trabajador.email_t}}>
+                        </div>
+
                     </li>
 
                 </ul>
@@ -162,15 +162,6 @@
                             <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_antecedentes_laborales" name="profesor_antecedentes_laborales"
                                    value={{trabajador.antecedentes_laborales}}>
                         </div>
-
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Antiguedad</span>
-                            </div>
-                            <input style="margin-left: 0px; height: 31px" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_antiguedad_en_empresa" name="profesor_antiguedad_en_empresa"
-                                   value={{trabajador.antiguedad_en_empresa}}>
-                        </div>
-
                     </li>
 
                 </ul>
@@ -182,9 +173,7 @@
 </form>
 
 {% endif %}    
-{% if request.user|has_group:"Director" %}
-
-
+{% if request.user|has_group:"Secretaria" %}
 
 <div class='row'>
     <div class="card text-center" style="width: 30%; margin-left: 3%">
@@ -196,7 +185,7 @@
                 <li class="list-group-item">Fecha de nacimiento: {{trabajador.fecha_nacimiento_t}}</li>
                 <li class="list-group-item">Domicilio: {{trabajador.domicilio_t}}</li>
                 <li class="list-group-item">Email: {{trabajador.email_t}}</li>
-                <li class="list-group-item">Sexo: {{trabajador.genero}}</li>
+                <li class="list-group-item">Sexo: {{trabajador.sexo_t}}</li>
             </ul>
         </div>
     </div>
@@ -208,7 +197,7 @@
                 <li class="list-group-item">Telefono particular: {{trabajador.telefono_particular}}</li>
                 <li class="list-group-item">Telefono laboral: {{trabajador.telefono_laboral}}</li>
                 <li class="list-group-item">Telefono de familiar: {{trabajador.telefono_familiar}}</li>
-                <li class="list-group-item">Datos de familiar: {{trabajador.datos_familiares_cargo}}</li>
+                <li class="list-group-item">Datos de familia: {{trabajador.datos_familiares_cargo}}</li>
             </ul>
         </div>
     </div>
@@ -220,7 +209,7 @@
                 <li class="list-group-item">Estudios: {{trabajador.estudios_cursados}}</li>
                 <li class="list-group-item">Fecha de inicio: {{trabajador.fecha_inicio_actividad}}</li>
                 <li class="list-group-item">Antecedentes laborales: {{trabajador.antecedentes_laborales}}</li>
-                <li class="list-group-item">Antiguedad: {{trabajador.antiguedad_en_empresa}}</li>
+                <!-- <li class="list-group-item">Antiguedad: {{trabajador.antiguedad_t}}</li> -->
             </ul>
         </div>
     </div>

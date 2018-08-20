@@ -3,6 +3,9 @@
 {% block navbar %}
 {% endblock navbar %}
 {% block body %}
+
+{% load poll_extras %}
+
 <style type="text/css">
     .asd{
             width:50%;
@@ -20,12 +23,14 @@
 
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
           <div class="card-body">
+            {% if request.user|has_group:"Secretaria" %}
             <a href="{% url 'form' %}" class="btn btn-success asd">Agregar alumnos</a>
             <br>
             <br>
             <a href="{% url 'pedidos' %}" class="btn btn-primary asd">Matricular alumnos</a>
             <br>
             <br>
+            {% endif %}
             <a href="{% url 'cursos1' %}" class="btn btn-danger asd">Ver alumnos</a>
           </div>
         </div>
@@ -38,14 +43,21 @@
         </div>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
           <div class="card-body">
+            {% if request.user|has_group:"Secretaria" %}
             <a href="{% url 'formProfesor' %}" class="btn btn-success asd">Agregar docente</a>
             <br>
             <br>
             <a href="{% url 'template_email_docente' %}" class="btn btn-primary asd">Matricular docente</a>
             <br>
             <br>
+            {% endif %}
             <a href="{% url 'docentes' %}" class="btn btn-danger asd">Ver docentes</a>
-          </div>
+            {% if request.user|has_group:"Profesor" %}
+                <br>
+                <br>
+                <a href="{% url 'modificar_profesor' %}" class="btn btn-success asd">Modificar Datos</a>
+            {% endif %}
+        </div>
         </div>
       </div>
       <div class="card">
@@ -56,7 +68,7 @@
         </div>
         <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
           <div class="card-body">
-            <a href="{% url 'biblioteca' %}" class="btn btn-success asd">Ver Biblioteca</a>
+            <a href="{% url 'biblioteca' %}" class="btn btn-danger asd">Ver Biblioteca</a>
           </div>
         </div>
       </div>

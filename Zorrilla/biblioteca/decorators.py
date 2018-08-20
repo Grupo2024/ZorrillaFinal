@@ -11,6 +11,11 @@ def check_Profesor(user):
         return True
     return False
 
+def check_Secretaria(user):
+    if Group.objects.get(name='Secretaria') in user.groups.all():
+        return True
+    return False
+
 def check_Director_or_Profesor(user):
     if Group.objects.get(name='Director') in user.groups.all():
         return True

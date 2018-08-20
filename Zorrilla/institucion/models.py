@@ -8,8 +8,6 @@ import random
 
 from django.contrib.auth.models import User
 
-from django.contrib.auth.models import User #Para el user
-
 # Create your models here.
 
 class clave_Docente(models.Model):
