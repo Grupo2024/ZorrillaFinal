@@ -17,7 +17,7 @@
   }
 </style>
 
-  <form method="post" enctype="multipart/form-data" id="form_alumno">
+  <form method="post" enctype="multipart/form-data" id="form_docente">
   {% csrf_token %}
   <div class='row' style="margin-top:2%">
     <div class="card text-center" style="width: 26%; margin-left: 6%">
@@ -112,6 +112,14 @@
                 </div>
                 <div style="margin-left: -5%; margin-top: 0%;">{{ form.telefono_familiar }}</div>
             </div>
+
+            <div class="input-group input-group-sm mb-3 form-group">
+                <div class="input-group-prepend">
+                  <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Datos familiares a cargo:</span>
+                </div>
+                <div style="margin-left: -5%; margin-top: 0%;">{{ form.datos_familiares_cargo }}</div>
+            </div>
+
             <div class="input-group input-group-sm mb-3 form-group">
                 <div class="input-group-prepend">
                   <span style="margin-left: -22%;" class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
@@ -162,10 +170,10 @@
     <script>
       
       function crear_Profesor(){
-        var myForm = document.getElementById('form_alumno');
+        var myForm = document.getElementById('form_docente');
         formData = new FormData(myForm);
         $.ajax({
-            url: 'login/',
+            url: 'crear_profesor/',
             data: formData,
             processData: false,
             contentType: false,
@@ -178,7 +186,7 @@
                     document.getElementById("span_result").innerHTML = data.estado;
                     setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
                 }else{
-                    
+                    alert(data.estado)
                 }
             }
         });

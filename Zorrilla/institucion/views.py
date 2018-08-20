@@ -11,6 +11,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import *
 from .forms import *
+from .crear_docente import *
 import random
 
 def email_for_logIn(request):
@@ -91,5 +92,5 @@ def eliminar_docente(request, id_profesor):
     return JsonResponse(data, safe=True)
 
 def formProfesor(request):
-    form = ProfesorFrom()
+    form = ProfesorForm()
     return render(request, 'templates_docentes/formProfesor.html', {'form':form})

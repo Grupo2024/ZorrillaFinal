@@ -6,6 +6,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from matriculacion.models import *
 import random
 
+from django.contrib.auth.models import User
+
 # Create your models here.
 
 class clave_Docente(models.Model):
@@ -53,7 +55,7 @@ class Trabajador(models.Model):
     telefono_laboral = models.IntegerField('Telefono Laboral del Trabajador')
     telefono_familiar = models.IntegerField('Telefono de algun Familiar del Trabajador')
     datos_familiares_cargo = models.TextField('Nombre y Apellido de familiar del Trabajador', max_length=300)
-    fecha_inicio_actividad = models.DateField('Fecha de Inicio de Clases en el Colegio')
+    fecha_inicio_actividad = models.DateField('Fecha de Inicio de Clases en el Colegio', null=True)
     antecedentes_laborales = models.TextField('Datos de Trabajos Previos', max_length=300)
     antiguedad_en_empresa = models.DateField('Antiguedad en la Empresa', null=True)
     estudios_cursados = models.TextField('Estudios del Trabajador', max_length=300)
@@ -96,8 +98,21 @@ class Profesor(Trabajador):
             else:
                 pass
         password = name_f + str(r) + self.apellido_t 
+        return password
+
+    def create_username(self):
+        name_f = ""
+        cantidad = 0
+        r = random.randint(1111,9999)
+        for a in self.nombre_t:
+            cantidad = cantidad + 1
+            if cantidad == 1:
+                name_f = a
+                break
+            else:
+                pass
         username = name_f + self.apellido_t
-    return password, username
+        return username
 
 
 class Director(Trabajador):
