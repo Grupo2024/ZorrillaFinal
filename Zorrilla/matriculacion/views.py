@@ -11,6 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import *
 from django.conf import settings
 from django.core.mail import send_mail
+from biblioteca.decorators import *
 
 # Create your views here.
 
@@ -29,21 +30,21 @@ def formulario(request):
         form = AlumnoForm()
     return render(request, 'formulario.html', {'form':form})
 
-def cursos(request):
-    return render(request, 'cursos.html')
-
 def logIn(request):
     return render(request, 'docentes_login.html')
 
+@login_required
 def logout_me_out(request):
     auth.logout(request)
     return redirect ('index')
 
+#Esta hay que corregirla
 def get_Secciones(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     seccion = Seccion.objects.filter('grado_asignado.aNo','curso')
     return render(request, 'select_curso.html', {'secciones':seccion, 'alumno':alumno})
 
+@user_passes_test(check_Secretaria)
 def aceptar_matriculaciones(request):
     matriculaciones = Matriculacion.objects.filter(matriculado=False)
     if matriculaciones:
@@ -52,6 +53,8 @@ def aceptar_matriculaciones(request):
         matriculaciones = []
         return render(request, 'pedidos.html', {'matriculaciones':matriculaciones})
 
+#Hay que arreglarlo
+@user_passes_test(check_Secretaria)
 def aceptar_matriculacion(request):
     if request.method == 'POST':
         dni_alumno = request.POST['dni_alumno']
@@ -77,13 +80,13 @@ def aceptar_matriculacion(request):
             }
     return JsonResponse(data, safe=True)
 
+@login_required
 def alumno(request, id_alumno):
     alumno = Alumno.objects.get(dni=id_alumno)
     alumno.sexo = alumno.genero()
     return render(request, 'perfilAlumno.html', {'alumno':alumno})
 
 def login(request):
-    print "enreaas"
     if request.method == 'POST':
         username = request.POST['user']
         password = request.POST['pass']
@@ -103,7 +106,7 @@ def login(request):
     return JsonResponse(data, safe=True)
 
 
-#Function that render my_info Template wuth a form to get my new password.
+#Function that render my_info Template with a form to get my new password.
 def template_get_pass(request):
     form = get_Password()
     return render (request, 'new_password/my_info.html', {'form':form})

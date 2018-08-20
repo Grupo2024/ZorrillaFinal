@@ -51,10 +51,10 @@
             <br>
             <br>
             {% endif %}
+            {% if request.user|has_group:"Secretaria" or request.user|has_group:"Director" %}
             <a href="{% url 'docentes' %}" class="btn btn-danger asd">Ver docentes</a>
+            {% endif %}
             {% if request.user|has_group:"Profesor" %}
-                <br>
-                <br>
                 <a href="{% url 'modificar_profesor' %}" class="btn btn-success asd">Modificar Datos</a>
             {% endif %}
         </div>
