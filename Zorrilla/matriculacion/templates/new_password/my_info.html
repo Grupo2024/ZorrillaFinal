@@ -44,13 +44,33 @@
                 </div> <!-- input-group.// -->
             </div> <!-- form-group// -->
 
-            
+        </form>
     </article>
-    <button class="btn btn-success" align="center"  onclick="new_pass('{% url 'userDocente' %}')">Buscar</button>
-    <span id="resultado"></span>
+    <button class="btn btn-success" align="center"  onclick="new_pass()">Buscar</button>
     
-    <form id="form" action="{% url 'index' %}">
+    <form id="logIn" action="{% url 'logIn' %}">
     </form>
+
+
+    <!-- Modal -->
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Recuperar Contraseña:</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Email: </p><span id="email"></span>
+                    <p>Dni: </p><span id="dni"></span>
+                    <span id="resultado"></span>
+                </div>
+                <div class="modal-footer" id="footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="login()">Continuar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -59,28 +79,39 @@
 
 <script>
     
-    function new_pass(url){
+    function new_pass(){
         var myForm = document.getElementById('GetDataForPassword');
         formData = new FormData(myForm);
+        var x = document.getElementById("footer");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+        $('#myModal').modal('show');
         $.ajax({
-            url: url,
+            url: 'userDocente/',
             data: formData,
             processData: false,
             contentType: false,
             type: 'POST',            
             success: function(data){
-                console.log(data.error);
                 if (data.error){
-                    var x = document.getElementById("resultado");
-                    x.innerHTML = data.resultado;
+                    document.getElementById("email").innerHTML = data.email;
+                    document.getElementById("dni").innerHTML = data.dni;
+                    document.getElementById("resultado").innerHTML = data.resultado;
                 }else{
-                    var x = document.getElementById("form_Pass")
                     x.style.display = "block";
-                    var y = document.getElementById("resultado");
-                    y.innerHTML = data.resultado;
+                    document.getElementById("email").innerHTML = data.email;
+                    document.getElementById("dni").innerHTML = data.dni;
+                    document.getElementById("resultado").innerHTML = data.resultado;
                 }
             }
         });
+    }
+
+    function login(){
+        $('#logIn').submit()
     }
 </script>
 

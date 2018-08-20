@@ -119,40 +119,53 @@ def userDocente(request):
             print "es valido"
             email = form.cleaned_data['email']
             dni = form.cleaned_data['dni']
-            errores = docente_existe(email, dni)
-            if len(errores) != 0:
-                error = "Error en: "
-                for a in errores:
-                    error = error + a 
-                data = {
-                    'resultado': error,
-                    'error': True
-                }
-                return JsonResponse(data)
-            else:
-                print "no hay errores"
-                profesor = Profesor.objects.get(dni_t=dni)
-                userD = user_Docente.objects.get(docente_referenciado=profesor)
-                print userD.user.username
-                new_pass = new_Password(profesor.dni_t)
-                subject = "Recuperar Contraseña"
-                message = "El usuario " + str(userD.user.username) + " utilizara la siguiente contraseña " + str(new_pass)
-                email_from = settings.EMAIL_HOST_USER
-                recipient_list = [profesor.email_t]
-                if send_mail( subject, message, email_from, recipient_list):
-                    data = {
-                        'resultado': message,
-                        'error': False
-                    }
+            try:
+                profesor = Profesor.objects.get(email_t=email)
+                try:
+                    profesor = Profesor.objects.get(dni_t=dni)
+                    userD = user_Docente.objects.get(docente_referenciado=profesor)
+                    print userD.user.username
+                    new_pass = new_Password(profesor.dni_t)
+                    subject = "Recuperar Contraseña"
+                    message = "El usuario " + str(userD.user.username) + " utilizara la siguiente contraseña " + str(new_pass)
+                    email_from = settings.EMAIL_HOST_USER
+                    recipient_list = [profesor.email_t]
+                    send_mail( subject, message, email_from, recipient_list)
                     print "funciona"
                     userd = User.objects.get(username=userD.user.username)
                     print "Vieja Pass" + str(userd.password)
                     userd.set_password(new_pass)
                     userd.save()
                     print "nueva pass" + str(userd.password)
+                    data = {
+                        'email': email,
+                        'dni': dni,
+                        'resultado': "Clave cambiada con exito.",
+                        'error':False
+                    }
                     return JsonResponse(data)
-                
+                except Profesor.DoesNotExist:
+                    data = {
+                        'email': email,
+                        'dni': "No existe un profesor con ese Dni.",
+                        'resultado': "Hubo un error",
+                        'error':True
+                    }
+                    return JsonResponse(data)
+            except Profesor.DoesNotExist:
+                data = {
+                    'email': "No existe un profesor con esta direccion",
+                    'dni': "-",
+                    'resultado': "Hubo un error",
+                    'error':True
+                }
+                return JsonResponse(data)
         else:
-            print "error"
-            form = get_Password()
-            return render(request, 'new_password/my_info.html', {'form':form})
+            print "NO ES VALIDO"
+            data = {
+                'email': "-",
+                'dni': "-",
+                'resultado': "Error de validez",
+                'error':True
+            }
+            return JsonResponse(data)
