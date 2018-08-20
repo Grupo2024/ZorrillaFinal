@@ -1,13 +1,44 @@
-
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import *
 from .forms import DocumentForm
 from django.http import JsonResponse
 import datetime
 from .decorators import *
+import xlwt
+
+@user_passes_test(check_Director)
+def export_books(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="reporte_biblioteca.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Books')
+
+    # Sheet header, first row
+    row_num = 3
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['Id','Titulo', 'Autor', 'Genero', 'Habilitado']
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+        
+    rows = Document.objects.all().order_by('title','estado').values_list('id','title', 'autor', 'genero', 'habilitado')
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
+
+    wb.save(response)
+    return response
 
 def filter_books(request):
     return render(request, 'filter_books.html')
@@ -50,7 +81,7 @@ def libros_habilitados(request, cantidad):
     return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
     
     
-@user_passes_test(check_Director_or_Profesor)
+@login_required
 def cargado(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
@@ -89,7 +120,6 @@ def cargado(request):
     return JsonResponse(data)
     
 # Function that changes the document habilitado attribute to False, it does not delete the book,
-# only Directora can do it.
 @user_passes_test(check_Director_or_Profesor)
 def eliminar_libro(request, id_documento):
     document = Document.objects.get(id=id_documento)

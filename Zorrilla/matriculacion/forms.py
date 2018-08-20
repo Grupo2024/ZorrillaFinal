@@ -16,3 +16,7 @@ class AlumnoForm(forms.ModelForm):
         widgets = {
             'fecha_nacimiento': DateInput()
         }
+        
+class get_Password(forms.Form):
+    dni = forms.IntegerField(required=True)
+    email = forms.EmailField(required=True)

@@ -1,0 +1,28 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+        <div class="modal-header">
+            <h4 class="modal-title">Datos de {{alumno.apellido}} {{alumno.nombre}}</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+      <!-- Modal body -->
+        <div class="modal-body">
+            <span class="badge badge-secondary">Apellido:</span><div class="alert alert-secondary" role="alert">{{alumno.apellido}}</div>
+            <span class="badge badge-secondary">Nombre:</span><div class="alert alert-secondary" role="alert">{{alumno.nombre}}</div>
+            <span class="badge badge-secondary">Dni:</span><div class="alert alert-secondary" role="alert">{{alumno.dni}}</div>
+            <span class="badge badge-secondary">Domicilio:</span><div class="alert alert-secondary" role="alert">{{alumno.domicilio}}</div>
+            <span class="badge badge-secondary">Lugar de Nacimiento:</span><div class="alert alert-secondary" role="alert">{{alumno.lugar_nacimiento}}</div>
+            <span class="badge badge-secondary">Fecha de Nacimiento:</span><div class="alert alert-secondary" role="alert">{{alumno.fecha_nacimiento}}</div>
+            <span class="badge badge-secondary">Email:</span><div class="alert alert-secondary" role="alert">{{alumno.email}}</div>
+            <span class="badge badge-secondary">Sexo:</span><div class="alert alert-secondary" role="alert">{{alumno.sexo}}</div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        </div>
+
+    </div>
+</div>

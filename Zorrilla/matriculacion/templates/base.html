@@ -1,7 +1,7 @@
 <html>
         <head>
             {% load static %}
-            <meta charset="ISO-8859-1">
+            <meta http-equiv="Content-type" content="text/html; charset=utf-8" >
 
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
@@ -34,9 +34,12 @@
 
                         {% block navbar %}
                         {% endblock navbar%}
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'form' %}">MATRICULAR ALUMNO</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Matricular</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                                <a class="dropdown-item" href="{% url 'form' %}">MATRICULAR ALUMNO</a>
+                                <a class="dropdown-item" href="{% url 'formProfesor' %}">MATRICULAR DOCENTE</a>
+                            </div>
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link" href="{% url 'biblioteca' %}">BIBLIOTECA</a>
@@ -62,7 +65,7 @@
                                             <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">OPCIONES DE SESION
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                <a class="dropdown-item" href="{% url 'docentes' %}">Ver perfil</a>
+                                                <a class="dropdown-item" href="{% url 'mi_perfil' %}">Ver perfil</a>
                                                 <a class="dropdown-item" href="{% url 'logout_me_out' %}">Cerrar sesion</a>
                                             </div>
                                     </li>

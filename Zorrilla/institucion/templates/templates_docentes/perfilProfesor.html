@@ -3,215 +3,219 @@
 {% block navbar %}
 {% endblock navbar %}
 {% block body %}
+{% load poll_extras %}
+
 <br>
-<h1 class="card-title" align="center">{{profesor.nombre}} {{profesor.apellido}}</h1>
+<h1 class="card-title" align="center">{{trabajador.nombre_t}} {{trabajador.apellido_t}}</h1>
 
-{% if user.is_authenticated %}
+{% if request.user|has_group:"Profesor" %}
 
-<form  id="create_teacher" action="{% url 'crear_profesor' %}" method="post">
-{% csrf_token %}
-<div class='row'>
-    <div class="card text-center" style="width: 30%; height: 77%; margin-left: 3%">
-    <div class="card-body">
-    <h4 class="card-title">Datos personales</h4>
+<form id="modify_teacher" method="post">
+    {% csrf_token %}
+    <div class='row'>
+        <div class="card text-center" style="width: 30%; height: 77%; margin-left: 3%">
+            <div class="card-body">
+                <h4 class="card-title">Datos personales</h4>
 
-        <ul class="list-group list-group-flush">
-          
-          <li class="list-group-item">
-          
-            <div class="input-group input-group-sm mb-3 form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Nombre</span>
-              </div>
-              <input style="margin-left: 0px; height: 31px;" type="text" class="form-control" aria-label="Small" value="{{profesor.nombre}}" aria-describedby="inputGroup-sizing-sm" id="profesor_nombre" name="profesor_nombre">
+                <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item">
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Nombre</span>
+                            </div>
+                            <input style="margin-left: 0px; height: 31px;" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_nombre" name="profesor_nombre" value={{trabajador.nombre_t}}>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Apellido</span>
+                            </div>
+                            <input style="margin-left: 0px; height: 31px;" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_apellido" name="profesor_apellido" value={{trabajador.apellido_t}}>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">DNI</span>
+                            </div>
+                            <input style="margin-left: 0px; height: 31px;" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_dni" name="profesor_dni" value={{trabajador.dni_t}}>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Lugar nacimiento</span>
+                            </div>
+                            <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_lugar_nacimiento" name="profesor_lugar_nacimiento" value={{trabajador.lugar_nacimiento_t}}>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento</span>
+                            </div>
+                            <input style="margin-left: 0px; height: 31px" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_fecha_nacimiento" name="profesor_fecha_nacimiento" value={{trabajador.fecha_nacimiento_t}}>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Domicilio</span>
+                            </div>
+                            <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_domicilio" name="profesor_domicilio" value={{trabajador.domicilio_t}}>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Sexo</span>
+                            </div>
+                            <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_mail" name="profesor_sexo" value={{trabajador.sexo_t}}>
+                        </div>
+
+                    </li>
+
+                </ul>
+
             </div>
+        </div>
 
-            <div class="input-group input-group-sm mb-3 form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Apellido</span>
-              </div>
-              <input style="margin-left: 0px; height: 31px;" type="text" class="form-control" aria-label="Small" value="{{profesor.apellido}}" aria-describedby="inputGroup-sizing-sm" id="profesor_apellido" name="profesor_apellido">
+
+        <div class="card text-center" style="width: 30%; height: 46%; margin-left: 2%">
+            <div class="card-body">
+                <h4 class="card-title">Datos de contacto</h4>
+                <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item">
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Telefono particular</span>
+                            </div>
+                            <input style="margin-left: 0px; height: 31px;" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_telefono_particular_p" name="profesor_telefono_particular_p"
+                                   value={{trabajador.telefono_particular}}>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Telefono laboral</span>
+                            </div>
+                            <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_telefono_laboral_p" name="profesor_telefono_laboral_p"
+                                   value={{trabajador.telefono_laboral}}>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Telefono de familiar</span>
+                            </div>
+                            <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_telefono_familiar_p" name="profesor_telefono_familiar_p"
+                                   value={{trabajador.telefono_familiar}}>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Datos de familiar</span>
+                            </div>
+                            <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_datos_familiares_cargo" name="profesor_datos_familiares_cargo"
+                                   value={{trabajador.datos_familiares_cargo}}>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Email</span>
+                            </div>
+                            <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_mail" name="profesor_mail" value={{trabajador.email_t}}>
+                        </div>
+
+                    </li>
+
+                </ul>
+
             </div>
+        </div>
 
-            <div class="input-group input-group-sm mb-3 form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">DNI</span>
-              </div>
-              <input style="margin-left: 0px; height: 31px;" type="text" class="form-control" aria-label="Small" value="{{profesor.dni}}" aria-describedby="inputGroup-sizing-sm" id="profesor_dni" name="profesor_dni">
+        <div class="card text-center" style="width: 30%; height: 46%; margin-left: 2%">
+            <div class="card-body">
+                <h4 class="card-title">Datos laborales</h4>
+
+                <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item">
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Estudios</span>
+                            </div>
+                            <input style="margin-left: 0px; height: 31px;" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_estudios_cursados" name="profesor_estudios_cursados"
+                                   value={{trabajador.estudios_cursados}}>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Fecha de inicio</span>
+                            </div>
+                            <input style="margin-left: 0px; height: 31px" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_fecha_inicio_actividad" name="profesor_fecha_inicio_actividad"
+                                   value={{trabajador.fecha_inicio_actividad}}>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Antecedentes laborales</span>
+                            </div>
+                            <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="profesor_antecedentes_laborales" name="profesor_antecedentes_laborales"
+                                   value={{trabajador.antecedentes_laborales}}>
+                        </div>
+                    </li>
+
+                </ul>
+
             </div>
-
-            <div class="input-group input-group-sm mb-3 form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Lugar nacimiento</span>
-              </div>
-              <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" value="{{profesor.lugar_nacimiento}}" aria-describedby="inputGroup-sizing-sm" id="profesor_lugar_nacimiento" name="profesor_lugar_nacimiento">
-            </div>
-
-            <div class="input-group input-group-sm mb-3 form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento</span>
-              </div>
-              <input style="margin-left: 0px; height: 31px" type="date" class="form-control" aria-label="Small" value="{{profesor.fecha_nacimiento|date:'d/M/Y'}}" aria-describedby="inputGroup-sizing-sm" id="profesor_fecha_nacimiento" name="profesor_fecha_nacimiento">
-            </div>
-
-            <div class="input-group input-group-sm mb-3 form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Domicilio</span>
-              </div>
-              <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" value="{{profesor.domicilio}}" aria-describedby="inputGroup-sizing-sm" id="profesor_domicilio" name="profesor_domicilio">
-            </div>
-
-            <div class="input-group input-group-sm mb-3 form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">mail</span>
-              </div>
-              <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" value="{{profesor.email}}" aria-describedby="inputGroup-sizing-sm" id="profesor_mail" name="profesor_mail">
-            </div>
-
-            <div class="input-group input-group-sm mb-3 form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Sexo</span>
-              </div>
-                <input type="radio" name="gender" value="True" checked> Masculino<br>
-                <input type="radio" name="gender" value="False"> Femenino<br>
-            </div>
-
-          </li>
-
-        </ul>
-
+        </div>
     </div>
-  </div>
-
-    <div class="card text-center" style="width: 30%; height: 46%; margin-left: 2%">
-    <div class="card-body">
-      <h4 class="card-title">Datos de contacto</h4>
-        <ul class="list-group list-group-flush">
-        
-          <li class="list-group-item">
-        
-            <div class="input-group input-group-sm mb-3 form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Telefono particular</span>
-              </div>
-              <input style="margin-left: 0px; height: 31px;" type="text" class="form-control" aria-label="Small" value="{{profesor.telefono_particular_p}}" aria-describedby="inputGroup-sizing-sm" id="profesor_telefono_particular_p" name="profesor_telefono_particular_p">
-            </div>
-        
-            <div class="input-group input-group-sm mb-3 form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Telefono laboral</span>
-              </div>
-              <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" value="{{profesor.telefono_laboral_p}}" aria-describedby="inputGroup-sizing-sm" id="profesor_telefono_laboral_p" name="profesor_telefono_laboral_p">
-            </div>
-        
-            <div class="input-group input-group-sm mb-3 form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Telefono de familiar</span>
-              </div>
-              <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" value="{{profesor.telefono_familiar_p}}" aria-describedby="inputGroup-sizing-sm" id="profesor_telefono_familiar_p" name="profesor_telefono_familiar_p">
-            </div>
-        
-            <div class="input-group input-group-sm mb-3 form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Datos de familiar</span>
-              </div>
-              <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" value="{{profesor.datos_familiares_cargo}}" aria-describedby="inputGroup-sizing-sm" id="profesor_datos_familiares_cargo" name="profesor_datos_familiares_cargo">
-            </div>
-        
-          </li>
-        
-        </ul>
-
-    </div>
-  </div>
-
-  <div class="card text-center" style="width: 30%; height: 46%; margin-left: 2%">
-    <div class="card-body">
-    <h4 class="card-title">Datos laborales</h4>
-
-        <ul class="list-group list-group-flush">
-
-          <li class="list-group-item">
-
-            <div class="input-group input-group-sm mb-3 form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Estudios</span>
-              </div>
-              <input style="margin-left: 0px; height: 31px;" type="text" class="form-control" aria-label="Small" value="{{profesor.estudios_cursados}}" aria-describedby="inputGroup-sizing-sm" id="profesor_estudios_cursados" name="profesor_estudios_cursados">
-            </div>
-
-            <div class="input-group input-group-sm mb-3 form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Fecha de inicio</span>
-              </div>
-              <input style="margin-left: 0px; height: 31px" type="date" class="form-control" aria-label="Small" value="{{profesor.fecha_inicio_actividad}}" aria-describedby="inputGroup-sizing-sm" id="profesor_fecha_inicio_actividad" name="profesor_fecha_inicio_actividad">
-            </div>
-
-            <div class="input-group input-group-sm mb-3 form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Antecedentes laborales</span>
-              </div>
-              <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" value="{{profesor.antecedentes_laborales}}" aria-describedby="inputGroup-sizing-sm" id="profesor_antecedentes_laborales" name="profesor_antecedentes_laborales">
-            </div>
-
-            <div class="input-group input-group-sm mb-3 form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Antiguedad</span>
-              </div>
-              <input style="margin-left: 0px; height: 31px" type="date" class="form-control" aria-label="Small" value="{{profesor.antiguedad_en_empresa}}" aria-describedby="inputGroup-sizing-sm" id="profesor_antiguedad_en_empresa" name="profesor_antiguedad_en_empresa">
-            </div>
-
-          </li>
-
-        </ul>
-
-    </div>
-  </div>
-</div>
-<button class="btn btn-success" style="margin-left: 40%; width: 20%" align="center" type="submit">Modificar datos</button>
+    <button class="btn btn-success" style="margin-left: 40%; width: 20%" align="center" type="submit">Modificar datos</button>
 </form>
 
-{% else %}
+{% endif %}    
+{% if request.user|has_group:"Secretaria" %}
 
 <div class='row'>
     <div class="card text-center" style="width: 30%; margin-left: 3%">
-    <div class="card-body">
-    <h4 class="card-title">Datos personales</h4>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">DNI: {{profesor.dni}}</li>
-          <li class="list-group-item">Lugar nacimiento: {{profesor.lugar_nacimiento}}</li>
-          <li class="list-group-item">Fecha de nacimiento: {{profesor.fecha_nacimiento}}</li>
-          <li class="list-group-item">Domicilio: {{profesor.domicilio}}</li>
-          <li class="list-group-item">mail: {{profesor.email}}</li>
-          <li class="list-group-item">Sexo: {{profesor.sexo}}</li>
-        </ul>
+        <div class="card-body">
+            <h4 class="card-title">Datos personales</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">DNI: {{trabajador.dni_t}}</li>
+                <li class="list-group-item">Lugar nacimiento: {{trabajador.lugar_nacimiento_t}}</li>
+                <li class="list-group-item">Fecha de nacimiento: {{trabajador.fecha_nacimiento_t}}</li>
+                <li class="list-group-item">Domicilio: {{trabajador.domicilio_t}}</li>
+                <li class="list-group-item">Email: {{trabajador.email_t}}</li>
+                <li class="list-group-item">Sexo: {{trabajador.sexo_t}}</li>
+            </ul>
+        </div>
     </div>
-  </div>
 
     <div class="card text-center" style="width: 30%; margin-left: 2%">
-    <div class="card-body">
-      <h4 class="card-title">Datos de contacto</h4>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Telefono particular: {{profesor.telefono_particular_p}}</li>
-          <li class="list-group-item">Telefono laboral: {{profesor.telefono_laboral_p}}</li>
-          <li class="list-group-item">Telefono de familiar: {{profesor.telefono_familiar_p}}</li>
-          <li class="list-group-item">Datos de familiar: {{profesor.datos_familiares_cargo}}</li>
-        </ul>
+        <div class="card-body">
+            <h4 class="card-title">Datos de contacto</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Telefono particular: {{trabajador.telefono_particular}}</li>
+                <li class="list-group-item">Telefono laboral: {{trabajador.telefono_laboral}}</li>
+                <li class="list-group-item">Telefono de familiar: {{trabajador.telefono_familiar}}</li>
+                <li class="list-group-item">Datos de familia: {{trabajador.datos_familiares_cargo}}</li>
+            </ul>
+        </div>
     </div>
-  </div>
 
-  <div class="card text-center" style="width: 30%; margin-left: 2%">
-    <div class="card-body">
-    <h4 class="card-title">Datos laborales</h4>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Estudios: {{profesor.estudios_cursados}}</li>
-          <li class="list-group-item">Fecha de inicio: {{profesor.fecha_inicio_actividad}}</li>
-          <li class="list-group-item">Antecedentes laborales: {{profesor.antecedentes_laborales}}</li>
-          <li class="list-group-item">Antiguedad: {{profesor.antiguedad_en_empresa}}</li>
-        </ul>
+    <div class="card text-center" style="width: 30%; margin-left: 2%">
+        <div class="card-body">
+            <h4 class="card-title">Datos laborales</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Estudios: {{trabajador.estudios_cursados}}</li>
+                <li class="list-group-item">Fecha de inicio: {{trabajador.fecha_inicio_actividad}}</li>
+                <li class="list-group-item">Antecedentes laborales: {{trabajador.antecedentes_laborales}}</li>
+                <!-- <li class="list-group-item">Antiguedad: {{trabajador.antiguedad_t}}</li> -->
+            </ul>
+        </div>
     </div>
-  </div>
+
 </div>
 
-{% endif %}
+
+{% endif %}    
 {% endblock body %}

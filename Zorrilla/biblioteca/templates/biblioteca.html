@@ -50,7 +50,7 @@
         <button class="btn btn-success boton_cargar btn-lg btn-block"  data-toggle="modal" data-target="#myModal">Añadir libro</button>
     {% endif %}
 
-  </div>
+</div>
 
   
   
@@ -73,43 +73,40 @@
           <div class="col-md-12">
           <h4></h4>
           <div class="table-responsive">
-
-
-  <table id="mytable" class="table table-hover">
-
-    <thead>
-        <th onclick="sortTable(0)">Titulo</th>
-        <th onclick="sortTable(1)">Descripción</th>
-        <th onclick="sortTable(2)">Fecha</th>
-        <th>Info</th>
-        {% if request.user|has_group:"Profesor" %}
-            <th>Borrar</th>
-        {% endif %}
-        {% if request.user|has_group:"Director" %}
-            <th>Historia</th>
-            <th>Cambiar</th>
-        {% endif %}
-        <th>Ver Libro</th>
-    </thead>
-    <tbody>
-        {% for doc in documentos %}
-            <tr>
-                <td>{{doc.title}}</td>
-                <td>{{doc.description}}</td>
-                <td>{{doc.uploaded_at}}</td>
-                <td><button class="btn btn-primary" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></button></td>
-                {% if request.user|has_group:"Profesor" %}
-                    <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
-                {% endif %}
-                {% if request.user|has_group:"Director" %} 
-                <td><button class="btn btn-primary fa fa-history" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book"></button></td>
-                <td><button class="btn btn-primary" onclick="deshabilitar_libro('{% url 'cambiar_estado_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf085;</i></button></td>
-                {% endif %}
-                <td><a type="button" class="btn btn-primary text-white" href="{{ doc.document.url }}">Abrir</a></td>
-            </tr>
-          {% endfor %}
-      </tbody>
-  </table>
+              <table id="mytable" class="table table-hover">
+                <thead>
+                    <th onclick="sortTable(0)">Titulo</th>
+                    <th onclick="sortTable(1)">Descripción</th>
+                    <th onclick="sortTable(2)">Fecha</th>
+                    <th>Info</th>
+                    {% if request.user|has_group:"Profesor" %}
+                        <th>Borrar</th>
+                    {% endif %}
+                    {% if request.user|has_group:"Director" %}
+                        <th>Historia</th>
+                        <th>Estado</th>
+                    {% endif %}
+                    <th>Ver Libro</th>
+                </thead>
+                <tbody>
+                {% for doc in documentos %}
+                    <tr>
+                        <td>{{doc.title}}</td>
+                        <td>{{doc.description}}</td>
+                        <td>{{doc.uploaded_at}}</td>
+                        <td><button class="btn btn-primary" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></button></td>
+                        {% if request.user|has_group:"Profesor" %}
+                            <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
+                        {% endif %}
+                        {% if request.user|has_group:"Director" %}
+                        <td><button class="btn btn-primary fa fa-history" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book"></button></td>
+                            <td><button class="btn btn-primary" onclick="deshabilitar_libro('{% url 'cambiar_estado_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf085;</i></button></td>
+                        {% endif %}
+                        <td><a type="button" class="btn btn-primary text-white" href="{{ doc.document.url }}">Abrir</a></td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
               
       <div id="snackbar"><span id="span_result"></span></div>
               

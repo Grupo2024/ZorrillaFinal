@@ -4,6 +4,9 @@ from __future__ import unicode_literals
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from matriculacion.models import *
+import random
+
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -28,6 +31,15 @@ class clave_Docente(models.Model):
 # Create your models here.
 
 class Trabajador(models.Model):
+    
+    HO = 'Hombre'
+    MU = 'Mujer'
+    
+    GENERO_CHOICES = (
+        (HO , 'Hombre'),
+        (MU , 'Mujer'),
+    )
+    
     nombre_t = models.CharField('Nombre del trabajador', max_length=40)
     apellido_t = models.CharField('Apellido del trabajador', max_length=40)
     dni_t = models.IntegerField('Dni del trabajador', primary_key=True)
@@ -35,7 +47,7 @@ class Trabajador(models.Model):
     fecha_nacimiento_t = models.DateField('Fecha Nacimiento', blank=True)
     domicilio_t = models.CharField('Domicilio del trabajador', max_length=150, blank=True)
     email_t = models.EmailField('Email del trabajador', max_length=70, blank=True)
-    sexo_t = models.BooleanField('Sexo del trabajador(True = Hombre)', null = False)#True = Hombre, False = Madre
+    sexo_t = models.CharField('Sexo', max_length=6, choices=GENERO_CHOICES)
     #Datos estandares del trabajador, estos van a ser heredados x cualquier profesor, director o secretaria
     #foto = models.ImageField(upload_to=get_image_path, blank=True, null=True)
     #BUSCAR LO DE FOTOS
@@ -43,26 +55,13 @@ class Trabajador(models.Model):
     telefono_laboral = models.IntegerField('Telefono Laboral del Trabajador')
     telefono_familiar = models.IntegerField('Telefono de algun Familiar del Trabajador')
     datos_familiares_cargo = models.TextField('Nombre y Apellido de familiar del Trabajador', max_length=300)
-    fecha_inicio_actividad = models.DateField('Fecha de Inicio de Clases en el Colegio')
+    fecha_inicio_actividad = models.DateField('Fecha de Inicio de Clases en el Colegio', auto_now_add=True)
     antecedentes_laborales = models.TextField('Datos de Trabajos Previos', max_length=300)
-    antiguedad_en_empresa = models.DateField('Antiguedad en la Empresa')
     estudios_cursados = models.TextField('Estudios del Trabajador', max_length=300)
-
-    def genero(self):
-        aux = 'Mujer'
-        if self.sexo_t:
-            aux = 'Hombre'
-            return aux
-        else:
-            return aux
-    '''
-    Me crea la variable auxiliar, que por default es mujer, si se marca como true, me devuelve que
-    es un hombre, sino, quedara como mujer
-    '''
 
     def __str__(self):
         return 'Trabajador: {} {}| dni: {}| sexo: {}'.format(self.nombre_t,
-         self.apellido_t, self.dni_t, self.genero())
+         self.apellido_t, self.dni_t, self.sexo_t)
 
     class Meta:
         abstract = True
@@ -72,6 +71,35 @@ class Profesor(Trabajador):
 
     def __str__(self):
         return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre_t, self.apellido_t, self.dni_t, self.sexo_t)
+
+
+    def create_pass_user(self):
+        name_f = ""
+        cantidad = 0
+        r = random.randint(1111,9999)
+        for a in self.nombre_t:
+            cantidad = cantidad + 1
+            if cantidad == 1:
+                name_f = a
+                break
+            else:
+                pass
+        password = name_f + str(r) + self.apellido_t
+        return password
+
+    def create_username(self):
+        name_f = ""
+        cantidad = 0
+        r = random.randint(1111,9999)
+        for a in self.nombre_t:
+            cantidad = cantidad + 1
+            if cantidad == 1:
+                name_f = a
+                break
+            else:
+                pass
+        username = name_f + self.apellido_t
+        return username
 
 
 class Director(Trabajador):
@@ -86,41 +114,64 @@ class Secretaria(Trabajador):
         return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre_t, self.apellido_t, self.dni_t, self.sexo_t)
 
 
-class Turno(models.Model):
+class Curso(models.Model):
     hora = models.BooleanField('Clickea para seleccionar turno "Tarde"', null=False)
+    aNo = models.CharField('1ero, 2do, etc...', max_length=5)
+    seccion = models.BooleanField('True = B o D, dependiendo de si es turno mañana o tarde', null=False)
 
-    def que_hora(self):
-        aux = 'Maniana'
-        if self.hora:
+    def que_turno(self):
+        aux = 'Mañana'
+        if (self.hora == True):
             aux = 'Tarde'
             return aux
         else:
             return aux
 
+    def que_seccion(self):
+        if (self.hora == True):
+            aux = 'C'
+            if (self.seccion == True):
+                aux = 'D'
+                return aux
+            else:
+                return aux
+        else:
+            aux = 'A'
+            if (self.seccion == True):
+                aux = 'B'
+                return aux
+            else:
+                return aux
+
+    def new_turno(self):
+        if self.hora:
+            self.turno = "Tarde"
+        else:
+            self.turno = "Mañana"
+        return self.turno
+
     def __str__(self):
-        return 'Turno {}'.format(self.que_hora())
+        return 'El Grado {} {} asiste al turno {}'.format(self.aNo, self.que_seccion() ,self.que_turno())
 
-
-
-class Grado(models.Model):
-    aNo = models.CharField('1ero, 2do, etc...', max_length=5)
-    turno_asignado = models.ForeignKey(Turno, null=False)
-
-    def __str__(self):
-        return 'El Grado {} asiste al turno {}'.format(self.aNo, self.turno_asignado.que_hora())
-
-
-class Seccion(models.Model):
-    curso = models.CharField('A-B-C-D', max_length=1)
-    grado_asignado = models.ForeignKey(Grado, null=False)
-
-    def __str__(self):
-       return '{}-{}-{}'.format(self.grado_asignado.aNo, self.curso, self.grado_asignado.turno_asignado.que_hora())
 
 
 class Asignacion(models.Model):
     prof_asignado = models.ForeignKey(Profesor)
-    seccion_asignada = models.ForeignKey(Seccion)
+    curso = models.ForeignKey(Curso)
 
     def __str__(self):
-       return 'El profesor {} {} asiste al curso: {} {} turno {}'.format(self.prof_asignado.nombre_t, self.prof_asignado.apellido_t, self.seccion_asignada.grado_asignado.aNo, self.seccion_asignada.curso, self.seccion_asignada.grado_asignado.turno_asignado.que_hora())
+       return 'El profesor {} {} asiste al curso: {} {} turno {}'.format(self.prof_asignado.nombre_t, self.prof_asignado.apellido_t, self.curso.aNo, self.curso.seccion.que_seccion, self.curso.turno_asignado.que_hora())
+
+
+
+class user_Docente(models.Model):
+    user = models.OneToOneField(User)
+    docente_referenciado = models.OneToOneField(Profesor, on_delete=models.CASCADE)
+
+class user_Secretaria(models.Model):
+    user = models.OneToOneField(User)
+    secretaria_referenciada = models.OneToOneField(Secretaria, on_delete=models.CASCADE)
+
+class user_Director(models.Model):
+    user = models.OneToOneField(User)
+    director_referenciado = models.OneToOneField(Director, on_delete=models.CASCADE)

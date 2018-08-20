@@ -5,181 +5,84 @@
 {% block body %}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<br></br>
+<br>
+<br>
 
 
-        <center><h2>DOCENTES</h2></center>
+<center><h2>DOCENTES</h2></center>
 
-        <div style="margin-left: 2%; width: 94%">
-            <div class="row">
-                <input type="text"placeholder="Docente que desee buscar" id="input" onkeyup="filtrado()">
-                <select style="height: 5%" class="selectpicker btn btn-outline" id="filter_by">
-                    <option value=0>Nombre</option>
-                    <option value=1>Apellido</option>
-                    <option value=2>DNI</option>
-                </select>
-
-
-                <div class="col-md-12">
-                    <h4></h4>
-                    <div class="table-responsive">
+<div style="margin-left: 2%; width: 94%">
+    <div class="row">
+        <input type="text"placeholder="Docente que desee buscar" id="input" onkeyup="filtrado()">
+        <select style="height: 5%" class="selectpicker btn btn-outline" id="filter_by">
+            <option value=0>Nombre</option>
+            <option value=1>Apellido</option>
+            <option value=2>DNI</option>
+        </select>
 
 
-                        <table id="mytable" class="table table-hover">
+        <div class="col-md-12">
+            <h4></h4>
+            <div class="table-responsive">
 
-                            <thead class="thead">
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>DNI</th>
-                                <th>Lugar de nacimiento</th>
-                                <th>Fecha de nacimiento</th>
-                                <th>Domicilio</th>
-                                <th>Email</th>
-                                <th>Sexo</th>
-                                <th></th>
-                                <th></th>
-                            </thead>
-                            {% for p in profesores %}
-                            <tbody>
 
-                                <tr>
-                                    <td>{{p.nombre}}</td>
-                                    <td>{{p.apellido}}</td>
-                                    <td>{{p.dni}}</td>
-                                    <td>{{p.lugar_nacimiento}}</td>
-                                    <td>{{p.fecha_nacimiento}}</td>
-                                    <td>{{p.domicilio}}</td>
-                                    <td>{{p.email}}</td>
-                                    <td>{{p.sexo}}</td>
-                                    <td><button href="{% url 'profesor' p.dni %}" class="btn btn-outline-info">Abrir</button></td>
+                <table id="mytable" class="table table-hover">
 
-                                    <td><button onclick="eliminar_docente('{% url 'eliminar_docente' p.dni %}', {{p.dni}})" class="btn btn-outline-danger">Eliminar</button></td>
+                    <thead class="thead">
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>DNI</th>
+                        <th>Email</th>
+                        <th>Sexo</th>
+                        <th>Datos</th>
+                    </thead>
+                    {% for p in profesores %}
+                    <tbody>
 
-                                </tr>
+                        <tr>
+                            <td>{{p.nombre_t|title}}</td>
+                            <td>{{p.apellido_t|title}}</td>
+                            <td>{{p.dni_t}}</td>
+                            <td>{{p.email_t}}</td>
+                            <td>{{p.sexo_t}}</td>
+                            <td><a href="{% url 'profesor' p.dni_t %}" class="btn btn-outline-info">Abrir</a></td>
+                        </tr>
 
-                            </tbody>
-                            {% endfor %}
+                    </tbody>
+                    {% endfor %}
 
-                        </table>
+                </table>
 
-                         <div id="snackbar"><span id="span_result"></span></div>
-
-                    </div>
-
-                </div>
+                <div id="snackbar"><span id="span_result"></span></div>
 
             </div>
+
         </div>
 
-    <!--<button class="btn btn-success boton_cargar btn-lg btn-block">Añadir docente</button>-->
-
-
-
-    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                    <h4 class="modal-title custom_align" id="Heading">Editar Docente</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input class="form-control " type="text" placeholder="">
-                    </div>
-                    <div class="form-group">
-
-                        <input class="form-control " type="text" placeholder="">
-                    </div>
-                    <div class="form-group">
-                        <textarea rows="2" class="form-control" placeholder=""></textarea>
-
-
-                    </div>
-                </div>
-                <div class="modal-footer ">
-                    <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Actualizar</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-
-
-
-    <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                    <h4 class="modal-title custom_align" id="Heading">Eliminar este docente</h4>
-                </div>
-                <div class="modal-body">
-
-                    <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span>Esta seguro/a que quiere eliminar este docente?</div>
-
-                </div>
-                <div class="modal-footer ">
-                    <button type="button" class="btn btn-success" ><span class="glyphicon glyphicon-ok-sign"></span> Si</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
     </div>
 </div>
 
 <script>
 
-function updateDiv()
-{
-    $( "#mytable" ).load(window.location.href + " #mytable" );
-}
-
-function eliminar_docente(url, alum) {
-  var r = confirm("Eliminar Docente ?");
-  if (r == true) {
-    $.ajax({
-      method: "POST",
-      url: url,
-      data: {
-        csrfmiddlewaretoken: '{{ csrf_token }}'
-      }
-    })
-    .done(function (data) {
-      var y = document.getElementById("snackbar");
-      y.className = "show";
-      document.getElementById("span_result").innerHTML = data.resultado;
-      setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
-      updateDiv();
-    });
-  } else {
-    return;
-  }
-
-};
-
-
     function filtrado() {
-  var e = document.getElementById("filter_by");
-  var strUser = e.options[e.selectedIndex].value;
-  var input, filter, table, tr, td, i;
-  input = document.getElementById("input");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("mytable");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[strUser];
-    if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
+        var e = document.getElementById("filter_by");
+        var strUser = e.options[e.selectedIndex].value;
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("input");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("mytable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[strUser];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
     }
-  }
-}
 </script>
 
 {% endblock body %}
