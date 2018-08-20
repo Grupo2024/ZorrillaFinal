@@ -12,6 +12,7 @@ from django.conf import settings
 from .models import *
 from .forms import *
 from .decorators import *
+from .crear_docente import *
 import random
 
 def email_for_logIn(request):
@@ -133,4 +134,5 @@ def volver_curso(request, dni_alumno):
     return redirect(cursos3, id_curso)
 
 def formProfesor(request):
-    return render(request, 'templates_docentes/formProfesor.html')
+    form = ProfesorForm()
+    return render(request, 'templates_docentes/formProfesor.html', {'form':form})

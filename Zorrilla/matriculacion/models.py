@@ -26,21 +26,9 @@ class Persona(models.Model):
 
     #Datos estandares de persona, estos van a ser heredados x cualquier profesor o alumno
 
-    def genero(self):
-        aux = 'Mujer'
-        if self.sexo:
-            aux = 'Hombre'
-            return aux
-        else:
-            return aux
-    '''
-    Me crea la variable auxiliar, que por default es mujer, si se marca como true, me devuelve que
-    es un hombre, sino, quedara como mujer
-    '''
-
     def __str__(self):
         return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre,
-         self.apellido, self.dni, self.genero())
+         self.apellido, self.dni, self.sexo)
 
     class Meta:
         abstract = True
