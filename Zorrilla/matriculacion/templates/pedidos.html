@@ -28,6 +28,12 @@
   	{% endfor %}
 </div>
 
+    {% if matriculaciones|length == 0 %}
+
+        <h2><center>No quedan Pedidos</center></h2>
+
+    {% endif %}
+
 <div id="snackbar"><span id="span_result"></span></div>
     
 <div class="modal fade" id="modal_cursos">

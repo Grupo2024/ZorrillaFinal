@@ -71,7 +71,6 @@ def cursos3(request, id_curso):
 def get_alumno(request, string, dni_alumno):
     if request.method == 'POST':
         alumno = Alumno.objects.get(dni=dni_alumno)
-        alumno.genero = alumno.genero()
         if string == "telefonos":
             print "telefono"
             return render(request, 'templates_cursos/telefonos_alumno.html', {'alumno':alumno})
@@ -82,7 +81,6 @@ def get_alumno(request, string, dni_alumno):
 
 def datos_alumno(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    alumno.sexo = alumno.genero()
     return render(request, 'perfilAlumno.html', {'alumno':alumno})
 
 def docentes(request):

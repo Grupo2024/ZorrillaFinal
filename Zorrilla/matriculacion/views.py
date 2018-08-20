@@ -15,9 +15,6 @@ from django.core.mail import send_mail
 # Create your views here.
 
 def index(request):
-    print "index"
-    user2 = User.objects.get(username="profesor")
-    print user2.password
     return render(request, 'index.html')
 
 def formulario(request):
@@ -48,9 +45,12 @@ def get_Secciones(request, dni_alumno):
     return render(request, 'select_curso.html', {'secciones':seccion, 'alumno':alumno})
 
 def aceptar_matriculaciones(request):
-    alumnos = Alumno.objects.all()
     matriculaciones = Matriculacion.objects.filter(matriculado=False)
-    return render(request, 'pedidos.html', {'matriculaciones':matriculaciones})
+    if matriculaciones:
+        return render(request, 'pedidos.html', {'matriculaciones':matriculaciones})
+    else:
+        matriculaciones = []
+        return render(request, 'pedidos.html', {'matriculaciones':matriculaciones})
 
 def aceptar_matriculacion(request):
     if request.method == 'POST':
