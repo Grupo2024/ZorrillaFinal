@@ -1,6 +1,7 @@
 from django.db import models
 from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.utils import timezone
 from matriculacion.models import *
@@ -14,7 +15,7 @@ def crear_profesor(request):
     if request.method == 'POST':
         form = ProfesorForm(request.POST)
         clave = request.POST['profesor_clave']
-        print clave
+        print clave + " clave"
         print form.errors
         if form.is_valid():
             nombre_t = form.cleaned_data['nombre_t']
@@ -34,8 +35,8 @@ def crear_profesor(request):
             profesor = Profesor(nombre_t=nombre_t, apellido_t=apellido_t, dni_t=dni_t, fecha_nacimiento_t=fecha_nacimiento_t
             , lugar_nacimiento_t=lugar_nacimiento_t, domicilio_t=domicilio_t, email_t=email_t, sexo_t=sexo_t, telefono_particular=telefono_particular, telefono_laboral=telefono_laboral, telefono_familiar=telefono_familiar, datos_familiares_cargo=datos_familiares_cargo, antecedentes_laborales=antecedentes_laborales, estudios_cursados=estudios_cursados)
             print profesor
-            cdocente = clave_Docente.objects.get(dni_docente=dni_t, email_docente=email_t, clave_logIn=clave)
-            if cdocente:
+            try:
+                cdocente = clave_Docente.objects.get(clave_logIn=clave, email_docente=email_t, dni_docente=dni_t)
                 cdocente.change()
                 cdocente.save()
                 password = profesor.create_pass_user()
@@ -43,7 +44,6 @@ def crear_profesor(request):
                 print password
                 my_group = Group.objects.get(name='Profesor') 
                 my_group.user_set.add(user_d)
-                user_d.save()
                 profesor.save()
                 user_docente = user_Docente(user=user_d, docente_referenciado=profesor)
                 user_docente.save()
@@ -53,13 +53,31 @@ def crear_profesor(request):
                 recipient_list = [email_t]
                 send_mail(subject, message, email_from, recipient_list)
                 data = {
-                    'estado': message,
+                    'resultado': "El docente " + str(apellido_t) + "" + str(nombre_t) + " ha sido cargado con exito.",
+                    'nombre': nombre_t,
+                    'apellido': apellido_t,
+                    'dni': dni_t,
+                    'username': profesor.create_username(),
+                    'password': password,
                     'error': False
                 }
                 print "No hay error"
                 return JsonResponse(data)
+            except clave_Docente.DoesNotExist:
+                print "No coincide la clave"
+                #No coincide la clave.
+                data = {
+                    'resultado': "La clave no coincide con esa direccion de email-dni",
+                    'nombre': nombre_t,
+                    'apellido': apellido_t,
+                    'dni': dni_t,
+                    'username': "NO EXISTE",
+                    'password': "NO EXISTE",
+                    'error': True
+                }
+                return JsonResponse(data)
         data = {
             'error': True,
-            'estado': "Hay un error xd"
+            'estado': "No es valido"
         }
         return JsonResponse(data)

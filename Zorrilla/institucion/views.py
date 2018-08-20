@@ -15,6 +15,7 @@ from .crear_docente import *
 import random
 import datetime
 
+@user_passes_test(check_Secretaria)
 def email_for_logIn(request):
     if request.method == 'POST':
         form = clave_DocenteForm(request.POST)
@@ -29,11 +30,22 @@ def email_for_logIn(request):
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [docente_email]
             send_mail( subject, message, email_from, recipient_list )
-            return redirect('template_email_docente')
+            data = {
+                'error':False,
+                'resultado': "Pedido enviado"
+            }
+            print "es valido"
+            return JsonResponse(data)
         else:
-            print "no funca"
-        return render(request, 'templates_docentes/emailDocente.html')
+            print "No es valido"
+            print form.errors
+            data = {
+                'error':True,
+                'resultado': "No es valido"
+            }
+            return JsonResponse(data)
 
+@user_passes_test(check_Secretaria)
 def template_email_docente(request):
     ran = random.randrange(10**80)
     myhex = "%064x" % ran
