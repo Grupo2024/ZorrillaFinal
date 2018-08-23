@@ -15,6 +15,7 @@
                 <th>Documento</th>
                 <th>Usuario</th>
                 <th>Accion</th>
+                <th>Fecha</th>
             </thead>
             <tbody>
                 {% for estado in estados %}
@@ -22,6 +23,7 @@
                         <td>{{estado.document.title}}</td>
                         <td>{{estado.user|title}}</td>
                         <td>{{estado.modificacion}}</td>
+                        <td>{{estado.uploaded_at}}</td>
                     </tr>
                   {% endfor %}
               </tbody>

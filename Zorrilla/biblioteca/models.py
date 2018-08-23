@@ -83,3 +83,4 @@ class Estado(models.Model):
     document = models.ForeignKey(Document)
     user = models.ForeignKey(User)
     modificacion = models.CharField('Modificacion', max_length=12, choices=MODIFICACION_CHOICES)
+    uploaded_at = models.DateTimeField(auto_now_add=True)

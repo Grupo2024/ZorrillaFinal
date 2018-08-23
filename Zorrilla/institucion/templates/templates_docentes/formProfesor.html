@@ -173,12 +173,6 @@
                     <h5 class="modal-title" id="exampleModalLongTitle">Matriculando Docente:</h5>
                 </div>
                 <div class="modal-body">
-                    <p>Nombre: </p><span id="nombre"></span>
-                    <p>Apellido: </p><span id="apellido"></span>
-                    <p>Dni: </p><span id="dni"></span>
-                    <p>Nombre de Usuario: </p><span id="username"></span>
-                    <p>Contraseña: </p><span id="password"></span>
-                    <br>
                     <span id="resultado"></span>
                 </div>
                 <div class="modal-footer" id="footer">
@@ -212,19 +206,9 @@
                 success: function(data){
                     console.log(data.error);
                     if (data.error){
-                        document.getElementById("nombre").innerHTML = data.nombre;
-                        document.getElementById("apellido").innerHTML = data.apellido;
-                        document.getElementById("dni").innerHTML = data.dni;
-                        document.getElementById("username").innerHTML = data.username;
-                        document.getElementById("password").innerHTML = data.password;
                         document.getElementById("resultado").innerHTML = data.resultado;
                     }else{
                         x.style.display = "block";
-                        document.getElementById("nombre").innerHTML = data.nombre;
-                        document.getElementById("apellido").innerHTML = data.apellido;
-                        document.getElementById("dni").innerHTML = data.dni;
-                        document.getElementById("username").innerHTML = data.username;
-                        document.getElementById("password").innerHTML = data.password;
                         document.getElementById("resultado").innerHTML = data.resultado;
                     }
                 }

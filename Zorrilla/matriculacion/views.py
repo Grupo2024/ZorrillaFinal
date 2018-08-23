@@ -130,42 +130,35 @@ def userDocente(request):
                     message = "El usuario " + str(userD.user.username) + " utilizara la siguiente contraseña " + str(new_pass)
                     email_from = settings.EMAIL_HOST_USER
                     recipient_list = [profesor.email_t]
-                    send_mail( subject, message, email_from, recipient_list)
+                    #send_mail( subject, message, email_from, recipient_list)
                     print "funciona"
                     userd = User.objects.get(username=userD.user.username)
                     print "Vieja Pass" + str(userd.password)
-                    userd.set_password(new_pass)
-                    userd.save()
+                    #userd.set_password(new_pass)
+                    #userd.save()
                     print "nueva pass" + str(userd.password)
                     data = {
-                        'email': email,
-                        'dni': dni,
                         'resultado': "Clave cambiada con exito.",
                         'error':False
                     }
                     return JsonResponse(data)
                 except Profesor.DoesNotExist:
                     data = {
-                        'email': email,
-                        'dni': "No existe un profesor con ese Dni.",
-                        'resultado': "Hubo un error",
+                        'resultado': "No existe un profesor con ese Dni",
                         'error':True
                     }
                     return JsonResponse(data)
             except Profesor.DoesNotExist:
                 data = {
-                    'email': "No existe un profesor con esta direccion",
-                    'dni': "-",
-                    'resultado': "Hubo un error",
+                    'resultado': "No existe un profesor con esta direccion",
                     'error':True
                 }
                 return JsonResponse(data)
         else:
-            print "NO ES VALIDO"
+            print form.errors
+            aux = form.errors
             data = {
-                'email': "-",
-                'dni': "-",
-                'resultado': "Error de validez",
+                'resultado': str(aux),
                 'error':True
             }
             return JsonResponse(data)

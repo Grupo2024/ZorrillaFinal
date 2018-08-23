@@ -16,7 +16,6 @@ def crear_profesor(request):
         form = ProfesorForm(request.POST)
         clave = request.POST['profesor_clave']
         print clave + " clave"
-        print form.errors
         if form.is_valid():
             nombre_t = form.cleaned_data['nombre_t']
             apellido_t = form.cleaned_data['apellido_t']
@@ -65,19 +64,13 @@ def crear_profesor(request):
                 return JsonResponse(data)
             except clave_Docente.DoesNotExist:
                 print "No coincide la clave"
-                #No coincide la clave.
                 data = {
-                    'resultado': "La clave no coincide con esa direccion de email-dni",
-                    'nombre': nombre_t,
-                    'apellido': apellido_t,
-                    'dni': dni_t,
-                    'username': "NO EXISTE",
-                    'password': "NO EXISTE",
+                    'resultado': "La clave no coincide con esa direccion de Email-Dni",
                     'error': True
                 }
                 return JsonResponse(data)
         data = {
             'error': True,
-            'estado': "No es valido"
+            'resultado': str(form.errors)
         }
         return JsonResponse(data)
