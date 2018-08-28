@@ -15,6 +15,10 @@ from .crear_docente import *
 import random
 import datetime
 
+
+def estadisticas(request):
+    return render (request, 'templates_cursos/estadisticas.html')
+
 @user_passes_test(check_Secretaria)
 def email_for_logIn(request):
     if request.method == 'POST':
