@@ -26,7 +26,7 @@ def email_for_logIn(request):
             clave_Docente2 = clave_Docente(clave_logIn=clave, email_docente=docente_email, dni_docente=docente_dni)
             clave_Docente2.save()
             subject = "Clave para Iniciar"
-            message = "En el dia de la fecha el instituto Zorrilla le notifica que ya tiene disponible el ingreso al formulario para cargar sus datos en nuestro sistema con la clave " + str(clave)
+            message = "En el dia de la fecha el Instituto Zorrilla le notifica que ya tiene disponible el ingreso al formulario para cargar sus datos en nuestro sistema con la clave " + str(clave)
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [docente_email]
             send_mail( subject, message, email_from, recipient_list )
