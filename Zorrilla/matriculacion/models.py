@@ -72,10 +72,8 @@ class Alumno(Persona):
     con_quien_vive = models.CharField('Con quien vive', max_length=40)
     quien_lo_trae = models.CharField('Quien lo trae', max_length=40)
     telefono_que_lo_trae = models.IntegerField('Telefono de quien lo trae')
-    utiliza_transporte = models.BooleanField('Viene o no en transporte') #Si viene o se va en transporte
-    transporte = models.ForeignKey(Transportista, null=True)
-    autorizados = models.ForeignKey(Autorizado, null=True)
-    padres = models.ForeignKey(Padre_madre, null=True)
+    autorizados = models.ForeignKey(Autorizado, blank=True, null=True)
+    padres = models.ForeignKey(Padre_madre)
     tiene_obra_social = models.BooleanField('Tiene obra o no')
     obra_social_nombre = models.CharField('Nombre Obra Social', max_length=40, null=True)
     obra_social_numero = models.IntegerField('Num Obra Social')#Numero de afiliacion a la obra social
@@ -88,6 +86,19 @@ class Alumno(Persona):
         if self.matriculado is not False:
             self.matriculado = True
         return self.matriculado
+
+
+
+#Voy a crear una clase intermedia entre alumnos y transportista, para hacer que la relacion
+# entre estas 2 clases, sea de Muchos a Muchos
+class usa_Transporte(models.Model):
+    alumnx = models.ForeignKey(Alumno, null=False)
+    transportistx = models.ForeignKey(Transportista, null=False)
+    #Tqm sr Bracha
+
+    def __str__(self):
+        return 'El alumno: {} utiliza el transportista: {}'.format(self.alumnx.nombre, self.transportistx.nombre_transporte)
+
 
 
 class Matriculacion(models.Model):
