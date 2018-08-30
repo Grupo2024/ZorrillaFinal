@@ -9,6 +9,16 @@ import datetime
 from .decorators import *
 import xlwt
 
+@user_passes_test(check_Secretaria)
+def estadisticas(request):
+    libros_habilitados = document.objects.filter(habilitado=True).count()
+    libros_deshabilitados = document.objects.filter(habilitado=False).count()
+    data = {
+        'libros_habilitados': libros_habilitados,
+        'libros_deshabilitados': libros_deshabilitados
+    }
+    return render (request, 'estadisticas.html', {'datos_libros':data})
+
 @user_passes_test(check_Director)
 def export_books(request):
     response = HttpResponse(content_type='application/ms-excel')
