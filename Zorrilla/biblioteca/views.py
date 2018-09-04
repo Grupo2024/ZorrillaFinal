@@ -11,11 +11,44 @@ import xlwt
 
 @user_passes_test(check_Secretaria)
 def estadisticas(request):
-    libros_habilitados = document.objects.filter(habilitado=True).count()
-    libros_deshabilitados = document.objects.filter(habilitado=False).count()
+    libros_habilitados = Document.objects.filter(habilitado=True).count()
+    libros_deshabilitados = Document.objects.filter(habilitado=False).count()
+    cant_drama = Document.objects.filter(genero="Drama").count()
+    cant_romance = Document.objects.filter(genero="Romance").count()
+    cant_accion = Document.objects.filter(genero="Accion").count()
+    cant_cf = Document.objects.filter(genero="Ciencia Ficcion").count()
+    cant_terror = Document.objects.filter(genero="Terror").count()
+    cant_aventura = Document.objects.filter(genero="Aventura").count()
+    cant_policial = Document.objects.filter(genero="Policial").count()
+    cant_politica = Document.objects.filter(genero="Politica").count()
+    cant_fantasia = Document.objects.filter(genero="Fantasia").count()
+    cant_otros = Document.objects.filter(genero="Otros").count()
+    """
+    DR = 'Drama'
+    RO = 'Romance'
+    AC = 'Accion'
+    CF = 'Ciencia Ficcion'
+    TR = 'Terror'
+    AV = 'Aventura'
+    PO = 'Policial'
+    PL = 'Politica'
+    FA = 'Fantasia'
+    OT = 'Otros'
+    """
+
     data = {
         'libros_habilitados': libros_habilitados,
-        'libros_deshabilitados': libros_deshabilitados
+        'libros_deshabilitados': libros_deshabilitados,
+        'cant_drama':cant_drama,
+        'cant_romance':cant_romance,
+        'cant_accion':cant_accion,
+        'cant_cf':cant_cf,
+        'cant_terror':cant_terror,
+        'cant_aventura':cant_aventura,
+        'cant_policial':cant_policial,
+        'cant_politica':cant_politica,
+        'cant_fantasia':cant_fantasia,
+        'cant_otros':cant_otros
     }
     return render (request, 'estadisticas.html', {'datos_libros':data})
 

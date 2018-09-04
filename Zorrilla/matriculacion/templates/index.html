@@ -69,7 +69,11 @@
         <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
           <div class="card-body">
             <a href="{% url 'biblioteca' %}" class="btn btn-danger asd">Ver Biblioteca</a>
-          </div>
+            {% if request.user|has_group:"Secretaria" or request.user|has_group:"Director" %}
+                <br>
+                <br>
+                <a href="{% url 'estadisticas' %}" class="btn btn-primary asd">Estadisticas</a>
+            {% endif %}
         </div>
       </div>
     </div>

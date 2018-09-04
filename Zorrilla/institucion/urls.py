@@ -12,7 +12,6 @@ urlpatterns = [
     url(r'^volver_curso/(?P<dni_alumno>\d+)$', volver_curso, name="volver_curso"),
     url(r'^docentes',docentes, name="docentes"),
     url(r'^mi_perfil',mi_perfil, name="mi_perfil"),
-    url(r'^estadisticas',estadisticas, name="estadisticas"),
     url(r'^template_email_docente',template_email_docente, name="template_email_docente"),
     url(r'^email_for_logIn',email_for_logIn, name="email_for_logIn"),
     url(r'^perfilProfesor/(\d+)/$', profesor, name="profesor"),

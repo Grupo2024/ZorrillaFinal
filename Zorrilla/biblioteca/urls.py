@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^libros_habilitados/(?P<cantidad>\d+)$', libros_habilitados, name="libros_habilitados"),
     url(r'^cargado/', cargado, name="cargado"),
     url(r'^informe/', informe, name="informe"),
+    url(r'^estadisticas/',estadisticas, name="estadisticas"),
     url(r'^export/xls/$', export_books, name='export_books'),
     url(r'^all_the_books/', all_the_books, name="all_the_books")
 ]
