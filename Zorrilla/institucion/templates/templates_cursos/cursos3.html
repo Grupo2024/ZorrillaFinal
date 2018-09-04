@@ -12,6 +12,15 @@
         <li class="breadcrumb-item "aria-current="page">{{curso.turno}}</li>
     </ol>
 </nav>
+<div class="row">
+    <div class="">
+        <input type="text"placeholder="Nombre del alumno que desee buscar" id="myInput" onkeyup="myFunction()">
+    </div>
+    <div class="">
+        <span style="margin-left: 275px">Cantidad de alumnos: {{todos_los_alumnos|length}}</span>
+    </div>
+</div>
+<br>
 <table class="table">
     <thead class="thead-dark">
     <tr>
