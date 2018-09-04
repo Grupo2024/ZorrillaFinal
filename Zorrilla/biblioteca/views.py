@@ -9,7 +9,7 @@ import datetime
 from .decorators import *
 import xlwt
 
-@user_passes_test(check_Secretaria)
+@user_passes_test(check_Director_or_Secretaria)
 def estadisticas(request):
     libros_habilitados = Document.objects.filter(habilitado=True).count()
     libros_deshabilitados = Document.objects.filter(habilitado=False).count()
@@ -23,19 +23,6 @@ def estadisticas(request):
     cant_politica = Document.objects.filter(genero="Politica").count()
     cant_fantasia = Document.objects.filter(genero="Fantasia").count()
     cant_otros = Document.objects.filter(genero="Otros").count()
-    """
-    DR = 'Drama'
-    RO = 'Romance'
-    AC = 'Accion'
-    CF = 'Ciencia Ficcion'
-    TR = 'Terror'
-    AV = 'Aventura'
-    PO = 'Policial'
-    PL = 'Politica'
-    FA = 'Fantasia'
-    OT = 'Otros'
-    """
-
     data = {
         'libros_habilitados': libros_habilitados,
         'libros_deshabilitados': libros_deshabilitados,
@@ -94,7 +81,6 @@ def biblioteca(request):
             form.save()
             form = DocumentForm()
             return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
-
     else:
         form = DocumentForm()
     return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
@@ -157,7 +143,7 @@ def cargado(request):
         else:
             print "No es valido"
             data = {
-                'estado': "Hubo un error " ,
+                'estado': str(form.errors),
                 'error': True
             }
     return JsonResponse(data)
