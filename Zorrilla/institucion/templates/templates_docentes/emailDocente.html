@@ -23,36 +23,44 @@
                 </div>
                 <br>
                 <label class="form_biblo col-sm-4">Dni:</label>
-                <div class="form-group">
+                <div class="form-group" id="sub">
                     {{form.dni_docente}}
                 </div>
             </div>
-            </article>
-        </form>
+        </article>
+    </form>
     <button class="btn btn-success btn-block mx-auto" align="center" onclick="send_key()">Enviar</button>
 </div>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Enviando Clave</h5>
-      </div>
-      <div class="modal-body">
-          <p>Estado:</p><span id="email_encontrado"></span>
-      </div>
-      <div class="modal-footer" id="footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="index()">Continuar</button>
-      </div>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Enviando Clave</h5>
+            </div>
+            <div class="modal-body">
+                <p>Estado:</p><span id="email_encontrado"></span>
+            </div>
+            <div class="modal-footer" id="footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="index()">Continuar</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
- <form id="index" action="{% url 'index' %}"></form>
+<form id="index" action="{% url 'index' %}"></form>
 
 <script>
 
-     function send_key(){
+    var input = document.getElementById("sub");
+    input.addEventListener("keyup", function(event) {
+        event.preventDefault();
+        if (event.keyCode === 13) {
+            send_key();
+        }
+    });
+
+    function send_key(){
         var myForm = document.getElementById('login_form');
         formData = new FormData(myForm);
         var x = document.getElementById("footer");
