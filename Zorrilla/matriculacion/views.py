@@ -144,21 +144,20 @@ def userDocente(request):
                     return JsonResponse(data)
                 except Profesor.DoesNotExist:
                     data = {
-                        'resultado': "No existe un profesor con ese Dni",
+                        'resultado': "No existe un profesor con esta direccion de Email.",
                         'error':True
                     }
                     return JsonResponse(data)
             except Profesor.DoesNotExist:
-                data = {
-                    'resultado': "No existe un profesor con esta direccion",
-                    'error':True
-                }
-                return JsonResponse(data)
+                    data = {
+                        'resultado': "No existe un profesor con ese Dni.",
+                        'error':True
+                    }
+                    return JsonResponse(data)
         else:
             print form.errors
-            aux = form.errors
             data = {
-                'resultado': str(aux),
+                'resultado': str(form.errors),
                 'error':True
             }
             return JsonResponse(data)
