@@ -8,7 +8,7 @@ from django.utils import timezone
 from .models import *
 
 def crear_alumno(request):
-    print "LLego"
+    print ("LLego")
     if request.method == 'POST':
         alumno_nombre = request.POST['alumno_nombre']
         alumno_apellido = request.POST['alumno_apellido']

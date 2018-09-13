@@ -112,7 +112,7 @@ def cargado(request):
                     'error': False
                 }
         else:
-            print "No es valido"
+            print ("No es valido")
             data = {
                 'estado': "Hubo un error " ,
                 'error': True
@@ -129,7 +129,7 @@ def eliminar_libro(request, id_documento):
     estado.save()
     if request.user.groups.filter(name="Director").exists():   
         document.delete()
-        print "es director"
+        print ("es director")
         data = {
             'estado': "El libro " + str(document.title) + " y todos los registros del mismo han sido eliminados"
         }
@@ -166,8 +166,8 @@ def all_the_books(request):
     return render (request, 'biblioteca.html', {'documentos':documents, 'form':form})
 
 def filtered_books(request, attribute, cantidad):
-    print attribute
-    print cantidad
+    print (attribute)
+    print (cantidad)
     documents = Document.objects.filter(habilitado=True).order_by('-' + str(attribute))[:cantidad]
     form = DocumentForm()
     return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})

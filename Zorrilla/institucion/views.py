@@ -34,11 +34,11 @@ def email_for_logIn(request):
                 'error':False,
                 'resultado': "Pedido enviado"
             }
-            print "es valido"
+            print ("es valido")
             return JsonResponse(data)
         else:
-            print "No es valido"
-            print form.errors
+            print ("No es valido")
+            print (form.errors)
             data = {
                 'error':True,
                 'resultado': "No es valido"
@@ -62,7 +62,7 @@ def cursos1(request):
 
 @login_required
 def cursos2(request, turno):
-    print turno
+    print (turno)
     if turno == "Maniana":
         turno = False
     else:
@@ -89,10 +89,10 @@ def get_alumno(request, string, dni_alumno):
     if request.method == 'POST':
         alumno = Alumno.objects.get(dni=dni_alumno)
         if string == "telefonos":
-            print "telefono"
+            print ("telefono")
             return render(request, 'templates_cursos/telefonos_alumno.html', {'alumno':alumno})
         else:
-            print "otro"
+            print ("otro")
             return render(request, 'templates_cursos/perfil_alumno.html', {'alumno':alumno})
     return HttpResponse("SOlo podes entrar por post")
 
@@ -113,7 +113,7 @@ def profesor(request, id_profesor):
 
 @user_passes_test(check_Profesor)
 def modificar_profesor(request):
-    print request.user
+    print (request.user)
     udocente = user_Docente.objects.get(user__username=request.user)
     return render(request, 'templates_docentes/perfilProfesor.html', {'trabajador':udocente.docente_referenciado})
 

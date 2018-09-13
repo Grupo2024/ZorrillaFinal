@@ -58,9 +58,9 @@ def aceptar_matriculaciones(request):
 def aceptar_matriculacion(request):
     if request.method == 'POST':
         dni_alumno = request.POST['dni_alumno']
-        print dni_alumno
+        print (dni_alumno)
         selected_curso = request.POST['selected_curso']
-        print selected_curso
+        print (selected_curso)
         seccion = Seccion.objects.get(id=selected_curso)
         alumno = Alumno.objects.get(dni=dni_alumno)
         matriculacion = Matriculacion.objects.get(alumno=alumno)
@@ -90,8 +90,8 @@ def login(request):
     if request.method == 'POST':
         username = request.POST['user']
         password = request.POST['pass']
-        print username
-        print password
+        print (username)
+        print (password)
         user = authenticate(request, username=username, password=password)
         if user is not None:
             auth.login(request, user)
@@ -116,7 +116,7 @@ def userDocente(request):
     if request.method == "POST":
         form = get_Password(request.POST)
         if form.is_valid():
-            print "es valido"
+            print ("es valido")
             email = form.cleaned_data['email']
             dni = form.cleaned_data['dni']
             try:
@@ -124,19 +124,19 @@ def userDocente(request):
                 try:
                     profesor = Profesor.objects.get(dni_t=dni)
                     userD = user_Docente.objects.get(docente_referenciado=profesor)
-                    print userD.user.username
+                    print (userD.user.username)
                     new_pass = new_Password(profesor.dni_t)
                     subject = "Recuperar Contraseña"
                     message = "El usuario " + str(userD.user.username) + " utilizara la siguiente contraseña " + str(new_pass)
                     email_from = settings.EMAIL_HOST_USER
                     recipient_list = [profesor.email_t]
                     #send_mail( subject, message, email_from, recipient_list)
-                    print "funciona"
+                    print ("funciona")
                     userd = User.objects.get(username=userD.user.username)
-                    print "Vieja Pass" + str(userd.password)
+                    print ("Vieja Pass" + str(userd.password))
                     #userd.set_password(new_pass)
                     #userd.save()
-                    print "nueva pass" + str(userd.password)
+                    print ("nueva pass" + str(userd.password))
                     data = {
                         'resultado': "Clave cambiada con exito.",
                         'error':False
@@ -155,7 +155,7 @@ def userDocente(request):
                 }
                 return JsonResponse(data)
         else:
-            print form.errors
+            print (form.errors)
             aux = form.errors
             data = {
                 'resultado': str(aux),
