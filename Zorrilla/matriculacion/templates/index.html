@@ -144,6 +144,18 @@ function scrollWin() {
     window.scrollBy(0, 730)
 }
 
+
+var myVar;
+
+function myFunction() {
+    myVar = setTimeout(showPage, 1500);
+}
+
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("myDiv").style.display = "block";
+}
+
 function initMap() {
         var uluru = {lat: -31.3729118, lng: -64.2350452};
         var map = new google.maps.Map(document.getElementById('map'), {
