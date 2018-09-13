@@ -69,7 +69,11 @@
         <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
           <div class="card-body">
             <a href="{% url 'biblioteca' %}" class="btn btn-danger asd">Ver Biblioteca</a>
-          </div>
+            {% if request.user|has_group:"Secretaria" or request.user|has_group:"Director" %}
+                <br>
+                <br>
+                <a href="{% url 'estadisticas' %}" class="btn btn-primary asd">Estadisticas</a>
+            {% endif %}
         </div>
       </div>
     </div>
@@ -83,7 +87,7 @@
         <br>
         <h1 class="display-1 font-weight-bold text-center text-white" style="margin-top: 6%;">Primario Zorrilla</h1>
 
-            <button class="btn btn-light btn-lg align-bottom d-block mx-auto " onclick="scrollWin()" style="width: 20%; margin-top: 10%;">Ver Mas</button>
+            <button class="btn btn-light btn-lg  d-block mx-auto " onclick="scrollWin()" style="width: 20%; margin-top: 10%;">Ver Mas</button>
 
         </div>
 
@@ -93,34 +97,27 @@
         <br>
 
         <div class="row justify-content-around">
-            <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                <div class="mainflip">
-                    <div class="frontside">
-                        <div class="card" style="width:160%;">
-                            <img class="card-img-top img- fluid" src="{% static "img/3zorrilla.jpeg" %}" alt="card image">
-                            <div class="card-body">
-                                <h4 class="card-title">Juan Zorrilla de San Martín</h4>
-                            </div>
+            
+            <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+                <div class="flipper">
+                    <div class="front" >
+                        <!-- front content -->
+                        <div>
+                            <img class="card-img-top" src="{% static "img/3zorrilla.jpeg" %}" alt="card image">
                         </div>
                     </div>
-                    <div class="backside">
-                        <div class="card" style="width:160%;">
-                            <div class="card-header">
-                                <h2>Historia</h2>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">¿Quién fue?</h4>
-                                <p class="card-text">Juan Zorrilla de San Martín (Montevideo, 28 de diciembre de 1855 - 3 de noviembre de 1931) fue un escritor, periodista, docente y diplomático uruguayo.
-                                    Junto a su hermano Alejandro, en 1865 fue llevado por su padre a cursar sus estudios en el Colegio de la Inmaculada Concepción de Santa Fe, República Argentina. Entre 1867 y 1872 estudió en el Colegio de los Padres Bayoneses, en Montevideo, lugar en el que comenzó sus estudios universitarios. Se recibió de bachiller en Santa Fe, en 1872. Entre 1874 y 1877 estudió en el Colegio de los Padres Jesuitas de Santiago de Chile hasta completar sus estudios como Licenciado en Letras y Ciencias Políticas. En ese período colaboró en la redacción de “La estrella de Chile” y publicó “Notas de un Himno”. En Chile recibió la influencia de las lecturas románticas de José Zorrilla, José de Espronceda y sobre todo, Gustavo Adolfo Bécquer.
-                                    En 1907 el gobierno uruguayo le encargó la creación de un ensayo histórico sobre la figura de José Gervasio Artigas, que tendría la finalidad de aportar datos a los artistas interesados en presentarse en un concurso de creación de una escultura al prócer. Dicho ensayo fue editado finalmente en 1910 y se tituló "La epopeya de Artigas".
-                                </p>
-                                <br>
-                                <a href="https://es.wikipedia.org/wiki/Juan_Zorrilla_de_San_Mart%C3%ADn" class="btn btn-info btn-md">Info Button</a>
-                            </div>
+                    <div class="back" >
+                        <!-- back content -->
+                        <div style="background-color: white">
+                            <p class="card-text" style="text-align: justify">Juan Zorrilla de San Martín (Montevideo, 28 de diciembre de 1855 - 3 de noviembre de 1931) fue un escritor, periodista, docente y diplomático uruguayo.
+                                Junto a su hermano Alejandro, en 1865 fue llevado por su padre a cursar sus estudios en el Colegio de la Inmaculada Concepción de Santa Fe, República Argentina. Entre 1867 y 1872 estudió en el Colegio de los Padres Bayoneses, en Montevideo, lugar en el que comenzó sus estudios universitarios. Se recibió de bachiller en Santa Fe, en 1872. Entre 1874 y 1877 estudió en el Colegio de los Padres Jesuitas de Santiago de Chile hasta completar sus estudios como Licenciado en Letras y Ciencias Políticas. En ese período colaboró en la redacción de “La estrella de Chile” y publicó “Notas de un Himno”. En Chile recibió la influencia de las lecturas románticas de José Zorrilla, José de Espronceda y sobre todo, Gustavo Adolfo Bécquer.
+                            </p>
+                            <a href="https://es.wikipedia.org/wiki/Juan_Zorrilla_de_San_Mart%C3%ADn" class="btn btn-info " style=" align-self: center">Info Button</a>
                         </div>
                     </div>
                 </div>
             </div>
+            
             <div class="card text-white bg-primary  text-center p-2" style="width: 30%;">
                 <div class="card-header">INFORMACION</div>
                 <div class="card-body">
@@ -162,3 +159,36 @@ function initMap() {
 
 
 {% endblock body %}
+
+
+
+
+<!--->
+<div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+    <div class="mainflip">
+        <div class="frontside">
+            <div class="card" style="width:160%;">
+                <img class="card-img-top img- fluid" src="{% static "img/3zorrilla.jpeg" %}" alt="card image">
+                <div class="card-body">
+                    <h4 class="card-title">Juan Zorrilla de San Martín</h4>
+                </div>
+            </div>
+        </div>
+        <div class="backside">
+            <div class="card" style="width:160%;">
+                <div class="card-header">
+                    <h2>Historia</h2>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">¿Quién fue?</h4>
+                    <p class="card-text">Juan Zorrilla de San Martín (Montevideo, 28 de diciembre de 1855 - 3 de noviembre de 1931) fue un escritor, periodista, docente y diplomático uruguayo.
+                        Junto a su hermano Alejandro, en 1865 fue llevado por su padre a cursar sus estudios en el Colegio de la Inmaculada Concepción de Santa Fe, República Argentina. Entre 1867 y 1872 estudió en el Colegio de los Padres Bayoneses, en Montevideo, lugar en el que comenzó sus estudios universitarios. Se recibió de bachiller en Santa Fe, en 1872. Entre 1874 y 1877 estudió en el Colegio de los Padres Jesuitas de Santiago de Chile hasta completar sus estudios como Licenciado en Letras y Ciencias Políticas. En ese período colaboró en la redacción de “La estrella de Chile” y publicó “Notas de un Himno”. En Chile recibió la influencia de las lecturas románticas de José Zorrilla, José de Espronceda y sobre todo, Gustavo Adolfo Bécquer.
+                        En 1907 el gobierno uruguayo le encargó la creación de un ensayo histórico sobre la figura de José Gervasio Artigas, que tendría la finalidad de aportar datos a los artistas interesados en presentarse en un concurso de creación de una escultura al prócer. Dicho ensayo fue editado finalmente en 1910 y se tituló "La epopeya de Artigas".
+                    </p>
+                    <br>
+                    <a href="https://es.wikipedia.org/wiki/Juan_Zorrilla_de_San_Mart%C3%ADn" class="btn btn-info btn-md">Info Button</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

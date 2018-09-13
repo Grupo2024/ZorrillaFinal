@@ -19,6 +19,54 @@ body, html {
     background-repeat: no-repeat;
     background-size: cover;
 }
+/*----------------flip card-------------------*/
+
+/* entire container, keeps perspective */
+.flip-container {
+	perspective: 1000px;
+}
+	/* flip the pane when hovered */
+	.flip-container:hover .flipper, .flip-container.hover .flipper {
+        transform: rotateY(180deg);
+	}
+
+.flip-container, .front, .back {
+	width: 320px;
+	height: 480px;
+}
+
+/* flip speed goes here */
+.flipper {
+	transition: 0.6s;
+	transform-style: preserve-3d;
+
+	position: relative;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+	backface-visibility: hidden;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* front pane, placed above back */
+.front {
+	z-index: 2;
+	/* for firefox 31 */
+	transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+.back {
+	transform: rotateY(180deg);
+}
+
+/*----------------------------------------------*/
+
+
 
 .parallax_blur {
     /* The image used */
@@ -50,77 +98,9 @@ body, html {
     width: 100%;
 }
 
-.image-flip:hover .backside, .image-flip.hover .backside {
--webkit-transform: rotateY(0deg);
--moz-transform: rotateX(0deg);
--o-transform: rotateX(0deg);
--ms-transform: rotateX(0deg);
-transform: rotateX(0deg);
-}
- 
-.image-flip:hover .frontside, .image-flip.hover .frontside {
--webkit-transform: rotateX(180deg);
--moz-transform: rotateX(180deg);
--o-transform: rotateX(180deg);
-transform: rotateX(180deg);
-}
- 
-.image-flip {
-margin-bottom:200px;
-width: 300px;
-height: 250px;
-}
- 
-.mainflip {
--webkit-transition: 1s;
--webkit-transform-style: preserve-3d;
--ms-transition: 1s;
--moz-transition: 1s;
--moz-transform: perspective(1000px);
--moz-transform-style: preserve-3d;
--ms-transform-style: preserve-3d;
-transition: 1s;
-transform-style: preserve-3d;
-position: relative;
-}
- 
-.frontside, .backside {
--webkit-backface-visibility: hidden;
--moz-backface-visibility: hidden;
--ms-backface-visibility: hidden;
-backface-visibility: hidden;
--webkit-transition: 1s;
--webkit-transform-style: preserve-3d;
--moz-transition: 1s;
--moz-transform-style: preserve-3d;
--o-transition: 1s;
--o-transform-style: preserve-3d;
--ms-transition: 1s;
--ms-transform-style: preserve-3d;
-transition: 1s;
-transform-style: preserve-3d;
-position: absolute;
-top: 0;
-left: 0;
-}
- 
-.frontside {
--webkit-transform: rotateX(0deg);
--ms-transform: rotateX(0deg);
-z-index: 2;
-}
- 
-.backside {
-background: white;
--webkit-transform: rotateX(-180deg);
--moz-transform: rotateX(-180deg);
--o-transform: rotateX(-180deg);
--ms-transform: rotateX(-180deg);
-transform: rotateX(-180deg);
-}
- 
 .card, .card-img-top {
 border-radius: 0;
+width: 100%;
 }
 
 table {
@@ -147,6 +127,15 @@ input[type=text]{
 }
 #bot{
     margin-left: 686px;
+}
+
+.centerB{
+   margin: 0 auto; 
+   text-align: center
+}
+
+.Acenter{
+    margin: 0px;
 }
 
 

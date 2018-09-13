@@ -15,6 +15,20 @@
         width: 100%;
         height: 60%;
     }
+
+    #myProgress {
+        width: 100%;
+        background-color: #ddd;
+    }
+
+    #myBar {
+        width: 10%;
+        height: 30px;
+        background-color: #4CAF50;
+        text-align: center;
+        line-height: 30px;
+        color: white;
+    }
 </style>
 
 <form method="post" enctype="multipart/form-data" id="form_docente">
@@ -173,10 +187,15 @@
                     <h5 class="modal-title" id="exampleModalLongTitle">Matriculando Docente:</h5>
                 </div>
                 <div class="modal-body">
+                    <p>Resultado: </p>
+                    <div id="myProgress">
+                        <p id="myBar" value="10%"></p>
+                    </div>
                     <span id="resultado"></span>
                 </div>
                 <div class="modal-footer" id="footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="login()">Continuar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="login()" id="continuar">Continuar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="close_modal()" id="volver">Volver</button>
                 </div>
             </div>
         </div>
@@ -186,16 +205,51 @@
 
     <script>
 
+        var input = document.getElementById("profesor_clave");
+        input.addEventListener("keyup", function(event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                crear_Profesor();
+            }
+        });
+
+        function sleep() {
+            return new Promise(resolve => setTimeout(resolve, 1000));
+        }
+
+        async function footer(a){
+            var elem = document.getElementById("myBar");
+            var width = 10;
+            var id = setInterval(frame, 10);
+            function frame() {
+                if (width >= 100) {
+                    clearInterval(id);
+                } else {
+                    width++;
+                    elem.style.width = width + '%';
+                    elem.innerHTML = width * 1  + '%';
+                }
+            }
+            await sleep();
+            elem.style.display = "none";
+            var resultado = document.getElementById("resultado");
+            resultado.innerHTML = a;
+            return a
+
+        }
+
         function crear_Profesor(){
             var myForm = document.getElementById('form_docente');
             formData = new FormData(myForm);
             console.log("llega");
-            var x = document.getElementById("footer");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
+            var elem = document.getElementById("myBar");
+            elem.style.display = "block";
+            var resultado = document.getElementById("resultado");
+            resultado.innerHTML = "";
+            var x = document.getElementById("continuar");
+            var y = document.getElementById("volver");
+            x.style.display = "none";
+            y.style.display = "none";
             $('#myModal').modal('show');
             $.ajax({
                 url: 'crear_profesor/',
@@ -206,15 +260,21 @@
                 success: function(data){
                     console.log(data.error);
                     if (data.error){
-                        document.getElementById("resultado").innerHTML = data.resultado;
+                        footer(data.resultado);
+                        x.style.display = "none";
+                        y.style.display = "block";
                     }else{
+                        footer(data.resultado);
+                        y.style.display = "none";
                         x.style.display = "block";
-                        document.getElementById("resultado").innerHTML = data.resultado;
                     }
                 }
             });
         }
 
+        function close_modal(){
+            $('#myModal').modal('hide');
+        }
 
         function login(){
             $('#login').submit()

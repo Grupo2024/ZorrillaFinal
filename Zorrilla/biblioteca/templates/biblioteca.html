@@ -152,7 +152,7 @@
                       </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" id="sub">
                       <label class="form_biblo">Autor:</label>
                       <div>
                         {{ form.autor}}
@@ -186,6 +186,14 @@
     </div>
 
 <script>
+    
+    var input = document.getElementById("sub");
+    input.addEventListener("keyup", function(event) {
+        event.preventDefault();
+        if (event.keyCode === 13) {
+            load_book();
+        }
+    });
     
     function updateDiv()
     {
