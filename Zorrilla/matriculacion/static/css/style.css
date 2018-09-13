@@ -129,6 +129,15 @@ input[type=text]{
     margin-left: 686px;
 }
 
+.centerB{
+   margin: 0 auto; 
+   text-align: center
+}
+
+.Acenter{
+    margin: 0px;
+}
+
 
 
 ---------------------------------------------------
