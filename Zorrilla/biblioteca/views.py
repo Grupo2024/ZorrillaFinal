@@ -11,8 +11,8 @@ import xlwt
 
 @user_passes_test(check_Director_or_Secretaria)
 def estadisticas(request):
-    libros_habilitados = Document.objects.filter(habilitado=True).count()
-    libros_deshabilitados = Document.objects.filter(habilitado=False).count()
+    libros_habilitados = Document.objects.filter(habilitado="Habilitado").count()
+    libros_deshabilitados = Document.objects.filter(habilitado="Deshabilitado").count()
     cant_drama = Document.objects.filter(genero="Drama").count()
     cant_romance = Document.objects.filter(genero="Romance").count()
     cant_accion = Document.objects.filter(genero="Accion").count()
@@ -53,15 +53,16 @@ def export_books(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
 
-    columns = ['Id','Titulo', 'Autor', 'Genero', 'Habilitado']
+    columns = ['Id','Titulo', 'Autor', 'Genero','Habilitado']
 
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
 
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
-        
-    rows = Document.objects.all().order_by('title','estado').values_list('id','title', 'autor', 'genero', 'habilitado')
+
+    rows = Document.objects.all().order_by('title','estado').values_list('id','title', 'autor', 'genero','habilitado')
+    print rows
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
@@ -70,11 +71,8 @@ def export_books(request):
     wb.save(response)
     return response
 
-def filter_books(request):
-    return render(request, 'filter_books.html')
-
 def biblioteca(request):
-    documents = Document.objects.filter(habilitado=True).order_by('-uploaded_at')[:5]
+    documents = Document.objects.filter(habilitado="Habilitado").order_by('-uploaded_at')[:5]
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
@@ -88,8 +86,9 @@ def biblioteca(request):
 @user_passes_test(check_Director)
 def informe(request):
     documents = Document.objects.all()
-    documents_habiltiados = Document.objects.filter(habilitado=True).count()
-    documents_deshabiltiados = Document.objects.filter(habilitado=False).count()
+    documents_habiltiados = Document.objects.filter(habilitado="Habilitado").count()
+    documents_deshabiltiados = Document.objects.filter(habilitado="Deshabilitado").count()
+    print documents_habiltiados
     documentos = {
         'cantidad':documents.count(),
         'habilitados':documents_habiltiados,
@@ -104,8 +103,8 @@ def historia_libro(request, id_documento):
         return render(request, 'estados.html', {'estados':estados})
 
 @user_passes_test(check_Director)
-def libros_habilitados(request, cantidad):
-    documents = Document.objects.filter(habilitado=False).order_by('-title')[:cantidad]
+def libros_deshabilitados(request, cantidad):
+    documents = Document.objects.filter(habilitado="Deshabilitado").order_by('-title')[:cantidad]
     form = DocumentForm()
     return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
     
@@ -147,39 +146,35 @@ def cargado(request):
                 'error': True
             }
     return JsonResponse(data)
-    
-# Function that changes the document habilitado attribute to False, it does not delete the book,
+
 @user_passes_test(check_Director_or_Profesor)
 def eliminar_libro(request, id_documento):
     document = Document.objects.get(id=id_documento)
     estado = Estado(document=document, user=request.user, modificacion="Deshabilitar")
-    document.change()
+    document.habilitado = "Deshabilitado"
     document.save()
     estado.save()
-    if request.user.groups.filter(name="Director").exists():   
-        document.delete()
-        print ("es director")
-        data = {
-            'estado': "El libro " + str(document.title) + " y todos los registros del mismo han sido eliminados"
-        }
-    else:
-        data = {
-            'estado': "El libro " + str(document.title) + "  ha sido eliminado"
-        }
+    data = {
+        'estado':"El libro " + str(document.title) + " ha sido Deshabilitado."
+    }
     return JsonResponse(data, safe=True)
 
 @user_passes_test(check_Director)
 def cambiar_estado_libro(request, id_documento):
-    document = Document.objects.get(id=id_documento)
-    estado = Estado(document=document, user=request.user, modificacion=document.reverse())
-    document.change()
-    document.save()
-    estado.save()
+    new_document = Document.objects.get(id=id_documento)
+    print new_document.habilitado
     aux = "Deshabilitado"
-    if document.habilitado:
-        aux = "Habilitado"
+    if new_document.habilitado == "Habilitado":
+        new_document.habilitado="Deshabilitado"
+        new_document.save()
+    else:
+        aux="Habilitado"
+        new_document.habilitado="Habilitado"
+        new_document.save()
+    estado = Estado(document=new_document, user=request.user, modificacion=aux)
+    estado.save()
     data = {
-        'estado':'El libro ' + str(document.title) + " ha cambiado su estado a " + str(aux)
+        'estado':'El libro ' + str(document.title) + " ha cambiado su estado a " + str(document.habilitado)
     }
     return JsonResponse(data, safe=True)
 
@@ -190,13 +185,13 @@ def info_libro(request, id_documento):
         return render(request, 'book_info.html', {'doc':document})
 
 def all_the_books(request):
-    documents = Document.objects.filter(habilitado=True)
+    documents = Document.objects.filter(habilitado="Habilitado")
     form = DocumentForm()
     return render (request, 'biblioteca.html', {'documentos':documents, 'form':form})
 
 def filtered_books(request, attribute, cantidad):
     print (attribute)
     print (cantidad)
-    documents = Document.objects.filter(habilitado=True).order_by('-' + str(attribute))[:cantidad]
+    documents = Document.objects.filter(habilitado="Habilitado").order_by('-' + str(attribute))[:cantidad]
     form = DocumentForm()
     return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})

@@ -28,11 +28,11 @@
     {% if request.user|has_group:"Director" %} 
         <button class="dropdown-btn">Deshabilitado<i class="fa fa-caret-down"></i></button>
         <div class="dropdown-container">
-          <a href="{% url 'libros_habilitados' 5 %}">5 libros</a>
-          <a href="{% url 'libros_habilitados' 10 %}">10 libros</a>
-          <a href="{% url 'libros_habilitados' 25 %}">25 libros</a>
-          <a href="{% url 'libros_habilitados' 50 %}">50 libros</a>
-          <a href="{% url 'libros_habilitados' 100 %}">100 libros</a>
+          <a href="{% url 'libros_deshabilitados' 5 %}">5 libros</a>
+          <a href="{% url 'libros_deshabilitados' 10 %}">10 libros</a>
+          <a href="{% url 'libros_deshabilitados' 25 %}">25 libros</a>
+          <a href="{% url 'libros_deshabilitados' 50 %}">50 libros</a>
+          <a href="{% url 'libros_deshabilitados' 100 %}">100 libros</a>
         </div>
     {% endif %}
     <a href="{% url 'all_the_books' %}">Todos</a>
