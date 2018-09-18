@@ -1,20 +1,4 @@
 <html>
-    <style type="text/css">
-        /* Center the loader */
-        #loader {
-          background-repeat: repeat;
-          background-size: contain;
-          z-index: 1;
-          margin-left: 10%;
-          width: 100%;
-          height: 100%;
-          background-image: url(media/loading.gif)
-        }
-        #myDiv {
-          display: none;
-          text-align: center;
-        }
-    </style>
         <head>
             {% load static %}
             <meta http-equiv="Content-type" content="text/html; charset=utf-8" >
@@ -42,10 +26,8 @@
 
 
         </head>
-        <body onload="myFunction()" style="margin:0; background-color: #F0F0F0">
-            <div id="loader"></div>
-            <div style="display:none;" id="myDiv" class="animate-bottom">
-
+        <body background-color: #F0F0F0">
+            
             <nav class="navbar navbar-expand-md navbar-dark bg-dark">
                 <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                     <ul class="navbar-nav mr-auto">
@@ -100,22 +82,4 @@
         {% endblock body %}
         </div>
         </body>
-
-<script>
-var myVar;
-
-function myFunction() {
-    myVar = setTimeout(showPage, 1500);
-}
-
-function showPage() {
-  document.getElementById("loader").style.display = "none";
-  document.getElementById("myDiv").style.display = "block";
-}
-</script>
-
-
-
-
-
 </html>
