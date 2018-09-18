@@ -6,13 +6,12 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^biblioteca', biblioteca, name="biblioteca"),
-    url(r'^filter_books/', filter_books, name="filter_books"),
     url(r'^eliminar_libro/(?P<id_documento>\d+)$', eliminar_libro, name="eliminar_libro"),
     url(r'^cambiar_estado_libro/(?P<id_documento>\d+)$', cambiar_estado_libro, name="cambiar_estado_libro"),
     url(r'^info_libro/(?P<id_documento>\d+)$', info_libro, name="info_libro"),
     url(r'^historia_libro/(?P<id_documento>\d+)$', historia_libro, name="historia_libro"),
     url(r'^filtered_books/(?P<attribute>[\w\-]+)-(?P<cantidad>\d+)$', filtered_books, name="filtered_books"),
-    url(r'^libros_habilitados/(?P<cantidad>\d+)$', libros_habilitados, name="libros_habilitados"),
+    url(r'^libros_deshabilitados/(?P<cantidad>\d+)$', libros_deshabilitados, name="libros_deshabilitados"),
     url(r'^cargado/', cargado, name="cargado"),
     url(r'^informe/', informe, name="informe"),
     url(r'^estadisticas/',estadisticas, name="estadisticas"),

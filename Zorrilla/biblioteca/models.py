@@ -16,6 +16,8 @@ class Document(models.Model):
     PL = 'Politica'
     FA = 'Fantasia'
     OT = 'Otros'
+    HA = 'Habilitado'
+    DE = 'Deshabilitado'
 
     GENERO_CHOICES = (
         (DR , 'Drama'),
@@ -30,38 +32,27 @@ class Document(models.Model):
         (OT , 'Otros')
     )
 
+    HABILITADO_CHOICES = (
+        (HA, 'Habilitado'),
+        (DE , 'Deshabilitado')
+    )
+
     description = models.CharField(max_length=255, null=False)
     document = models.FileField(upload_to='')
     title = models.CharField(max_length=60, blank=False, null=False)
-    genero = models.CharField('Modificacion', max_length=15, choices=GENERO_CHOICES)
+    genero = models.CharField('Genero', max_length=15, choices=GENERO_CHOICES)
     autor = models.CharField(max_length=60, blank=False, null=False)
-    habilitado = models.BooleanField(default=True)
+    habilitado = models.CharField('Habilitado', max_length=13, choices=HABILITADO_CHOICES, default=HABILITADO_CHOICES[0][0])
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return 'Titulo {}, id {}'.format(self.title, self.id)
 
-    def change(self):
-        if self.habilitado:
-            self.habilitado = False
-            self.save()
-            return self.habilitado
-        else:
-            self.habilitado = True
-            self.save()
-            return self.habilitado
-
-    def reverse(self):
-        if self.habilitado:
-            return "Deshabilitado"
-        else:
-            return "Habilitado"
-        
-    def cantidad_habilitados():
-        return Document.objects.filter(habilitado=True).count()
+    def cantidad_habilitados(self):
+        return Document.objects.filter(habilitado="Habilitado").count()
     
-    def cantidad_deshabilitados():
-        return Document.objects.filter(habilitado=False).count()
+    def cantidad_deshabilitados(self):
+        return Document.objects.filter(habilitado="Deshabilitado").count()
     
         
 class Estado(models.Model):
@@ -84,3 +75,7 @@ class Estado(models.Model):
     user = models.ForeignKey(User)
     modificacion = models.CharField('Modificacion', max_length=12, choices=MODIFICACION_CHOICES)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return '{} {}'.format(self.modificacion, self.document.title)
