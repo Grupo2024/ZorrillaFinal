@@ -68,7 +68,6 @@ class Alumno(Persona):
     con_quien_vive = models.CharField('Con quien vive', max_length=40)
     quien_lo_trae = models.CharField('Quien lo trae', max_length=40)
     telefono_que_lo_trae = models.IntegerField('Telefono de quien lo trae')
-    padres = models.ForeignKey(Padre_madre)
 
     def __str__(self):
         return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre, self.apellido, self.dni, self.sexo)
@@ -101,6 +100,14 @@ class Matriculacion(models.Model):
     Ahora vienen todas clases intermedias, para hacer que la relacion entre estas, 
     y alumno, sea de muchos a muchos 
 '''
+
+
+class Familia(models.Model):
+    alumno = models.ForeingKey(Alumno, null=False)
+    padre_madre = models.ForeignKey(Padre_madre, null=False)
+
+    def __str__(self):
+        return '{} - {}'.format(self.padre_madre.nombre, self.alumno.nombre)
 
 
 class usa_Transporte(models.Model):

@@ -62,16 +62,29 @@ def index(request):
     return render(request, 'index.html')
 
 def formulario(request):
-    if request.method == 'POST':
-        form = AlumnoForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            form = AlumnoForm()
-            return render(request, 'formulario.html', {'form':form})
+    alumno_form = AlumnoForm()
+    padre_form = PadreForm()
+    return render(request, 'formulario.html', {'alumno_form':alumno_form, 'padre_form':padre_form})
 
+def crear_alumno(request):
+    alumno_form = Alumno_form(request.POST)
+    profesor_form = Profesor_form(request.POST)
+    if alumno_form.is_valid():
+        if profesor_form.is_valid():
+            pass
+        else:
+            data = {
+            'resultado':str(profesor_form.errors),
+            'error':True
+        }
+        return JsonResponse(data)
     else:
-        form = AlumnoForm()
-    return render(request, 'formulario.html', {'form':form})
+        data = {
+            'resultado':str(alumno_form.errors),
+            'error':True
+        }
+        return JsonResponse(data)
+
 
 def logIn(request):
     return render(request, 'docentes_login.html')
