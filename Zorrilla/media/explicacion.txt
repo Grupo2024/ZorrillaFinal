@@ -1,0 +1,10 @@
+Integrantes:
+・Martin Lescano
+・Gonzalo Miranda
+・Franco Bossio
+・Juan Cruz Fierro
+・Mariano Valle
+
+El objetivo de produccion de nuestra empresa es el de desarrollar aplicaciones moviles.
+
+Este proyecto de packet tracer se encarga de dividir una red en tres subredes las culaes se comunican entre si mediente tres routers, de manera estatica y dinamica.

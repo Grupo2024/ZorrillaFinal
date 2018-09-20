@@ -9,7 +9,7 @@ import datetime
 from .decorators import *
 import xlwt
 
-@user_passes_test(check_Director_or_Secretaria)
+## @user_passes_test(check_Director_or_Secretaria)
 def estadisticas(request):
     libros_habilitados = Document.objects.filter(habilitado="Habilitado").count()
     libros_deshabilitados = Document.objects.filter(habilitado="Deshabilitado").count()
@@ -62,7 +62,7 @@ def export_books(request):
     font_style = xlwt.XFStyle()
 
     rows = Document.objects.all().order_by('title','estado').values_list('id','title', 'autor', 'genero','habilitado')
-    print rows
+    print (rows)
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
@@ -88,7 +88,7 @@ def informe(request):
     documents = Document.objects.all()
     documents_habiltiados = Document.objects.filter(habilitado="Habilitado").count()
     documents_deshabiltiados = Document.objects.filter(habilitado="Deshabilitado").count()
-    print documents_habiltiados
+    print (documents_habiltiados)
     documentos = {
         'cantidad':documents.count(),
         'habilitados':documents_habiltiados,
@@ -162,7 +162,7 @@ def eliminar_libro(request, id_documento):
 @user_passes_test(check_Director)
 def cambiar_estado_libro(request, id_documento):
     new_document = Document.objects.get(id=id_documento)
-    print new_document.habilitado
+    print (new_document.habilitado)
     aux = "Deshabilitado"
     if new_document.habilitado == "Habilitado":
         new_document.habilitado="Deshabilitado"

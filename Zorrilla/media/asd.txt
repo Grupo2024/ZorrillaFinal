@@ -1,0 +1,16 @@
+
+5)
+DELETE FROM film_actor
+WHERE film_id = 1;
+
+DELETE FROM film_category
+WHERE film_id = 1;
+
+DELETE FROM rental
+WHERE inventory_id in (select inventory_id from inventory where film_id = 1);
+
+DELETE FROM inventory
+WHERE film_id = 1;
+
+DELETE FROM film
+WHERE film_id = 1;
