@@ -9,7 +9,7 @@ import datetime
 from .decorators import *
 import xlwt
 
-## @user_passes_test(check_Director_or_Secretaria)
+@user_passes_test(check_Director_or_Secretaria)
 def estadisticas(request):
     libros_habilitados = Document.objects.filter(habilitado="Habilitado").count()
     libros_deshabilitados = Document.objects.filter(habilitado="Deshabilitado").count()
