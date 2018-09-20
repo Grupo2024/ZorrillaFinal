@@ -174,7 +174,7 @@ def cambiar_estado_libro(request, id_documento):
     estado = Estado(document=new_document, user=request.user, modificacion=aux)
     estado.save()
     data = {
-        'estado':'El libro ' + str(document.title) + " ha cambiado su estado a " + str(document.habilitado)
+        'estado':'El libro ' + str(new_document.title) + " ha cambiado su estado a " + str(new_document.habilitado)
     }
     return JsonResponse(data, safe=True)
 

@@ -16,10 +16,8 @@ from biblioteca.decorators import *
 # Create your views here.
 
 def daddy():
-    docentes = Profesor.objects.get(dni_t=22222222)
-    if docentes:
-        return "Ya esta creado"
-    else:
+    cant_profesores = Profesor.objects.all().count()
+    if cant_profesores == 0:
         password = "hola1234"
         user_secretaria = User.objects.create_user(username="secretaria", password=password)
         grupo_secretaria, created = Group.objects.get_or_create(name='Secretaria')
@@ -55,7 +53,9 @@ def daddy():
         secretaria_aux.save()
         profesor_aux.save()
         director_aux.save()
-        return "Funciona"
+        return "Creados"
+    else:
+        return "Ya estan creados"
 
 def index(request):
     daddy()
