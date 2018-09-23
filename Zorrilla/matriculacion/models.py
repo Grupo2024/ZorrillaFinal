@@ -68,6 +68,7 @@ class Alumno(Persona):
     con_quien_vive = models.CharField('Con quien vive', max_length=40)
     quien_lo_trae = models.CharField('Quien lo trae', max_length=40)
     telefono_que_lo_trae = models.IntegerField('Telefono de quien lo trae')
+    #curso = models.ForeignKey(Curso, blank=True)
 
     def __str__(self):
         return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre, self.apellido, self.dni, self.sexo)
@@ -89,7 +90,7 @@ class Autorizado(Persona):
 
 class Matriculacion(models.Model):
     alumno = models.ForeignKey(Alumno, null=False)
-    fecha_matriculacion = models.DateTimeField('Fecha Matriculacion', blank=True)
+    fecha_matriculacion = models.DateTimeField('Fecha Matriculacion', auto_now_add=True)
     matriculado = models.BooleanField('Esta matriculado o no', default=False)
 
     def __str__(self):
@@ -103,7 +104,7 @@ class Matriculacion(models.Model):
 
 
 class Familia(models.Model):
-    alumno = models.ForeingKey(Alumno, null=False)
+    alumno = models.ForeignKey(Alumno, null=False)
     padre_madre = models.ForeignKey(Padre_madre, null=False)
 
     def __str__(self):
@@ -124,10 +125,5 @@ class usa_Obra_Social(models.Model):
     obra_social = models.ForeignKey(Obra_Social, null=False)
     obra_social_numero = models.IntegerField('Num Obra Social', null=False)#Numero de afiliacion a la obra social
 
-
-class Asignacion_Alumno(models.Model):
-    curso = models.ForeignKey(Curso, null=False)
-    alumno = models.ForeignKey(Alumno, null=False)
-
     def __str__(self):
-       return 'Alumno {} {} asiste al curso: {} {} turno {}'.format(self.alumno.nombre, self.alumno.apellido, self.curso.aNo, self.curso.seccion.que_seccion, self.curso.turno_asignado.que_hora())
+        return'El alumno {} utiliza la obra social {}'.format(self.alumno.nombre, self.obra_social)

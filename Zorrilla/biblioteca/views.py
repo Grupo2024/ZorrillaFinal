@@ -114,31 +114,15 @@ def cargado(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
+            form.save()
             title = form.cleaned_data['title']
-            document = form.cleaned_data['document']
-            error = False
-            aux = Document.objects.filter(title=title)
-            if aux:
-                resultado = "Ya existe un registro con ese Titulo"
-                error = True
-            aux = Document.objects.filter(document=document)
-            if aux:
-                resultado = "Ese archivo ya fue cargado"
-                error = True
-            if error:
-                data = {
-                    'estado': resultado,
-                    'error': error
-                }
-            else:
-                form.save()
-                document = Document.objects.get(title=title)
-                estado = Estado(document = document, user=request.user, modificacion="Crear")
-                estado.save()
-                data = {
-                    'estado': "El libro " + str(document) + " ha sido cargado",
-                    'error': False
-                }
+            document = Document.objects.get(title=title)
+            estado = Estado(document = document, user=request.user, modificacion="Crear")
+            estado.save()
+            data = {
+                'estado': "El libro " + str(document) + " ha sido cargado",
+                'error': False
+            }
         else:
             print ("No es valido")
             data = {

@@ -59,6 +59,7 @@
                             <br>
                             <div id="a"  style="margin-left:-2.4%">{{ alumno_form.fecha_nacimiento }}</div>
                         </div>
+                        <!--
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
                                 <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
@@ -66,7 +67,7 @@
                             <br>
                             <div style="margin-left:-7%">{{ alumno_form.domicilio }}</div>
                         </div>
-
+                        -->
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
                                 <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
@@ -142,24 +143,18 @@
 
                             <div class="input-group input-group-sm mb-3 form-group">
                                 <div class="input-group-prepend">
-                                    <span style="margin-left: -8%;" class="input-group-text" id="inputGroup-sizing-sm">Obra social:</span>
-                                </div>
-                                <div style="margin-left: -8%;">{{ alumno_form.obra_social_nombre }}</div>
-                            </div>
-
-                            <div class="input-group input-group-sm mb-3 form-group">
-                                <div class="input-group-prepend">
-                                    <span style="margin-left: -4%;" class="input-group-text" id="inputGroup-sizing-sm">Numero de la obra social:</span>
-                                </div>
-                                <div style="margin-left: -2.5%; margin-top: 0%;">{{ alumno_form.obra_social_numero }}</div>
-                            </div>
-
-                            <div class="input-group input-group-sm mb-3 form-group">
-                                <div class="input-group-prepend">
                                     <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Con quien vive:</span>
                                 </div>
                                 <br>
                                 <div style="margin-left:-20">{{ alumno_form.con_quien_vive }}</div>
+                            </div>
+
+                            <div class="input-group input-group-sm mb-3 form-group">
+                                <div class="input-group-prepend">
+                                    <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Quien lo trae:</span>
+                                </div>
+                                <br>
+                                <div style="margin-left:-20">{{ alumno_form.quien_lo_trae }}</div>
                             </div>
                         </div>
                     </li>
@@ -167,6 +162,8 @@
         </div>
     </div>
     </div>
+
+
 
 <h2>Padre</h2>
 <p>Nombre: </p>{{padre_form.nombre}}
@@ -180,26 +177,19 @@
 <p>Profesion:</p>{{padre_form.profesion}}
 <p>Telefono del Trabajo:</p>{{padre_form.telefono_trabajo}}
 
+
 </form>
-<center><button type="submit" class="btn btn-success" style="width:30%">Cargar</button></center>
+<center><button type="submit" class="btn btn-success" onclick="
+    crear_Alumno()" style="width:30%">Cargar</button></center>
 
 <script>
 
     function crear_Alumno(){
-        var myForm = document.getElementById('form_docente');
+        var myForm = document.getElementById('form_alumno');
         formData = new FormData(myForm);
         console.log("llega");
-        var elem = document.getElementById("myBar");
-        elem.style.display = "block";
-        var resultado = document.getElementById("resultado");
-        resultado.innerHTML = "";
-        var x = document.getElementById("continuar");
-        var y = document.getElementById("volver");
-        x.style.display = "none";
-        y.style.display = "none";
-        $('#myModal').modal('show');
         $.ajax({
-            url: 'crear_profesor/',
+            url: '/crear_alumno/',
             data: formData,
             processData: false,
             contentType: false,
@@ -207,13 +197,9 @@
             success: function(data){
                 console.log(data.error);
                 if (data.error){
-                    footer(data.resultado);
-                    x.style.display = "none";
-                    y.style.display = "block";
+                    alert(data.resultado)
                 }else{
-                    footer(data.resultado);
-                    y.style.display = "none";
-                    x.style.display = "block";
+                    alert(data.resultado)
                 }
             }
         });

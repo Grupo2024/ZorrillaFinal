@@ -38,8 +38,8 @@ class Document(models.Model):
     )
 
     description = models.CharField(max_length=255, null=False)
-    document = models.FileField(upload_to='')
-    title = models.CharField(max_length=60, blank=False, null=False)
+    document = models.FileField(upload_to='', unique=True)
+    title = models.CharField(max_length=60, blank=False, null=False, unique=True)
     genero = models.CharField('Genero', max_length=15, choices=GENERO_CHOICES)
     autor = models.CharField(max_length=60, blank=False, null=False)
     habilitado = models.CharField('Habilitado', max_length=13, choices=HABILITADO_CHOICES, default=HABILITADO_CHOICES[0][0])

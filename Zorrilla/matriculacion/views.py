@@ -67,24 +67,69 @@ def formulario(request):
     return render(request, 'formulario.html', {'alumno_form':alumno_form, 'padre_form':padre_form})
 
 def crear_alumno(request):
-    alumno_form = Alumno_form(request.POST)
-    profesor_form = Profesor_form(request.POST)
-    if alumno_form.is_valid():
-        if profesor_form.is_valid():
-            pass
-        else:
-            data = {
-            'resultado':str(profesor_form.errors),
-            'error':True
-        }
-        return JsonResponse(data)
-    else:
-        data = {
-            'resultado':str(alumno_form.errors),
-            'error':True
-        }
-        return JsonResponse(data)
+    alumno_form = AlumnoForm(request.POST)
+    padre_form = PadreForm(request.POST)
+    if alumno_form.is_valid() and padre_form.is_valid():
+        nombre_alumno = alumno_form.cleaned_data['nombre']
+        apellido_alumno = alumno_form.cleaned_data['apellido']
+        dni_alumno = alumno_form.cleaned_data['dni']
+        lugar_nacimiento_alumno = alumno_form.cleaned_data['lugar_nacimiento']
+        fecha_nacimiento_alumno = alumno_form.cleaned_data['fecha_nacimiento']
+        #domicilio_alumno = alumno_form.cleaned_data['domicilio']
+        email_alumno = alumno_form.cleaned_data['email']
+        sexo_alumno = alumno_form.cleaned_data['sexo']
+        telefono_casa_alumno = alumno_form.cleaned_data['telefono_casa']
+        telefono_padre_alumno = alumno_form.cleaned_data['telefono_padre']
+        telefono_madre_alumno = alumno_form.cleaned_data['telefono_madre']
+        telefono_familiar_alumno = alumno_form.cleaned_data['telefono_familiar']
+        telefono_vecino_alumno = alumno_form.cleaned_data['telefono_vecino']
+        enfermedad_relevante_alumno = alumno_form.cleaned_data['enfermedad_relevante']
+        con_quien_vive_alumno = alumno_form.cleaned_data['con_quien_vive']
+        quien_lo_trae_alumno = alumno_form.cleaned_data['quien_lo_trae']
+        telefono_que_lo_trae_alumno = alumno_form.cleaned_data['telefono_que_lo_trae']
+        #Datos del nuevo alumno
+        new_Alumno = Alumno(nombre=nombre_alumno, apellido=apellido_alumno, dni=dni_alumno,lugar_nacimiento=lugar_nacimiento_alumno,fecha_nacimiento=fecha_nacimiento_alumno, email=email_alumno,sexo=sexo_alumno, telefono_casa=telefono_casa_alumno, telefono_padre=telefono_padre_alumno,telefono_familiar=telefono_familiar_alumno, telefono_madre=telefono_madre_alumno,
+        enfermedad_relevante=enfermedad_relevante_alumno, con_quien_vive=con_quien_vive_alumno,quien_lo_trae=quien_lo_trae_alumno,telefono_que_lo_trae=telefono_que_lo_trae_alumno)
+        new_Alumno.save()
+        #Datos del padre del Alumno
+        nombre_padre = padre_form.cleaned_data['nombre']
+        apellido_padre = padre_form.cleaned_data['apellido']
+        dni_padre = padre_form.cleaned_data['dni']
+        lugar_nacimiento_padre = padre_form.cleaned_data['lugar_nacimiento']
+        fecha_nacimiento_padre = padre_form.cleaned_data['fecha_nacimiento']
+        #domicilio_padre = padre_form.cleaned_data['domicilio']
+        email_padre = padre_form.cleaned_data['email']
+        sexo_padre = padre_form.cleaned_data['sexo']
+        profesion_padre = padre_form.cleaned_data['profesion']
+        telefono_trabajo_padre = padre_form.cleaned_data['telefono_trabajo']
 
+        new_Padre = Padre_madre(nombre=nombre_padre, apellido=apellido_padre, dni=dni_padre, lugar_nacimiento=lugar_nacimiento_padre,
+        fecha_nacimiento=fecha_nacimiento_padre, email=email_padre, sexo=sexo_padre, profesion=profesion_padre,telefono_trabajo=telefono_trabajo_padre)
+
+        new_Padre.save()
+        alumno = Alumno.objects.get(dni=new_Alumno.dni)
+        padre = Padre_madre.objects.get(dni=new_Padre.dni)
+        new_Matriculacion = Matriculacion(alumno=alumno)
+        new_Matriculacion.save()
+        new_Familia = Familia(alumno=alumno, padre_madre=padre)
+        new_Familia.save()
+        subject = "Matriculacion"
+        message = "El Instituo Zorilla le notifica que el pedido de matriculacion de su hijo/a " + str(alumno.apellido) + "" + str(alumno.nombre) + " ha sido enviado con exito. "
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [new_Padre.email]
+        send_mail( subject, message, email_from, recipient_list)
+        data = {
+            'resultado':"Funca",
+            'error':False
+        }
+
+    else:
+        print "no es valido"
+        data = {
+            'resultado':str(padre_form.errors) + str(alumno_form.errors),
+            'error':True
+        }
+    return JsonResponse(data)
 
 def logIn(request):
     return render(request, 'docentes_login.html')

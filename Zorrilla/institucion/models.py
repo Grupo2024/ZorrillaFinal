@@ -153,16 +153,6 @@ class Curso(models.Model):
     def __str__(self):
         return 'El Grado {} {} asiste al turno {}'.format(self.aNo, self.que_seccion() ,self.que_turno())
 
-
-class Asignacion(models.Model):
-    prof_asignado = models.ForeignKey(Profesor)
-    curso = models.ForeignKey(Curso)
-
-    def __str__(self):
-       return 'El profesor {} {} asiste al curso: {} {} turno {}'.format(self.prof_asignado.nombre_t, self.prof_asignado.apellido_t, self.curso.aNo, self.curso.seccion.que_seccion, self.curso.turno_asignado.que_hora())
-
-
-
 class user_Docente(models.Model):
     user = models.OneToOneField(User)
     docente_referenciado = models.OneToOneField(Profesor, on_delete=models.CASCADE)
