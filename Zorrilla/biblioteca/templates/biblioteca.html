@@ -8,23 +8,7 @@
 
 <div class="sidenav">
     <h1 align="center" class="text-white">Indice</h1>
-  
-    <button class="dropdown-btn">Alfabeticamente<i class="fa fa-caret-down"></i></button>
-    <div class="dropdown-container">
-      <a href="{% url 'filtered_books' 'title' 5 %}">5 libros</a>
-      <a href="{% url 'filtered_books' 'title' 10 %}">10 libros</a>
-      <a href="{% url 'filtered_books' 'title' 25 %}">25 libros</a>
-      <a href="{% url 'filtered_books' 'title' 50 %}">50 libros</a>
-      <a href="{% url 'filtered_books' 'title' 100 %}">100 libros</a>
-    </div>
-    <button class="dropdown-btn">Genero<i class="fa fa-caret-down"></i></button>
-    <div class="dropdown-container">
-      <a href="{% url 'filtered_books' 'genero' 5 %}">5 libros</a>
-      <a href="{% url 'filtered_books' 'genero' 10 %}">10 libros</a>
-      <a href="{% url 'filtered_books' 'genero' 25 %}">25 libros</a>
-      <a href="{% url 'filtered_books' 'genero' 50 %}">50 libros</a>
-      <a href="{% url 'filtered_books' 'genero' 100 %}">100 libros</a>
-    </div>
+    <!--
     {% if request.user|has_group:"Director" %} 
         <button class="dropdown-btn">Deshabilitado<i class="fa fa-caret-down"></i></button>
         <div class="dropdown-container">
@@ -35,6 +19,7 @@
           <a href="{% url 'libros_deshabilitados' 100 %}">100 libros</a>
         </div>
     {% endif %}
+-->
     <a href="{% url 'all_the_books' %}">Todos</a>
     <br>
     <br>
@@ -65,6 +50,9 @@
             <option value=1>Descripción</option>
             <option value=2>Fecha</option>
         </select>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">
+            <li>&#xe052;</li>
+          </button>
       </div>   
   </div>
   </div>
@@ -91,9 +79,9 @@
                 <tbody>
                 {% for doc in documentos %}
                     <tr>
-                        <td>{{doc.title}}</td>
-                        <td>{{doc.description}}</td>
-                        <td>{{doc.uploaded_at}}</td>
+                        <td>{{doc.titulo}}</td>
+                        <td>{{doc.descripcion}}</td>
+                        <td>{{doc.fecha}}</td>
                         <td><button class="btn btn-primary" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></button></td>
                         {% if request.user|has_group:"Profesor" %}
                             <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
@@ -125,7 +113,7 @@
                     <div class="form-group">
                         <label class="form_biblo" >Descripcion:</label>
                         <div>
-                          {{ form.description }}
+                          {{ form.descripcion }}
                         </div>
                     </div>
 
@@ -133,7 +121,7 @@
                     <div class="form-group">
                       <label class="form_biblo">Elija un archivo:</label>
                       <div style="margin-left: 3%;">
-                          {{form.document}}
+                          {{form.documento}}
                       </div>
                     </div>
 
@@ -141,7 +129,7 @@
                     <div class="form-group">
                       <label class="form_biblo">Titulo:</label>
                       <div>
-                        {{ form.title}}
+                        {{ form.titulo}}
                       </div>
                     </div>
 
@@ -169,6 +157,51 @@
             </div>
         </div>
       
+    <div class="modal fade" id="myModal2">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Filtros</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+          <form id="filtros" action="{% url 'filtered_books' %}" method="post">
+              {% csrf_token %}
+        <div class="modal-body">
+          <p>Ordenar Por:<input name="ordenado" value="titulo" id="ordenado" size="5"></p>
+        <select id="filter_by2" onchange="set_filter(event)">
+            <option value="titulo">Titulo</option>
+            <option value="fecha">Fecha</option>
+            <option value="autor">Autor</option>
+        </select>
+            <p>Cantidad:<input name="cantidad" value=5 id="cantidad" size="5"></p>
+        <select id="select_cantidad" onchange="set_cantidad(event)">
+            <option value=5>5</option>
+            <option value=10>10</option>
+            <option value=15>15</option>
+            <option value=25>25</option>
+            <option value=50>50</option>
+        </select>
+            <p>Sentido:<input name="input_sentido" value="Ascendente" id="input_sentido" size="7"></p>
+        <select id="select_sentido" onchange="set_sentido(event)">
+            <option value="Ascendente">Ascendente</option>
+            <option value="Descendente">Descendente</option>
+        </select>
+              <input type="hidden" name="sentido" id="sentido">
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-success">Filtrar</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
     <div class="modal fade" id="modal_info">
         <div id="datos_modal">
@@ -200,6 +233,26 @@
       $( "#mytable" ).load(window.location.href + " #mytable" );
     }
         
+    function set_filter(e) {
+        document.getElementById("ordenado").value = e.target.value
+    }
+    
+    function set_cantidad(e) {
+        document.getElementById("cantidad").value = e.target.value
+    }
+    
+    function set_sentido(e) {
+        document.getElementById("input_sentido").value = e.target.value
+        var aux = ""
+        var sentido = document.getElementById("sentido")
+        if (document.getElementById("input_sentido").value = "Ascendente"){
+            sentido.value = "";
+        } else {
+            sentido.value = "-";
+        }
+
+    }
+    
     function load_book(){
         var myForm = document.getElementById('form_for_book');
         formData = new FormData(myForm);

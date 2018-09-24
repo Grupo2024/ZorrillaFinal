@@ -37,16 +37,16 @@ class Document(models.Model):
         (DE , 'Deshabilitado')
     )
 
-    description = models.CharField(max_length=255, null=False)
-    document = models.FileField(upload_to='', unique=True)
-    title = models.CharField(max_length=60, blank=False, null=False, unique=True)
+    descripcion = models.CharField(max_length=255, null=False)
+    documento = models.FileField(upload_to='', unique=True)
+    titulo = models.CharField(max_length=60, blank=False, null=False, unique=True)
     genero = models.CharField('Genero', max_length=15, choices=GENERO_CHOICES)
     autor = models.CharField(max_length=60, blank=False, null=False)
     habilitado = models.CharField('Habilitado', max_length=13, choices=HABILITADO_CHOICES, default=HABILITADO_CHOICES[0][0])
-    uploaded_at = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return 'Titulo {}, id {}'.format(self.title, self.id)
+        return 'Titulo {}, id {}'.format(self.titulo, self.id)
 
     def cantidad_habilitados(self):
         return Document.objects.filter(habilitado="Habilitado").count()
@@ -78,4 +78,4 @@ class Estado(models.Model):
 
 
     def __str__(self):
-        return '{} {}'.format(self.modificacion, self.document.title)
+        return '{} {}'.format(self.modificacion, self.document.titulo)

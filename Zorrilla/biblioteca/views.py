@@ -61,7 +61,7 @@ def export_books(request):
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
 
-    rows = Document.objects.all().order_by('title','estado').values_list('id','title', 'autor', 'genero','habilitado')
+    rows = Document.objects.all().order_by('titulo','estado').values_list('id','titulo', 'autor', 'genero','habilitado')
     print (rows)
     for row in rows:
         row_num += 1
@@ -72,7 +72,7 @@ def export_books(request):
     return response
 
 def biblioteca(request):
-    documents = Document.objects.filter(habilitado="Habilitado").order_by('-uploaded_at')[:5]
+    documents = Document.objects.filter(habilitado="Habilitado").order_by('-fecha')[:5]
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
@@ -104,7 +104,7 @@ def historia_libro(request, id_documento):
 
 @user_passes_test(check_Director)
 def libros_deshabilitados(request, cantidad):
-    documents = Document.objects.filter(habilitado="Deshabilitado").order_by('-title')[:cantidad]
+    documents = Document.objects.filter(habilitado="Deshabilitado").order_by('-titulo')[:cantidad]
     form = DocumentForm()
     return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
     
@@ -115,8 +115,8 @@ def cargado(request):
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            title = form.cleaned_data['title']
-            document = Document.objects.get(title=title)
+            title = form.cleaned_data['titulo']
+            document = Document.objects.get(titulo=title)
             estado = Estado(document = document, user=request.user, modificacion="Crear")
             estado.save()
             data = {
@@ -139,7 +139,7 @@ def eliminar_libro(request, id_documento):
     document.save()
     estado.save()
     data = {
-        'estado':"El libro " + str(document.title) + " ha sido Deshabilitado."
+        'estado':"El libro " + str(document.titulo) + " ha sido Deshabilitado."
     }
     return JsonResponse(data, safe=True)
 
@@ -158,7 +158,7 @@ def cambiar_estado_libro(request, id_documento):
     estado = Estado(document=new_document, user=request.user, modificacion=aux)
     estado.save()
     data = {
-        'estado':'El libro ' + str(new_document.title) + " ha cambiado su estado a " + str(new_document.habilitado)
+        'estado':'El libro ' + str(new_document.titulo) + " ha cambiado su estado a " + str(new_document.habilitado)
     }
     return JsonResponse(data, safe=True)
 
@@ -173,9 +173,13 @@ def all_the_books(request):
     form = DocumentForm()
     return render (request, 'biblioteca.html', {'documentos':documents, 'form':form})
 
-def filtered_books(request, attribute, cantidad):
-    print (attribute)
-    print (cantidad)
-    documents = Document.objects.filter(habilitado="Habilitado").order_by('-' + str(attribute))[:cantidad]
+def filtered_books(request):
+    cantidad = request.POST['cantidad']
+    print cantidad
+    genero = request.POST['ordenado']
+    print genero
+    sentido = request.POST['sentido']
+    print sentido
+    documents = Document.objects.filter(habilitado="Habilitado").order_by(str(sentido) + str(genero))[:cantidad]
     form = DocumentForm()
     return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
