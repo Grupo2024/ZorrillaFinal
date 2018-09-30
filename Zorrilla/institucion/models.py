@@ -174,5 +174,5 @@ class user_Director(models.Model):
     director_referenciado = models.OneToOneField(Director, on_delete=models.CASCADE)
 
     def __str__(self):
-       return 'El usuario {} pertenece al director: {}'.format(self.user, self.director_referenciado)
+        return 'El usuario {} pertenece al director: {}'.format(self.user, self.director_referenciado)
 

@@ -68,7 +68,7 @@ class Alumno(Persona):
     con_quien_vive = models.CharField('Con quien vive', max_length=40)
     quien_lo_trae = models.CharField('Quien lo trae', max_length=40)
     telefono_que_lo_trae = models.IntegerField('Telefono de quien lo trae')
-    #curso = models.ForeignKey(Curso, blank=True)
+    curso = models.ForeignKey(Curso, blank=True)
 
     def __str__(self):
         return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre, self.apellido, self.dni, self.sexo)

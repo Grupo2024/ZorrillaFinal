@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^logout_me_out', logout_me_out, name="logout_me_out"),
     url(r'^pedidos', aceptar_matriculaciones, name="pedidos"),
     url(r'^cargar_padre/(\d+)/', cargar_padre, name="cargar_padre"),
+    url(r'^datos_padre/(\d+)/', datos_padre, name="datos_padre"),
     url(r'crear_alumno', crear_alumno, name="crear_alumno"),
     url(r'crear_padre/(?P<opcion>[\w\-]+)$', crear_padre, name="crear_padre"),
     url(r'^aceptar_matriculacion/$', aceptar_matriculacion, name="aceptar_matriculacion"),

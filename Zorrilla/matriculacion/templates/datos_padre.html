@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+    <p>Nombre: </p>{{padre.nombre}}
+    <p>Apellido:</p>{{padre.apellido}}
+    <p>Dni:</p>{{padre.dni}}
+    <p>Lugar Nacimiento:</p>{{padre.lugar_nacimiento}}
+    <p>Fecha Nacimiento:</p>{{padre.fecha_nacimiento}}
+    <p>Domicilio:</p>{{padre.domicilio}}
+    <p>Email:</p>{{padre.email}}
+    <p>Sexo:</p>{{padre.sexo}}
+    <p>Profesion:</p>{{padre.profesion}}
+    <p>Telefono del Trabajo:</p>{{padre.telefono_trabajo}}
+
+{% endblock body %}

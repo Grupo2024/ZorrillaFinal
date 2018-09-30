@@ -129,6 +129,10 @@ def cargar_padre(request, dni_alumno):
     padre_form = PadreForm()
     return render(request, 'crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':alumno.dni})
 
+def datos_padre(request, dni_padre):
+    padre = Padre_madre.objects.get(dni=dni_padre)
+    return render(request, 'datos_padre.html', {'padre':padre})
+
 def logIn(request):
     return render(request, 'docentes_login.html')
 
@@ -140,7 +144,7 @@ def logout_me_out(request):
 #Esta hay que corregirla
 def get_Secciones(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    familiares = Familia.objects.filter(alumno=alumno)
+    familiares = Familia.objects.filter(alumno=alumno).order_by("padre_madre__apellido", "padre_madre__nombre")
     print familiares
     cursos = Curso.objects.all()
     return render(request, 'select_curso.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos})
@@ -148,11 +152,12 @@ def get_Secciones(request, dni_alumno):
 @user_passes_test(check_Secretaria)
 def aceptar_matriculaciones(request):
     matriculaciones = Matriculacion.objects.filter(matriculado=False)
+    transportistas = Transportista.objects.all()
     if matriculaciones:
-        return render(request, 'pedidos.html', {'matriculaciones':matriculaciones})
+        return render(request, 'pedidos.html', {'matriculaciones':matriculaciones, 'transportistas':transportistas})
     else:
         matriculaciones = []
-        return render(request, 'pedidos.html', {'matriculaciones':matriculaciones})
+        return render(request, 'pedidos.html', {'matriculaciones':matriculaciones, 'transportistas':transportistas})
 
 #Hay que arreglarlo
 @user_passes_test(check_Secretaria)
@@ -162,24 +167,20 @@ def aceptar_matriculacion(request):
         print (dni_alumno)
         selected_curso = request.POST['selected_curso']
         print (selected_curso)
-        seccion = Seccion.objects.get(id=selected_curso)
+        curso = Curso.objects.get(id=selected_curso)
         alumno = Alumno.objects.get(dni=dni_alumno)
+        alumno.curso = curso
+        alumno.save()
         matriculacion = Matriculacion.objects.get(alumno=alumno)
         matriculacion.matriculado = True
         matriculacion.save()
-        alumno.seccion_asignada = seccion
-        alumno.save()
-        if alumno.seccion_asignada is not None:
-            data = {
-                'estado': "El alumno " + str(alumno.apellido) + "" + str(alumno.nombre) + " asiste al curso " + str(alumno.seccion_asignada),
-                'error': False
-            }
-        else:
-            data = {
-                'estado':'Hubo un error',
-                'error': True
-            }
-    return JsonResponse(data, safe=True)
+        data = {
+            'resultado': "El alumno " + str(alumno.apellido) + "" + str(alumno.nombre) + " asiste al curso " + str(alumno.curso),
+            'error': False
+        }
+        return JsonResponse(data, safe=True)
+    return HttpResponse("Solo podes entrar por POST")
+
 
 @login_required
 def alumno(request, id_alumno):

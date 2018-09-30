@@ -3,7 +3,7 @@
 
       <!-- Modal Header -->
         <div class="modal-header">
-            <h4 class="modal-title">Seleccion curso para {{alumno.nombre}}</h4>
+            <h4 class="modal-title">Datos de {{alumno.nombre}}</h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
@@ -11,23 +11,37 @@
         <form id="form_for_curso" method="post">
             {% csrf_token %}
             <div class="modal-body">
-                <h4><u>Elegir Curso Para {{alumno.nombre}}.</u></h4>
+                <h4><u>Curso</u></h4>
                 <span class="badge badge-secondary">Cursos:</span>
-                <select name="" onchange="curso(event)">
+                <select id="curso">
                     {% for curso in cursos %}
-                        <option value="{{seccion.id}}">{{curso}}</option>
+                        <option value={{curso.id}}>{{curso}}</option>
                     {% endfor %}
                 </select>
                 <br>
                 <br>
-                <h4><u>Familiares:</u></h4>
+                <h4><u>Familiares</u></h4>
+                <ul>
                 {% for familiar in familiares %}
-                    <button>{{familiar.padre_madre.apellido}} {{familiar..padre_madre.nombre}}</button>
+                    <li><a href="{% url 'datos_padre' familiar.padre_madre.dni %}">{{familiar.padre_madre.apellido}} {{familiar.padre_madre.nombre}}</a></li>
                 {% endfor %}
+                </ul>
                 <a href="{% url 'cargar_padre' alumno.dni %}">Cargar Padre</a>
+                <a href="#">Asignar Padre</a>
+                <br>
+                <br>
+                <h4><u>Transporte</u></h4>
+
+                <span class="badge badge-secondary">Opciones:</span>
+                <select name="transportista" onchange="transporte(event)">
+                    <option value="No">No</option>
+                    <option value="Si">Si</option>
+                </select>
+
+                <a onclick="traer_transportistas()">Ver Transportistas</a>
 
                 <!-- Inputs con los datos elegidos para el alumno -->
-                <input name="selected_curso" id="selected_curso" type="hidden">
+                <input name="selected_curso" id="selected_curso" value=1 type="hidden">
                 <input name="dni_alumno" id="dni_alumno" type="hidden" value="{{alumno.dni}}">
 
             </div>
@@ -35,12 +49,7 @@
         <!-- Modal footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="">Matricular</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="matricular()">Matricular</button>
             </div>
     </div>
 </div>
-
-
-<script>
-
-</script>
