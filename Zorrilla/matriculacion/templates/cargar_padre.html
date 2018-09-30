@@ -1,7 +1,5 @@
 <form id="form_padre" method="post">
     {% csrf_token %}
-    <h3>Datos de Padre/Madre de {{datos_alumno.apellido_alumno}} {{datos_alumno.nombre_alumno}}</h3>
-
     <p>Nombre: </p>{{padre_form.nombre}}
     <p>Apellido:</p>{{padre_form.apellido}}
     <p>Dni:</p>{{padre_form.dni}}

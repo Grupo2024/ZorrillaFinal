@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+<style>
+
+    #myBar {
+        width: 10%;
+        height: 30px;
+        background-color: #4CAF50;
+        text-align: center;
+        line-height: 30px;
+        color: white;
+    }
+
+</style>
+<form id="form_padre" method="post">
+    {% csrf_token %}
+    <p>Nombre: </p>{{padre_form.nombre}}
+    <p>Apellido:</p>{{padre_form.apellido}}
+    <p>Dni:</p>{{padre_form.dni}}
+    <p>Lugar Nacimiento:</p>{{padre_form.lugar_nacimiento}}
+    <p>Fecha Nacimiento:</p>{{padre_form.fecha_nacimiento}}
+    <p>Domicilio:</p>{{padre_form.domicilio}}
+    <p>Email:</p>{{padre_form.email}}
+    <p>Sexo:</p>{{padre_form.sexo}}
+    <p>Profesion:</p>{{padre_form.profesion}}
+    <p>Telefono del Trabajo:</p>{{padre_form.telefono_trabajo}}
+    <input type="hidden" name="dni_alumno" id="dni_alumno" value = {{dni_alumno}}>
+    <p>{{dni_alumno}}</p>
+</form>
+
+<button onclick="matricular_Padre()" id="btn_padre">Cargar</button>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Matriculando Padre:</h5>
+            </div>
+            <div class="container-fluid">
+                <div class="modal-body row">
+                    <p class="col-sm-2">Resultado: </p><span style='visibility:hidden;'>..</span>
+                    <div class="col-sm-9">
+                        <div id="myProgress">
+                            <p id="myBar" value="10%"></p>
+                        </div>
+                    </div>
+                    <span id="resultado"></span>
+                </div>
+                <div class="modal-footer" id="footer">
+                    <a type="button" class="btn btn-secondary" data-dismiss="modal" href="{% url 'pedidos' %}" id="continuar">Continuar</a>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="close_modal()" id="volver">Volver</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function sleep() {
+            return new Promise(resolve => setTimeout(resolve, 1000));
+        }
+
+        async function footer(a){
+            var elem = document.getElementById("myBar");
+            var width = 10;
+            var id = setInterval(frame, 10);
+            function frame() {
+                if (width >= 100) {
+                    clearInterval(id);
+                } else {
+                    width++;
+                    elem.style.width = width + '%';
+                    elem.innerHTML = width * 1  + '%';
+                }
+            }
+            await sleep();
+            elem.style.display = "none";
+            var resultado = document.getElementById("resultado");
+            resultado.innerHTML = a;
+            return a
+
+        }
+
+        function matricular_Padre(){
+            var myForm = document.getElementById('form_padre');
+            formData = new FormData(myForm);
+            console.log("llega");
+            var elem = document.getElementById("myBar");
+            elem.style.display = "block";
+            var resultado = document.getElementById("resultado");
+            resultado.innerHTML = "";
+            var x = document.getElementById("continuar");
+            var y = document.getElementById("volver");
+            x.style.display = "none";
+            y.style.display = "none";
+            $('#myModal').modal('show');
+            $.ajax({
+                url: '{% url 'crear_padre' 'Padre' %}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    console.log(data.error);
+                    if (data.error){
+                        footer(data.resultado);
+                        x.style.display = "none";
+                        y.style.display = "block";
+                    }else{
+                        footer(data.resultado);
+                        y.style.display = "none";
+                        x.style.display = "block";
+                    }
+                }
+            });
+        }
+
+    </script>
+
+
+    {% endblock body %}

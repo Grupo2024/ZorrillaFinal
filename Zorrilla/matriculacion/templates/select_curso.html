@@ -11,20 +11,31 @@
         <form id="form_for_curso" method="post">
             {% csrf_token %}
             <div class="modal-body">
+                <h4><u>Elegir Curso Para {{alumno.nombre}}.</u></h4>
                 <span class="badge badge-secondary">Cursos:</span>
                 <select name="" onchange="curso(event)">
-                    {% for seccion in secciones %}
-                        <option value="{{seccion.id}}">{{seccion}}</option>
+                    {% for curso in cursos %}
+                        <option value="{{seccion.id}}">{{curso}}</option>
                     {% endfor %}
                 </select>
+                <br>
+                <br>
+                <h4><u>Familiares:</u></h4>
+                {% for familiar in familiares %}
+                    <button>{{familiar.padre_madre.apellido}} {{familiar..padre_madre.nombre}}</button>
+                {% endfor %}
+                <a href="{% url 'cargar_padre' alumno.dni %}">Cargar Padre</a>
+
+                <!-- Inputs con los datos elegidos para el alumno -->
                 <input name="selected_curso" id="selected_curso" type="hidden">
                 <input name="dni_alumno" id="dni_alumno" type="hidden" value="{{alumno.dni}}">
+
             </div>
         </form>
         <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="matricular_alumno()">Matricular</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="">Matricular</button>
             </div>
     </div>
 </div>
@@ -32,29 +43,4 @@
 
 <script>
 
-   function matricular_alumno(){
-        var myForm = document.getElementById('form_for_curso');
-        formData = new FormData(myForm);
-        $.ajax({
-            url: '/aceptar_matriculacion/',
-            data: formData,
-            processData: false,
-            contentType: false,
-            type: 'POST',
-            success: function(data){
-                console.log(data.error);
-                if (data.error){
-                    alert(data.estado)
-                }else{
-                    var x = document.getElementById("datos_modal");
-                    $(x).modal('hide');
-                    updateDiv();
-                    var y = document.getElementById("snackbar");
-                    y.className = "show";
-                    document.getElementById("span_result").innerHTML = data.estado;
-                    setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
-                }
-            }
-        });
-    }    
 </script>

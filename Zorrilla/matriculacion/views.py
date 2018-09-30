@@ -85,25 +85,37 @@ def crear_alumno(request):
         aux = alumno_form.errors
         return HttpResponse(str(aux))
 
-def crear_padre(request):
+def crear_padre(request, opcion):
+    print opcion
     padre_form = PadreForm(request.POST)
     dni_alumno = request.POST['dni_alumno']
     alumno = Alumno.objects.get(dni=dni_alumno)
     if padre_form.is_valid():
+        print "es valido"
         padre_form.save()
         dni_padre = padre_form.cleaned_data['dni']
         padre = Padre_madre.objects.get(dni=dni_padre)
         print padre
         familia = Familia(alumno=alumno, padre_madre=padre)
         familia.save()
-        new_Matriculacion = Matriculacion(alumno=alumno)
-        new_Matriculacion.save()
-        resultado = "Los pedidos de Matriculacion de " + str(padre.apellido) + "" + str(padre.nombre) + " y de " + str(alumno.apellido) + "" + str(alumno.nombre) + " han sido creados con exito"
-        data = {
-            'error':False,
-            'resultado':resultado
-        }
-        return JsonResponse(data)
+        if (opcion=="Matriculacion"):
+            print "Matriculando alumno"
+            new_Matriculacion = Matriculacion(alumno=alumno)
+            new_Matriculacion.save()
+            resultado = "Los pedidos de Matriculacion de " + str(padre.apellido) + "" + str(padre.nombre) + " y de " + str(alumno.apellido) + "" + str(alumno.nombre) + " han sido creados con exito."
+            data = {
+                'error': False,
+                'resultado':resultado
+            }
+            return JsonResponse(data)
+        elif (opcion=="Padre"):
+            print "Cargando Padre"
+            resultado = str(padre.apellido) + "" + str(padre.nombre) + " ha sido cargado con exito."
+            data = {
+                'error': False,
+                'resultado':resultado
+            }
+            return JsonResponse(data)
     else:
         resultado = str(padre_form.errors)
         data = {
@@ -111,6 +123,11 @@ def crear_padre(request):
             'resultado':resultado
         }
         return JsonResponse(data)
+
+def cargar_padre(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    padre_form = PadreForm()
+    return render(request, 'crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':alumno.dni})
 
 def logIn(request):
     return render(request, 'docentes_login.html')
@@ -123,8 +140,10 @@ def logout_me_out(request):
 #Esta hay que corregirla
 def get_Secciones(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    seccion = Seccion.objects.filter('grado_asignado.aNo','curso')
-    return render(request, 'select_curso.html', {'secciones':seccion, 'alumno':alumno})
+    familiares = Familia.objects.filter(alumno=alumno)
+    print familiares
+    cursos = Curso.objects.all()
+    return render(request, 'select_curso.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos})
 
 @user_passes_test(check_Secretaria)
 def aceptar_matriculaciones(request):
@@ -165,7 +184,6 @@ def aceptar_matriculacion(request):
 @login_required
 def alumno(request, id_alumno):
     alumno = Alumno.objects.get(dni=id_alumno)
-    alumno.sexo = alumno.genero()
     return render(request, 'perfilAlumno.html', {'alumno':alumno})
 
 def login(request):
