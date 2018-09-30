@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^logout_me_out', logout_me_out, name="logout_me_out"),
     url(r'^pedidos', aceptar_matriculaciones, name="pedidos"),
     url(r'crear_alumno', crear_alumno, name="crear_alumno"),
+    url(r'crear_padre', crear_padre, name="crear_padre"),
     url(r'^aceptar_matriculacion/$', aceptar_matriculacion, name="aceptar_matriculacion"),
     url(r'^perfilAlumno/(\d+)/$', alumno, name="alumno"),
     url(r'^recuperar/$', template_get_pass, name="template_get_pass")

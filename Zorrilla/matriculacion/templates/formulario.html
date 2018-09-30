@@ -13,7 +13,7 @@
     }
 </style>
 
-<form method="post" enctype="multipart/form-data" action="{% url 'crear_alumno' %}" id="form_alumno">
+<form method="post" enctype="multipart/form-data" id="form_alumno">
     {% csrf_token %}
     <div class='row' style="margin-top:2%">
         <div class="card text-center" style="width: 26%; margin-left: 6%">
@@ -59,7 +59,7 @@
                             <br>
                             <div id="a"  style="margin-left:-2.4%">{{ alumno_form.fecha_nacimiento }}</div>
                         </div>
-                        <!--
+
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
                                 <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
@@ -67,7 +67,6 @@
                             <br>
                             <div style="margin-left:-7%">{{ alumno_form.domicilio }}</div>
                         </div>
-                        -->
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
                                 <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
@@ -159,52 +158,74 @@
                         </div>
                     </li>
                 </ul>
+
         </div>
     </div>
-    </div>
-
-
-
-<h2>Padre</h2>
-<p>Nombre: </p>{{padre_form.nombre}}
-<p>Apellido:</p>{{padre_form.apellido}}
-<p>Dni:</p>{{padre_form.dni}}
-<p>Lugar Nacimiento:</p>{{padre_form.lugar_nacimiento}}
-<p>Fecha Nacimiento:</p>{{padre_form.fecha_nacimiento}}
-<p>Domicilio:</p>{{padre_form.domicilio}}
-<p>Email:</p>{{padre_form.email}}
-<p>Sexo:</p>{{padre_form.sexo}}
-<p>Profesion:</p>{{padre_form.profesion}}
-<p>Telefono del Trabajo:</p>{{padre_form.telefono_trabajo}}
-
-
 </form>
-<center><button type="submit" class="btn btn-success" onclick="
-    crear_Alumno()" style="width:30%">Cargar</button></center>
 
-<script>
+<center><button class="btn btn-success" onclick="crear_Alumno()" style="width:30%">Cargar</button></center>
 
-    function crear_Alumno(){
-        var myForm = document.getElementById('form_alumno');
-        formData = new FormData(myForm);
-        console.log("llega");
-        $.ajax({
-            url: '/crear_alumno/',
-            data: formData,
-            processData: false,
-            contentType: false,
-            type: 'POST',
-            success: function(data){
-                console.log(data.error);
-                if (data.error){
-                    alert(data.resultado)
-                }else{
-                    alert(data.resultado)
+<div class="modal fade" id="cargar_alumno" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Matriculacion.</h5>
+            </div>
+            <div class="container-fluid">
+                <div class="modal-body row">
+                    <div class="col-sm-9">
+                        <div id="myProgress">
+                            <p id="myBar" value="10%"></p>
+                        </div>
+                    </div>
+
+                   <div id="data">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+
+
+        function crear_Alumno(){
+            var myForm = document.getElementById('form_alumno');
+            formData = new FormData(myForm);
+            $('#cargar_alumno').modal('show');
+            $.ajax({
+                url: '/crear_alumno/',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    $("#data").html(data);
                 }
-            }
-        });
-    }
+            });
+        }
 
+        function crear_Padre(){
+            var myForm = document.getElementById('form_padre');
+            formData = new FormData(myForm);
+            $.ajax({
+                url: '/crear_padre/',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                   if (data.error){
+                       document.getElementById("resultado2").innerHTML = data.resultado;
+                   } else{
+                       document.getElementById("resultado2").innerHTML = data.resultado;
+                   }
+                }
+            });
+        }
 </script>
 
 {% endblock body %}
