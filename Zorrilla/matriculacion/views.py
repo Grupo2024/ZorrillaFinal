@@ -169,13 +169,13 @@ def aceptar_matriculacion(request):
         print (selected_curso)
         curso = Curso.objects.get(id=selected_curso)
         alumno = Alumno.objects.get(dni=dni_alumno)
-        alumno.curso = curso
-        alumno.save()
+        eleccion = alumno_Curso(alumno=alumno, curso=curso)
+        eleccion.save()
         matriculacion = Matriculacion.objects.get(alumno=alumno)
         matriculacion.matriculado = True
         matriculacion.save()
         data = {
-            'resultado': "El alumno " + str(alumno.apellido) + "" + str(alumno.nombre) + " asiste al curso " + str(alumno.curso),
+            'resultado': "El alumno " + str(alumno.apellido) + "" + str(alumno.nombre) + " asiste al curso " + str(eleccion.curso),
             'error': False
         }
         return JsonResponse(data, safe=True)

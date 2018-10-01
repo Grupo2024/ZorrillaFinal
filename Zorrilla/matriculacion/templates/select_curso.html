@@ -37,8 +37,22 @@
                     <option value="No">No</option>
                     <option value="Si">Si</option>
                 </select>
+                <br>
+                <br>
+                <a onclick="traer_transportistas()">Elegir Transportistas</a>
+                <br>
+                <br>
 
-                <a onclick="traer_transportistas()">Ver Transportistas</a>
+                <h4><u>Obra Social</u></h4>
+
+                <span class="badge badge-secondary">Opciones:</span>
+                <select name="obra_social" onchange="obra_social(event)">
+                    <option value="No">No</option>
+                    <option value="Si">Si</option>
+                </select>
+                <br>
+                <br>
+                <a onclick="traer_transportistas()">Elegir Obra Social</a>
 
                 <!-- Inputs con los datos elegidos para el alumno -->
                 <input name="selected_curso" id="selected_curso" value=1 type="hidden">

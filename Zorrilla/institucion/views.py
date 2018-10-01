@@ -75,13 +75,13 @@ def cursos2(request, turno):
 @login_required
 def cursos3(request, id_curso):
     curso = Curso.objects.get(pk=id_curso)
-    alumno = Alumno.objects.filter(curso=curso)
+    alumnos_curso = alumno_Curso.objects.filter(curso=curso)
     data_curso = {
         'turno':curso.que_turno(),
         'año':curso.aNo,
         'seccion':curso.que_seccion()
     }
-    return render(request, 'templates_cursos/cursos3.html', {'todos_los_alumnos':alumno, 'curso':data_curso})
+    return render(request, 'templates_cursos/cursos3.html', {'alumnos_curso':alumnos_curso, 'curso':data_curso})
 
 
 @login_required
