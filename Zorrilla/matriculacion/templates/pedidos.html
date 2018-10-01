@@ -76,6 +76,7 @@
                                 <th>Nombre</th>
                                 <th>Pellido</th>
                                 <th>Dni</th>
+                                <th>Opcion</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,8 +85,13 @@
                                 <td>{{t.nombre}}</td>
                                 <td>{{t.apellido}}</td>
                                 <td>{{t.dni}}</td>
+                                <td><input type="radio" id={{t.dni}} name="eleccion" value={{t.dni}} /></td>
                             </tr>
                             {% endfor %}
+                            <form id="select_transportista" method="post">
+                                <input name="dni_alumno" id="dni_alumno">
+                                <input name="dni_transportista" id="dni_transportista">
+                            </form>
                         </tbody>
                     </table>
                 </div>
@@ -128,6 +134,10 @@
 
     <script>
 
+        $('input[name=eleccion]').click(function() {
+            var aux = $('input[name=eleccion]:checked').val();
+            document.getElementById("dni_transportista").value = aux
+        });
     
         function traer_secciones(url, alum){
             $.ajax({
@@ -191,7 +201,8 @@
             });
         }
 
-        function traer_transportistas(){
+        function traer_transportistas(dni_alumno){
+            $('#dni_alumno').value = dni_alumno;
             $('#modal_cursos').modal('hide');
             $('#select_tranportista').modal('show');
         }
@@ -204,6 +215,19 @@
             $('#Modal_resultado').modal('hide');
             var aux = document.getElementById("reload")
             aux.submit();
+        }
+
+        function add_transportista(){
+            $.ajax({
+                url: '{% url 'add_transportista' %}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    alert(data.resultado)
+                }
+            });
         }
 
 

@@ -31,15 +31,24 @@
                 <br>
                 <br>
                 <h4><u>Transporte</u></h4>
+                {% if transportistas|length == 0 %}
 
-                <span class="badge badge-secondary">Opciones:</span>
                 <select name="transportista" onchange="transporte(event)">
                     <option value="No">No</option>
                     <option value="Si">Si</option>
                 </select>
                 <br>
                 <br>
-                <a onclick="traer_transportistas()">Elegir Transportistas</a>
+                <a onclick="traer_transportistas({{familiar.alumno.dni}})">Elegir Transportistas</a>
+                {% else %}
+                <ul>
+                {% for transportista in transportistas %}
+                    <li><a href="{% url 'datos_transportista' transportista.transportista.dni %}">{{transportista.transportista.apellido}} {{transportista.transportista.nombre}}</a></li>
+                {% endfor %}
+                </ul>
+
+                {% endif %}
+
                 <br>
                 <br>
 

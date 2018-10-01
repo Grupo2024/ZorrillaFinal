@@ -80,7 +80,7 @@ def crear_alumno(request):
             'nombre_alumno':nombre_alumno
         }
         padre_form = PadreForm()
-        return render(request, 'cargar_padre.html', {'padre_form':padre_form, 'datos_alumno':datos_alumno})
+        return render(request, 'Padre_madre/cargar_padre.html', {'padre_form':padre_form, 'datos_alumno':datos_alumno})
     else:
         aux = alumno_form.errors
         return HttpResponse(str(aux))
@@ -127,11 +127,15 @@ def crear_padre(request, opcion):
 def cargar_padre(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     padre_form = PadreForm()
-    return render(request, 'crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':alumno.dni})
+    return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':alumno.dni})
 
 def datos_padre(request, dni_padre):
     padre = Padre_madre.objects.get(dni=dni_padre)
-    return render(request, 'datos_padre.html', {'padre':padre})
+    return render(request, 'Padre_madre/datos_padre.html', {'padre':padre})
+
+def datos_transportista(request, dni_transportista):
+    transportista = Transportista.objects.get(dni=dni_transportista)
+    return render(reqiest, 'datos_transportistsa.html', {'transportista':transportista})
 
 def logIn(request):
     return render(request, 'docentes_login.html')
@@ -145,9 +149,10 @@ def logout_me_out(request):
 def get_Secciones(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     familiares = Familia.objects.filter(alumno=alumno).order_by("padre_madre__apellido", "padre_madre__nombre")
-    print familiares
+    transportistas = usa_Transporte.objects.filter(alumno=alumno)
+    print (familiares)
     cursos = Curso.objects.all()
-    return render(request, 'select_curso.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos})
+    return render(request, 'select_curso.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas})
 
 @user_passes_test(check_Secretaria)
 def aceptar_matriculaciones(request):
@@ -186,6 +191,20 @@ def aceptar_matriculacion(request):
 def alumno(request, id_alumno):
     alumno = Alumno.objects.get(dni=id_alumno)
     return render(request, 'perfilAlumno.html', {'alumno':alumno})
+
+def add_transportista():
+    if request.method == 'POST':
+        dni = request.POST['dni_alumno']
+        dni_transportista = request.POST['dni_transportista']
+        alumno = Alumno.objects.get(dni=dni)
+        transportista = Transportista.objects.get(dni=dni_transportista)
+        usa_transporte = usa_Transporte(alumno=alumno, transportista=transportista)
+        usa_transporte.save()
+        data = {
+            'resultado': 'Transportista asignado con exito.'
+        }
+        return JsonRespone(data)
+
 
 def login(request):
     if request.method == 'POST':
