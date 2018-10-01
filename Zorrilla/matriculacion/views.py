@@ -124,6 +124,47 @@ def crear_padre(request, opcion):
         }
         return JsonResponse(data)
 
+
+"""
+=============
+TRANSPORTISTA
+=============
+"""
+
+#Levantar Template para cargar Transportista.
+
+def form_transportista(request):
+    form_transportista = TransportistaForm()
+    return render (request, 'Transportista/crear_transportista.html', {'form_transportista':form_transportista})
+
+#Funcion que crea el Transportista
+def crear_transportista(request):
+    if request.method == 'POST':
+        form_transportista = TransportistaForm(request.POST)
+        if form_transportista.is_valid():
+            form_transportista.save()
+            nombre = form_transportista.cleaned_data['nombre']
+            apellido = form_transportista.cleaned_data['apellido']
+            data = {
+                'error':False,
+                'resultado': 'El transportista ' + str(nombre) + '' + str(apellido) + ' ha sido cargado con exito.'
+            }
+            return JsonResponse(data)
+        else:
+            aux = str(form_transportista.errors)
+            data = {
+                'error':True,
+                'resultado':aux
+            }
+            return JsonResponse(data)
+    return HttpResponse("Solo podes acceder por Post")
+
+#Funcion que Muestra los datos del Transportista elegido previamente
+def datos_transportista(request, dni_transportista):
+    transportista = Transportista.objects.get(dni=dni_transportista)
+    return render(request, 'datos_transportista.html', {'transportista':transportista})
+
+
 def cargar_padre(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     padre_form = PadreForm()
@@ -133,10 +174,6 @@ def datos_padre(request, dni_padre):
     padre = Padre_madre.objects.get(dni=dni_padre)
     return render(request, 'Padre_madre/datos_padre.html', {'padre':padre})
 
-def datos_transportista(request, dni_transportista):
-    transportista = Transportista.objects.get(dni=dni_transportista)
-    return render(reqiest, 'datos_transportistsa.html', {'transportista':transportista})
-
 def logIn(request):
     return render(request, 'docentes_login.html')
 
@@ -145,7 +182,6 @@ def logout_me_out(request):
     auth.logout(request)
     return redirect ('index')
 
-#Esta hay que corregirla
 def get_Secciones(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     familiares = Familia.objects.filter(alumno=alumno).order_by("padre_madre__apellido", "padre_madre__nombre")
@@ -157,7 +193,7 @@ def get_Secciones(request, dni_alumno):
 @user_passes_test(check_Secretaria)
 def aceptar_matriculaciones(request):
     matriculaciones = Matriculacion.objects.filter(matriculado=False)
-    transportistas = Transportista.objects.all()
+    transportistas = Transportista.objects.all().order_by('nombre', 'apellido', 'dni')
     if matriculaciones:
         return render(request, 'pedidos.html', {'matriculaciones':matriculaciones, 'transportistas':transportistas})
     else:
@@ -186,15 +222,14 @@ def aceptar_matriculacion(request):
         return JsonResponse(data, safe=True)
     return HttpResponse("Solo podes entrar por POST")
 
-
 @login_required
 def alumno(request, id_alumno):
     alumno = Alumno.objects.get(dni=id_alumno)
     return render(request, 'perfilAlumno.html', {'alumno':alumno})
 
-def add_transportista():
+def asignar_transportista(request):
     if request.method == 'POST':
-        dni = request.POST['dni_alumno']
+        dni = request.POST['alumno_dni']
         dni_transportista = request.POST['dni_transportista']
         alumno = Alumno.objects.get(dni=dni)
         transportista = Transportista.objects.get(dni=dni_transportista)
@@ -203,7 +238,8 @@ def add_transportista():
         data = {
             'resultado': 'Transportista asignado con exito.'
         }
-        return JsonRespone(data)
+        return JsonResponse(data)
+    return HttpResponse("Solo podes acceder por Post")
 
 
 def login(request):
@@ -282,3 +318,5 @@ def userDocente(request):
                 'error':True
             }
             return JsonResponse(data)
+    return HttpResponse("Solo podes acceder por Post")
+

@@ -61,7 +61,7 @@
 </div>
 
 <div class="modal fade" id="select_tranportista">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-lg">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Modal Header -->
@@ -74,7 +74,7 @@
                         <thead>
                             <tr>
                                 <th>Nombre</th>
-                                <th>Pellido</th>
+                                <th>Apellido</th>
                                 <th>Dni</th>
                                 <th>Opcion</th>
                             </tr>
@@ -89,16 +89,20 @@
                             </tr>
                             {% endfor %}
                             <form id="select_transportista" method="post">
-                                <input name="dni_alumno" id="dni_alumno">
-                                <input name="dni_transportista" id="dni_transportista">
+                                {% csrf_token %}
+                                <input name="alumno_dni" id="alumno_dni" value=0 type="hidden">
+                                <input name="dni_transportista" id="dni_transportista" value=0 type="hidden">
                             </form>
                         </tbody>
                     </table>
+
+                    <a href="{% url 'form_transportista' %}">Crear Tranportista</a>
+
                 </div>
                 <!-- Modal footer -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="">Matricular</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="select_transportista()">Continuar</button>
                 </div>
             </div>
         </div>
@@ -132,105 +136,129 @@
 <form id="reload" action="{% url 'pedidos' %}">
 </form>
 
-    <script>
+<script>
 
-        $('input[name=eleccion]').click(function() {
-            var aux = $('input[name=eleccion]:checked').val();
-            document.getElementById("dni_transportista").value = aux
-        });
+    $( document ).ready(function() {
+        document.getElementById("new_transporte").style.display = "block";
+        //$("#datos_modal").style.display = "none";
+
+    });
     
-        function traer_secciones(url, alum){
-            $.ajax({
-                method: "POST",
-                url: url,
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                }
-            })
-                .done(function (data) {
-                $("#datos_modal").html(data);
-                $('#modal_cursos').modal('show');
-            });
-        }
+    $('input[name=eleccion]').click(function() {
+        var aux = $('input[name=eleccion]:checked').val();
+        document.getElementById("dni_transportista").value = aux
+    });
 
-        function sleep() {
-            return new Promise(resolve => setTimeout(resolve, 1000));
+    function use_transporte(e) {
+        var aux = document.getElementById("transporte").value
+        var sel_div = document.getElementById("new_transporte");
+        if (aux == 0){
+            sel_div.style.display = "none";
+        } else {
+            sel_div.style.display = "block";
         }
+    }
 
-        async function footer(a){
-            var elem = document.getElementById("myBar");
-            var width = 10;
-            var id = setInterval(frame, 10);
-            function frame() {
-                if (width >= 100) {
-                    clearInterval(id);
-                } else {
-                    width++;
-                    elem.style.width = width + '%';
-                    elem.innerHTML = width * 1  + '%';
-                }
+    function traer_secciones(url, alum){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
             }
-            await sleep();
-            elem.style.display = "none";
-            var resultado = document.getElementById("resultado");
-            resultado.innerHTML = a;
-            return a
+        })
+            .done(function (data) {
+            $("#datos_modal").html(data);
+            $('#modal_cursos').modal('show');
+        });
+    }
 
+    function sleep() {
+        return new Promise(resolve => setTimeout(resolve, 1000));
+    }
+
+    async function footer(a){
+        var elem = document.getElementById("myBar");
+        var width = 10;
+        var id = setInterval(frame, 10);
+        function frame() {
+            if (width >= 100) {
+                clearInterval(id);
+            } else {
+                width++;
+                elem.style.width = width + '%';
+                elem.innerHTML = width * 1  + '%';
+            }
         }
+        await sleep();
+        elem.style.display = "none";
+        var resultado = document.getElementById("resultado");
+        resultado.innerHTML = a;
+        return a
 
-        function matricular(){
-            var myForm = document.getElementById('form_for_curso');
+    }
+
+    function matricular(){
+        var myForm = document.getElementById('form_for_curso');
+        formData = new FormData(myForm);
+        var elem = document.getElementById("myBar");
+        elem.style.display = "block";
+        var resultado = document.getElementById("resultado");
+        resultado.innerHTML = "";
+        var y = document.getElementById("volver");
+        y.style.display = "none";
+        $('#Modal_resultado').modal('show');
+        $.ajax({
+            url: '{% url 'aceptar_matriculacion' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+            footer(data.resultado);
+            y.style.display = "block";
+        }
+               });
+    }
+
+    function traer_transportistas(dni_alumno){
+        console.log(dni_alumno);
+        document.getElementById('alumno_dni').value = dni_alumno;
+        $('#modal_cursos').modal('hide');
+        $('#select_tranportista').modal('show');
+    }
+
+    function curso(e) {
+        document.getElementById("selected_curso").value = e.target.value
+    }
+
+    function close_modal(){
+        $('#Modal_resultado').modal('hide');
+        var aux = document.getElementById("reload")
+        aux.submit();
+    }
+
+    function select_transportista(){
+        var r = confirm("¿Asignar este Transportista ?");
+        if (r == true) {
+            var myForm = document.getElementById('select_transportista');
             formData = new FormData(myForm);
-            var elem = document.getElementById("myBar");
-            elem.style.display = "block";
-            var resultado = document.getElementById("resultado");
-            resultado.innerHTML = "";
-            var y = document.getElementById("volver");
-            y.style.display = "none";
-            $('#Modal_resultado').modal('show');
             $.ajax({
-                url: '{% url 'aceptar_matriculacion' %}',
+                url: '{% url 'asignar_transportista' %}',
                 data: formData,
                 processData: false,
                 contentType: false,
                 type: 'POST',
                 success: function(data){
-                    footer(data.resultado);
-                    y.style.display = "block";
-                }
-            });
+                alert(data.resultado)
+            }
+                   });
+        } else {
+            return;
         }
-
-        function traer_transportistas(dni_alumno){
-            $('#dni_alumno').value = dni_alumno;
-            $('#modal_cursos').modal('hide');
-            $('#select_tranportista').modal('show');
-        }
-
-        function curso(e) {
-            document.getElementById("selected_curso").value = e.target.value
-        }
-
-        function close_modal(){
-            $('#Modal_resultado').modal('hide');
-            var aux = document.getElementById("reload")
-            aux.submit();
-        }
-
-        function add_transportista(){
-            $.ajax({
-                url: '{% url 'add_transportista' %}',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    alert(data.resultado)
-                }
-            });
-        }
+    }
 
 
-    </script>
+</script>
 
-    {% endblock body %}
+{% endblock body %}

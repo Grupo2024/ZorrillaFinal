@@ -21,22 +21,23 @@
     }
 
 </style>
-<form id="form_padre" method="post">
+
+<form id="crear_transportista" method="post">
     {% csrf_token %}
-    <p>Nombre: </p>{{padre_form.nombre}}
-    <p>Apellido:</p>{{padre_form.apellido}}
-    <p>Dni:</p>{{padre_form.dni}}
-    <p>Lugar Nacimiento:</p>{{padre_form.lugar_nacimiento}}
-    <p>Fecha Nacimiento:</p>{{padre_form.fecha_nacimiento}}
-    <p>Domicilio:</p>{{padre_form.domicilio}}
-    <p>Email:</p>{{padre_form.email}}
-    <p>Sexo:</p>{{padre_form.sexo}}
-    <p>Profesion:</p>{{padre_form.profesion}}
-    <p>Telefono del Trabajo:</p>{{padre_form.telefono_trabajo}}
-    <input type="hidden" name="dni_alumno" id="dni_alumno" value = {{dni_alumno}}>
+    <p>Nombre: </p>{{form_transportista.nombre}}
+    <p>Apellido:</p>{{form_transportista.apellido}}
+    <p>Dni:</p>{{form_transportista.dni}}
+    <p>Lugar Nacimiento:</p>{{form_transportista.lugar_nacimiento}}
+    <p>Fecha Nacimiento:</p>{{form_transportista.fecha_nacimiento}}
+    <p>Domicilio:</p>{{form_transportista.domicilio}}
+    <p>Email:</p>{{form_transportista.email}}
+    <p>Sexo:</p>{{form_transportista.sexo}}
+    <p>Nombre del Transporte:</p>{{form_transportista.nombre_transporte}}
+    <p>Telefono del Transportista:</p>{{form_transportista.telefono_transportista}}
+    <p>Detalles del Transportista:</p>{{form_transportista.detalles_transportista}}
 </form>
 
-<button onclick="matricular_Padre()" id="btn_padre">Cargar</button>
+<button onclick="matricular_Transportista()" id="btn_padre">Cargar</button>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -88,8 +89,8 @@
 
         }
 
-        function matricular_Padre(){
-            var myForm = document.getElementById('form_padre');
+        function matricular_Transportista(){
+            var myForm = document.getElementById('crear_transportista');
             formData = new FormData(myForm);
             console.log("llega");
             var elem = document.getElementById("myBar");
@@ -102,13 +103,14 @@
             y.style.display = "none";
             $('#myModal').modal('show');
             $.ajax({
-                url: '{% url 'crear_padre' 'Padre' %}',
+                url: '{% url 'crear_transportista' %}',
                 data: formData,
                 processData: false,
                 contentType: false,
                 type: 'POST',
                 success: function(data){
                     console.log(data.error);
+                    console.log(data.resultado);
                     if (data.error){
                         footer(data.resultado);
                         x.style.display = "none";
@@ -122,11 +124,9 @@
             });
         }
 
-    </script>
-
-    function close_modal(){
+        function close_modal(){
             $('#myModal').modal('hide');
         }
 
-
-    {% endblock body %}
+    </script>
+{% endblock body %}

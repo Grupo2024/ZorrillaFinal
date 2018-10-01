@@ -25,6 +25,15 @@ class PadreForm(forms.ModelForm):
             'fecha_nacimiento': DateInput()
         }
 
+class TransportistaForm(forms.ModelForm):
+    class Meta:
+        model = Transportista
+        fields =  ['nombre', 'apellido', 'dni', 'lugar_nacimiento','fecha_nacimiento','domicilio','email','sexo','nombre_transporte',
+'telefono_transportista','detalles_transportista']
+        widgets = {
+            'fecha_nacimiento': DateInput()
+        }
+
 class get_Password(forms.Form):
     dni = forms.IntegerField(required=True)
     email = forms.EmailField(required=True)
