@@ -45,7 +45,6 @@ class Transportista(Persona):
 
 class Obra_Social(models.Model):
     obra_social_nombre = models.CharField('Nombre Obra Social', max_length=40, null=True)
-    numero = models.IntegerField('Numero de Contacto')
 
     def __str__(self):
         return 'Obra Social: {}'.format(self.obra_social_nombre)
@@ -115,7 +114,6 @@ class Familia(models.Model):
 class usa_Transporte(models.Model):
     alumno = models.ForeignKey(Alumno, null=False)
     transportista = models.ForeignKey(Transportista, null=False)
-    #Tqm sr Bracha
 
     def __str__(self):
         return 'El alumno: {} utiliza el transportista: {}'.format(self.alumno.nombre, self.transportista.nombre_transporte)
@@ -127,7 +125,7 @@ class usa_Obra_Social(models.Model):
     obra_social_numero = models.IntegerField('Num Obra Social', null=False)#Numero de afiliacion a la obra social
 
     def __str__(self):
-        return'El alumno {} utiliza la obra social {}'.format(self.alumno.nombre, self.obra_social)
+        return'El alumno {} utiliza la obra social {}'.format(self.alumno.nombre, self.obra_social.nombre)
 
 class alumno_Curso(models.Model):
     alumno = models.OneToOneField(Alumno, null=False)
