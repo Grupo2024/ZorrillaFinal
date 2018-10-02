@@ -47,11 +47,10 @@
 
 {% if matriculaciones|length == 0 %}
 
-<h2><center>No hay ningun pedido</center></h2>
+    <h2><center>No hay ningun pedido</center></h2>
 
 {% endif %}
 
-<div id="snackbar"><span id="span_result"></span></div>
 
 <div class="modal fade" id="modal_cursos">
     <div class="modal-dialog modal-sm">
@@ -60,51 +59,9 @@
     </div>
 </div>
 
-<div class="modal fade" id="select_tranportista">
+<div class="modal fade" id="todos_los_padres">
     <div class="modal-dialog modal-lg">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <span>Elegir Transportista</span>
-                </div>
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Dni</th>
-                                <th>Opcion</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for t in transportistas %}
-                            <tr>
-                                <td>{{t.nombre}}</td>
-                                <td>{{t.apellido}}</td>
-                                <td>{{t.dni}}</td>
-                                <td><input type="radio" id={{t.dni}} name="eleccion" value={{t.dni}} /></td>
-                            </tr>
-                            {% endfor %}
-                            <form id="select_transportista" method="post">
-                                {% csrf_token %}
-                                <input name="alumno_dni" id="alumno_dni" value=0 type="hidden">
-                                <input name="dni_transportista" id="dni_transportista" value=0 type="hidden">
-                            </form>
-                        </tbody>
-                    </table>
-
-                    <a href="{% url 'form_transportista' %}">Crear Tranportista</a>
-
-                </div>
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="select_transportista()">Continuar</button>
-                </div>
-            </div>
+        <div id="datos_padre">
         </div>
     </div>
 </div>
@@ -138,16 +95,7 @@
 
 <script>
 
-    $( document ).ready(function() {
-        document.getElementById("new_transporte").style.display = "block";
-        //$("#datos_modal").style.display = "none";
-
-    });
     
-    $('input[name=eleccion]').click(function() {
-        var aux = $('input[name=eleccion]:checked').val();
-        document.getElementById("dni_transportista").value = aux
-    });
 
     function use_transporte(e) {
         var aux = document.getElementById("transporte").value
@@ -221,13 +169,25 @@
                });
     }
 
-    function traer_transportistas(dni_alumno){
-        console.log(dni_alumno);
-        document.getElementById('alumno_dni').value = dni_alumno;
-        $('#modal_cursos').modal('hide');
-        $('#select_tranportista').modal('show');
+    function traer_transportistas(){
+        console.log("nasdfds");
     }
-
+    
+    function traer_padres(url){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+        .done(function (data) {
+            $("#datos_padre").html(data);
+            $('#modal_cursos').modal('hide');
+            $('#todos_los_padres').modal('show');
+        });
+    }
+    
     function curso(e) {
         document.getElementById("selected_curso").value = e.target.value
     }
@@ -256,6 +216,10 @@
         } else {
             return;
         }
+    }
+    
+    function select_padre(){
+        console.log("nada");
     }
 
 

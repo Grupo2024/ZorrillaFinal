@@ -137,6 +137,12 @@ def form_transportista(request):
     form_transportista = TransportistaForm()
     return render (request, 'Transportista/crear_transportista.html', {'form_transportista':form_transportista})
 
+#Traer todos los Transnportistas
+
+def todos_los_transportistas(request):
+    transportistas = Transportista.objects.all()
+    return render(request, 'Transportista/todos_los_transportistas.html',{'transportistas':transportistas})
+
 #Funcion que crea el Transportista
 def crear_transportista(request):
     if request.method == 'POST':
@@ -174,6 +180,13 @@ def datos_padre(request, dni_padre):
     padre = Padre_madre.objects.get(dni=dni_padre)
     return render(request, 'Padre_madre/datos_padre.html', {'padre':padre})
 
+
+def todos_los_padres(request, dni_alumno):
+    print (dni_alumno)
+    padre = Padre_madre.objects.all()
+    return render(request,'Padre_madre/todos_los_padres.html', {'todos_los_padres':padre, 'dni_alumno':dni_alumno})
+
+
 def logIn(request):
     return render(request, 'docentes_login.html')
 
@@ -193,12 +206,7 @@ def get_Secciones(request, dni_alumno):
 @user_passes_test(check_Secretaria)
 def aceptar_matriculaciones(request):
     matriculaciones = Matriculacion.objects.filter(matriculado=False)
-    transportistas = Transportista.objects.all().order_by('nombre', 'apellido', 'dni')
-    if matriculaciones:
-        return render(request, 'pedidos.html', {'matriculaciones':matriculaciones, 'transportistas':transportistas})
-    else:
-        matriculaciones = []
-        return render(request, 'pedidos.html', {'matriculaciones':matriculaciones, 'transportistas':transportistas})
+    return render(request, 'pedidos.html', {'matriculaciones':matriculaciones})
 
 #Hay que arreglarlo
 @user_passes_test(check_Secretaria)
@@ -237,6 +245,20 @@ def asignar_transportista(request):
         usa_transporte.save()
         data = {
             'resultado': 'Transportista asignado con exito.'
+        }
+        return JsonResponse(data)
+    return HttpResponse("Solo podes acceder por Post")
+
+def asignar_padre(request):
+    if request.method == 'POST':
+        dni = request.POST['alumno_dni']
+        dni_padre = request.POST['dni_padred']
+        alumno = Alumno.objects.get(dni=dni)
+        padre = Padre_madre.objects.get(dni=dni_padre)
+        familia = Familia(alumno=alumno, padre_madre=padre)
+        familia.save()
+        data = {
+            'resultado': 'Padre asignado con exito.'
         }
         return JsonResponse(data)
     return HttpResponse("Solo podes acceder por Post")

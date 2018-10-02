@@ -26,10 +26,10 @@
                     <li><a href="{% url 'datos_padre' familiar.padre_madre.dni %}">{{familiar.padre_madre.nombre}} {{familiar.padre_madre.apellido}}</a></li>
                 {% endfor %}
                 </ul>
-                <a href="{% url 'cargar_padre' alumno.dni %}">Cargar Padre</a>
-                <a href="#">Asignar Padre</a>
-                <br>
-                <br>
+                <div id="new_padre">
+                    <a onclick="traer_padres('{% url 'todos_los_padres' alumno.dni %}')">Asignar Padre.</a>
+                </div>
+                
                 <h4><u>Transporte</u></h4>
                 {% if transportistas|length == 0 %}
                     <span class="badge badge-secondary">Opciones:</span>
@@ -40,7 +40,7 @@
                     <br>
                     <br>
                     <div id="new_transporte">
-                        <a onclick="traer_transportistas({{alumno.dni}})">Asignar Transportista.</a>
+                        <a onclick="traer_transportistas('{% url 'todos_los_transportistas' %})">Asignar Transportista.</a>
                     </div>
                 {% else %}
                 <ul>
@@ -48,7 +48,7 @@
                     <li><a href="{% url 'datos_transportista' transportista.transportista.dni %}">{{transportista.transportista.apellido}} {{transportista.transportista.nombre}}</a></li>
                 {% endfor %}
                     <br>
-                    <li><a onclick="traer_transportistas({{alumno.dni}})"><u>Asignar otro Transportista</u></a></li>
+                    <li><a onclick="traer_transportistas()"><u>Asignar otro Transportista</u></a></li>
                 </ul>
 
                 {% endif %}
