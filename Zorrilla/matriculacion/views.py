@@ -162,7 +162,7 @@ def crear_transportista(request):
 #Funcion que Muestra los datos del Transportista elegido previamente
 def datos_transportista(request, dni_transportista):
     transportista = Transportista.objects.get(dni=dni_transportista)
-    return render(request, 'datos_transportista.html', {'transportista':transportista})
+    return render(request, 'Transportista/datos_transportista.html', {'transportista':transportista})
 
 
 def cargar_padre(request, dni_alumno):
