@@ -4,39 +4,108 @@
 {% endblock navbar %}
 {% block body %}
 
-<style>
-
-    #myProgress {
-        width: 100%;
-        background-color: #ddd;
+<style type="text/css">
+    input{
+        width: 140%
     }
-
-    #myBar {
-        width: 10%;
-        height: 30px;
-        background-color: #4CAF50;
-        text-align: center;
-        line-height: 30px;
-        color: white;
+    #a{
+        width: 40%  
     }
-
 </style>
-<form id="form_padre" method="post">
-    {% csrf_token %}
-    <p>Nombre: </p>{{padre_form.nombre}}
-    <p>Apellido:</p>{{padre_form.apellido}}
-    <p>Dni:</p>{{padre_form.dni}}
-    <p>Lugar Nacimiento:</p>{{padre_form.lugar_nacimiento}}
-    <p>Fecha Nacimiento:</p>{{padre_form.fecha_nacimiento}}
-    <p>Domicilio:</p>{{padre_form.domicilio}}
-    <p>Email:</p>{{padre_form.email}}
-    <p>Sexo:</p>{{padre_form.sexo}}
-    <p>Profesion:</p>{{padre_form.profesion}}
-    <p>Telefono del Trabajo:</p>{{padre_form.telefono_trabajo}}
-    <input type="hidden" name="dni_alumno" id="dni_alumno" value = {{dni_alumno}}>
-</form>
 
-<button onclick="matricular_Padre()" id="btn_padre">Cargar</button>
+<br>
+<form id="form_padre" style="margin-left: 30%;" method="post">
+{% csrf_token %}
+
+<div class="card text-center" style="width: 55%;">
+        <div class="card-body">
+            <h4 class="card-title">Cargar Padre</h4>
+
+            <ul class="list-group list-group-flush">
+
+                <li class="list-group-item">
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                                <div class="input-group-prepend">
+                                    <span style="margin-left: 5%;" class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
+                                </div>
+                        <div style="margin-left: -3%;">{{padre_form.nombre}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-4 form-group">
+                        <div class="input-group-prepend">
+                            <span style="margin-left: 5%;" class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
+                        </div>
+                        <div style="margin-left: -3%;">{{padre_form.apellido}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend">
+                            <span style="margin-left: 11%;" class="input-group-text" id="inputGroup-sizing-sm">DNI:</span>
+                        </div>
+                        <div id="b" style="margin-left: 1.5%;">{{padre_form.dni}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend">
+                            <span style="margin-left: 3.5%;" class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
+                        </div>
+                        <div id="a" style="margin-left: -2.3%;">{{padre_form.lugar_nacimiento}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend">
+                            <span style="margin-left: 3.5%;" class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
+                        </div>
+                        <br>
+                        <div id="a"  style="margin-left:1%">{{padre_form.fecha_nacimiento}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend">
+                            <span style="margin-left: 5%;" class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
+                        </div>
+                        <div style="margin-left:-2.8%">{{padre_form.domicilio}}</div>
+                    </div>
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend">
+                            <span style="margin-left: 6%;" class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
+                        </div>
+                        
+                        <div style="margin-left:1%">{{padre_form.email}}</div>
+                        
+                    </div>
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend">
+                            <span style="margin-left: 6%;" class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
+                        </div>
+                        <br>
+                        <div style="margin-left:1%">{{padre_form.sexo}}</div>
+                    </div>
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend">
+                            <span style="margin-left: 5%;" class="input-group-text" id="inputGroup-sizing-sm">Profesion:</span>
+                        </div>
+                        
+                        <div style="margin-left:-2.5%">{{padre_form.profesion}}</div>
+                        
+                    </div>
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend">
+                            <span style="margin-left: 3%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono de trabajo:</span>
+                        </div>
+                        
+                        <div id="a" style="margin-left:1%">{{padre_form.telefono_trabajo}}</div>
+                        
+                    </div>
+                </li>
+                <button class="btn btn-success"onclick="matricular_Padre()" id="btn_padre">Cargar</button>
+            </ul>
+        </div>
+
+    </div>
+    
+</form>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
