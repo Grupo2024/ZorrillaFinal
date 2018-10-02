@@ -3,16 +3,25 @@
 {% block navbar %}
 {% endblock navbar %}
 {% block body %}
+<br>
 
-    <p>Nombre: </p>{{padre.nombre}}
-    <p>Apellido:</p>{{padre.apellido}}
-    <p>Dni:</p>{{padre.dni}}
-    <p>Lugar Nacimiento:</p>{{padre.lugar_nacimiento}}
-    <p>Fecha Nacimiento:</p>{{padre.fecha_nacimiento}}
-    <p>Domicilio:</p>{{padre.domicilio}}
-    <p>Email:</p>{{padre.email}}
-    <p>Sexo:</p>{{padre.sexo}}
-    <p>Profesion:</p>{{padre.profesion}}
-    <p>Telefono del Trabajo:</p>{{padre.telefono_trabajo}}
+<div class="card text-center" style="width: 30%; margin-left: 35%">
+    <div class="card-body">
+        <h4 class="card-title">Datos de contacto</h4>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Nombre: {{padre.nombre}}</li>
+            <li class="list-group-item">Apellido: {{padre.apellido}}</li>
+            <li class="list-group-item">Dni: {{padre.dni}}</li>
+            <li class="list-group-item">Lugar Nacimiento: {{padre.lugar_nacimiento}}</li>
+            <li class="list-group-item">Fecha Nacimiento: {{padre.fecha_nacimiento}}</li>
+            <li class="list-group-item">Domicilio: {{padre.domicilio}}</li>
+            <li class="list-group-item">Email: {{padre.email}}</li>
+            <li class="list-group-item">Sexo: {{padre.sexo}}</li>
+            <li class="list-group-item">Profesion: {{padre.profesion}}</li>
+            <li class="list-group-item">Telefono del Trabajo: {{padre.telefono_trabajo}}</li>
+        </ul>
+    </div>
+</div>
+
 
 {% endblock body %}
