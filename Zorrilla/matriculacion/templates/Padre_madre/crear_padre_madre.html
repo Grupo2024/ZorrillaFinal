@@ -5,106 +5,122 @@
 {% block body %}
 
 <style type="text/css">
+    #myProgress {
+            width: 100%;
+            background-color: #ddd;
+    }
+    #myBar {
+        width: 10%;
+        height: 30px;
+        background-color: #4CAF50;
+        text-align: center;
+        line-height: 30px;
+        color: white;
+    }
+
     input{
-        width: 140%
+        width: 140%;
     }
     #a{
-        width: 40%  
+        width: 70%;     
+    }
+    #b{
+        width: 10% ;
     }
 </style>
 
 <br>
-<form id="form_padre" style="margin-left: 30%;" method="post">
+<form id="form_padre" style="margin-left: 30%;" method="post" >
 {% csrf_token %}
 
-<div class="card text-center" style="width: 55%;">
+    <div class="card text-center" style="width: 45%; margin-left: 6%">
         <div class="card-body">
-            <h4 class="card-title">Cargar Padre</h4>
+            <h4 class="card-title">Datos personales</h4>
 
             <ul class="list-group list-group-flush">
 
                 <li class="list-group-item">
 
-                        <div class="input-group input-group-sm mb-3 form-group">
-                                <div class="input-group-prepend">
-                                    <span style="margin-left: 5%;" class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
-                                </div>
-                        <div style="margin-left: -3%;">{{padre_form.nombre}}</div>
-                    </div>
-
-                    <div class="input-group input-group-sm mb-4 form-group">
+                    <div class="input-group input-group-sm mb-3 form-group">
                         <div class="input-group-prepend">
-                            <span style="margin-left: 5%;" class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
+                            <span style="margin-left: -16%;" class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
                         </div>
-                        <div style="margin-left: -3%;">{{padre_form.apellido}}</div>
+                        <div style="margin-left: -8%;">{{padre_form.nombre}}</div>
                     </div>
 
                     <div class="input-group input-group-sm mb-3 form-group">
                         <div class="input-group-prepend">
-                            <span style="margin-left: 11%;" class="input-group-text" id="inputGroup-sizing-sm">DNI:</span>
+                            <span style="margin-left: -15%;" class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
                         </div>
-                        <div id="b" style="margin-left: 1.5%;">{{padre_form.dni}}</div>
+                        <div style="margin-left: -8%;">{{padre_form.nombre}}</div>
                     </div>
 
                     <div class="input-group input-group-sm mb-3 form-group">
                         <div class="input-group-prepend">
-                            <span style="margin-left: 3.5%;" class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
+                            <span style="margin-left: -6%;" class="input-group-text" id="inputGroup-sizing-sm">Numero de documento:</span>
                         </div>
-                        <div id="a" style="margin-left: -2.3%;">{{padre_form.lugar_nacimiento}}</div>
+                        <div style="margin-left: -4%; margin-top: 0%;">{{padre_form.dni}}</div>
                     </div>
 
                     <div class="input-group input-group-sm mb-3 form-group">
                         <div class="input-group-prepend">
-                            <span style="margin-left: 3.5%;" class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
+                            <span style="margin-left: -7%;" class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
+                        </div>
+                        <div style="margin-left: -8%">{{padre_form.lugar_nacimiento}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend">
+                            <span style="margin-left: -6%;" class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
                         </div>
                         <br>
-                        <div id="a"  style="margin-left:1%">{{padre_form.fecha_nacimiento}}</div>
+                        <div id="a"  style="margin-left:-3%">{{padre_form.fecha_nacimiento}}</div>
                     </div>
 
                     <div class="input-group input-group-sm mb-3 form-group">
                         <div class="input-group-prepend">
-                            <span style="margin-left: 5%;" class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
-                        </div>
-                        <div style="margin-left:-2.8%">{{padre_form.domicilio}}</div>
-                    </div>
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div class="input-group-prepend">
-                            <span style="margin-left: 6%;" class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
-                        </div>
-                        
-                        <div style="margin-left:1%">{{padre_form.email}}</div>
-                        
-                    </div>
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div class="input-group-prepend">
-                            <span style="margin-left: 6%;" class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
+                            <span style="margin-left: -8%;" class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
                         </div>
                         <br>
-                        <div style="margin-left:1%">{{padre_form.sexo}}</div>
+                        <div style="margin-left:-7%">{{padre_form.domicilio}}</div>
                     </div>
+
                     <div class="input-group input-group-sm mb-3 form-group">
                         <div class="input-group-prepend">
-                            <span style="margin-left: 5%;" class="input-group-text" id="inputGroup-sizing-sm">Profesion:</span>
+                            <span style="margin-left: -16%;" class="input-group-text" id="inputGroup-sizing-sm">Email:  </span>
                         </div>
-                        
-                        <div style="margin-left:-2.5%">{{padre_form.profesion}}</div>
-                        
+                        <div style="margin-left: 20%;">{{padre_form.email}}</div>
                     </div>
+
                     <div class="input-group input-group-sm mb-3 form-group">
                         <div class="input-group-prepend">
-                            <span style="margin-left: 3%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono de trabajo:</span>
+                            <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
+                            {{padre_form.sexo}}
                         </div>
-                        
-                        <div id="a" style="margin-left:1%">{{padre_form.telefono_trabajo}}</div>
-                        
                     </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend">
+                            <span style="margin-left: -12%;" class="input-group-text" id="inputGroup-sizing-sm">Profesion:</span>
+                        </div>
+                        <div style="margin-left: -8%;">{{padre_form.profesion}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend">
+                            <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono del padre:</span>
+                        </div>
+                        <div style="margin-left: -4%;">{{padre_form.telefono_trabajo}}</div>
+                    </div>
+
+
                 </li>
-                <button class="btn btn-success"onclick="matricular_Padre()" id="btn_padre">Cargar</button>
+
             </ul>
         </div>
 
     </div>
-    
+        
 </form>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
