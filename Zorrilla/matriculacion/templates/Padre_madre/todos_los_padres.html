@@ -22,25 +22,53 @@
                         <td>{{padre.nombre}}</td>
                         <td>{{padre.apellido}}</td>
                         <td>{{padre.dni}}</td>
-                        <td><input type="radio" id={{padre.dni}} name="eleccion" value={{padre.dni}} /></td>
+                        <td><input type="radio" id={{padre.dni}} name="padre" value={{padre.dni}}></td>
                     </tr>
                     {% endfor %}
                     <form id="select_padre" method="post">
                         {% csrf_token %}
-                        <input name="alumno_dni_padre" id="alumno_dni_padre" value={{dni_alumno}}>
-                        <input name="dni_padre" id="dni_padre" value=0>
+                        <input name="dni_alumno" id="dni_alumno" value={{dni_alumno}}>
+                        <input name="dni_padre" id="dni_padre" value=420>
                     </form>
                 </tbody>
             </table>
 
-            <a href="{% url 'cargar_padre' {{dni_alumno}} %}">Crear Padre</a>
+            <a href="{% url 'cargar_padre' dni_alumno %}">Crear Padre</a>
 
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-success" data-dismiss="modal" onclick="select_padre()">Continuar</button>
+            <button type="button" class="btn btn-success" onclick="mandar_padre()">Continuar</button>
         </div>
 
     </div>
 </div>
+
+<script>
+
+     $('input[name=padre]').click(function() {
+        var aux2 = $('input[name=padre]:checked').val();
+        document.getElementById("dni_padre").value = aux2;
+    });
+    
+    
+    /*
+    function mandar_padre(){
+        var myForm = document.getElementById('select_padre');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: '{% url 'asignar_padre' %}',
+            data : formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            console.log(url);
+            success: function(data){
+                alert(data.resultado)
+            }
+        });     
+    }
+    */
+    */
+</script>

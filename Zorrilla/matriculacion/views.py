@@ -139,9 +139,10 @@ def form_transportista(request):
 
 #Traer todos los Transnportistas
 
-def todos_los_transportistas(request):
+def todos_los_transportistas(request, dni_alumno):
+    print "es esta"
     transportistas = Transportista.objects.all()
-    return render(request, 'Transportista/todos_los_transportistas.html',{'transportistas':transportistas})
+    return render(request, 'Transportista/todos_los_transportistas.html',{'transportistas':transportistas, 'dni_alumno':dni_alumno})
 
 #Funcion que crea el Transportista
 def crear_transportista(request):
@@ -172,9 +173,9 @@ def datos_transportista(request, dni_transportista):
 
 
 def cargar_padre(request, dni_alumno):
-    alumno = Alumno.objects.get(dni=dni_alumno)
+    print (dni_alumno)
     padre_form = PadreForm()
-    return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':alumno.dni})
+    return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':dni_alumno})
 
 def datos_padre(request, dni_padre):
     padre = Padre_madre.objects.get(dni=dni_padre)
@@ -237,7 +238,7 @@ def alumno(request, id_alumno):
 
 def asignar_transportista(request):
     if request.method == 'POST':
-        dni = request.POST['alumno_dni']
+        dni = request.POST['dni_alumno']
         dni_transportista = request.POST['dni_transportista']
         alumno = Alumno.objects.get(dni=dni)
         transportista = Transportista.objects.get(dni=dni_transportista)
@@ -250,9 +251,10 @@ def asignar_transportista(request):
     return HttpResponse("Solo podes acceder por Post")
 
 def asignar_padre(request):
+    print "llega"
     if request.method == 'POST':
-        dni = request.POST['alumno_dni']
-        dni_padre = request.POST['dni_padred']
+        dni = request.POST['dni_alumno']
+        dni_padre = request.POST['dni_padre']
         alumno = Alumno.objects.get(dni=dni)
         padre = Padre_madre.objects.get(dni=dni_padre)
         familia = Familia(alumno=alumno, padre_madre=padre)

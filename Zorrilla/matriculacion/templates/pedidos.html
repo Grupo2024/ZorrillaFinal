@@ -47,7 +47,7 @@
 
 {% if matriculaciones|length == 0 %}
 
-    <h2><center>No hay ningun pedido</center></h2>
+<h2><center>No hay ningun pedido</center></h2>
 
 {% endif %}
 
@@ -62,6 +62,13 @@
 <div class="modal fade" id="todos_los_padres">
     <div class="modal-dialog modal-lg">
         <div id="datos_padre">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="todos_los_transportistas">
+    <div class="modal-dialog modal-lg">
+        <div id="datos_transportista">
         </div>
     </div>
 </div>
@@ -95,7 +102,7 @@
 
 <script>
 
-    
+
 
     function use_transporte(e) {
         var aux = document.getElementById("transporte").value
@@ -169,10 +176,21 @@
                });
     }
 
-    function traer_transportistas(){
-        console.log("nasdfds");
+    function traer_transportistas(url){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_transportista").html(data);
+            $('#modal_cursos').modal('hide');
+            $('#todos_los_transportistas').modal('show');
+        });
     }
-    
+
     function traer_padres(url){
         $.ajax({
             method: "POST",
@@ -181,13 +199,13 @@
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             }
         })
-        .done(function (data) {
+            .done(function (data) {
             $("#datos_padre").html(data);
             $('#modal_cursos').modal('hide');
             $('#todos_los_padres').modal('show');
         });
     }
-    
+
     function curso(e) {
         document.getElementById("selected_curso").value = e.target.value
     }
@@ -199,30 +217,34 @@
     }
 
     function select_transportista(){
-        var r = confirm("¿Asignar este Transportista ?");
-        if (r == true) {
-            var myForm = document.getElementById('select_transportista');
-            formData = new FormData(myForm);
-            $.ajax({
-                url: '{% url 'asignar_transportista' %}',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                alert(data.resultado)
-            }
-                   });
+        /*
+        var aux = document.getElementById("dni_transportista").value;
+        if (aux == 0){
+            alert("Eliga un Transportista");
         } else {
-            return;
+            var r = confirm("¿Asignar este Transportista ?");
+            if (r == true) {
+                var myForm = document.getElementById('select_transportista');
+                formData = new FormData(myForm);
+                $.ajax({
+                    url: '{% url 'asignar_transportista' %}',
+                    data : formData,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function(data){
+                    alert(data.resultado)
+                }
+                       });
+            } else {
+                return;
+            }
         }
+        */
     }
     
-    function select_padre(){
-        console.log("nada");
+ function mandar_padre(){     
     }
-
-
 </script>
 
 {% endblock body %}

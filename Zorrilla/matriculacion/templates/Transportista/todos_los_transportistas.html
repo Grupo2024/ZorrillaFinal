@@ -21,13 +21,13 @@
                         <td>{{t.nombre}}</td>
                         <td>{{t.apellido}}</td>
                         <td>{{t.dni}}</td>
-                        <td><input type="radio" id={{t.dni}} name="eleccion" value={{t.dni}} /></td>
+                        <td><input type="radio" id={{t.dni}} name="transporte" value={{t.dni}}></td>
                     </tr>
                     {% endfor %}
                     <form id="select_transportista" method="post">
                         {% csrf_token %}
-                        <input name="alumno_dni_transporte" id="alumno_dni_transporte" type="hidden">
-                        <input name="dni_transportista" id="dni_transportista" value=0 type="hidden">
+                        <input name="alumno_dni_transporte" id="alumno_dni_transporte" value={{dni_alumno}}>
+                        <input name="dni_transportista" id="dni_transportista" value=0>
                     </form>
                 </tbody>
             </table>
@@ -42,3 +42,12 @@
         </div>
     </div>
 </div>
+
+<script>
+
+     $('input[name=transporte]').click(function() {
+        var aux = $('input[name=transporte]:checked').val();
+        document.getElementById("dni_transportista").value = aux
+    });
+
+</script>

@@ -40,7 +40,7 @@
                     <br>
                     <br>
                     <div id="new_transporte">
-                        <a onclick="traer_transportistas('{% url 'todos_los_transportistas' %})">Asignar Transportista.</a>
+                        <a onclick="traer_transportistas('{% url 'todos_los_transportistas' alumno.dni %}')">Asignar Transportista.</a>
                     </div>
                 {% else %}
                 <ul>
@@ -48,7 +48,7 @@
                     <li><a href="{% url 'datos_transportista' transportista.transportista.dni %}">{{transportista.transportista.apellido}} {{transportista.transportista.nombre}}</a></li>
                 {% endfor %}
                     <br>
-                    <li><a onclick="traer_transportistas()"><u>Asignar otro Transportista</u></a></li>
+                    <li><a onclick="traer_transportistas('{% url 'todos_los_transportistas' alumno.dni %}')"><u>Asignar otro Transportista</u></a></li>
                 </ul>
 
                 {% endif %}
@@ -66,7 +66,7 @@
                 <a onclick="traer_transportistas()">Elegir Obra Social</a>
 
                 <!-- Inputs con los datos elegidos para el alumno -->
-                <input name="selected_curso" id="selected_curso" value=1 type="hidden">
+                <input name="select_curso" id="select_curso" value=0 >
                 <input name="dni_alumno" id="dni_alumno" type="hidden" value="{{alumno.dni}}">
 
             </div>
