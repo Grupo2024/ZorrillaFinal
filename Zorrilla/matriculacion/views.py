@@ -86,30 +86,30 @@ def crear_alumno(request):
         return HttpResponse(str(aux))
 
 def crear_padre(request, opcion):
-    print opcion
+    print (opcion)
     padre_form = PadreForm(request.POST)
     dni_alumno = request.POST['dni_alumno']
     alumno = Alumno.objects.get(dni=dni_alumno)
     if padre_form.is_valid():
-        print "es valido"
+        print ("es valido")
         padre_form.save()
         dni_padre = padre_form.cleaned_data['dni']
         padre = Padre_madre.objects.get(dni=dni_padre)
-        print padre
+        print (padre)
         familia = Familia(alumno=alumno, padre_madre=padre)
         familia.save()
         if (opcion=="Matriculacion"):
-            print "Matriculando alumno"
+            print ("Matriculando alumno")
             new_Matriculacion = Matriculacion(alumno=alumno)
             new_Matriculacion.save()
-            resultado = "Los pedidos de Matriculacion de " + str(padre.apellido) + "" + str(padre.nombre) + " y de " + str(alumno.apellido) + "" + str(alumno.nombre) + " han sido creados con exito."
+            resultado = "Los pedidos de Matriculcaion de " + str(padre.apellido) + "" + str(padre.nombre) + " y de " + str(alumno.apellido) + "" + str(alumno.nombre) + " han sido creados con exito."
             data = {
                 'error': False,
                 'resultado':resultado
             }
             return JsonResponse(data)
         elif (opcion=="Padre"):
-            print "Cargando Padre"
+            print ("Cargando Padre")
             resultado = str(padre.apellido) + "" + str(padre.nombre) + " ha sido cargado con exito."
             data = {
                 'error': False,

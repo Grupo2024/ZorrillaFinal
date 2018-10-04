@@ -5,96 +5,77 @@
 {% block body %}
 
 {% load poll_extras %}
-
-<div class="sidenav">
-    <h1 align="center" class="text-white">Indice</h1>
-    <!--
-    {% if request.user|has_group:"Director" %} 
-        <button class="dropdown-btn">Deshabilitado<i class="fa fa-caret-down"></i></button>
-        <div class="dropdown-container">
-          <a href="{% url 'libros_deshabilitados' 5 %}">5 libros</a>
-          <a href="{% url 'libros_deshabilitados' 10 %}">10 libros</a>
-          <a href="{% url 'libros_deshabilitados' 25 %}">25 libros</a>
-          <a href="{% url 'libros_deshabilitados' 50 %}">50 libros</a>
-          <a href="{% url 'libros_deshabilitados' 100 %}">100 libros</a>
-        </div>
-    {% endif %}
--->
-    <a href="{% url 'all_the_books' %}">Todos</a>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    {% if request.user|has_group:"Director" %}
-        <button class="btn btn-dark boton_informe btn-lg btn-block" onclick="informe('{% url 'informe' %}')">Informe</button>
-    {% endif %}
-    {% if user.is_authenticated %}
-        <button class="btn btn-success boton_cargar btn-lg btn-block"  data-toggle="modal" data-target="#myModal">Añadir libro</button>
-    {% endif %}
-
-</div>
-
-  
   
 <div class="main">
   <br>
   <div class="container">
     <div class="row">
       <div class="">
-        <input type="text"placeholder="Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
-        <select id="filter_by">
-            <option value=0>Titulo</option>
-            <option value=1>Descripción</option>
-            <option value=2>Fecha</option>
-        </select>
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">
-            <li>&#xe052;</li>
-          </button>
-      </div>   
+        <!-- Buscador -->
+        <input style="margin-left: -12%;" type="text" placeholder=" Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
+        <!-- Dropdown filter -->
+        <button type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by">Buscar por</button>
+        <div class="dropdown-menu" id="filter_by">
+            <option class="dropdown-item" value=0>Titulo</option>
+            <option class="dropdown-item" value=1>Descripción</option>
+            <option class="dropdown-item" value=2>Fecha</option>
+        </div>
+        <!-- Filter button -->
+        <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#myModal2">
+        <i class="fa fa-filter" aria-hidden="true"></i> Filtrar
+
+        {% if user.is_authenticated %}
+            <button style="margin-left: 115%; margin-top: -5%" class="btn btn-success" data-toggle="modal" data-target="#myModal">Añadir libro</button>
+        {% endif %}
+
+        {% if request.user|has_group:"Director" %}
+            <button style="margin-left: 131%; margin-top: -5.5%" class="btn btn-dark" onclick="informe('{% url 'informe' %}')">Informe</button>
+        {% endif %}
+        
   </div>
   </div>
+
   <div class="container">
       <div class="row">
-          <div class="col-md-12">
+          <div style="margin-left: -10%" class="col-12">
           <h4></h4>
-          <div class="table-responsive">
-              <table id="mytable" class="table table-hover">
-                <thead>
-                    <th onclick="sortTable(0)">Titulo</th>
-                    <th onclick="sortTable(1)">Descripción</th>
-                    <th onclick="sortTable(2)">Fecha</th>
-                    <th>Info</th>
-                    {% if request.user|has_group:"Profesor" %}
-                        <th>Borrar</th>
-                    {% endif %}
-                    {% if request.user|has_group:"Director" %}
-                        <th>Historia</th>
-                        <th>Estado</th>
-                    {% endif %}
-                    <th>Ver Libro</th>
-                </thead>
-                <tbody>
-                {% for doc in documentos %}
-                    <tr>
-                        <td>{{doc.titulo}}</td>
-                        <td>{{doc.descripcion}}</td>
-                        <td>{{doc.fecha}}</td>
-                        <td><button class="btn btn-primary" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></button></td>
-                        {% if request.user|has_group:"Profesor" %}
-                            <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
-                        {% endif %}
-                        {% if request.user|has_group:"Director" %}
-                        <td><button class="btn btn-primary fa fa-history" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book"></button></td>
-                            <td><button class="btn btn-primary" onclick="deshabilitar_libro('{% url 'cambiar_estado_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf085;</i></button></td>
-                        {% endif %}
-                        <td><a type="button" class="btn btn-primary text-white" href="{{ doc.document.url }}">Abrir</a></td>
-                    </tr>
-                  {% endfor %}
-                  </tbody>
-              </table>
+      <table class="table table-sm table-hover">
+        <thead>
+          <tr>
+            <th scope="col" onclick="sortTable(0)">Titulo</th>
+            <th scope="col" onclick="sortTable(1)">Descripción</th>
+            <th scope="col" onclick="sortTable(2)">Fecha</th>
+            <th scope="col" >Info</th>
+            {% if request.user|has_group:"Profesor" %}
+              <th scope="col" >Borrar</th>
+            {% endif %}
+            {% if request.user|has_group:"Director" %}
+              <th scope="col" >Historia</th>
+              <th scope="col" >Estado</th>
+            {% endif %}  
+            <th scope="col" >Ver libro</th>
+          
+          </tr>
+        </thead>
+        <tbody>
+          {% for doc in documentos %}
+          <tr>
+            <td>{{doc.titulo}}</td>
+            <td>{{doc.descripcion}}</td>
+            <td>{{doc.fecha}}</td>
+            <td><button class="btn btn-primary" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></button></td>
+            {% if request.user|has_group:"Profesor" %}
+              <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
+            {% endif %}
+            {% if request.user|has_group:"Director" %}
+              <td><button class="btn btn-primary fa fa-history" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book"></button></td>
+              <td><button class="btn btn-primary" onclick="deshabilitar_libro('{% url 'cambiar_estado_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf085;</i></button></td>
+            {% endif %}
+            <td><a class="btn btn-primary text-white" href="{{ doc.document.url }}">Abrir</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
               
       <div id="snackbar"><span id="span_result"></span></div>
               
