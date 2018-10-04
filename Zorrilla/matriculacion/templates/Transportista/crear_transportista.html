@@ -22,19 +22,115 @@
 
 </style>
 
-<form id="crear_transportista" method="post">
-    {% csrf_token %}
-    <p>Nombre: </p>{{form_transportista.nombre}}
-    <p>Apellido:</p>{{form_transportista.apellido}}
-    <p>Dni:</p>{{form_transportista.dni}}
-    <p>Lugar Nacimiento:</p>{{form_transportista.lugar_nacimiento}}
-    <p>Fecha Nacimiento:</p>{{form_transportista.fecha_nacimiento}}
-    <p>Domicilio:</p>{{form_transportista.domicilio}}
-    <p>Email:</p>{{form_transportista.email}}
-    <p>Sexo:</p>{{form_transportista.sexo}}
-    <p>Nombre del Transporte:</p>{{form_transportista.nombre_transporte}}
-    <p>Telefono del Transportista:</p>{{form_transportista.telefono_transportista}}
-    <p>Detalles del Transportista:</p>{{form_transportista.detalles_transportista}}
+<style type="text/css">
+    input{
+        width: 140%
+    }
+    #a{
+        width: 40%  
+    }
+</style>
+
+<br>
+<form id="form_padre" style="margin-left: 30%;" method="post">
+{% csrf_token %}
+
+<div class="card text-center" style="width: 55%;">
+        <div class="card-body">
+            <h4 class="card-title">Crear Transportista</h4>
+
+            <ul class="list-group list-group-flush">
+
+                <li class="list-group-item">
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                                <div style="margin-right: 300%;" class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
+                                </div>
+                        <div style="margin-left: -3.5%; margin-right: 17%;">{{form_transportista.nombre}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-4 form-group">
+                        <div style="margin-right: 300%;" class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
+                        </div>
+                        <div style="margin-left: -3.5%; margin-right: 17%;">{{form_transportista.apellido}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div style="margin-right: 300%;" class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">DNI:</span>
+                        </div>
+                        <div id="b" style="margin-left: 0%; margin-right: 45%;">{{form_transportista.dni}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div style="margin-right: 300%;" class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
+                        </div>
+                        <div id="a" style="margin-left: -3.5%; margin-right: 40%;">{{form_transportista.lugar_nacimiento}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div style="margin-right: 300%;" class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
+                        </div>
+                        <br>
+                        <div id="a"  style="margin-left: 0%; margin-right: 50%;">{{form_transportista.fecha_nacimiento}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div style="margin-right: 300%;" class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
+                        </div>
+                        <div style="margin-left:-3.5%; margin-right: 40%;">{{form_transportista.domicilio}}</div>
+                    </div>
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div style="margin-right: 300%;" class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
+                        </div>
+                        
+                        <div style="margin-left: 0%; margin-right: 40%;">{{form_transportista.email}}</div>
+                        
+                    </div>
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div style="margin-right: 300%;"class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
+                        </div>
+                        <br>
+                        <div style="margin-left: 0%">{{form_transportista.sexo}}</div>
+                    </div>
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div style="margin-right: 300%;" class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Nombre del transporte:</span>
+                        </div>
+                        
+                        <div style="margin-left:-3.5%; margin-right: 10%;">{{form_transportista.nombre_transporte}}</div>
+                        
+                    </div>
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div style="margin-right: 300%;" class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Telefono del transporte:</span>
+                        </div>
+                        
+                        <div id="a" style="margin-left:0%; margin-right: 25%;">{{form_transportista.telefono_transportista}}</div>
+                        
+                    </div>
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div style="margin-right: 300%;" class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Detalles:</span>
+                        </div>
+                        
+                        <div id="a" style="margin-left:0%">{{form_transportista.detalles_transportista}}</div>
+                        
+                    </div>
+                </li>
+                <button class="btn btn-success"onclick="matricular_Padre()" id="btn_padre">Cargar</button>
+            </ul>
+        </div>
+
+    </div>
+    
 </form>
 
 <button onclick="matricular_Transportista()" id="btn_padre">Cargar</button>
