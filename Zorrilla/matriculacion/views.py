@@ -209,13 +209,12 @@ def aceptar_matriculaciones(request):
     matriculaciones = Matriculacion.objects.filter(matriculado=False)
     return render(request, 'pedidos.html', {'matriculaciones':matriculaciones})
 
-#Hay que arreglarlo
 @user_passes_test(check_Secretaria)
 def aceptar_matriculacion(request):
     if request.method == 'POST':
         dni_alumno = request.POST['dni_alumno']
         print (dni_alumno)
-        selected_curso = request.POST['selected_curso']
+        selected_curso = request.POST['select_curso']
         print (selected_curso)
         curso = Curso.objects.get(id=selected_curso)
         alumno = Alumno.objects.get(dni=dni_alumno)

@@ -38,7 +38,7 @@
         <!-- Modal footer -->
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-success" data-dismiss="modal" onclick="select_transportista()">Continuar</button>
+            <button type="button" class="btn btn-success" onclick="select_transportista()">Continuar</button>
         </div>
     </div>
 </div>
@@ -49,5 +49,30 @@
         var aux = $('input[name=transporte]:checked').val();
         document.getElementById("dni_transportista").value = aux
     });
+
+    function select_transportista(){
+        var aux = document.getElementById("dni_transportista").value;
+        if (aux == 0){
+            alert("Eliga un Transportista");
+        } else {
+            var r = confirm("¿Asignar este Transportista ?");
+            if (r == true) {
+                var myForm = document.getElementById('select_transportista');
+                formData = new FormData(myForm);
+                $.ajax({
+                    url: '{% url 'asignar_transportista' %}',
+                    data : formData,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function(data){
+                    alert(data.resultado)
+                }
+                       });
+            } else {
+                return;
+            }
+        }
+    }
 
 </script>
