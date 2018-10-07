@@ -32,7 +32,7 @@
 </style>
 
 <br>
-<form id="form_padre" style="margin-left: 30%;" method="post">
+<form id="form_transportista" style="margin-left: 30%;" method="post">
 {% csrf_token %}
 
 <div class="card text-center" style="width: 55%;">
@@ -125,7 +125,7 @@
                         
                     </div>
                 </li>
-                <button class="btn btn-success"onclick="matricular_Padre()" id="btn_padre">Cargar</button>
+                <button class="btn btn-success"onclick="matricular_Transportista()" id="btn_padre">Cargar</button>
             </ul>
         </div>
 
@@ -133,13 +133,13 @@
     
 </form>
 
-<button onclick="matricular_Transportista()" id="btn_padre">Cargar</button>
+
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Matriculando Padre:</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Matriculando Transportista:</h5>
             </div>
             <div class="container-fluid">
                 <div class="modal-body row">
@@ -186,7 +186,7 @@
         }
 
         function matricular_Transportista(){
-            var myForm = document.getElementById('crear_transportista');
+            var myForm = document.getElementById('form_transportista');
             formData = new FormData(myForm);
             console.log("llega");
             var elem = document.getElementById("myBar");
