@@ -8,7 +8,7 @@
 
 <div class="sidenav">
     <h1 align="center" class="text-white">Indice</h1>
-    <!--
+
     {% if request.user|has_group:"Director" %} 
         <button class="dropdown-btn">Deshabilitado<i class="fa fa-caret-down"></i></button>
         <div class="dropdown-container">
@@ -19,7 +19,7 @@
           <a href="{% url 'libros_deshabilitados' 100 %}">100 libros</a>
         </div>
     {% endif %}
--->
+
     <a href="{% url 'all_the_books' %}">Todos</a>
     <br>
     <br>
@@ -90,7 +90,7 @@
                         <td><button class="btn btn-primary fa fa-history" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book"></button></td>
                             <td><button class="btn btn-primary" onclick="deshabilitar_libro('{% url 'cambiar_estado_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf085;</i></button></td>
                         {% endif %}
-                        <td><a type="button" class="btn btn-primary text-white" href="{{ doc.document.url }}">Abrir</a></td>
+                        <td><a type="button" class="btn btn-primary text-white" href="{{ doc.documento.url }}">Abrir</a></td>
                     </tr>
                   {% endfor %}
                   </tbody>
