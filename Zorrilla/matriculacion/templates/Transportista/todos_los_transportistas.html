@@ -6,7 +6,7 @@
         </div>
         <!-- Modal body -->
         <div class="modal-body">
-            <table class="table table-bordered">
+            <table class="table table-bordered" id="tabla_transportistas">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -24,24 +24,29 @@
                         <td><input type="radio" id={{t.dni}} name="transporte" value={{t.dni}}></td>
                     </tr>
                     {% endfor %}
-                    <form id="select_transportista" method="post">
-                        {% csrf_token %}
-                        <input name="alumno_dni_transporte" id="alumno_dni_transporte" value={{dni_alumno}}>
-                        <input name="dni_transportista" id="dni_transportista" value=0>
-                    </form>
                 </tbody>
             </table>
 
-            <a href="{% url 'form_transportista' %}">Crear Tranportista</a>
+
+
+            <span id="resultado"></span>
 
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">
+            <form id="select_transportista" method="post" href="{% url 'asignar_transportista' %}">
+                {% csrf_token %}
+                <input name="dni_alumno" id="dni_alumno" value={{dni_alumno}} type="hidden">
+                <input name="dni_transportista" id="dni_transportista" value=0 type="hidden">
+            </form>
+            <a href="{% url 'form_transportista' %}"><li>&#x2b;</li></a>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
             <button type="button" class="btn btn-success" onclick="select_transportista()">Continuar</button>
         </div>
     </div>
 </div>
+
+
 
 <script>
 
@@ -55,6 +60,9 @@
         if (aux == 0){
             alert("Eliga un Transportista");
         } else {
+            var aux_form = document.getElementById("select_transportista");
+            //aux_form.submit();
+
             var r = confirm("¿Asignar este Transportista ?");
             if (r == true) {
                 var myForm = document.getElementById('select_transportista');
@@ -66,13 +74,18 @@
                     contentType: false,
                     type: 'POST',
                     success: function(data){
-                    alert(data.resultado)
-                }
-                       });
+                        document.getElementById("tabla_transportistas").style.display = "none";
+                        document.getElementById("resultado").innerHTML = data.resultado;
+                    }
+                });
             } else {
                 return;
             }
         }
+    }
+
+    function volver_transportistas(){
+
     }
 
 </script>

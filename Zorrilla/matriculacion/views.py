@@ -100,7 +100,7 @@ def crear_padre(request, opcion):
         familia.save()
         if (opcion=="Matriculacion"):
             print "Matriculando alumno"
-            new_Matriculacion = Matriculacion(alumno=alumno)
+            new_Matriculacion = Matriculacion(alumno=alumno, matriculado="No")
             new_Matriculacion.save()
             resultado = "Los pedidos de Matriculacion de " + str(padre.apellido) + "" + str(padre.nombre) + " y de " + str(alumno.apellido) + "" + str(alumno.nombre) + " han sido creados con exito."
             data = {
@@ -140,8 +140,12 @@ def form_transportista(request):
 #Traer todos los Transnportistas
 
 def todos_los_transportistas(request, dni_alumno):
-    print "es esta"
-    transportistas = Transportista.objects.all()
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    transportistas_ya_asignados = usa_Transporte.objects.filter(alumno=alumno)
+    lista = []
+    for a in transportistas_ya_asignados:
+        lista.append(a.transportista.dni)
+    transportistas = Transportista.objects.exclude(dni__in=lista)
     return render(request, 'Transportista/todos_los_transportistas.html',{'transportistas':transportistas, 'dni_alumno':dni_alumno})
 
 #Funcion que crea el Transportista
@@ -183,8 +187,12 @@ def datos_padre(request, dni_padre):
 
 
 def todos_los_padres(request, dni_alumno):
-    print (dni_alumno)
-    padre = Padre_madre.objects.all()
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    padres_ya_asignados = Familia.objects.filter(alumno=alumno)
+    lista = []
+    for a in padres_ya_asignados:
+        lista.append(a.padre_madre.dni)
+    padre = Padre_madre.objects.exclude(dni__in=lista)
     return render(request,'Padre_madre/todos_los_padres.html', {'todos_los_padres':padre, 'dni_alumno':dni_alumno})
 
 
