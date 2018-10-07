@@ -89,9 +89,20 @@ class Autorizado(Persona):
 
 
 class Matriculacion(models.Model):
+
+    SI = 'Si'
+    NO = 'No'
+    RE = 'Re'
+
+    MATRICULACION_CHOICES = (
+        (SI , 'Si'),
+        (NO , 'No'),
+        (RE, 'Re')
+    )
+
     alumno = models.ForeignKey(Alumno, null=False)
     fecha_matriculacion = models.DateTimeField('Fecha Matriculacion', auto_now_add=True)
-    matriculado = models.BooleanField('Esta matriculado o no', default=False)
+    matriculado = models.CharField('Estado', max_length=2, choices=MATRICULACION_CHOICES)
 
     def __str__(self):
         return 'El alumno: {} tiene un estado de matriculacion {}'.format(self.alumno.nombre, self.matriculado)

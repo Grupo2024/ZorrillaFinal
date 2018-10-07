@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^login/', login, name="login"),
     url(r'^recuperar/userDocente/', userDocente, name="userDocente"),
     url(r'^get_Secciones/(\d+)/', get_Secciones, name="get_Secciones"),
+    url(r'^re_matricular/(\d+)/', re_matricular, name="re_matricular"),
     url(r'^logout_me_out', logout_me_out, name="logout_me_out"),
     url(r'^pedidos', aceptar_matriculaciones, name="pedidos"),
     url(r'^form_transportista', form_transportista, name="form_transportista"),

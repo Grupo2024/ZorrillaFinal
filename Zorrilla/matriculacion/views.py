@@ -202,12 +202,23 @@ def get_Secciones(request, dni_alumno):
     transportistas = usa_Transporte.objects.filter(alumno=alumno)
     print (familiares)
     cursos = Curso.objects.all()
-    return render(request, 'select_curso.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas})
+    return render(request, 'matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas})
+
+def re_matricular(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    familiares = Familia.objects.filter(alumno=alumno).order_by("padre_madre__apellido", "padre_madre__nombre")
+    transportistas = usa_Transporte.objects.filter(alumno=alumno)
+    curso2 = alumno_Curso.objects.get(alumno=alumno)
+    curso = curso2.curso
+    cursos = Curso.objects.all()
+    recomendacion = Curso.objects.get(aNo=curso.aNo+1)
+    return render(request, 're_matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas, 'curso':curso, 'recomendacion':recomendacion})
 
 @user_passes_test(check_Secretaria)
 def aceptar_matriculaciones(request):
-    matriculaciones = Matriculacion.objects.filter(matriculado=False)
-    return render(request, 'pedidos.html', {'matriculaciones':matriculaciones})
+    matriculaciones = Matriculacion.objects.filter(matriculado="No")
+    re_matriculaciones = Matriculacion.objects.filter(matriculado = "Re")
+    return render(request, 'pedidos.html', {'matriculaciones':matriculaciones, 're_matricular':re_matriculaciones})
 
 @user_passes_test(check_Secretaria)
 def aceptar_matriculacion(request):
@@ -221,7 +232,7 @@ def aceptar_matriculacion(request):
         eleccion = alumno_Curso(alumno=alumno, curso=curso)
         eleccion.save()
         matriculacion = Matriculacion.objects.get(alumno=alumno)
-        matriculacion.matriculado = True
+        matriculacion.matriculado = "Si"
         matriculacion.save()
         data = {
             'resultado': "El alumno " + str(alumno.apellido) + "" + str(alumno.nombre) + " asiste al curso " + str(eleccion.curso),
