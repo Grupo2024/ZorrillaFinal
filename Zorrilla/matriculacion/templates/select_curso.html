@@ -13,7 +13,8 @@
             <div class="modal-body">
                 <h4><u>Curso</u></h4>
                 <span class="badge badge-secondary">Cursos:</span>
-                <select id="curso">
+                <select id="curso" onchange="selectCurso(event)">
+                    <option value=0>----</option>
                     {% for curso in cursos %}
                         <option value={{curso.id}}>{{curso}}</option>
                     {% endfor %}
@@ -26,10 +27,10 @@
                     <li><a href="{% url 'datos_padre' familiar.padre_madre.dni %}">{{familiar.padre_madre.nombre}} {{familiar.padre_madre.apellido}}</a></li>
                 {% endfor %}
                 </ul>
-                <a href="{% url 'cargar_padre' alumno.dni %}">Cargar Padre</a>
-                <a href="#">Asignar Padre</a>
-                <br>
-                <br>
+                <div id="new_padre">
+                    <a onclick="traer_padres('{% url 'todos_los_padres' alumno.dni %}')">Asignar Padre.</a>
+                </div>
+                
                 <h4><u>Transporte</u></h4>
                 {% if transportistas|length == 0 %}
                     <span class="badge badge-secondary">Opciones:</span>
@@ -40,7 +41,7 @@
                     <br>
                     <br>
                     <div id="new_transporte">
-                        <a onclick="traer_transportistas({{alumno.dni}})">Asignar Transportista.</a>
+                        <a onclick="traer_transportistas('{% url 'todos_los_transportistas' alumno.dni %}')">Asignar Transportista.</a>
                     </div>
                 {% else %}
                 <ul>
@@ -48,7 +49,7 @@
                     <li><a href="{% url 'datos_transportista' transportista.transportista.dni %}">{{transportista.transportista.apellido}} {{transportista.transportista.nombre}}</a></li>
                 {% endfor %}
                     <br>
-                    <li><a onclick="traer_transportistas({{alumno.dni}})"><u>Asignar otro Transportista</u></a></li>
+                    <li><a onclick="traer_transportistas('{% url 'todos_los_transportistas' alumno.dni %}')"><u>Asignar otro Transportista</u></a></li>
                 </ul>
 
                 {% endif %}
@@ -66,7 +67,7 @@
                 <a onclick="traer_transportistas()">Elegir Obra Social</a>
 
                 <!-- Inputs con los datos elegidos para el alumno -->
-                <input name="selected_curso" id="selected_curso" value=1 type="hidden">
+                <input name="select_curso" id="select_curso" value=0  type="hidden">
                 <input name="dni_alumno" id="dni_alumno" type="hidden" value="{{alumno.dni}}">
 
             </div>
@@ -74,7 +75,15 @@
         <!-- Modal footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="matricular()">Matricular</button>
+                <button type="button" class="btn btn-success" onclick="matricular()">Matricular</button>
             </div>
     </div>
 </div>
+
+<script>
+
+    function selectCurso(e) {
+        document.getElementById("select_curso").value = e.target.value
+    }
+
+</script>

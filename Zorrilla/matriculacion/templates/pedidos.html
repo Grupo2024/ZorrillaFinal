@@ -51,7 +51,6 @@
 
 {% endif %}
 
-<div id="snackbar"><span id="span_result"></span></div>
 
 <div class="modal fade" id="modal_cursos">
     <div class="modal-dialog modal-sm">
@@ -60,51 +59,16 @@
     </div>
 </div>
 
-<div class="modal fade" id="select_tranportista">
+<div class="modal fade" id="todos_los_padres">
     <div class="modal-dialog modal-lg">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <span>Elegir Transportista</span>
-                </div>
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Dni</th>
-                                <th>Opcion</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for t in transportistas %}
-                            <tr>
-                                <td>{{t.nombre}}</td>
-                                <td>{{t.apellido}}</td>
-                                <td>{{t.dni}}</td>
-                                <td><input type="radio" id={{t.dni}} name="eleccion" value={{t.dni}} /></td>
-                            </tr>
-                            {% endfor %}
-                            <form id="select_transportista" method="post">
-                                {% csrf_token %}
-                                <input name="alumno_dni" id="alumno_dni" value=0 type="hidden">
-                                <input name="dni_transportista" id="dni_transportista" value=0 type="hidden">
-                            </form>
-                        </tbody>
-                    </table>
+        <div id="datos_padre">
+        </div>
+    </div>
+</div>
 
-                    <a href="{% url 'form_transportista' %}">Crear Tranportista</a>
-
-                </div>
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="select_transportista()">Continuar</button>
-                </div>
-            </div>
+<div class="modal fade" id="todos_los_transportistas">
+    <div class="modal-dialog modal-lg">
+        <div id="datos_transportista">
         </div>
     </div>
 </div>
@@ -138,16 +102,7 @@
 
 <script>
 
-    $( document ).ready(function() {
-        document.getElementById("new_transporte").style.display = "block";
-        //$("#datos_modal").style.display = "none";
 
-    });
-    
-    $('input[name=eleccion]').click(function() {
-        var aux = $('input[name=eleccion]:checked').val();
-        document.getElementById("dni_transportista").value = aux
-    });
 
     function use_transporte(e) {
         var aux = document.getElementById("transporte").value
@@ -199,33 +154,62 @@
     }
 
     function matricular(){
-        var myForm = document.getElementById('form_for_curso');
-        formData = new FormData(myForm);
-        var elem = document.getElementById("myBar");
-        elem.style.display = "block";
-        var resultado = document.getElementById("resultado");
-        resultado.innerHTML = "";
-        var y = document.getElementById("volver");
-        y.style.display = "none";
-        $('#Modal_resultado').modal('show');
-        $.ajax({
-            url: '{% url 'aceptar_matriculacion' %}',
-            data: formData,
-            processData: false,
-            contentType: false,
-            type: 'POST',
-            success: function(data){
-            footer(data.resultado);
-            y.style.display = "block";
+        var curso_elegido = document.getElementById('select_curso');
+        if (curso_elegido.value == 0){
+            alert("Selecciona un Curso");
+        } else {
+            var myForm = document.getElementById('form_for_curso');
+            formData = new FormData(myForm);
+            var elem = document.getElementById("myBar");
+            elem.style.display = "block";
+            var resultado = document.getElementById("resultado");
+            resultado.innerHTML = "";
+            var y = document.getElementById("volver");
+            y.style.display = "none";
+            $('#Modal_resultado').modal('show');
+            $.ajax({
+                url: '{% url 'aceptar_matriculacion' %}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    $('#modal_cursos').modal('hide');
+                    footer(data.resultado);
+                    y.style.display = "block";
+                }
+            });
         }
-               });
     }
 
-    function traer_transportistas(dni_alumno){
-        console.log(dni_alumno);
-        document.getElementById('alumno_dni').value = dni_alumno;
-        $('#modal_cursos').modal('hide');
-        $('#select_tranportista').modal('show');
+    function traer_transportistas(url){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_transportista").html(data);
+            $('#modal_cursos').modal('hide');
+            $('#todos_los_transportistas').modal('show');
+        });
+    }
+
+    function traer_padres(url){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_padre").html(data);
+            $('#modal_cursos').modal('hide');
+            $('#todos_los_padres').modal('show');
+        });
     }
 
     function curso(e) {
@@ -238,27 +222,8 @@
         aux.submit();
     }
 
-    function select_transportista(){
-        var r = confirm("¿Asignar este Transportista ?");
-        if (r == true) {
-            var myForm = document.getElementById('select_transportista');
-            formData = new FormData(myForm);
-            $.ajax({
-                url: '{% url 'asignar_transportista' %}',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                alert(data.resultado)
-            }
-                   });
-        } else {
-            return;
-        }
+ function mandar_padre(){     
     }
-
-
 </script>
 
 {% endblock body %}

@@ -1,0 +1,78 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <span>Elegir Transportista</span>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Dni</th>
+                        <th>Opcion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in transportistas %}
+                    <tr>
+                        <td>{{t.nombre}}</td>
+                        <td>{{t.apellido}}</td>
+                        <td>{{t.dni}}</td>
+                        <td><input type="radio" id={{t.dni}} name="transporte" value={{t.dni}}></td>
+                    </tr>
+                    {% endfor %}
+                    <form id="select_transportista" method="post">
+                        {% csrf_token %}
+                        <input name="alumno_dni_transporte" id="alumno_dni_transporte" value={{dni_alumno}}>
+                        <input name="dni_transportista" id="dni_transportista" value=0>
+                    </form>
+                </tbody>
+            </table>
+
+            <a href="{% url 'form_transportista' %}">Crear Tranportista</a>
+
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-success" onclick="select_transportista()">Continuar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+     $('input[name=transporte]').click(function() {
+        var aux = $('input[name=transporte]:checked').val();
+        document.getElementById("dni_transportista").value = aux
+    });
+
+    function select_transportista(){
+        var aux = document.getElementById("dni_transportista").value;
+        if (aux == 0){
+            alert("Eliga un Transportista");
+        } else {
+            var r = confirm("¿Asignar este Transportista ?");
+            if (r == true) {
+                var myForm = document.getElementById('select_transportista');
+                formData = new FormData(myForm);
+                $.ajax({
+                    url: '{% url 'asignar_transportista' %}',
+                    data : formData,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function(data){
+                    alert(data.resultado)
+                }
+                       });
+            } else {
+                return;
+            }
+        }
+    }
+
+</script>
