@@ -3,10 +3,17 @@
 
         <!-- Modal Header -->
         <div class="modal-header">
-            <span>Elegir Padre.</span>
+            <span>Asignar Padre.</span>
         </div>
         <!-- Modal body -->
         <div class="modal-body">
+            <input type="text"placeholder="Padre que desea buscar" id="myInput" onkeyup="buscar_padre()" size="5">
+            <select id="filter_by">
+                <option value=0>Nombre</option>
+                <option value=1>Apellido</option>
+                <option value=2>Dni</option>
+            </select>
+            <br>
             <table class="table table-bordered" id="tabla_padres">
                 <thead>
                     <tr>
@@ -69,6 +76,26 @@
                 document.getElementById("resultado_padres").innerHTML = data.resultado;
             }
         });     
+    }
+
+    function buscar_padre() {
+        var e = document.getElementById("filter_by");
+        var strUser = e.options[e.selectedIndex].value;
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("tabla_padres");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[strUser];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
     }
 
 

@@ -2,10 +2,18 @@
     <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
-            <span>Elegir Transportista</span>
+            <span>Asignar Transportista</span>
         </div>
         <!-- Modal body -->
         <div class="modal-body">
+
+            <input type="text"placeholder="Transportista que desea buscar" id="myInput" onkeyup="buscar_transportista()" size="5">
+            <select id="filter_by">
+                <option value=0>Nombre</option>
+                <option value=1>Apellido</option>
+                <option value=2>Dni</option>
+            </select>
+            <br>
             <table class="table table-bordered" id="tabla_transportistas">
                 <thead>
                     <tr>
@@ -50,7 +58,7 @@
 
 <script>
 
-     $('input[name=transporte]').click(function() {
+    $('input[name=transporte]').click(function() {
         var aux = $('input[name=transporte]:checked').val();
         document.getElementById("dni_transportista").value = aux
     });
@@ -74,18 +82,34 @@
                     contentType: false,
                     type: 'POST',
                     success: function(data){
-                        document.getElementById("tabla_transportistas").style.display = "none";
-                        document.getElementById("resultado").innerHTML = data.resultado;
-                    }
-                });
+                    document.getElementById("tabla_transportistas").style.display = "none";
+                    document.getElementById("resultado").innerHTML = data.resultado;
+                }
+                       });
             } else {
                 return;
             }
         }
     }
 
-    function volver_transportistas(){
-
+    function buscar_transportista() {
+        var e = document.getElementById("filter_by");
+        var strUser = e.options[e.selectedIndex].value;
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("tabla_transportistas");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[strUser];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
     }
 
 </script>
