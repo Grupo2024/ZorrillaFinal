@@ -1,6 +1,6 @@
 <div class="modal-dialog">
     <div class="modal-content">
-
+        <div id="padress">
         <!-- Modal Header -->
         <div class="modal-header">
             <span>Asignar Padre.</span>
@@ -34,10 +34,9 @@
                     {% endfor %}
                 </tbody>
             </table>
-
-            <span id="resultado_padres"></span>
-
+            </div>
         </div>
+        <span id="resultado_padres"></span>
         <!-- Modal footer -->
         <div class="modal-footer">
             <form id="select_padre" method="post">
@@ -72,7 +71,7 @@
             contentType: false,
             type: 'POST',
             success: function(data){
-                document.getElementById("tabla_padres").style.display = "none";
+                document.getElementById("padress").style.display = "none";
                 document.getElementById("resultado_padres").innerHTML = data.resultado;
             }
         });     

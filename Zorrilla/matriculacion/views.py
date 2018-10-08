@@ -252,7 +252,8 @@ def aceptar_matriculacion(request):
 @login_required
 def alumno(request, id_alumno):
     alumno = Alumno.objects.get(dni=id_alumno)
-    return render(request, 'perfilAlumno.html', {'alumno':alumno})
+    familiares = Familia.objects.filter(alumno=alumno)
+    return render(request, 'perfilAlumno.html', {'alumno':alumno, 'familiares':familiares})
 
 def asignar_transportista(request):
     if request.method == 'POST':

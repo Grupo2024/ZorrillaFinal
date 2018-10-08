@@ -27,7 +27,13 @@
       <h4 class="card-title">Datos de contacto</h4>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">Telefono fijo: {{alumno.telefono_casa}}</li>
-          <li class="list-group-item">Padres: {{alumno.padres}}</li>
+          <li class="list-group-item">Padres:
+            <ul>
+                {% for familiar in familiares %}
+                <li>{{familiar.padre_madre.apellido}} {{familiar.padre_madre.nombre}}</li>
+                {% endfor %}
+            </ul>
+            </li>
           <li class="list-group-item">Telefono del padre: {{alumno.telefono_padre}}</li>
           <li class="list-group-item">Telefono de familiar: {{alumno.telefono_familiar}}</li>
           <li class="list-group-item">Telefono de vecino: {{alumno.telefono_vecino}}</li>
