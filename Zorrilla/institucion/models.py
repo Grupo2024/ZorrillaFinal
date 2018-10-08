@@ -13,8 +13,8 @@ from django.contrib.auth.models import User
 class clave_Docente(models.Model):
     clave_logIn = models.CharField(null=False, max_length=10)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-    email_docente = models.EmailField(null=False)
-    dni_docente = models.IntegerField(null=False)
+    email_docente = models.EmailField(null=False, unique=True)
+    dni_docente = models.IntegerField(null=False, unique=True)
     ingresado = models.BooleanField(default=False)#False hasta que se ingrese el docente al sistema.
     
     def change(self):
@@ -27,8 +27,6 @@ class clave_Docente(models.Model):
             self.save()
             return self.ingresado
 
-
-# Create your models here.
 
 class Trabajador(models.Model):
     
@@ -46,7 +44,7 @@ class Trabajador(models.Model):
     lugar_nacimiento_t = models.CharField('Lugar de Nacimiento', max_length=150, blank=True)
     fecha_nacimiento_t = models.DateField('Fecha Nacimiento', blank=True)
     domicilio_t = models.CharField('Domicilio del trabajador', max_length=150, blank=True)
-    email_t = models.EmailField('Email del trabajador', max_length=70, blank=True)
+    email_t = models.EmailField('Email del trabajador', max_length=70, null=False)
     sexo_t = models.CharField('Sexo', max_length=6, choices=GENERO_CHOICES)
     #Datos estandares del trabajador, estos van a ser heredados x cualquier profesor, director o secretaria
     #foto = models.ImageField(upload_to=get_image_path, blank=True, null=True)
