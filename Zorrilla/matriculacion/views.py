@@ -243,7 +243,7 @@ def aceptar_matriculacion(request):
         matriculacion.matriculado = "Si"
         matriculacion.save()
         data = {
-            'resultado': "El alumno " + str(alumno.apellido) + "" + str(alumno.nombre) + " asiste al curso " + str(eleccion.curso),
+            'resultado': "El alumno " + str(alumno.apellido) + " " + str(alumno.nombre) + " asiste al curso " + str(eleccion.curso),
             'error': False
         }
         return JsonResponse(data, safe=True)

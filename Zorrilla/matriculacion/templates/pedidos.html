@@ -178,27 +178,31 @@
         if (curso_elegido.value == 0){
             alert("Selecciona un Curso");
         } else {
-            var myForm = document.getElementById('form_for_curso');
-            formData = new FormData(myForm);
-            var elem = document.getElementById("myBar");
-            elem.style.display = "block";
-            var resultado = document.getElementById("resultado");
-            resultado.innerHTML = "";
-            var y = document.getElementById("volver");
-            y.style.display = "none";
-            $('#Modal_resultado').modal('show');
-            $.ajax({
-                url: '{% url 'aceptar_matriculacion' %}',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    $('#modal_cursos').modal('hide');
-                    footer(data.resultado);
-                    y.style.display = "block";
-                }
-            });
+            if (confirm("¿ Matricular al Alumno ?")) {
+                var myForm = document.getElementById('form_for_curso');
+                formData = new FormData(myForm);
+                var elem = document.getElementById("myBar");
+                elem.style.display = "block";
+                var resultado = document.getElementById("resultado");
+                resultado.innerHTML = "";
+                var y = document.getElementById("volver");
+                y.style.display = "none";
+                $('#Modal_resultado').modal('show');
+                $.ajax({
+                    url: '{% url 'aceptar_matriculacion' %}',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function(data){
+                        $('#modal_cursos').modal('hide');
+                        footer(data.resultado);
+                        y.style.display = "block";
+                    }
+                });
+            } else {
+                return;
+            }
         }
     }
 
