@@ -151,7 +151,7 @@ class Curso(models.Model):
     def pasar(self):
         siguiente = Curso.objects.get(aNo=self.aNo+1)
         opcion = str(siguiente.aNo) + "-" + str(siguiente.seccion)
-        print siguiente
+        print (siguiente)
         return "nada"
 
     def __str__(self):

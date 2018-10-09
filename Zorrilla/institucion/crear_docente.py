@@ -20,7 +20,7 @@ def crear_profesor(request):
             if form.is_valid():
                 dni_t = form.cleaned_data['dni_t']
                 email_t = form.cleaned_data['email_t']
-                print email_t
+                print (email_t)
                 try:
                     #Actualizamos la Clave.
                     clave_correcta = clave_Docente.objects.get(clave_logIn=clave, email_docente=email_t, dni_docente=dni_t)

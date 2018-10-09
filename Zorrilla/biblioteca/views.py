@@ -175,11 +175,11 @@ def all_the_books(request):
 
 def filtered_books(request):
     cantidad = request.POST['cantidad']
-    print cantidad
+    print (cantidad)
     genero = request.POST['ordenado']
-    print genero
+    print (genero)
     sentido = request.POST['sentido']
-    print sentido
+    print (sentido)
     documents = Document.objects.filter(habilitado="Habilitado").order_by(str(sentido) + str(genero))[:cantidad]
     form = DocumentForm()
     return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
