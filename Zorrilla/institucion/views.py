@@ -64,13 +64,17 @@ def cursos1(request):
 def cursos2(request, turno):
     print (turno)
     if turno == "Maniana":
-        turno = False
+        aux = False
     else:
-        turno = True
-    curso = Curso.objects.filter(hora=turno).order_by('aNo')
+        aux = True
+    curso = Curso.objects.filter(hora=aux).order_by('aNo')
     for a in curso:
         a.new_turno()
-    return render(request, 'templates_cursos/cursos2.html', {'todos_los_cursos':curso}, {'turno':turno} )
+
+    data_curso = {
+        'turno':turno
+    }
+    return render(request, 'templates_cursos/cursos2.html', {'todos_los_cursos':curso, 'turno':data_curso})
 
 @login_required
 def cursos3(request, id_curso):

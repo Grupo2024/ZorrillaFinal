@@ -171,6 +171,7 @@ def crear_padre(request, opcion):
 
 #Funcion que Crea al Transportista.
 def crear_transportista(request):
+    print "crear transportista"
     if request.method == 'POST':
         form_transportista = TransportistaForm(request.POST)
         if form_transportista.is_valid():
@@ -179,14 +180,13 @@ def crear_transportista(request):
             apellido = form_transportista.cleaned_data['apellido']
             data = {
                 'error':False,
-                'resultado': 'El transportista ' + str(nombre) + '' + str(apellido) + ' ha sido cargado con exito.'
+                'resultado': 'El transportista ' + str(nombre) + ' ' + str(apellido) + ' ha sido cargado con exito.'
             }
             return JsonResponse(data)
         else:
-            aux = str(form_transportista.errors)
             data = {
                 'error':True,
-                'resultado':aux
+                'resultado':str(form_transportista.errors)
             }
             return JsonResponse(data)
     return HttpResponse("Solo podes acceder por Post")

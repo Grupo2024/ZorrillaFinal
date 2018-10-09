@@ -152,12 +152,14 @@
                     <span id="resultado"></span>
                 </div>
                 <div class="modal-footer" id="footer">
-                    <a type="button" class="btn btn-secondary" href="{% url 'pedidos' %}" id="continuar">Continuar</a>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="close_modal()" id="volver">Volver</button>
+                    <button type="button" class="btn btn-secondary" onclick="volver_pedidos()" id="continuar">Continuar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <form id="pedidos" action="{% url 'traer_pedidos' %}"></form>
 
     <script>
         function sleep() {
@@ -183,6 +185,11 @@
             resultado.innerHTML = a;
             return a
 
+        }
+
+        function volver_pedidos(){
+            var aux_form = document.getElementById("pedidos");
+            aux_form.submit();
         }
 
         function matricular_Transportista(){
@@ -216,10 +223,6 @@
                     }
                 }
             });
-        }
-
-        function close_modal(){
-            $('#myModal').modal('hide');
         }
 
     </script>
