@@ -47,7 +47,7 @@ class Obra_Social(models.Model):
     nombre = models.CharField('Nombre Obra Social', max_length=40, null=True)
 
     def __str__(self):
-        return 'Obra Social: {}'.format(self.obra_social_nombre)
+        return 'Obra Social: {}'.format(self.nombre)
 
 
 class Padre_madre(Persona):

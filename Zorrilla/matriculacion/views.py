@@ -287,22 +287,21 @@ def datos_padre(request, dni_padre):
 @login_required
 def datos_alumno(request, id_alumno):
     alumno = Alumno.objects.get(dni=id_alumno)
-    try:
-        matriculado = Matriculacion.objects.get(alumno=alumno, matriculado="Si")
-        alumno.matriculado = "Si"
-    except Matriculacion.DoesNotExist:
+    transportistas = usa_Transporte.objects.filter(alumno=alumno)
+    if not transportistas:
+        alumno.transportista = "No"
+    else:
+        alumno.transportista = "Si"
+    matriculado = Matriculacion.objects.get(alumno=alumno, matriculado="Si")
+    if not transportistas:
         alumno.matriculado = "No"
-    try:
-        obra_social = usa_Obra_Social.objects.get(alumno=alumno)
-        alumno.obra_social = obra_social.obra_social.nombre
-    except usa_Obra_Social.DoesNotExist:
+    else:
+        alumno.matriculado = "Si"
+    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno)
+    if not obras_sociales:
         alumno.obra_social = "No"
-    try:
-        transporte = usa_Transporte.objects.get(alumno=alumno)
-        alumno.transporte = "Si"
-    except usa_Transporte.DoesNotExist:
-        alumno.transporte = "No"
-    print (alumno.transporte)
+    else:
+        alumno.obra_social = "Si"
     familiares = Familia.objects.filter(alumno=alumno)
     return render(request, 'perfilAlumno.html', {'alumno':alumno, 'familiares':familiares})
 
