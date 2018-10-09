@@ -12,7 +12,7 @@
     <div class="row">
       <div class="">
         <!-- Buscador -->
-        <input style="margin-left: -12%;" type="text" placeholder=" Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
+        <input style="margin-left: 4%;" type="text" placeholder=" Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
         <!-- Dropdown filter -->
         <button type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by">Buscar por</button>
         <div class="dropdown-menu" id="filter_by">
@@ -25,7 +25,7 @@
         <i class="fa fa-filter" aria-hidden="true"></i> Filtrar
 
         {% if user.is_authenticated %}
-            <button style="margin-left: 115%; margin-top: -5%" class="btn btn-success" data-toggle="modal" data-target="#myModal">Añadir libro</button>
+            <button style="margin-left: 144%; margin-top: -5%" class="btn btn-success" data-toggle="modal" data-target="#myModal">Añadir libro</button>
         {% endif %}
 
         {% if request.user|has_group:"Director" %}
@@ -37,7 +37,7 @@
 
   <div class="container">
       <div class="row">
-          <div style="margin-left: -10%" class="col-12">
+          <div style="margin-left: 0%" class="col-12">
           <h4></h4>
       <table class="table table-sm table-hover">
         <thead>
@@ -71,7 +71,7 @@
               <td><button class="btn btn-primary fa fa-history" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book"></button></td>
               <td><button class="btn btn-primary" onclick="deshabilitar_libro('{% url 'cambiar_estado_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf085;</i></button></td>
             {% endif %}
-            <td><a class="btn btn-primary text-white" href="{{ doc.document.url }}">Abrir</a></td>
+            <td><a class="btn btn-primary text-white" href="{{ doc.documento.url }}">Abrir</a></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -152,30 +152,34 @@
           <form id="filtros" action="{% url 'filtered_books' %}" method="post">
               {% csrf_token %}
         <div class="modal-body">
-          <p>Ordenar Por:<input name="ordenado" value="titulo" id="ordenado" size="5"></p>
-        <select id="filter_by2" onchange="set_filter(event)">
-            <option value="titulo">Titulo</option>
-            <option value="fecha">Fecha</option>
-            <option value="autor">Autor</option>
-        </select>
-            <p>Cantidad:<input name="cantidad" value=5 id="cantidad" size="5"></p>
-        <select id="select_cantidad" onchange="set_cantidad(event)">
-            <option value=5>5</option>
-            <option value=10>10</option>
-            <option value=15>15</option>
-            <option value=25>25</option>
-            <option value=50>50</option>
-        </select>
-            <p>Sentido:<input name="input_sentido" value="Ascendente" id="input_sentido" size="7"></p>
-        <select id="select_sentido" onchange="set_sentido(event)">
-            <option value="Ascendente">Ascendente</option>
-            <option value="Descendente">Descendente</option>
-        </select>
-              <input type="hidden" name="sentido" id="sentido">
+
+      <!-- Dropdown filter orden -->
+        <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by2">Ordenar Por:</button>
+        <div class="dropdown-menu" id="filter_by2">
+            <option class="dropdown-item" value=0>Titulo</option>
+            <option class="dropdown-item" value=1>Descripción</option>
+            <option class="dropdown-item" value=2>Fecha</option>
+        </div>
+
+         <!-- Dropdown filter cantidad -->
+        <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by3">Cantidad:</button>
+        <div class="dropdown-menu" id="filter_by3">
+            <option class="dropdown-item" value=5>5</option>
+            <option class="dropdown-item" value=10>10</option>
+            <option class="dropdown-item" value=15>15</option>
+            <option class="dropdown-item" value=25>25</option>
+            <option class="dropdown-item" value=50>50</option>
+        </div>
+
+        <!-- Dropdown filter sentido -->
+        <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by3">Sentido:</button>
+        <div class="dropdown-menu" id="filter_by3">
+            <option class="dropdown-item" value='Ascendente'>Ascendente</option>
+            <option class="dropdown-item" value='Descendente'>Descendente</option>
         </div>
         
         <!-- Modal footer -->
-        <div class="modal-footer">
+        <div style="margin-top: 5%" class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
             <button type="submit" class="btn btn-success">Filtrar</button>
         </div>
