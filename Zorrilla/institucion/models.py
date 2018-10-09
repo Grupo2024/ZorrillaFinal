@@ -13,8 +13,8 @@ from django.contrib.auth.models import User
 class clave_Docente(models.Model):
     clave_logIn = models.CharField(null=False, max_length=10)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-    email_docente = models.EmailField(null=False, unique=True)
-    dni_docente = models.IntegerField(null=False, unique=True)
+    email_docente = models.EmailField(null=False)
+    dni_docente = models.IntegerField(null=False)
     ingresado = models.BooleanField(default=False)#False hasta que se ingrese el docente al sistema.
     
     def change(self):
@@ -28,8 +28,7 @@ class clave_Docente(models.Model):
             return self.ingresado
 
 
-    def __str__(self):
-        return'Clave {} para {}'.format(self.clave_logIn, self.dni_docente)
+# Create your models here.
 
 class Trabajador(models.Model):
     
@@ -41,14 +40,17 @@ class Trabajador(models.Model):
         (MU , 'Mujer'),
     )
     
+    #Datos estandares del trabajador, estos van a ser heredados x cualquier profesor, director o secretaria
     nombre_t = models.CharField('Nombre del trabajador', max_length=40)
     apellido_t = models.CharField('Apellido del trabajador', max_length=40)
     dni_t = models.IntegerField('Dni del trabajador', primary_key=True)
     lugar_nacimiento_t = models.CharField('Lugar de Nacimiento', max_length=150, blank=True)
     fecha_nacimiento_t = models.DateField('Fecha Nacimiento', blank=True)
     domicilio_t = models.CharField('Domicilio del trabajador', max_length=150, blank=True)
-    email_t = models.EmailField('Email del trabajador', max_length=70, null=False)
+    email_t = models.EmailField('Email del trabajador', max_length=70, blank=True)
     sexo_t = models.CharField('Sexo', max_length=6, choices=GENERO_CHOICES)
+    #foto = models.ImageField(upload_to=get_image_path, blank=True, null=True)
+    #BUSCAR LO DE FOTOS
     telefono_particular = models.IntegerField('Telefono Personal del Trabajador')
     telefono_laboral = models.IntegerField('Telefono Laboral del Trabajador')
     telefono_familiar = models.IntegerField('Telefono de algun Familiar del Trabajador')
@@ -56,6 +58,10 @@ class Trabajador(models.Model):
     fecha_inicio_actividad = models.DateField('Fecha de Inicio de Clases en el Colegio', auto_now_add=True)
     antecedentes_laborales = models.TextField('Datos de Trabajos Previos', max_length=300)
     estudios_cursados = models.TextField('Estudios del Trabajador', max_length=300)
+
+    #Nuevos datos que faltaban:
+    cargo = models.CharField('Cargo que posee en esta escuela', max_length=150)
+    
 
     def __str__(self):
         return 'Trabajador: {} {}| dni: {}| sexo: {}'.format(self.nombre_t,
@@ -114,11 +120,11 @@ class Secretaria(Trabajador):
 
 class Curso(models.Model):
     hora = models.BooleanField('Clickea para seleccionar turno "Tarde"', null=False)
-    aNo = models.IntegerField('1,2,3,4...', null=False)
+    aNo = models.CharField('1ero, 2do, etc...', max_length=5)
     seccion = models.BooleanField('True = B o D, dependiendo de si es turno mañana o tarde', null=False)
 
     def que_turno(self):
-        aux = 'Maniana'
+        aux = 'Mañana'
         if (self.hora == True):
             aux = 'Tarde'
             return aux
@@ -147,12 +153,6 @@ class Curso(models.Model):
         else:
             self.turno = "Mañana"
         return self.turno
-
-    def pasar(self):
-        siguiente = Curso.objects.get(aNo=self.aNo+1)
-        opcion = str(siguiente.aNo) + "-" + str(siguiente.seccion)
-        print siguiente
-        return "nada"
 
     def __str__(self):
         return '{}-{} {}'.format(self.aNo, self.que_seccion() ,self.que_turno())
