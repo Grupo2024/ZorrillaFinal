@@ -136,6 +136,7 @@
             var myForm = document.getElementById('GetDataForPassword');
             formData = new FormData(myForm);
             var elem = document.getElementById("myBar");
+             elem.style.width = 0;
             elem.style.display = "block";
             var resultado = document.getElementById("resultado");
             resultado.innerHTML = "";
@@ -145,7 +146,7 @@
             y.style.display = "none";
             $('#myModal').modal('show');
             $.ajax({
-                url: 'userDocente/',
+                url: '{% url 'cambiar_password' %}',
                 data: formData,
                 processData: false,
                 contentType: false,

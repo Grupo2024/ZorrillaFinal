@@ -54,7 +54,7 @@
                 <li class="list-group-item">Fecha de nacimiento: {{m.alumno.fecha_nacimiento}}</li>
             </ul>
             <br>
-            <a class="btn btn-outline-dark" href="{% url 'alumno' m.alumno.dni %}">Ver mas</a>
+            <a class="btn btn-outline-dark" href="{% url 'perfil_alumno' m.alumno.dni %}">Ver mas</a>
             <a onclick="traer_secciones('{% url 're_matricular' m.alumno.dni %}, {{m.alumno.dni}}')" class="btn btn-outline-dark">Re Matricular</a>
         </div>
         <div class="card-footer">

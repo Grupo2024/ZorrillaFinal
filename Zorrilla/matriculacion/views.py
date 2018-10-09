@@ -57,15 +57,59 @@ def daddy():
     else:
         return "Ya estan creados"
 
+"""
+===================
+Levantar Templates.
+===================
+"""
+
+def logIn(request):
+    return render(request, 'docentes_login.html')
+
 def index(request):
     daddy()
     return render(request, 'index.html')
 
+@login_required
+def logout_me_out(request):
+    auth.logout(request)
+    return redirect ('index')
+"""
+==============================¿
+Pasar ModelForm a un Template.
+==============================
+"""
+
+#Levantar Template para cargar Alumno y Padre del mismo.
 def formulario(request):
     alumno_form = AlumnoForm()
     padre_form = PadreForm()
     return render(request, 'formulario.html', {'alumno_form':alumno_form, 'padre_form':padre_form})
 
+#Levantar Template para cargar Transportista.
+def form_transportista(request):
+    form_transportista = TransportistaForm()
+    return render (request, 'Transportista/crear_transportista.html', {'form_transportista':form_transportista})
+
+#Levantar el Form para cambiar la password.
+def template_get_pass(request):
+    print "entra"
+    form = get_Password()
+    return render (request, 'new_password/my_info.html', {'form':form})
+
+#Levantar el Form para cargar al Padre.
+def cargar_padre(request, dni_alumno):
+    print (dni_alumno)
+    padre_form = PadreForm()
+    return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':dni_alumno})
+
+"""
+=========
+Creacion.
+=========
+"""
+
+#Funcion que Crea al Alumno.
 def crear_alumno(request):
     alumno_form = AlumnoForm(request.POST)
     if alumno_form.is_valid():
@@ -85,8 +129,9 @@ def crear_alumno(request):
         aux = alumno_form.errors
         return HttpResponse(str(aux))
 
+#Funcoin que crea al Padre.
 def crear_padre(request, opcion):
-    print opcion
+    print (opcion)
     padre_form = PadreForm(request.POST)
     dni_alumno = request.POST['dni_alumno']
     alumno = Alumno.objects.get(dni=dni_alumno)
@@ -124,31 +169,7 @@ def crear_padre(request, opcion):
         }
         return JsonResponse(data)
 
-
-"""
-=============
-TRANSPORTISTA
-=============
-"""
-
-#Levantar Template para cargar Transportista.
-
-def form_transportista(request):
-    form_transportista = TransportistaForm()
-    return render (request, 'Transportista/crear_transportista.html', {'form_transportista':form_transportista})
-
-#Traer todos los Transnportistas
-
-def todos_los_transportistas(request, dni_alumno):
-    alumno = Alumno.objects.get(dni=dni_alumno)
-    transportistas_ya_asignados = usa_Transporte.objects.filter(alumno=alumno)
-    lista = []
-    for a in transportistas_ya_asignados:
-        lista.append(a.transportista.dni)
-    transportistas = Transportista.objects.exclude(dni__in=lista)
-    return render(request, 'Transportista/todos_los_transportistas.html',{'transportistas':transportistas, 'dni_alumno':dni_alumno})
-
-#Funcion que crea el Transportista
+#Funcion que Crea al Transportista.
 def crear_transportista(request):
     if request.method == 'POST':
         form_transportista = TransportistaForm(request.POST)
@@ -170,91 +191,7 @@ def crear_transportista(request):
             return JsonResponse(data)
     return HttpResponse("Solo podes acceder por Post")
 
-#Funcion que Muestra los datos del Transportista elegido previamente
-def datos_transportista(request, dni_transportista):
-    transportista = Transportista.objects.get(dni=dni_transportista)
-    return render(request, 'Transportista/datos_transportista.html', {'transportista':transportista})
-
-
-def cargar_padre(request, dni_alumno):
-    print (dni_alumno)
-    padre_form = PadreForm()
-    return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':dni_alumno})
-
-def datos_padre(request, dni_padre):
-    padre = Padre_madre.objects.get(dni=dni_padre)
-    return render(request, 'Padre_madre/datos_padre.html', {'padre':padre})
-
-
-def todos_los_padres(request, dni_alumno):
-    alumno = Alumno.objects.get(dni=dni_alumno)
-    padres_ya_asignados = Familia.objects.filter(alumno=alumno)
-    lista = []
-    for a in padres_ya_asignados:
-        lista.append(a.padre_madre.dni)
-    padre = Padre_madre.objects.exclude(dni__in=lista)
-    return render(request,'Padre_madre/todos_los_padres.html', {'todos_los_padres':padre, 'dni_alumno':dni_alumno})
-
-
-def logIn(request):
-    return render(request, 'docentes_login.html')
-
-@login_required
-def logout_me_out(request):
-    auth.logout(request)
-    return redirect ('index')
-
-def get_Secciones(request, dni_alumno):
-    alumno = Alumno.objects.get(dni=dni_alumno)
-    familiares = Familia.objects.filter(alumno=alumno).order_by("padre_madre__apellido", "padre_madre__nombre")
-    transportistas = usa_Transporte.objects.filter(alumno=alumno)
-    print (familiares)
-    cursos = Curso.objects.all()
-    return render(request, 'matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas})
-
-def re_matricular(request, dni_alumno):
-    alumno = Alumno.objects.get(dni=dni_alumno)
-    familiares = Familia.objects.filter(alumno=alumno).order_by("padre_madre__apellido", "padre_madre__nombre")
-    transportistas = usa_Transporte.objects.filter(alumno=alumno)
-    curso2 = alumno_Curso.objects.get(alumno=alumno)
-    curso = curso2.curso
-    cursos = Curso.objects.all()
-    recomendacion = Curso.objects.get(aNo=curso.aNo+1)
-    return render(request, 're_matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas, 'curso':curso, 'recomendacion':recomendacion})
-
-@user_passes_test(check_Secretaria)
-def aceptar_matriculaciones(request):
-    matriculaciones = Matriculacion.objects.filter(matriculado="No")
-    re_matriculaciones = Matriculacion.objects.filter(matriculado = "Re")
-    return render(request, 'pedidos.html', {'matriculaciones':matriculaciones, 're_matricular':re_matriculaciones})
-
-@user_passes_test(check_Secretaria)
-def aceptar_matriculacion(request):
-    if request.method == 'POST':
-        dni_alumno = request.POST['dni_alumno']
-        print (dni_alumno)
-        selected_curso = request.POST['select_curso']
-        print (selected_curso)
-        curso = Curso.objects.get(id=selected_curso)
-        alumno = Alumno.objects.get(dni=dni_alumno)
-        eleccion = alumno_Curso(alumno=alumno, curso=curso)
-        eleccion.save()
-        matriculacion = Matriculacion.objects.get(alumno=alumno)
-        matriculacion.matriculado = "Si"
-        matriculacion.save()
-        data = {
-            'resultado': "El alumno " + str(alumno.apellido) + " " + str(alumno.nombre) + " asiste al curso " + str(eleccion.curso),
-            'error': False
-        }
-        return JsonResponse(data, safe=True)
-    return HttpResponse("Solo podes entrar por POST")
-
-@login_required
-def alumno(request, id_alumno):
-    alumno = Alumno.objects.get(dni=id_alumno)
-    familiares = Familia.objects.filter(alumno=alumno)
-    return render(request, 'perfilAlumno.html', {'alumno':alumno, 'familiares':familiares})
-
+#Funcion que crea una instancia de la Tabla Intermedia entre Alumno y Transportista.
 def asignar_transportista(request):
     if request.method == 'POST':
         dni = request.POST['dni_alumno']
@@ -269,8 +206,8 @@ def asignar_transportista(request):
         return JsonResponse(data)
     return HttpResponse("Solo podes acceder por Post")
 
+#Funcion que crea una instancia de la Tabla Intermedia entre Alumno y Padre/Madre.
 def asignar_padre(request):
-    print "llega"
     if request.method == 'POST':
         dni = request.POST['dni_alumno']
         dni_padre = request.POST['dni_padre']
@@ -284,34 +221,90 @@ def asignar_padre(request):
         return JsonResponse(data)
     return HttpResponse("Solo podes acceder por Post")
 
+"""
+========================================
+Traer Todas las instancias de un modelo.
+========================================
+"""
 
-def login(request):
-    if request.method == 'POST':
-        username = request.POST['user']
-        password = request.POST['pass']
-        print (username)
-        print (password)
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            auth.login(request, user)
-            data = {
-                'error': False
-            }
-        else:           
-            data = {
-            'estado': "nombre de usuario o contraseña no son correctos",
-            'error': True
-            }
-    return JsonResponse(data, safe=True)
+#Traer Todos los Transnportistas.
+def todos_los_transportistas(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    transportistas_ya_asignados = usa_Transporte.objects.filter(alumno=alumno)
+    lista = []
+    for a in transportistas_ya_asignados:
+        lista.append(a.transportista.dni)
+    transportistas = Transportista.objects.exclude(dni__in=lista)
+    return render(request, 'Transportista/todos_los_transportistas.html',{'transportistas':transportistas, 'dni_alumno':dni_alumno})
 
+#Traer Todos los Padres/Madre.
+def todos_los_padres(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    padres_ya_asignados = Familia.objects.filter(alumno=alumno)
+    lista = []
+    for a in padres_ya_asignados:
+        lista.append(a.padre_madre.dni)
+    padre = Padre_madre.objects.exclude(dni__in=lista)
+    return render(request,'Padre_madre/todos_los_padres.html', {'todos_los_padres':padre, 'dni_alumno':dni_alumno})
 
-#Function that render my_info Template with a form to get my new password.
-def template_get_pass(request):
-    form = get_Password()
-    return render (request, 'new_password/my_info.html', {'form':form})
+#Traer Todos las Matriculaciones con estado 'No' y 'Re'.
+@user_passes_test(check_Secretaria)
+def traer_pedidos(request):
+    matriculaciones = Matriculacion.objects.filter(matriculado="No")
+    re_matriculaciones = Matriculacion.objects.filter(matriculado = "Re")
+    return render(request, 'pedidos.html', {'matriculaciones':matriculaciones, 're_matricular':re_matriculaciones})
+
+"""
+===================================
+Mostrar los datos de una instancia.
+===================================
+"""
+
+#Funcion que Trae los datos del Transportista elegido previamente
+def datos_transportista(request, dni_transportista):
+    transportista = Transportista.objects.get(dni=dni_transportista)
+    return render(request, 'Transportista/datos_transportista.html', {'transportista':transportista})
+
+#Funcion que Trae los datos del Padre elegido previamente
+def datos_padre(request, dni_padre):
+    padre = Padre_madre.objects.get(dni=dni_padre)
+    return render(request, 'Padre_madre/datos_padre.html', {'padre':padre})
+
+#Funcion que Trae los datos del Alumno elegido previamente
+@login_required
+def perfil_alumno(request, id_alumno):
+    alumno = Alumno.objects.get(dni=id_alumno)
+    familiares = Familia.objects.filter(alumno=alumno)
+    return render(request, 'perfilAlumno.html', {'alumno':alumno, 'familiares':familiares})
+
+#Funcion que Trae los Familiares, Transportistas del Alumno y los Cursos.
+def get_Secciones(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    familiares = Familia.objects.filter(alumno=alumno).order_by("padre_madre__apellido", "padre_madre__nombre")
+    transportistas = usa_Transporte.objects.filter(alumno=alumno)
+    print (familiares)
+    cursos = Curso.objects.all()
+    return render(request, 'matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas})
+
+#Funcion que Trae los Familiares, Transportistas, Curso Actual del Alumno y los Cursos.
+def re_matricular(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    familiares = Familia.objects.filter(alumno=alumno).order_by("padre_madre__apellido", "padre_madre__nombre")
+    transportistas = usa_Transporte.objects.filter(alumno=alumno)
+    curso2 = alumno_Curso.objects.get(alumno=alumno)
+    curso = curso2.curso
+    cursos = Curso.objects.all()
+    recomendacion = Curso.objects.get(aNo=curso.aNo+1)
+    return render(request, 're_matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas, 'curso':curso, 'recomendacion':recomendacion})
+
+"""
+==========
+Modificar.
+==========
+"""
 
 #Funcion para cambiar la password del usuario.
-def userDocente(request):
+def cambiar_password(request):
     if request.method == "POST":
         form = get_Password(request.POST)
         if form.is_valid():
@@ -329,12 +322,12 @@ def userDocente(request):
                     message = "El usuario " + str(userD.user.username) + " utilizara la siguiente contraseña " + str(new_pass)
                     email_from = settings.EMAIL_HOST_USER
                     recipient_list = [profesor.email_t]
-                    #send_mail( subject, message, email_from, recipient_list)
+                    send_mail( subject, message, email_from, recipient_list)
                     print ("funciona")
                     userd = User.objects.get(username=userD.user.username)
                     print ("Vieja Pass" + str(userd.password))
-                    #userd.set_password(new_pass)
-                    #userd.save()
+                    userd.set_password(new_pass)
+                    userd.save()
                     print ("nueva pass" + str(userd.password))
                     data = {
                         'resultado': "Clave cambiada con exito.",
@@ -363,3 +356,54 @@ def userDocente(request):
             return JsonResponse(data)
     return HttpResponse("Solo podes acceder por Post")
 
+"""
+==================
+Crear y Modificar.
+==================
+"""
+
+@user_passes_test(check_Secretaria)
+def aceptar_matriculacion(request):
+    if request.method == 'POST':
+        dni_alumno = request.POST['dni_alumno']
+        print (dni_alumno)
+        selected_curso = request.POST['select_curso']
+        print (selected_curso)
+        curso = Curso.objects.get(id=selected_curso)
+        alumno = Alumno.objects.get(dni=dni_alumno)
+        eleccion = alumno_Curso(alumno=alumno, curso=curso)
+        eleccion.save()
+        matriculacion = Matriculacion.objects.get(alumno=alumno)
+        matriculacion.matriculado = "Si"
+        matriculacion.save()
+        data = {
+            'resultado': "El alumno " + str(alumno.apellido) + " " + str(alumno.nombre) + " asiste al curso " + str(eleccion.curso),
+            'error': False
+        }
+        return JsonResponse(data, safe=True)
+    return HttpResponse("Solo podes entrar por POST")
+
+"""
+======
+Login.
+======
+"""
+
+def login(request):
+    if request.method == 'POST':
+        username = request.POST['user']
+        password = request.POST['pass']
+        print (username)
+        print (password)
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+            data = {
+                'error': False
+            }
+        else:
+            data = {
+            'estado': "nombre de usuario o contraseña no son correctos",
+            'error': True
+            }
+    return JsonResponse(data, safe=True)
