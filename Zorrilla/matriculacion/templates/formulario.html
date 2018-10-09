@@ -68,11 +68,11 @@
                             <div style="margin-left:-7%">{{ alumno_form.domicilio }}</div>
                         </div>
                         <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
+                            <div style="margin-right: 800%; margin-left:-4" class="input-group-prepend">
+                                <span  class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
                             </div>
                             <br>
-                            <div style="margin-left:-8%">{{ alumno_form.email }}</div>
+                            <div style="margin-left:-6">{{ alumno_form.email }}</div>
                         </div>
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
@@ -196,6 +196,9 @@
 </div>
 
 
+<form id="volv" href="{% url 'index' %}">
+</form>
+
     <script>
 
 
@@ -211,6 +214,8 @@
                 type: 'POST',
                 success: function(data){
                     $("#data").html(data);
+                    var btn_continuar = document.getElementById("continuar");
+                    btn_continuar.style.display = "none"
                 }
             });
         }
@@ -229,10 +234,21 @@
                    if (data.error){
                        document.getElementById("resultado2").innerHTML = data.resultado;
                    } else{
+                        var aux=document.getElementById("resul_padre")
+                        aux.style.display="none"
                        document.getElementById("resultado2").innerHTML = data.resultado;
+                       var btn_cargar = document.getElementById("cargar");
+                       btn_cargar.style.display = "none"
+                       var btn_continuar = document.getElementById("continuar");
+                       btn_continuar.style.display = "block"
                    }
                 }
             });
+        }
+
+        function volver(){
+            var form = document.getElementById("volv");
+            form.submit()
         }
 </script>
 

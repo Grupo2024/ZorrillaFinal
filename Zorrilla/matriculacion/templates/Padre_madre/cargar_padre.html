@@ -1,81 +1,84 @@
-<form id="form_padre" method="post">
-    {% csrf_token %}
-    <div class="input-group input-group-sm mb-3 form-group">
-    <div class="input-group-prepend">
-        <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
-    </div>
-    <div style="margin-left: -4.2%;">{{padre_form.nombre }}</div>
-    </div>
+<div id="resul_padre">
+    <form id="form_padre" method="post">
+        {% csrf_token %}
+        <div class="input-group input-group-sm mb-3 form-group">
+            <div class="input-group-prepend">
+                <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
+            </div>
+        <div style="margin-left: -4.2%;">{{padre_form.nombre }}</div>
+        </div>
 
-    <div class="input-group input-group-sm mb-3 form-group">
-    <div class="input-group-prepend">
-        <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
-    </div>
-    <div style="margin-left: -4.2%;">{{padre_form.apellido }}</div>
-    </div>
-
-
-    <div class="input-group input-group-sm mb-3 form-group">
-    <div class="input-group-prepend">
-        <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">DNI:</span>
-    </div>
-    <div style="margin-left: -0.5%;">{{padre_form.dni }}</div>
-    </div>
-
-    <div class="input-group input-group-sm mb-3 form-group">
-    <div class="input-group-prepend">
-        <span style="margin-left: -2.5%;" class="input-group-text" id="inputGroup-sizing-sm">Lugar Nacimiento:</span>
-    </div>
-    <div style="margin-left: -4%">{{padre_form.lugar_nacimiento }}</div>
-    </div>
-
-    <div class="input-group input-group-sm mb-3 form-group">
-    <div class="input-group-prepend">
-        <span style="margin-left: -2%;" class="input-group-text" id="inputGroup-sizing-sm">Fecha Nacimiento:</span>
-    </div>
-    <div style="margin-left: -1%;">{{padre_form.fecha_nacimiento }}</div>
-    </div>
-
-    <div class="input-group input-group-sm mb-3 form-group">
-    <div class="input-group-prepend">
-        <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
-    </div>
-    <div style="margin-left: -4.2%;">{{padre_form.domicilio }}</div>
-    </div>
-
-    <div class="input-group input-group-sm mb-3 form-group">
-    <div class="input-group-prepend">
-        <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
-    </div>
-    <div style="margin-left: -0.5%;">{{padre_form.email }}</div>
-    </div>
-
-    <div class="input-group input-group-sm mb-3 form-group">
-    <div class="input-group-prepend">
-        <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
-    </div>
-    <div style="margin-left: -1%;">{{padre_form.sexo }}</div>
-    </div>
-
-    <div class="input-group input-group-sm mb-3 form-group">
-    <div class="input-group-prepend">
-        <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Profesion</span>
-    </div>
-    <div style="margin-left: -17.8;">{{padre_form.profesion }}</div>
-    </div>
-
-    <div class="input-group input-group-sm mb-3 form-group">
-    <div class="input-group-prepend">
-        <span style="margin-left: -3%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono del trabajo:</span>
-    </div>
-    <div style="margin-left: -1%;">{{padre_form.telefono_trabajo }}</div>
-    </div>
-
-    <input type="hidden" name="dni_alumno" id="dni_alumno" value = {{datos_alumno.dni_alumno}}>
+        <div class="input-group input-group-sm mb-3 form-group">
+        <div class="input-group-prepend">
+            <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
+        </div>
+        <div style="margin-left: -4.2%;">{{padre_form.apellido }}</div>
+        </div>
 
 
+        <div class="input-group input-group-sm mb-3 form-group">
+        <div class="input-group-prepend">
+            <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">DNI:</span>
+        </div>
+        <div style="margin-left: -0.5%;">{{padre_form.dni }}</div>
+        </div>
 
-    <span id="resultado2"></span>
-</form>
+        <div class="input-group input-group-sm mb-3 form-group">
+        <div class="input-group-prepend">
+            <span style="margin-left: -2.5%;" class="input-group-text" id="inputGroup-sizing-sm">Lugar Nacimiento:</span>
+        </div>
+        <div style="margin-left: -4%">{{padre_form.lugar_nacimiento }}</div>
+        </div>
 
-<center><button class="btn btn-success" onclick="crear_Padre()" style="width:30%">Cargar</button></center>
+        <div class="input-group input-group-sm mb-3 form-group">
+        <div class="input-group-prepend">
+            <span style="margin-left: -2%;" class="input-group-text" id="inputGroup-sizing-sm">Fecha Nacimiento:</span>
+        </div>
+        <div style="margin-left: -1%;">{{padre_form.fecha_nacimiento }}</div>
+        </div>
+
+        <div class="input-group input-group-sm mb-3 form-group">
+        <div class="input-group-prepend">
+            <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
+        </div>
+        <div style="margin-left: -4.2%;">{{padre_form.domicilio }}</div>
+        </div>
+
+        <div class="input-group input-group-sm mb-3 form-group">
+        <div class="input-group-prepend">
+            <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
+        </div>
+        <div style="margin-left: -0.5%;">{{padre_form.email }}</div>
+        </div>
+
+        <div class="input-group input-group-sm mb-3 form-group">
+        <div class="input-group-prepend">
+            <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
+        </div>
+        <div style="margin-left: -1%;">{{padre_form.sexo }}</div>
+        </div>
+
+        <div class="input-group input-group-sm mb-3 form-group">
+        <div class="input-group-prepend">
+            <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Profesion</span>
+        </div>
+        <div style="margin-left: -17.8;">{{padre_form.profesion }}</div>
+        </div>
+
+        <div class="input-group input-group-sm mb-3 form-group">
+        <div class="input-group-prepend">
+            <span style="margin-left: -3%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono del trabajo:</span>
+        </div>
+        <div style="margin-left: -1%;">{{padre_form.telefono_trabajo }}</div>
+        </div>
+
+        <input type="hidden" name="dni_alumno" id="dni_alumno" value = {{datos_alumno.dni_alumno}}>
+    </form>
+</div>
+
+<span id="resultado2"></span>
+
+<br>
+
+<center><button class="btn btn-success" onclick="crear_Padre()" style="width:30%" id="cargar">Cargar</button></center>
+<center><button class="btn btn-primary" id="continuar" style="width:30%" onclick="volver()">Continuar</button></center>

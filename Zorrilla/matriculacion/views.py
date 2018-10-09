@@ -144,17 +144,15 @@ def crear_padre(request, opcion):
         familia = Familia(alumno=alumno, padre_madre=padre)
         familia.save()
         if (opcion=="Matriculacion"):
-            print ("Matriculando alumno")
             new_Matriculacion = Matriculacion(alumno=alumno, matriculado="No")
             new_Matriculacion.save()
-            resultado = "Los pedidos de Matriculacion de " + str(padre.apellido) + "" + str(padre.nombre) + " y de " + str(alumno.apellido) + "" + str(alumno.nombre) + " han sido creados con exito."
+            resultado = "Los pedidos de Matriculacion de " + str(padre.apellido) + " " + str(padre.nombre) + " y de " + str(alumno.apellido) + " " + str(alumno.nombre) + " han sido creados con exito."
             data = {
                 'error': False,
                 'resultado':resultado
             }
             return JsonResponse(data)
         elif (opcion=="Padre"):
-            print ("Cargando Padre")
             resultado = str(padre.apellido) + "" + str(padre.nombre) + " ha sido cargado con exito."
             data = {
                 'error': False,
