@@ -28,6 +28,9 @@ class clave_Docente(models.Model):
             return self.ingresado
 
 
+    def __str__(self):
+        return'Clave {} para {}'.format(self.clave_logIn, self.dni_docente)
+
 class Trabajador(models.Model):
     
     HO = 'Hombre'
@@ -46,9 +49,6 @@ class Trabajador(models.Model):
     domicilio_t = models.CharField('Domicilio del trabajador', max_length=150, blank=True)
     email_t = models.EmailField('Email del trabajador', max_length=70, null=False)
     sexo_t = models.CharField('Sexo', max_length=6, choices=GENERO_CHOICES)
-    #Datos estandares del trabajador, estos van a ser heredados x cualquier profesor, director o secretaria
-    #foto = models.ImageField(upload_to=get_image_path, blank=True, null=True)
-    #BUSCAR LO DE FOTOS
     telefono_particular = models.IntegerField('Telefono Personal del Trabajador')
     telefono_laboral = models.IntegerField('Telefono Laboral del Trabajador')
     telefono_familiar = models.IntegerField('Telefono de algun Familiar del Trabajador')

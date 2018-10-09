@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+<br>
+<h3><center>Obras Sociales de {{alumno.apellido}} {{alumno.nombre}}.</center></h3>
+<br>
+<table style="width:100%">
+    <tr>
+        <th>Nombre</th>
+        <th>Numero de Afiliado</th>
+    </tr>
+    {% for a in obras_sociales %}
+    <tr>
+        <td>{{a.obra_social.nombre}}</td>
+        <td>{{a.numero_afiliado}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock body %}

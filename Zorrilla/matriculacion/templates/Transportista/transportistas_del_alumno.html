@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+<br>
+<h3><center>Transportistas de {{alumno.apellido}} {{alumno.nombre}}.</center></h3>
+<br>
+<table style="width:100%">
+    <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Dni</th>
+        <th>Nombre Tranposrte</th>
+        <th>Telefono Tranposrte</th>
+    </tr>
+    {% for a in transportistas %}
+    <tr>
+        <td>{{a.transportista.nombre}}</td>
+        <td>{{a.transportista.apellido}}</td>
+        <td>{{a.transportista.dni}}</td>
+        <td>{{a.transportista.nombre_transporte}}</td>
+        <td>{{a.transportista.telefono_transportista}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock body %}

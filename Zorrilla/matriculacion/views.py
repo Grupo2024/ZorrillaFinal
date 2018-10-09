@@ -254,6 +254,21 @@ def traer_pedidos(request):
     re_matriculaciones = Matriculacion.objects.filter(matriculado = "Re")
     return render(request, 'pedidos.html', {'matriculaciones':matriculaciones, 're_matricular':re_matriculaciones})
 
+def padres_del_alumno(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    familia = Familia.objects.filter(alumno=alumno)
+    return render(request, 'Padre_madre/padres_del_alumno.html', {'familiares':familia, 'alumno':alumno})
+
+def transportistas_del_alumno(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    transportistas = usa_Transporte.objects.filter(alumno=alumno)
+    return render(request, 'Transportista/transportistas_del_alumno.html', {'transportistas':transportistas, 'alumno':alumno})
+
+def obras_sociales_del_alumno(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno)
+    return render(request, 'Obra_Social/obras_sociales_del_alumno.html', {'obras_sociales':obras_sociales, 'alumno':alumno})
+
 """
 ===================================
 Mostrar los datos de una instancia.
@@ -272,8 +287,24 @@ def datos_padre(request, dni_padre):
 
 #Funcion que Trae los datos del Alumno elegido previamente
 @login_required
-def perfil_alumno(request, id_alumno):
+def datos_alumno(request, id_alumno):
     alumno = Alumno.objects.get(dni=id_alumno)
+    try:
+        matriculado = Matriculacion.objects.get(alumno=alumno, matriculado="Si")
+        alumno.matriculado = "Si"
+    except Matriculacion.DoesNotExist:
+        alumno.matriculado = "No"
+    try:
+        obra_social = usa_Obra_Social.objects.get(alumno=alumno)
+        alumno.obra_social = obra_social.obra_social.nombre
+    except usa_Obra_Social.DoesNotExist:
+        alumno.obra_social = "No"
+    try:
+        transporte = usa_Transporte.objects.get(alumno=alumno)
+        alumno.transporte = "Si"
+    except usa_Transporte.DoesNotExist:
+        alumno.transporte = "No"
+    print alumno.transporte
     familiares = Familia.objects.filter(alumno=alumno)
     return render(request, 'perfilAlumno.html', {'alumno':alumno, 'familiares':familiares})
 

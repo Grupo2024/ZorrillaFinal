@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+<br>
+<h3><center>Padres de {{alumno.apellido}} {{alumno.nombre}}.</center></h3>
+<br>
+<table style="width:100%">
+    <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Dni</th>
+        <th>Email</th>
+    </tr>
+    {% for a in familiares %}
+    <tr>
+        <td>{{a.padre_madre.nombre}}</td>
+        <td>{{a.padre_madre.apellido}}</td>
+        <td>{{a.padre_madre.dni}}</td>
+        <td>{{a.padre_madre.email}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock body %}

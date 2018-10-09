@@ -9,6 +9,7 @@
 <div class='row'>
     <div class="card text-center" style="width: 30%; height: 67%; margin-left: 3%">
     <div class="card-body">
+
     <h4 class="card-title">Datos personales</h4>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">DNI: {{alumno.dni}}</li>
@@ -16,7 +17,7 @@
           <li class="list-group-item">Fecha de nacimiento: {{alumno.fecha_nacimiento}}</li>
           <li class="list-group-item">Domicilio: {{alumno.fecha_nacimiento}}</li>
           <li class="list-group-item">Fecha de nacimiento: {{alumno.domicilio}}</li>
-          <li class="list-group-item">mail: {{alumno.email}}</li>
+          <li class="list-group-item">Email: {{alumno.email}}</li>
           <li class="list-group-item">Sexo: {{alumno.sexo}}</li>
         </ul>
     </div>
@@ -27,13 +28,7 @@
       <h4 class="card-title">Datos de contacto</h4>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">Telefono fijo: {{alumno.telefono_casa}}</li>
-          <li class="list-group-item">Padres:
-            <ul>
-                {% for familiar in familiares %}
-                <li>{{familiar.padre_madre.apellido}} {{familiar.padre_madre.nombre}}</li>
-                {% endfor %}
-            </ul>
-            </li>
+            <li class="list-group-item">Padres: <a href="{% url 'padres_del_alumno' alumno.dni %}">Ver Padres.</a></li>
           <li class="list-group-item">Telefono del padre: {{alumno.telefono_padre}}</li>
           <li class="list-group-item">Telefono de familiar: {{alumno.telefono_familiar}}</li>
           <li class="list-group-item">Telefono de vecino: {{alumno.telefono_vecino}}</li>
@@ -41,7 +36,13 @@
           <li class="list-group-item">Autorizados: {{alumno.autorizados}}</li>
           <li class="list-group-item">Quien lo trae: {{alumno.quien_lo_trae}}</li>
           <li class="list-group-item">Telefono: {{alumno.telefono_que_lo_trae}}</li>
-          <li class="list-group-item">Utiliza transporte: {{alumno.utiliza_transporte}}</li>
+          <li class="list-group-item">Utiliza transporte:
+            {% if alumno.transporte == "No"%}
+              {{alumno.transporte}}
+            {% else %}
+              <a href="{% url 'transportistas_del_alumno' alumno.dni %}">Ver Transportistas.</a>
+            {% endif %}
+        </li>
         </ul>
     </div>
   </div>
@@ -51,8 +52,12 @@
     <h4 class="card-title">Datos medicos</h4>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">Enfermedades: {{alumno.enfermedad_relevante}}</li>
-          <li class="list-group-item">Obra social: {{alumno.obra_social_nombre}}</li>
-          <li class="list-group-item">Numero obre social: {{alumno.obra_social_numero}}</li>
+          <li class="list-group-item">Obra social:
+            {% if alumno.obra_social == "No"%}
+              {{alumno.obra_social}}
+            {% else %}
+              <a href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Ver Obras Sociales.</a>
+            {% endif %}</li>
           <li class="list-group-item">Matriculado: {{alumno.matriculado}}</li>
         </ul>
     </div>
