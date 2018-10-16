@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^re_matricular/(\d+)/', re_matricular, name="re_matricular"),
     url(r'^logout_me_out', logout_me_out, name="logout_me_out"),
     url(r'^pedidos', traer_pedidos, name="traer_pedidos"),
+    url(r'^crear_padre_madre', crear_padre_madre, name="crear_padre_madre"),
     url(r'^form_transportista', form_transportista, name="form_transportista"),
     url(r'^todos_los_transportistas/(\d+)/', todos_los_transportistas, name="todos_los_transportistas"),
     url(r'^todos_los_padres/(\d+)/', todos_los_padres, name="todos_los_padres"),

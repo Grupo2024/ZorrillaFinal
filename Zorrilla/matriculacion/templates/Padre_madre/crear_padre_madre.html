@@ -52,7 +52,7 @@
                         <div class="input-group-prepend"  style="margin-right: 800%;">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
                         </div>
-                        <div style="margin-left: -5%;">{{padre_form.nombre}}</div>
+                        <div style="margin-left: -5%;">{{padre_form.apellido}}</div>
                     </div>
 
                     <div class="input-group input-group-sm mb-3 form-group">
@@ -108,7 +108,7 @@
 
                     <div class="input-group input-group-sm mb-3 form-group">
                         <div class="input-group-prepend"  style="margin-right: 800%;">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Telefono del padre:</span>
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Telefono:</span>
                         </div>
                         <div style="margin-left: -0.5%;">{{padre_form.telefono_trabajo}}</div>
                     </div>
@@ -118,7 +118,7 @@
 
             </ul>
         </div>
-        <button class="btn btn-success" onclick="matricular_Padre()" id="btn_padre">Cargar</button>
+        <button class="btn btn-success" onclick="matricular_Padre('{% url 'crear_padre_madre' %}')" id="btn_padre">Cargar</button>
     </div>
         
 </form>
@@ -173,7 +173,7 @@
 
         }
 
-        function matricular_Padre(){
+        function matricular_Padre(url){
             var myForm = document.getElementById('form_padre');
             formData = new FormData(myForm);
             console.log("llega");
@@ -187,31 +187,19 @@
             y.style.display = "none";
             $('#myModal').modal('show');
             $.ajax({
-                url: '{% url 'crear_padre' 'Padre' %}',
+                url: url,
                 data: formData,
                 processData: false,
                 contentType: false,
                 type: 'POST',
                 success: function(data){
                     console.log(data.error);
-                    if (data.error){
-                        footer(data.resultado);
-                        x.style.display = "none";
-                        y.style.display = "block";
-                    }else{
-                        footer(data.resultado);
-                        y.style.display = "none";
-                        x.style.display = "block";
-                    }
+                    alert(data.resultado)
                 }
             });
         }
 
     </script>
 
-    function close_modal(){
-            $('#myModal').modal('hide');
-        }
 
-
-    {% endblock body %}
+{% endblock body %}

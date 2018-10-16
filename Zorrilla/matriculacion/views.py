@@ -130,8 +130,7 @@ def crear_alumno(request):
         return HttpResponse(str(aux))
 
 #Funcoin que crea al Padre.
-def crear_padre(request, opcion):
-    print (opcion)
+def crear_padre(request):
     padre_form = PadreForm(request.POST)
     dni_alumno = request.POST['dni_alumno']
     alumno = Alumno.objects.get(dni=dni_alumno)
@@ -143,24 +142,38 @@ def crear_padre(request, opcion):
         print (padre)
         familia = Familia(alumno=alumno, padre_madre=padre)
         familia.save()
-        if (opcion=="Matriculacion"):
-            new_Matriculacion = Matriculacion(alumno=alumno, matriculado="No")
-            new_Matriculacion.save()
-            resultado = "Los pedidos de Matriculacion de " + str(padre.apellido) + " " + str(padre.nombre) + " y de " + str(alumno.apellido) + " " + str(alumno.nombre) + " han sido creados con exito."
-            data = {
-                'error': False,
-                'resultado':resultado
-            }
-            return JsonResponse(data)
-        elif (opcion=="Padre"):
-            resultado = str(padre.apellido) + "" + str(padre.nombre) + " ha sido cargado con exito."
-            data = {
-                'error': False,
-                'resultado':resultado
-            }
-            return JsonResponse(data)
+        new_Matriculacion = Matriculacion(alumno=alumno, matriculado="No")
+        new_Matriculacion.save()
+        resultado = "Los pedidos de Matriculacion de " + str(padre.apellido) + " " + str(padre.nombre) + " y de " + str(alumno.apellido) + " " + str(alumno.nombre) + " han sido creados con exito."
+        data = {
+            'error': False,
+            'resultado':resultado
+        }
+        return JsonResponse(data)
     else:
         resultado = str(padre_form.errors)
+        data = {
+            'error':True,
+            'resultado':resultado
+        }
+        return JsonResponse(data)
+    
+def crear_padre_madre(request):
+    padre_form = PadreForm(request.POST)
+    if padre_form.is_valid():
+        print "Es valido"
+        padre_form.save()
+        dni_padre = padre_form.cleaned_data['dni']
+        padre = Padre_madre.objects.get(dni=dni_padre)
+        resultado = "El Padre " + str(padre.apellido) + " " + str(padre.nombre) + " ha sido creado con exito."
+        data = {
+            'error':False,
+            'resultado':resultado
+        }
+    else:
+        print "No es valido"
+        resultado = str(padre_form.errors)
+        print resultado
         data = {
             'error':True,
             'resultado':resultado
@@ -243,6 +256,8 @@ def todos_los_padres(request, dni_alumno):
     for a in padres_ya_asignados:
         lista.append(a.padre_madre.dni)
     padre = Padre_madre.objects.exclude(dni__in=lista)
+    padres = Padre_madre.objects.all()
+    print (padres)
     return render(request,'Padre_madre/todos_los_padres.html', {'todos_los_padres':padre, 'dni_alumno':dni_alumno})
 
 #Traer Todos las Matriculaciones con estado 'No' y 'Re'.
@@ -289,14 +304,15 @@ def datos_alumno(request, id_alumno):
     alumno = Alumno.objects.get(dni=id_alumno)
     transportistas = usa_Transporte.objects.filter(alumno=alumno)
     if not transportistas:
-        alumno.transportista = "No"
+        alumno.transporte = "No"
     else:
-        alumno.transportista = "Si"
-    matriculado = Matriculacion.objects.get(alumno=alumno, matriculado="Si")
-    if not transportistas:
-        alumno.matriculado = "No"
-    else:
+        alumno.transporte = "Si"
+    #matriculado = Matriculacion.objects.get(alumno=alumno, matriculado="Si")
+    try:
+        matriculado = Matriculacion.objects.get(alumno=alumno, matriculado="Si")
         alumno.matriculado = "Si"
+    except Matriculacion.DoesNotExist:
+        alumno.matriculado = "No"
     obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno)
     if not obras_sociales:
         alumno.obra_social = "No"
@@ -310,7 +326,6 @@ def get_Secciones(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     familiares = Familia.objects.filter(alumno=alumno).order_by("padre_madre__apellido", "padre_madre__nombre")
     transportistas = usa_Transporte.objects.filter(alumno=alumno)
-    print (familiares)
     cursos = Curso.objects.all()
     return render(request, 'matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas})
 
