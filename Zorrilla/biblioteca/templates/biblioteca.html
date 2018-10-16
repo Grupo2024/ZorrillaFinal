@@ -5,6 +5,7 @@
 {% block body %}
 
 {% load poll_extras %}
+<<<<<<< HEAD
 
 <div class="sidenav">
     <h1 align="center" class="text-white">Indice</h1>
@@ -38,28 +39,43 @@
 </div>
 
   
+=======
+>>>>>>> bibliotecaEstetica
   
 <div class="main">
   <br>
   <div class="container">
     <div class="row">
       <div class="">
-        <input type="text"placeholder="Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
-        <select id="filter_by">
-            <option value=0>Titulo</option>
-            <option value=1>Descripción</option>
-            <option value=2>Fecha</option>
-        </select>
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">
-            <li>&#xe052;</li>
-          </button>
-      </div>   
+        <!-- Buscador -->
+        <input style="margin-left: 4%;" type="text" placeholder=" Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
+        <!-- Dropdown filter -->
+        <button type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by">Buscar por</button>
+        <div class="dropdown-menu" id="filter_by">
+            <option class="dropdown-item" value=0>Titulo</option>
+            <option class="dropdown-item" value=1>Descripción</option>
+            <option class="dropdown-item" value=2>Fecha</option>
+        </div>
+        <!-- Filter button -->
+        <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#myModal2">
+        <i class="fa fa-filter" aria-hidden="true"></i> Filtrar
+
+        {% if user.is_authenticated %}
+            <button style="margin-left: 144%; margin-top: -5%" class="btn btn-success" data-toggle="modal" data-target="#myModal">Añadir libro</button>
+        {% endif %}
+
+        {% if request.user|has_group:"Director" %}
+            <button style="margin-left: 131%; margin-top: -5.5%" class="btn btn-dark" onclick="informe('{% url 'informe' %}')">Informe</button>
+        {% endif %}
+        
   </div>
   </div>
+
   <div class="container">
       <div class="row">
-          <div class="col-md-12">
+          <div style="margin-left: 0%" class="col-12">
           <h4></h4>
+<<<<<<< HEAD
           <div class="table-responsive">
               <table id="mytable" class="table table-hover">
                 <thead>
@@ -95,6 +111,45 @@
                   {% endfor %}
                   </tbody>
               </table>
+=======
+      <table class="table table-sm table-hover">
+        <thead>
+          <tr>
+            <th scope="col" onclick="sortTable(0)">Titulo</th>
+            <th scope="col" onclick="sortTable(1)">Descripción</th>
+            <th scope="col" onclick="sortTable(2)">Fecha</th>
+            <th scope="col" >Info</th>
+            {% if request.user|has_group:"Profesor" %}
+              <th scope="col" >Borrar</th>
+            {% endif %}
+            {% if request.user|has_group:"Director" %}
+              <th scope="col" >Historia</th>
+              <th scope="col" >Estado</th>
+            {% endif %}  
+            <th scope="col" >Ver libro</th>
+          
+          </tr>
+        </thead>
+        <tbody>
+          {% for doc in documentos %}
+          <tr>
+            <td>{{doc.titulo}}</td>
+            <td>{{doc.descripcion}}</td>
+            <td>{{doc.fecha}}</td>
+            <td><button class="btn btn-primary" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></button></td>
+            {% if request.user|has_group:"Profesor" %}
+              <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
+            {% endif %}
+            {% if request.user|has_group:"Director" %}
+              <td><button class="btn btn-primary fa fa-history" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book"></button></td>
+              <td><button class="btn btn-primary" onclick="deshabilitar_libro('{% url 'cambiar_estado_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf085;</i></button></td>
+            {% endif %}
+            <td><a class="btn btn-primary text-white" href="{{ doc.documento.url }}">Abrir</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+>>>>>>> bibliotecaEstetica
               
       <div id="snackbar"><span id="span_result"></span></div>
               
@@ -171,30 +226,34 @@
           <form id="filtros" action="{% url 'filtered_books' %}" method="post">
               {% csrf_token %}
         <div class="modal-body">
-          <p>Ordenar Por:<input name="ordenado" value="titulo" id="ordenado" size="5"></p>
-        <select id="filter_by2" onchange="set_filter(event)">
-            <option value="titulo">Titulo</option>
-            <option value="fecha">Fecha</option>
-            <option value="autor">Autor</option>
-        </select>
-            <p>Cantidad:<input name="cantidad" value=5 id="cantidad" size="5"></p>
-        <select id="select_cantidad" onchange="set_cantidad(event)">
-            <option value=5>5</option>
-            <option value=10>10</option>
-            <option value=15>15</option>
-            <option value=25>25</option>
-            <option value=50>50</option>
-        </select>
-            <p>Sentido:<input name="input_sentido" value="Ascendente" id="input_sentido" size="7"></p>
-        <select id="select_sentido" onchange="set_sentido(event)">
-            <option value="Ascendente">Ascendente</option>
-            <option value="Descendente">Descendente</option>
-        </select>
-              <input type="hidden" name="sentido" id="sentido">
+
+      <!-- Dropdown filter orden -->
+        <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by2">Ordenar Por:</button>
+        <div class="dropdown-menu" id="filter_by2">
+            <option class="dropdown-item" value=0>Titulo</option>
+            <option class="dropdown-item" value=1>Descripción</option>
+            <option class="dropdown-item" value=2>Fecha</option>
+        </div>
+
+         <!-- Dropdown filter cantidad -->
+        <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by3">Cantidad:</button>
+        <div class="dropdown-menu" id="filter_by3">
+            <option class="dropdown-item" value=5>5</option>
+            <option class="dropdown-item" value=10>10</option>
+            <option class="dropdown-item" value=15>15</option>
+            <option class="dropdown-item" value=25>25</option>
+            <option class="dropdown-item" value=50>50</option>
+        </div>
+
+        <!-- Dropdown filter sentido -->
+        <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by3">Sentido:</button>
+        <div class="dropdown-menu" id="filter_by3">
+            <option class="dropdown-item" value='Ascendente'>Ascendente</option>
+            <option class="dropdown-item" value='Descendente'>Descendente</option>
         </div>
         
         <!-- Modal footer -->
-        <div class="modal-footer">
+        <div style="margin-top: 5%" class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
             <button type="submit" class="btn btn-success">Filtrar</button>
         </div>
