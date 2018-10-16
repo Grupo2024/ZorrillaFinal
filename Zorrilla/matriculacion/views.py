@@ -129,6 +129,7 @@ def crear_alumno(request):
         aux = alumno_form.errors
         return HttpResponse(str(aux))
 
+
 #Funcoin que crea al Padre.
 def crear_padre(request):
     padre_form = PadreForm(request.POST)
