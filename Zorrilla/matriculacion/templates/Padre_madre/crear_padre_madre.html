@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+<style type="text/css">
+    #myProgress {
+            width: 100%;
+            background-color: #ddd;
+    }
+    #myBar {
+        width: 10%;
+        height: 30px;
+        background-color: #4CAF50;
+        text-align: center;
+        line-height: 30px;
+        color: white;
+    }
+
+    input{
+        width: 140%;
+    }
+    #a{
+        width: 64%;
+    }
+    #b{
+        width: % ;
+    }
+</style>
+
+<br>
+<form id="form_padre" style="margin-left: 30%;" method="post" >
+{% csrf_token %}
+    <input type="hidden" value={{dni_alumno}} name="dni_alumno">
+    <div class="card text-center" style="width: 45%; margin-left: 6%">
+        <div class="card-body">
+            <h4 class="card-title">Datos personales</h4>
+
+            <ul class="list-group list-group-flush">
+
+                <li class="list-group-item">
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend" style=" margin-right: 800%;">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
+                        </div>
+                        <div style="margin-left: -5%">{{padre_form.nombre}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend"  style="margin-right: 800%;">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
+                        </div>
+                        <div style="margin-left: -5%;">{{padre_form.apellido}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend"  style="margin-right: 800%;">
+                            <span  class="input-group-text" id="inputGroup-sizing-sm">Numero de documento:</span>
+                        </div>
+                        <div style="margin-left: -0.5%;">{{padre_form.dni}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend"  style=" margin-right: 800%;">
+                            <span  class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
+                        </div>
+                        <div style="margin-left: -5%">{{padre_form.lugar_nacimiento}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend"  style="margin-right: 800%;">
+                            <span  class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
+                        </div>
+                        <br>
+                        <div id="a"  style="margin-left: -0.5%">{{padre_form.fecha_nacimiento}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend"  style=" margin-right: 800%;">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
+                        </div>
+                        <br>
+                        <div style="margin-left:-5%">{{padre_form.domicilio}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend"  style=" margin-right: 800%;">
+                            <span  class="input-group-text" id="inputGroup-sizing-sm">Email:  </span>
+                        </div>
+                        <div style="margin-left: -0.5%;">{{padre_form.email}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend"  style="margin-right: 800%;">
+                            <span  class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
+                        </div>
+                        <div style="margin-left: -0.5%;">{{padre_form.sexo}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend"  style="margin-right: 800%;">
+                            <span  class="input-group-text" id="inputGroup-sizing-sm">Profesion:</span>
+                        </div>
+                        <div style="margin-left: -5%;">{{padre_form.profesion}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend"  style="margin-right: 800%;">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Telefono:</span>
+                        </div>
+                        <div style="margin-left: -0.5%;">{{padre_form.telefono_trabajo}}</div>
+                    </div>
+
+
+                </li>
+
+            </ul>
+        </div>
+        <button class="btn btn-success" onclick="matricular_Padre('{% url 'crear_padre_madre' %}')" id="btn_padre">Cargar</button>
+    </div>
+
+</form>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Matriculando Padre:</h5>
+            </div>
+            <div class="container-fluid">
+                <div class="modal-body row">
+                    <p class="col-sm-2">Resultado: </p><span style='visibility:hidden;'>..</span>
+                    <div class="col-sm-9">
+                        <div id="myProgress">
+                            <p id="myBar" value="10%"></p>
+                        </div>
+                    </div>
+                    <span id="resultado"></span>
+                </div>
+                <div class="modal-footer" id="footer">
+                    <a type="button" class="btn btn-secondary" data-dismiss="modal" href="{% url 'traer_pedidos' %}" id="continuar">Continuar</a>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="close_modal()" id="volver">Volver</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function sleep() {
+            return new Promise(resolve => setTimeout(resolve, 1000));
+        }
+
+        async function footer(a){
+            var elem = document.getElementById("myBar");
+            var width = 10;
+            var id = setInterval(frame, 10);
+            function frame() {
+                if (width >= 100) {
+                    clearInterval(id);
+                } else {
+                    width++;
+                    elem.style.width = width + '%';
+                    elem.innerHTML = width * 1  + '%';
+                }
+            }
+            await sleep();
+            elem.style.display = "none";
+            var resultado = document.getElementById("resultado");
+            resultado.innerHTML = a;
+            return a
+
+        }
+
+        function matricular_Padre(url){
+            var myForm = document.getElementById('form_padre');
+            formData = new FormData(myForm);
+            console.log("llega");
+            var elem = document.getElementById("myBar");
+            elem.style.display = "block";
+            var resultado = document.getElementById("resultado");
+            resultado.innerHTML = "";
+            var x = document.getElementById("continuar");
+            var y = document.getElementById("volver");
+            x.style.display = "none";
+            y.style.display = "none";
+            $('#myModal').modal('show');
+            $.ajax({
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    console.log(data.error);
+                    alert(data.resultado)
+                }
+            });
+        }
+
+    </script>
+
+
+{% endblock body %}

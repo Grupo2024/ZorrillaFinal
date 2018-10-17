@@ -7,7 +7,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{%url 'cursos1'%}">Home</a></li>
-        <li class="breadcrumb-item " aria-current="page">{{turno}}</li>
+        <li class="breadcrumb-item " aria-current="page">{{turno.turno}}</li>
     </ol>
 </nav>
 <table class="table">
@@ -19,7 +19,7 @@
     <tbody>
     {% for curso in todos_los_cursos %}
     <tr>
-        <td><a href="{% url 'cursos3' curso.id %}">{{curso.aNo}} de turno {{curso.turno}}</a></td>
+        <td><a href="{% url 'cursos3' curso.id %}">{{curso}}</a></td>
     </tr>
     {% endfor %}
     </tbody>

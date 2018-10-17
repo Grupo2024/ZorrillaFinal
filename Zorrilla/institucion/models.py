@@ -40,6 +40,7 @@ class Trabajador(models.Model):
         (MU , 'Mujer'),
     )
     
+    #Datos estandares del trabajador, estos van a ser heredados x cualquier profesor, director o secretaria
     nombre_t = models.CharField('Nombre del trabajador', max_length=40)
     apellido_t = models.CharField('Apellido del trabajador', max_length=40)
     dni_t = models.IntegerField('Dni del trabajador', primary_key=True)
@@ -48,7 +49,6 @@ class Trabajador(models.Model):
     domicilio_t = models.CharField('Domicilio del trabajador', max_length=150, blank=True)
     email_t = models.EmailField('Email del trabajador', max_length=70, blank=True)
     sexo_t = models.CharField('Sexo', max_length=6, choices=GENERO_CHOICES)
-    #Datos estandares del trabajador, estos van a ser heredados x cualquier profesor, director o secretaria
     #foto = models.ImageField(upload_to=get_image_path, blank=True, null=True)
     #BUSCAR LO DE FOTOS
     telefono_particular = models.IntegerField('Telefono Personal del Trabajador')
@@ -58,6 +58,10 @@ class Trabajador(models.Model):
     fecha_inicio_actividad = models.DateField('Fecha de Inicio de Clases en el Colegio', auto_now_add=True)
     antecedentes_laborales = models.TextField('Datos de Trabajos Previos', max_length=300)
     estudios_cursados = models.TextField('Estudios del Trabajador', max_length=300)
+
+    #Nuevos datos que faltaban:
+    cargo = models.CharField('Cargo que posee en esta escuela', max_length=150)
+
 
     def __str__(self):
         return 'Trabajador: {} {}| dni: {}| sexo: {}'.format(self.nombre_t,
@@ -150,28 +154,35 @@ class Curso(models.Model):
             self.turno = "Mañana"
         return self.turno
 
-    def __str__(self):
-        return 'El Grado {} {} asiste al turno {}'.format(self.aNo, self.que_seccion() ,self.que_turno())
-
-
-
-class Asignacion(models.Model):
-    prof_asignado = models.ForeignKey(Profesor)
-    curso = models.ForeignKey(Curso)
+    def pasar(self):
+        siguiente = Curso.objects.get(aNo=self.aNo+1)
+        opcion = str(siguiente.aNo) + "-" + str(siguiente.seccion)
+        print (siguiente)
+        return "nada"
 
     def __str__(self):
-       return 'El profesor {} {} asiste al curso: {} {} turno {}'.format(self.prof_asignado.nombre_t, self.prof_asignado.apellido_t, self.curso.aNo, self.curso.seccion.que_seccion, self.curso.turno_asignado.que_hora())
-
-
+        return '{}-{} {}'.format(self.aNo, self.que_seccion() ,self.que_turno())
 
 class user_Docente(models.Model):
     user = models.OneToOneField(User)
     docente_referenciado = models.OneToOneField(Profesor, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return 'El usuario {} pertenece al profesor: {}'.format(self.user, self.docente_referenciado)
+
+
 class user_Secretaria(models.Model):
     user = models.OneToOneField(User)
     secretaria_referenciada = models.OneToOneField(Secretaria, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return 'El usuario {} pertenece a la secretaria: {}'.format(self.user, self.secretaria_referenciada)
+
+
 class user_Director(models.Model):
     user = models.OneToOneField(User)
     director_referenciado = models.OneToOneField(Director, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return 'El usuario {} pertenece al director: {}'.format(self.user, self.director_referenciado)
+

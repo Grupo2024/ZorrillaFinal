@@ -12,50 +12,85 @@
         <li class="breadcrumb-item "aria-current="page">{{curso.turno}}</li>
     </ol>
 </nav>
-<table class="table">
+<div class="row">
+    <div class="">
+        <input type="text"placeholder="Nombre del Alumno que desee buscar" id="myInput" onkeyup="myFunction()">
+        <select id="filter_by">
+            <option value=0>Dni</option>
+            <option value=1>Apellido</option>
+            <option value=2>Nombre</option>
+        </select>
+    </div>
+    <div class="">
+        <span style="margin-left: 175px">Cantidad de alumnos: {{alumnos_curso|length}}</span>
+    </div>
+</div>
+<br>
+<table class="table" id="myTable">
     <thead class="thead-dark">
-    <tr>
-    <th>Dni</th>
-    <th>Apellido y Nombre</th>
-    <th>Fecha de Nacimiento</th>
-    <th>Telefonos</th>
-    <th>Datos Personales</th>
-    <th>Informe Alumno</th>
-    </tr>
-    </thead>
+        <tr>
+            <th>Dni</th>
+            <th>Apellido</th>
+            <th>Nombre</th>
+            <th>Fecha de Nacimiento</th>
+            <th>Telefonos</th>
+            <th>Datos Personales</th>
+            <th>Informe Alumno</th>
+        </tr>
     <tbody>
-        {% for alumno in todos_los_alumnos %}
-    <tr>
-        <td>{{alumno.dni}}</td>
-        <td>{{alumno.apellido|title}} {{alumno.nombre|title}}</td>
-        <td>{{alumno.fecha_nacimiento}}</td>
-        <td><button class="btn btn-primary" onclick="get_alumno('{% url 'get_alumno' 'telefonos' alumno.dni %}')" id="info_book"><i style="font-size:15px" class="fa fa-phone-square"></i></button></td>
-        <td><button class="btn btn-primary" onclick="get_alumno('{% url 'get_alumno' 'otros' alumno.dni %}')" id="info_book"><i style="font-size:15px" class="fa fa-child"></i></button></td>
-        <td><a class="btn btn-primary" href="{% url 'datos_alumno' alumno.dni %}" id="info_book"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
-    </tr>
+        {% for alumno in alumnos_curso %}
+        <tr>
+            <td>{{alumno.alumno.dni}}</td>
+            <td>{{alumno.alumno.apellido|title}}</td>
+            <td>{{alumno.alumno.nombre|title}}</td>
+            <td>{{alumno.alumno.fecha_nacimiento}}</td>
+            <td><button class="btn btn-primary" onclick="get_alumno('{% url 'get_alumno' 'telefonos' alumno.alumno.dni %}')" id="info_book"><i style="font-size:15px" class="fa fa-phone-square"></i></button></td>
+            <td><button class="btn btn-primary" onclick="get_alumno('{% url 'get_alumno' 'otros' alumno.alumno.dni %}')" id="info_book"><i style="font-size:15px" class="fa fa-child"></i></button></td>
+            <td><a class="btn btn-primary" href="{% url 'datos_alumno' alumno.alumno.dni %}" id="info_book"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>
 
-    <div class="modal fade" id="modal_info">
-        <div id="datos_modal">
-        </div>
+<div class="modal fade" id="modal_info">
+    <div id="datos_modal">
     </div>
+</div>
 
 <script>
 
     function get_alumno(url, alum){
         $.ajax({
-          method: "POST",
-          url: url,
-          data: {
-            csrfmiddlewaretoken: '{{ csrf_token }}'
-          }
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
         })
-        .done(function (data) {
+            .done(function (data) {
             $("#datos_modal").html(data);
             $('#modal_info').modal('show');
         });
+    }
+
+    function myFunction() {
+        var e = document.getElementById("filter_by");
+        var strUser = e.options[e.selectedIndex].value;
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[strUser];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
     }
 
 </script>

@@ -4,55 +4,136 @@
 {% endblock navbar %}
 {% block body %}
 
+<style>
+
+    #myProgress {
+        width: 100%;
+        background-color: #ddd;
+    }
+
+    #myBar {
+        width: 10%;
+        height: 30px;
+        background-color: #4CAF50;
+        text-align: center;
+        line-height: 30px;
+        color: white;
+    }
+</style>
+
 <br>
-<div class="row" id="students">
+<div class="row" id="pedidos_matriculacion">
 
     {% for m in matriculaciones %}
 
-	  	<div class="card text-center" style="width:20%; margin-left: 3%">
-	    <div class="card-body">
-	      	<h4 class="card-title">{{m.alumno.nombre}} {{m.alumno.apellido}}</h4>
-	      	<ul class="list-group list-group-flush">
-	       	 	<li class="list-group-item">DNI: {{m.alumno.dni}}</li>
-	        	<li class="list-group-item">Fecha de nacimiento: {{m.alumno.fecha_nacimiento}}</li>
-	      	</ul>
-	    	<br>
-	    	<a class="btn btn-outline-dark" href="{% url 'alumno' m.alumno.dni %}">Ver mas</a>
-	      	<a onclick="traer_secciones('{% url 'get_Secciones' m.alumno.dni %}, {{m.alumno.dni}}')" class="btn btn-outline-dark">Matricular</a>
-	    </div>
-	    <div class="card-footer">
-	      	<small class="text-muted">Fecha de pedido: {{m.fecha_matriculacion|date:"d/M/Y"}}</small>
-	    </div>
-	 	</div>
+    <div class="card text-center" style="width:20%; margin-left: 3%">
+        <div class="card-body">
+            <h4 class="card-title">{{m.alumno.nombre}} {{m.alumno.apellido}}</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">DNI: {{m.alumno.dni}}</li>
+                <li class="list-group-item">Fecha de nacimiento: {{m.alumno.fecha_nacimiento}}</li>
+            </ul>
+            <br>
+            <a class="btn btn-outline-dark" href="{% url 'datos_alumno' m.alumno.dni %}">Ver mas</a>
+            <a onclick="traer_secciones('{% url 'get_Secciones' m.alumno.dni %}, {{m.alumno.dni}}')" class="btn btn-outline-dark">Matricular</a>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Fecha de pedido: {{m.fecha_matriculacion|date:"d/M/Y"}}</small>
+        </div>
+    </div>
 
-  	{% endfor %}
+    {% endfor %}
+
+    {% for m in re_matricular %}
+
+    <div class="card text-center" style="width:20%; margin-left: 3%">
+        <div class="card-body">
+            <h4 class="card-title">{{m.alumno.nombre}} {{m.alumno.apellido}}</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">DNI: {{m.alumno.dni}}</li>
+                <li class="list-group-item">Fecha de nacimiento: {{m.alumno.fecha_nacimiento}}</li>
+            </ul>
+            <br>
+            <a class="btn btn-outline-dark" href="{% url 'datos_alumno' m.alumno.dni %}">Ver mas</a>
+            <a onclick="traer_secciones('{% url 're_matricular' m.alumno.dni %}, {{m.alumno.dni}}')" class="btn btn-outline-dark">Re Matricular</a>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Fecha de pedido: {{m.fecha_matriculacion|date:"d/M/Y"}}</small>
+        </div>
+    </div>
+
+    {% endfor %}
 </div>
 
-    {% if matriculaciones|length == 0 %}
+{% if matriculaciones|length == 0 %}
 
-        <h2><center>No quedan Pedidos</center></h2>
+<h2><center>No hay ningun pedido</center></h2>
 
-    {% endif %}
+{% endif %}
 
-<div id="snackbar"><span id="span_result"></span></div>
-    
+
 <div class="modal fade" id="modal_cursos">
+    <div class="modal-dialog modal-sm">
         <div id="datos_modal">
         </div>
+    </div>
 </div>
-             
+
+<div class="modal fade" id="todos_los_padres">
+    <div class="modal-dialog modal-lg">
+        <div id="datos_padre">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="todos_los_transportistas">
+    <div class="modal-dialog modal-lg">
+        <div id="datos_transportista">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Modal_resultado" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Matriculando Alumno:</h5>
+            </div>
+            <div class="container-fluid">
+                <div class="modal-body row">
+                    <p class="col-sm-2">Resultado: </p><span style='visibility:hidden;'>..</span>
+                    <div class="col-sm-9">
+                        <div id="myProgress">
+                            <p id="myBar" value="10%"></p>
+                        </div>
+                    </div>
+                    <span id="resultado"></span>
+                </div>
+                <div class="modal-footer" id="footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="close_modal()" id="volver">Continuar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="reload" action="{% url 'traer_pedidos' %}">
+</form>
 
 <script>
 
-    function updateDiv()
-    {
-      $( "#students" ).load(window.location.href + " #students" );
+
+
+    function use_transporte(e) {
+        var aux = document.getElementById("transporte").value
+        var sel_div = document.getElementById("new_transporte");
+        if (aux == 0){
+            sel_div.style.display = "none";
+        } else {
+            sel_div.style.display = "block";
+        }
     }
-    
-    function curso(e) {
-        document.getElementById("selected_curso").value = e.target.value
-    }
-       
+
     function traer_secciones(url, alum){
         $.ajax({
             method: "POST",
@@ -61,12 +142,111 @@
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             }
         })
-        .done(function (data) {
+            .done(function (data) {
             $("#datos_modal").html(data);
-            $('#modal_cursos').modal('show'); 
+            $('#modal_cursos').modal('show');
         });
     }
 
+    function sleep() {
+        return new Promise(resolve => setTimeout(resolve, 1000));
+    }
+
+    async function footer(a){
+        var elem = document.getElementById("myBar");
+        var width = 10;
+        var id = setInterval(frame, 10);
+        function frame() {
+            if (width >= 100) {
+                clearInterval(id);
+            } else {
+                width++;
+                elem.style.width = width + '%';
+                elem.innerHTML = width * 1  + '%';
+            }
+        }
+        await sleep();
+        elem.style.display = "none";
+        document.getElementById("resultado").innerHTML = a;
+        return a
+
+    }
+
+    function matricular(){
+        var curso_elegido = document.getElementById('select_curso');
+        if (curso_elegido.value == 0){
+            alert("Selecciona un Curso");
+        } else {
+            if (confirm("¿ Matricular al Alumno ?")) {
+                var myForm = document.getElementById('form_for_curso');
+                formData = new FormData(myForm);
+                var elem = document.getElementById("myBar");
+                elem.style.display = "block";
+                var resultado = document.getElementById("resultado");
+                resultado.innerHTML = "";
+                var y = document.getElementById("volver");
+                y.style.display = "none";
+                $('#Modal_resultado').modal('show');
+                $.ajax({
+                    url: '{% url 'aceptar_matriculacion' %}',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function(data){
+                        $('#modal_cursos').modal('hide');
+                        footer(data.resultado);
+                        y.style.display = "block";
+                    }
+                });
+            } else {
+                return;
+            }
+        }
+    }
+
+    function traer_transportistas(url){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_transportista").html(data);
+            $('#modal_cursos').modal('hide');
+            $('#todos_los_transportistas').modal('show');
+        });
+    }
+
+    function traer_padres(url){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_padre").html(data);
+            $('#modal_cursos').modal('hide');
+            $('#todos_los_padres').modal('show');
+        });
+    }
+
+    function curso(e) {
+        document.getElementById("selected_curso").value = e.target.value
+    }
+
+    function close_modal(){
+        $('#Modal_resultado').modal('hide');
+        var aux = document.getElementById("reload")
+        aux.submit();
+    }
+
+    function mandar_padre(){
+    }
 </script>
 
 {% endblock body %}

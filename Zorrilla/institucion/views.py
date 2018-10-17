@@ -26,7 +26,7 @@ def email_for_logIn(request):
             clave_Docente2 = clave_Docente(clave_logIn=clave, email_docente=docente_email, dni_docente=docente_dni)
             clave_Docente2.save()
             subject = "Clave para Iniciar"
-            message = "En el dia de la fecha el instituto Zorrilla le notifica que ya tiene disponible el ingreso al formulario para cargar sus datos en nuestro sistema con la clave " + str(clave)
+            message = "En el dia de la fecha el Instituto Zorrilla le notifica que ya tiene disponible el ingreso al formulario para cargar sus datos en nuestro sistema con la clave " + str(clave)
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [docente_email]
             send_mail( subject, message, email_from, recipient_list )
@@ -34,14 +34,14 @@ def email_for_logIn(request):
                 'error':False,
                 'resultado': "Pedido enviado"
             }
-            print "es valido"
+            print ("es valido")
             return JsonResponse(data)
         else:
-            print "No es valido"
-            print form.errors
+            print ("No es valido")
+            print (form.errors)
             data = {
                 'error':True,
-                'resultado': "No es valido"
+                'resultado': str(form.errors)
             }
             return JsonResponse(data)
 
@@ -62,26 +62,30 @@ def cursos1(request):
 
 @login_required
 def cursos2(request, turno):
-    print turno
+    print (turno)
     if turno == "Maniana":
-        turno = False
+        aux = False
     else:
-        turno = True
-    curso = Curso.objects.filter(hora=turno).order_by('aNo')
+        aux = True
+    curso = Curso.objects.filter(hora=aux).order_by('aNo')
     for a in curso:
         a.new_turno()
-    return render(request, 'templates_cursos/cursos2.html', {'todos_los_cursos':curso}, {'turno':turno} )
+
+    data_curso = {
+        'turno':turno
+    }
+    return render(request, 'templates_cursos/cursos2.html', {'todos_los_cursos':curso, 'turno':data_curso})
 
 @login_required
 def cursos3(request, id_curso):
     curso = Curso.objects.get(pk=id_curso)
-    alumno = Alumno.objects.filter(curso=curso)
+    alumnos_curso = alumno_Curso.objects.filter(curso=curso)
     data_curso = {
         'turno':curso.que_turno(),
         'año':curso.aNo,
         'seccion':curso.que_seccion()
     }
-    return render(request, 'templates_cursos/cursos3.html', {'todos_los_alumnos':alumno, 'curso':data_curso})
+    return render(request, 'templates_cursos/cursos3.html', {'alumnos_curso':alumnos_curso, 'curso':data_curso})
 
 
 @login_required
@@ -89,10 +93,10 @@ def get_alumno(request, string, dni_alumno):
     if request.method == 'POST':
         alumno = Alumno.objects.get(dni=dni_alumno)
         if string == "telefonos":
-            print "telefono"
+            print ("telefono")
             return render(request, 'templates_cursos/telefonos_alumno.html', {'alumno':alumno})
         else:
-            print "otro"
+            print ("otro")
             return render(request, 'templates_cursos/perfil_alumno.html', {'alumno':alumno})
     return HttpResponse("SOlo podes entrar por post")
 
@@ -113,7 +117,7 @@ def profesor(request, id_profesor):
 
 @user_passes_test(check_Profesor)
 def modificar_profesor(request):
-    print request.user
+    print (request.user)
     udocente = user_Docente.objects.get(user__username=request.user)
     return render(request, 'templates_docentes/perfilProfesor.html', {'trabajador':udocente.docente_referenciado})
 

@@ -1,0 +1,18 @@
+<form id="form_padre" method="post">
+    {% csrf_token %}
+    <p>Nombre: </p>{{padre_form.nombre}}
+    <p>Apellido:</p>{{padre_form.apellido}}
+    <p>Dni:</p>{{padre_form.dni}}
+    <p>Lugar Nacimiento:</p>{{padre_form.lugar_nacimiento}}
+    <p>Fecha Nacimiento:</p>{{padre_form.fecha_nacimiento}}
+    <p>Domicilio:</p>{{padre_form.domicilio}}
+    <p>Email:</p>{{padre_form.email}}
+    <p>Sexo:</p>{{padre_form.sexo}}
+    <p>Profesion:</p>{{padre_form.profesion}}
+    <p>Telefono del Trabajo:</p>{{padre_form.telefono_trabajo}}
+    <input type="hidden" name="dni_alumno" id="dni_alumno" value = {{datos_alumno.dni_alumno}}>
+
+    <span id="resultado2"></span>
+</form>
+
+<center><button class="btn btn-success" onclick="crear_Padre()" style="width:30%">Cargar</button></center>

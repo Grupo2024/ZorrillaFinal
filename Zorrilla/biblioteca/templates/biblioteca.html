@@ -5,108 +5,92 @@
 {% block body %}
 
 {% load poll_extras %}
-
-<div class="sidenav">
-    <h1 align="center" class="text-white">Indice</h1>
-  
-    <button class="dropdown-btn">Alfabeticamente<i class="fa fa-caret-down"></i></button>
-    <div class="dropdown-container">
-      <a href="{% url 'filtered_books' 'title' 5 %}">5 libros</a>
-      <a href="{% url 'filtered_books' 'title' 10 %}">10 libros</a>
-      <a href="{% url 'filtered_books' 'title' 25 %}">25 libros</a>
-      <a href="{% url 'filtered_books' 'title' 50 %}">50 libros</a>
-      <a href="{% url 'filtered_books' 'title' 100 %}">100 libros</a>
-    </div>
-    <button class="dropdown-btn">Genero<i class="fa fa-caret-down"></i></button>
-    <div class="dropdown-container">
-      <a href="{% url 'filtered_books' 'genero' 5 %}">5 libros</a>
-      <a href="{% url 'filtered_books' 'genero' 10 %}">10 libros</a>
-      <a href="{% url 'filtered_books' 'genero' 25 %}">25 libros</a>
-      <a href="{% url 'filtered_books' 'genero' 50 %}">50 libros</a>
-      <a href="{% url 'filtered_books' 'genero' 100 %}">100 libros</a>
-    </div>
-    {% if request.user|has_group:"Director" %} 
-        <button class="dropdown-btn">Deshabilitado<i class="fa fa-caret-down"></i></button>
-        <div class="dropdown-container">
-          <a href="{% url 'libros_habilitados' 5 %}">5 libros</a>
-          <a href="{% url 'libros_habilitados' 10 %}">10 libros</a>
-          <a href="{% url 'libros_habilitados' 25 %}">25 libros</a>
-          <a href="{% url 'libros_habilitados' 50 %}">50 libros</a>
-          <a href="{% url 'libros_habilitados' 100 %}">100 libros</a>
-        </div>
-    {% endif %}
-    <a href="{% url 'all_the_books' %}">Todos</a>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    {% if request.user|has_group:"Director" %}
-        <button class="btn btn-dark boton_informe btn-lg btn-block" onclick="informe('{% url 'informe' %}')">Informe</button>
-    {% endif %}
-    {% if user.is_authenticated %}
-        <button class="btn btn-success boton_cargar btn-lg btn-block"  data-toggle="modal" data-target="#myModal">Añadir libro</button>
-    {% endif %}
-
-</div>
-
-  
   
 <div class="main">
   <br>
   <div class="container">
     <div class="row">
       <div class="">
-        <input type="text"placeholder="Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
-        <select id="filter_by">
-            <option value=0>Titulo</option>
-            <option value=1>Descripción</option>
-            <option value=2>Fecha</option>
-        </select>
-      </div>   
+        <!-- Buscador -->
+        <input style="margin-left: 4%;" type="text" placeholder=" Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
+        <!-- Dropdown filter -->
+        <button type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by">Buscar por</button>
+        <div class="dropdown-menu" id="filter_by">
+            <option class="dropdown-item" value=0>Titulo</option>
+            <option class="dropdown-item" value=1>Descripción</option>
+            <option class="dropdown-item" value=2>Fecha</option>
+        </div>
+        <!-- Filter button -->
+        <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#myModal2">
+        <i class="fa fa-filter" aria-hidden="true"></i> Filtrar
+
+        {% if user.is_authenticated %}
+            <button style="margin-left: 144%; margin-top: -5%" class="btn btn-success" data-toggle="modal" data-target="#myModal">Añadir libro</button>
+        {% endif %}
+
+        {% if request.user|has_group:"Director" %}
+            <button style="margin-left: 131%; margin-top: -5.5%" class="btn btn-dark" onclick="informe('{% url 'informe' %}')">Informe</button>
+        {% endif %}
+
   </div>
   </div>
+
+    <div class="modal fade" id="modal_info">
+          <div id="datos_modal_info">
+          </div>
+      </div>
+
+      <div class="modal fade" id="modal_historia">
+          <div id="modal_historia_info">
+          </div>
+      </div>
+
+      <div class="modal fade" id="modal_estadistica">
+          <div id="modal_estadistica_info">
+          </div>
+      </div>
+
   <div class="container">
       <div class="row">
-          <div class="col-md-12">
+          <div style="margin-left: 0%" class="col-12">
           <h4></h4>
-          <div class="table-responsive">
-              <table id="mytable" class="table table-hover">
-                <thead>
-                    <th onclick="sortTable(0)">Titulo</th>
-                    <th onclick="sortTable(1)">Descripción</th>
-                    <th onclick="sortTable(2)">Fecha</th>
-                    <th>Info</th>
-                    {% if request.user|has_group:"Profesor" %}
-                        <th>Borrar</th>
-                    {% endif %}
-                    {% if request.user|has_group:"Director" %}
-                        <th>Historia</th>
-                        <th>Estado</th>
-                    {% endif %}
-                    <th>Ver Libro</th>
-                </thead>
-                <tbody>
-                {% for doc in documentos %}
-                    <tr>
-                        <td>{{doc.title}}</td>
-                        <td>{{doc.description}}</td>
-                        <td>{{doc.uploaded_at}}</td>
-                        <td><button class="btn btn-primary" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></button></td>
-                        {% if request.user|has_group:"Profesor" %}
-                            <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
-                        {% endif %}
-                        {% if request.user|has_group:"Director" %}
-                        <td><button class="btn btn-primary fa fa-history" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book"></button></td>
-                            <td><button class="btn btn-primary" onclick="deshabilitar_libro('{% url 'cambiar_estado_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf085;</i></button></td>
-                        {% endif %}
-                        <td><a type="button" class="btn btn-primary text-white" href="{{ doc.document.url }}">Abrir</a></td>
-                    </tr>
-                  {% endfor %}
-                  </tbody>
-              </table>
+      <table class="table table-sm table-hover">
+        <thead>
+          <tr>
+            <th scope="col" onclick="sortTable(0)">Titulo</th>
+            <th scope="col" onclick="sortTable(1)">Descripción</th>
+            <th scope="col" onclick="sortTable(2)">Fecha</th>
+            <th scope="col" >Info</th>
+            {% if request.user|has_group:"Profesor" %}
+              <th scope="col" >Borrar</th>
+            {% endif %}
+            {% if request.user|has_group:"Director" %}
+              <th scope="col" >Historia</th>
+              <th scope="col" >Estado</th>
+            {% endif %}
+            <th scope="col" >Ver libro</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for doc in documentos %}
+          <tr>
+            <td>{{doc.titulo}}</td>
+            <td>{{doc.descripcion}}</td>
+            <td>{{doc.fecha}}</td>
+            <td><button class="btn btn-primary" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></button></td>
+            {% if request.user|has_group:"Profesor" %}
+              <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
+            {% endif %}
+            {% if request.user|has_group:"Director" %}
+              <td><button class="btn btn-primary fa fa-history" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book"></button></td>
+              <td><button class="btn btn-primary" onclick="deshabilitar_libro('{% url 'cambiar_estado_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf085;</i></button></td>
+            {% endif %}
+            <td><a class="btn btn-primary text-white" href="{{ doc.documento.url }}">Abrir</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
               
       <div id="snackbar"><span id="span_result"></span></div>
               
@@ -125,7 +109,7 @@
                     <div class="form-group">
                         <label class="form_biblo" >Descripcion:</label>
                         <div>
-                          {{ form.description }}
+                          {{ form.descripcion }}
                         </div>
                     </div>
 
@@ -133,7 +117,7 @@
                     <div class="form-group">
                       <label class="form_biblo">Elija un archivo:</label>
                       <div style="margin-left: 3%;">
-                          {{form.document}}
+                          {{form.documento}}
                       </div>
                     </div>
 
@@ -141,7 +125,7 @@
                     <div class="form-group">
                       <label class="form_biblo">Titulo:</label>
                       <div>
-                        {{ form.title}}
+                        {{ form.titulo}}
                       </div>
                     </div>
 
@@ -152,7 +136,7 @@
                       </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" id="sub">
                       <label class="form_biblo">Autor:</label>
                       <div>
                         {{ form.autor}}
@@ -169,29 +153,91 @@
             </div>
         </div>
       
+    <div class="modal fade" id="myModal2">
+    <div class="modal-dialog">
+      <div class="modal-content">
 
-    <div class="modal fade" id="modal_info">
-        <div id="datos_modal">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Filtros</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-    </div>
-              
-    <div class="modal fade" id="modal_historia">
-        <div id="modal_historia_info">
+
+        <!-- Modal body -->
+          <form id="filtros" action="{% url 'filtered_books' %}" method="post">
+              {% csrf_token %}
+        <div class="modal-body">
+
+      <!-- Dropdown filter orden -->
+        <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by2">Ordenar Por:</button>
+        <div class="dropdown-menu" id="filter_by2">
+            <option class="dropdown-item" value=0>Titulo</option>
+            <option class="dropdown-item" value=1>Descripción</option>
+            <option class="dropdown-item" value=2>Fecha</option>
         </div>
-    </div>
-              
-    <div class="modal fade" id="modal_estadistica">
-        <div id="modal_estadistica_info">
+
+         <!-- Dropdown filter cantidad -->
+        <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by3">Cantidad:</button>
+        <div class="dropdown-menu" id="filter_by3">
+            <option class="dropdown-item" value=5>5</option>
+            <option class="dropdown-item" value=10>10</option>
+            <option class="dropdown-item" value=15>15</option>
+            <option class="dropdown-item" value=25>25</option>
+            <option class="dropdown-item" value=50>50</option>
         </div>
+
+        <!-- Dropdown filter sentido -->
+        <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by3">Sentido:</button>
+        <div class="dropdown-menu" id="filter_by3">
+            <option class="dropdown-item" value='Ascendente'>Ascendente</option>
+            <option class="dropdown-item" value='Descendente'>Descendente</option>
+        </div>
+
+        <!-- Modal footer -->
+        <div style="margin-top: 5%" class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-success">Filtrar</button>
+        </div>
+        </form>
+      </div>
     </div>
+  </div>
 
 <script>
     
+    var input = document.getElementById("sub");
+    input.addEventListener("keyup", function(event) {
+        event.preventDefault();
+        if (event.keyCode === 13) {
+            load_book();
+        }
+    });
+
     function updateDiv()
     {
       $( "#mytable" ).load(window.location.href + " #mytable" );
     }
         
+    function set_filter(e) {
+        document.getElementById("ordenado").value = e.target.value
+    }
+
+    function set_cantidad(e) {
+        document.getElementById("cantidad").value = e.target.value
+    }
+
+    function set_sentido(e) {
+        document.getElementById("input_sentido").value = e.target.value
+        var aux = ""
+        var sentido = document.getElementById("sentido")
+        if (document.getElementById("input_sentido").value = "Ascendente"){
+            sentido.value = "";
+        } else {
+            sentido.value = "-";
+        }
+
+    }
+
     function load_book(){
         var myForm = document.getElementById('form_for_book');
         formData = new FormData(myForm);
@@ -351,8 +397,7 @@ function info_libro(url, alum) {
         }
     })
     .done(function (data) {
-        console.log("llega");
-        $("#datos_modal").html(data);
+        $("#datos_modal_info").html(data);
         $('#modal_info').modal('show'); 
     });
 };

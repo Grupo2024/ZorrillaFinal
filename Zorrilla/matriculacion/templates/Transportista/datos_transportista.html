@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+<br>
+<div class="card text-center" style="width: 30%; margin-left: 35%">
+    <div class="card-body">
+        <h4 class="card-title">Datos del Transportista</h4>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Nombre: {{transportista.nombre}}</li>
+            <li class="list-group-item">Apellido: {{transportista.apellido}}</li>
+            <li class="list-group-item">Dni: {{transportista.dni}}</li>
+            <li class="list-group-item">Lugar Nacimiento: {{transportista.lugar_nacimiento}}</li>
+            <li class="list-group-item">Fecha Nacimiento: {{transportista.fecha_nacimiento}}</li>
+            <li class="list-group-item">Domicilio: {{transportista.domicilio}}</li>
+            <li class="list-group-item">Email: {{transportista.email}}</li>
+            <li class="list-group-item">Sexo: {{transportista.sexo}}</li>
+            <li class="list-group-item">Nombre del Transporte: {{transportista.nombre_transporte}}</li>
+            <li class="list-group-item">Telefono del Transporte: {{transportista.telefono_transportista}}</li>
+            <li class="list-group-item">Detalles del Transporte: {{transportista.detalles_transportista}}</li>
+        </ul>
+    </div>
+</div>
+
+
+{% endblock body %}

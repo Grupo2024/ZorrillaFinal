@@ -4,7 +4,23 @@
 {% endblock navbar %}
 {% block body %}
 
+<style>
 
+    #myProgress {
+        width: 100%;
+        background-color: #ddd;
+    }
+
+    #myBar {
+        width: 10%;
+        height: 30px;
+        background-color: #4CAF50;
+        text-align: center;
+        line-height: 30px;
+        color: white;
+    }
+
+</style>
 
 <div class="card mx-auto" style="width: 35%; margin-top: 5%">
     <form method="POST" id=login_form>
@@ -23,45 +39,93 @@
                 </div>
                 <br>
                 <label class="form_biblo col-sm-4">Dni:</label>
-                <div class="form-group">
+                <div class="form-group" id="sub">
                     {{form.dni_docente}}
                 </div>
             </div>
-            </article>
-        </form>
+        </article>
+    </form>
     <button class="btn btn-success btn-block mx-auto" align="center" onclick="send_key()">Enviar</button>
 </div>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Enviando Clave</h5>
-      </div>
-      <div class="modal-body">
-          <p>Estado:</p><span id="email_encontrado"></span>
-      </div>
-      <div class="modal-footer" id="footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="index()">Continuar</button>
-      </div>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Enviando Clave</h5>
+            </div>
+            <div class="modal-body">
+                <p>Resultado: </p>
+                <div id="myProgress">
+                    <p id="myBar" value="10%"></p>
+                </div>
+                <span id="resultado"></span>
+            </div>
+            <div class="modal-footer" id="footer">
+                <p align="right">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="index()" id="continuar">Continuar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="close_modal()" id="volver">Volver</button>
+                </p>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
- <form id="index" action="{% url 'index' %}"></form>
+<form id="index" action="{% url 'index' %}"></form>
 
 <script>
 
-     function send_key(){
+    var input = document.getElementById("sub");
+    input.addEventListener("keyup", function(event) {
+        event.preventDefault();
+        if (event.keyCode === 13) {
+            send_key();
+        }
+    });
+
+    function sleep() {
+      return new Promise(resolve => setTimeout(resolve, 2000));
+    }
+
+    async function footer(a){
+        var elem = document.getElementById("myBar");
+        var width = 10;
+        var id = setInterval(frame, 10);
+        function frame() {
+            if (width >= 100) {
+                clearInterval(id);
+            } else {
+                width++;
+                elem.style.width = width + '%';
+                elem.innerHTML = width * 1  + '%';
+            }
+        }
+        await sleep();
+        elem.style.display = "none";
+        var resultado = document.getElementById("resultado");
+        resultado.innerHTML = a;
+        return a
+
+    }
+
+    function close_modal(){
+        $('#myModal').modal('hide');
+    }
+
+    function index(){
+        $('#index').submit()
+    }
+
+    function send_key(){
         var myForm = document.getElementById('login_form');
         formData = new FormData(myForm);
-        var x = document.getElementById("footer");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
+        var elem = document.getElementById("myBar");
+        var x = document.getElementById("continuar");
+        var y = document.getElementById("volver");
+        x.style.display = "none";
+        y.style.display = "none";
         $('#myModal').modal('show');
+        $('#myProgress').show();
         $.ajax({
             url: '/email_for_logIn/',
             data: formData,
@@ -70,19 +134,16 @@
             type: 'POST',
             success: function(data){
                 if (data.error){
-                    document.getElementById("email_encontrado").innerHTML = data.resultado;
-                    setTimeout(4000);
-                    $('#myModal').modal('hide');
+                    footer(data.resultado);
+                    x.style.display = "none";
+                    y.style.display = "block";
                 }else{
+                    footer(data.resultado);
+                    y.style.display = "none";
                     x.style.display = "block";
-                    document.getElementById("email_encontrado").innerHTML = data.resultado;
                 }
             }
         });
-    }
-
-    function index(){
-        $('#index').submit()
     }
 
 </script>

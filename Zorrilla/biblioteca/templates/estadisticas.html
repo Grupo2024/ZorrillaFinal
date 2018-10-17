@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript"></script>
+<body >
+
+     <table class="columns">
+      <tr>
+        <td><div id="barchart_values" style="width: 620px; height: 300px;"></div></td>
+        <td><div id="columnchart_values" style="width: 800px; height: 300px;"></div></td>
+      </tr>
+    </table>
+
+</body>
+
+<script>
+
+
+    // Load Charts and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Draw the pie chart for Sarah's pizza when Charts is loaded.
+      google.charts.setOnLoadCallback(drawSarahChart);
+
+      // Draw the pie chart for the Anthony's pizza when Charts is loaded.
+      google.charts.setOnLoadCallback(drawAnthonyChart);
+
+      // Callback that draws the pie chart for Sarah's pizza.
+      function drawSarahChart() {
+
+        // Create the data table for Sarah's pizza.
+        google.charts.load("current", {packages:['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ["Genero", "Cantidad", { role: "style" } ],
+            ["Drama", {{datos_libros.cant_drama}}, "#000000"],
+            ["Romance", {{datos_libros.cant_romance}}, "#FF0180"],
+            ["Accion", {{datos_libros.cant_accion}}, "#38354B"],
+            ["Ciencia Ficcion", {{datos_libros.cant_cf}}, "#61FF00"],
+            ["Terror", {{datos_libros.cant_terror}}, "#C30000"],
+            ["Aventura", {{datos_libros.cant_aventura}}, "#b87333"],
+            ["Policial", {{datos_libros.cant_policial}}, "#001FFF"],
+            ["Fantasia", {{datos_libros.cant_fantasia}}, "#9BC307"],
+            ["Otros", {{datos_libros.cant_otros}}, "#D1D1D1"],
+          ]);
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1,
+                           { calc: "stringify",
+                             sourceColumn: 1,
+                             type: "string",
+                             role: "annotation" },
+                           2]);
+
+          var options = {
+            title: "Cantidad de Libros por Genero.",
+            width: 800,
+            height: 500,
+            bar: {groupWidth: "95%"},
+            legend: { position: "none" },
+          };
+          var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
+          chart.draw(view, options);
+      }
+      }
+
+      // Callback that draws the pie chart for Anthony's pizza.
+      function drawAnthonyChart() {
+
+        // Create the data table for Anthony's pizza.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Slices');
+        data.addRows([
+          ['Habilitados', {{datos_libros.libros_habilitados}}],
+          ['Deshabilitados', {{datos_libros.libros_deshabilitados}}]
+        ]);
+
+        // Set options for Anthony's pie chart.
+        var options = {title:'Libros Habilitados y Deshabilitados.',
+                       width:650,
+                       height:550};
+
+        // Instantiate and draw the chart for Anthony's pizza.
+        var chart = new google.visualization.PieChart(document.getElementById('barchart_values'));
+        chart.draw(data, options);
+      }
+    </script>
+
+{% endblock body %}

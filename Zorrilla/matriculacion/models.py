@@ -18,10 +18,10 @@ class Persona(models.Model):
     nombre = models.CharField('Nombre', max_length=40)
     apellido = models.CharField('Apellido', max_length=40)
     dni = models.IntegerField('Dni', primary_key=True)
-    lugar_nacimiento = models.CharField('Lugar de Nacimiento', max_length=150, blank=True)
+    lugar_nacimiento = models.CharField('Lugar de Nacimiento', max_length=150, null=False)
     fecha_nacimiento = models.DateField('Fecha de nacimiento', default="2000-10-10")
-    domicilio = models.CharField('Domicilio', max_length=150, blank=True)
-    email = models.EmailField('Email', max_length=70, blank=True)
+    domicilio = models.CharField('Domicilio', max_length=150, null=False)
+    email = models.EmailField('Email', max_length=70, null=False)
     sexo = models.CharField('Sexo', max_length=6, choices=GENERO_CHOICES)
 
     #Datos estandares de persona, estos van a ser heredados x cualquier profesor o alumno
@@ -34,14 +34,6 @@ class Persona(models.Model):
         abstract = True
 
 
-class Autorizado(Persona):
-    autorizacion = models.BooleanField('Esta autorizado o no')
-
-    def __str__(self):
-        return 'Persona: {} {}| dni: {}|'.format(self.nombre, self.apellido, self.dni)
-
-
-
 class Transportista(Persona):
     nombre_transporte = models.CharField('Nombre del Transporte', max_length=40)
     telefono_transportista = models.IntegerField('Telefono del Transportista')
@@ -50,6 +42,12 @@ class Transportista(Persona):
     def __str__(self):
         return 'Persona: {} {}| dni: {}|'.format(self.nombre, self.apellido, self.dni)
 
+
+class Obra_Social(models.Model):
+    nombre = models.CharField('Nombre Obra Social', max_length=40, null=True)
+
+    def __str__(self):
+        return 'Obra Social: {}'.format(self.nombre)
 
 
 class Padre_madre(Persona):
@@ -60,9 +58,7 @@ class Padre_madre(Persona):
         return 'Persona: {} {}| dni: {}|'.format(self.nombre, self.apellido, self.dni)
 
 
-
 class Alumno(Persona):
-    curso = models.ForeignKey(Curso, blank=True)
     telefono_casa = models.IntegerField('Telefono de la Casa')
     telefono_padre = models.IntegerField('Telefono del Padre', null=True)
     telefono_madre = models.IntegerField('Telefono de la Madre', null=True)
@@ -72,28 +68,78 @@ class Alumno(Persona):
     con_quien_vive = models.CharField('Con quien vive', max_length=40)
     quien_lo_trae = models.CharField('Quien lo trae', max_length=40)
     telefono_que_lo_trae = models.IntegerField('Telefono de quien lo trae')
-    utiliza_transporte = models.BooleanField('Viene o no en transporte') #Si viene o se va en transporte
-    transporte = models.ForeignKey(Transportista, null=True)
-    autorizados = models.ForeignKey(Autorizado, null=True)
-    padres = models.ForeignKey(Padre_madre, null=True)
-    tiene_obra_social = models.BooleanField('Tiene obra o no')
-    obra_social_nombre = models.CharField('Nombre Obra Social', max_length=40, null=True)
-    obra_social_numero = models.IntegerField('Num Obra Social')#Numero de afiliacion a la obra social
-    matriculado = models.BooleanField('Esta matriculado o no')
 
     def __str__(self):
         return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre, self.apellido, self.dni, self.sexo)
 
-    def matricular(self):
-        if self.matriculado is not False:
-            self.matriculado = True
-        return self.matriculado
+
+class Autorizado(Persona):
+    telefono_autorizado = models.IntegerField('Telefono del autorizado')
+    relacion_con_alumno = models.TextField('Que relacion tiene con el alumno', max_length=300)
+    alumno = models.ForeignKey(Alumno, null=False)
+
+    def __str__(self):
+        return 'Persona: {} {}| dni: {}|'.format(self.nombre, self.apellido, self.dni)
+'''
+    Esta clase autorizado, esta hecha para las personas que no sean padre, madre o transportista
+    y puedan retirar al alumno, se requiere aclarar la relacion entre esta persona y el alumno
+    en cuestion.
+'''
 
 
 class Matriculacion(models.Model):
+
+    SI = 'Si'
+    NO = 'No'
+    RE = 'Re'
+
+    MATRICULACION_CHOICES = (
+        (SI , 'Si'),
+        (NO , 'No'),
+        (RE, 'Re')
+    )
+
     alumno = models.ForeignKey(Alumno, null=False)
-    fecha_matriculacion = models.DateTimeField('Fecha Matriculacion', blank=True)
-    matriculado = models.BooleanField('Esta matriculado o no', default=False)
+    fecha_matriculacion = models.DateTimeField('Fecha Matriculacion', auto_now_add=True)
+    matriculado = models.CharField('Estado', max_length=2, choices=MATRICULACION_CHOICES)
 
     def __str__(self):
         return 'El alumno: {} tiene un estado de matriculacion {}'.format(self.alumno.nombre, self.matriculado)
+
+
+'''
+    Ahora vienen todas clases intermedias, para hacer que la relacion entre estas,
+    y alumno, sea de muchos a muchos
+'''
+
+
+class Familia(models.Model):
+    alumno = models.ForeignKey(Alumno, null=False)
+    padre_madre = models.ForeignKey(Padre_madre, null=False)
+
+    def __str__(self):
+        return '{} - {}'.format(self.padre_madre.nombre, self.alumno.nombre)
+
+
+class usa_Transporte(models.Model):
+    alumno = models.ForeignKey(Alumno, null=False)
+    transportista = models.ForeignKey(Transportista, null=False)
+
+    def __str__(self):
+        return 'El alumno: {} utiliza el transportista: {}'.format(self.alumno.nombre, self.transportista.nombre_transporte)
+
+
+class usa_Obra_Social(models.Model):
+    alumno = models.ForeignKey(Alumno, null=False)
+    obra_social = models.ForeignKey(Obra_Social, null=False)
+    numero_afiliado = models.IntegerField('Num Obra Social', null=False)#Numero de afiliacion a la obra social
+
+    def __str__(self):
+        return'El alumno {} utiliza la obra social {}'.format(self.alumno.nombre, self.obra_social.nombre)
+
+class alumno_Curso(models.Model):
+    alumno = models.OneToOneField(Alumno, null=False)
+    curso = models.ForeignKey(Curso, null=False)
+
+    def __str__(self):
+        return 'El alumno {} asiste al curso {}'.format(self.alumno.nombre, self.curso)
