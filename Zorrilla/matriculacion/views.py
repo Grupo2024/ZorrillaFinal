@@ -99,9 +99,14 @@ def template_get_pass(request):
 
 #Levantar el Form para cargar al Padre.
 def cargar_padre(request, dni_alumno):
-    print (dni_alumno)
     padre_form = PadreForm()
     return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':dni_alumno})
+
+
+def modificar_alumno(request, dni_alumno):
+    alumno_form = Modificar_Alumno_Form()
+    return render(request, 'modificar_alumno.html', {'alumno_form':alumno_form, 'dni_alumno':dni_alumno})
+
 
 """
 =========
@@ -141,7 +146,8 @@ def crear_padre(request):
         dni_padre = padre_form.cleaned_data['dni']
         padre = Padre_madre.objects.get(dni=dni_padre)
         print (padre)
-        familia = Familia(alumno=alumno, padre_madre=padre)
+        secretaria = user_Secretaria.objects.get(user=request.user)
+        familia = Familia(alumno=alumno, padre_madre=padre, secretaria=secretaria.secretaria_referenciada)
         familia.save()
         new_Matriculacion = Matriculacion(alumno=alumno, matriculado="No")
         new_Matriculacion.save()
@@ -225,7 +231,9 @@ def asignar_padre(request):
         dni_padre = request.POST['dni_padre']
         alumno = Alumno.objects.get(dni=dni)
         padre = Padre_madre.objects.get(dni=dni_padre)
-        familia = Familia(alumno=alumno, padre_madre=padre)
+        secretaria = user_Secretaria.objects.get(user=request.user)
+        familia = Familia(alumno=alumno, padre_madre=padre, secretaria=secretaria.secretaria_referenciada)
+        familia.save()
         familia.save()
         data = {
             'resultado': 'Padre asignado con exito.'
@@ -399,6 +407,28 @@ def cambiar_password(request):
             }
             return JsonResponse(data)
     return HttpResponse("Solo podes acceder por Post")
+
+def aplicar_cambios_alumno(request):
+    print "arranca"
+    if request.method == 'POST':
+        alumno_form = Modificar_Alumno_Form(request.POST)
+        dni_alumno = request.POST['dni_alumno']
+        if alumno_form.is_valid():
+            print "Es valido"
+            alumno = Alumno.objects.get(dni=dni_alumno)
+            nuevo_nombre = alumno_form.cleaned_data['nombre']
+            nuevo_apellido = alumno_form.cleaned_data['apellido']
+            alumno.nombre, alumno.apellido = nuevo_nombre, nuevo_apellido
+            alumno.save()
+            print(nuevo_nombre)
+            data = {
+                'resultado':str(alumno.nombre)
+            }
+            return JsonResponse(data)
+    errores = str(alumno_form.errors)
+    print errores
+    return HttpResponse("Solo podes acceder por Post")
+
 
 """
 ==================

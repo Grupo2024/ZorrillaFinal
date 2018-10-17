@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+
+<h1>Modificar Datos</h1>
+
+<form method="POST" enctype="multipart/form-data" id="form_editar_alumno" action="{% url 'aplicar_cambios_alumno' %}">
+    {% csrf_token %}
+
+<p>Nombre:</p>{{alumno_form.nombre}}
+<p>Apellido:</p> {{alumno_form.apellido}}
+<p>Dni:</p> {{alumno_form.dni}}
+<p>Lugar de nacimiento:</p> {{alumno_form.lugar_nacimiento}}
+<p>Fecha de nacimiento:</p> {{alumno_form.fecha_nacimiento}}
+<p>Domicilio:</p> {{alumno_form.domicilio}}
+<p>Email:</p> {{alumno_form.email}}
+<p>sexo:</p> {{alumno_form.sexo}}
+<p>Telefono de la casa:</p> {{alumno_form.telefono_casa}}
+<p>Telefono del padre:</p> {{alumno_form.telefono_padre}}
+<p>Telefono de la madre:</p> {{alumno_form.telefono_madre}}
+<p>Telefono de algun familiar:</p> {{alumno_form.telefono_familiar}}
+<p>Telefono de un vecino:</p> {{alumno_form.telefono_vecino}}
+<p>Enfermedad relevante:</p> {{alumno_form.enfermedad_relevante}}
+<p>Con quien vive:</p> {{alumno_form.con_quien_vive}}
+<p>Quien lo trae:</p> {{alumno_form.quien_lo_trae}}
+<p>Telefono de quien lo trae:</p> {{alumno_form.telefono_que_lo_trae}}
+
+    <input name="dni_alumno" value="{{dni_alumno}}">
+</form>
+
+<button onclick="modificar()">Editar</button>
+
+<script>
+
+    function modificar(){
+        if (confirm("¿Editar los Datos del Alumno ?")) {
+            var myForm = document.getElementById('form_editar_alumno');
+            formData = new FormData(myForm);
+            $.ajax({
+                url: '{% url 'aplicar_cambios_alumno' %}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    alert(data.resultado)
+                }
+            });
+        } else {
+            return;
+        }
+    }
+
+</script>
+
+{% endblock body %}

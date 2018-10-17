@@ -223,7 +223,7 @@
         function crear_Padre(){
             var myForm = document.getElementById('form_padre');
             formData = new FormData(myForm);
-            var url = '/crear_padre/Matriculacion'
+            var url = '{% url 'crear_padre' %}'
             $.ajax({
                 url: url,
                 data: formData,

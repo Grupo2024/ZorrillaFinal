@@ -13,14 +13,18 @@
         <th>Apellido</th>
         <th>Dni</th>
         <th>Email</th>
+        <th>Asignado Por</th>
+        <th>Fecha de Asignacion</th>
         <th>Desvincular</th>
     </tr>
     {% for a in familiares %}
     <tr>
-        <td>{{a.padre_madre.nombre}}</td>
-        <td>{{a.padre_madre.apellido}}</td>
+        <td>{{a.padre_madre.nombre|title}}</td>
+        <td>{{a.padre_madre.apellido|title}}</td>
         <td>{{a.padre_madre.dni}}</td>
         <td>{{a.padre_madre.email}}</td>
+        <td>{{a.secretaria.nombre_t|title}}</td>
+        <td>{{a.fecha_relacion|date:"d/M/Y"}}</td>
         <td><a onclick="desvincular({{a.padre_madre.dni}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
     </tr>
     {% endfor %}

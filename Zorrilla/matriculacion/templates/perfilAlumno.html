@@ -3,6 +3,8 @@
 {% block navbar %}
 {% endblock navbar %}
 {% block body %}
+
+{% load poll_extras %}
 <br>
 <h1 class="card-title" align="center">{{alumno.nombre}} {{alumno.apellido}}</h1>
 <br>
@@ -64,7 +66,13 @@
   </div>
 </div>
 <br>
+
 <div class="centerB">
+    {% if request.user|has_group:"Secretaria" %}
+
+        <a href="{% url 'modificar_alumno' alumno.dni %}"class="btn btn-primary centerB">Modificar Datos del Alumno.</a>
+
+    {% endif %}
     <a href="{% url 'cursos1' %}" class="btn btn-primary centerB">Volver</a>
 </div>
 
