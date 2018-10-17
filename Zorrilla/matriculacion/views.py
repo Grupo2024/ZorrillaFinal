@@ -451,3 +451,43 @@ def login(request):
             'error': True
             }
     return JsonResponse(data, safe=True)
+
+
+"""
+===========
+Desvincular
+===========
+"""
+
+def desvincular_transportista(request):
+    if request.method == 'POST':
+        dni_alumno = request.POST['dni_alumno']
+        dni_transportista = request.POST['dni_transportista']
+        alumno = Alumno.objects.get(dni=dni_alumno)
+        transportista = Transportista.objects.get(dni=dni_transportista)
+        medio = usa_Transporte.objects.get(alumno=alumno, transportista=transportista)
+        medio.delete()
+        return redirect ('transportistas_del_alumno', dni_alumno)
+    return HttpResponse("Solo por acceder por Post")
+
+def desvincular_obra_social(request):
+    if request.method == 'POST':
+        dni_alumno = request.POST['dni_alumno']
+        id_obra_social = request.POST['id_obra_social']
+        alumno = Alumno.objects.get(dni=dni_alumno)
+        obra_social = Obra_Social.objects.get(pk=id_obra_social)
+        medio = usa_Obra_Social.objects.get(alumno=alumno, obra_social=obra_social)
+        medio.delete()
+        return redirect ('obras_sociales_del_alumno', dni_alumno)
+    return HttpResponse("Solo por acceder por Post")
+
+def desvincular_familiar(request):
+    if request.method == 'POST':
+        dni_alumno = request.POST['dni_alumno']
+        dni_padre = request.POST['dni_padre']
+        alumno = Alumno.objects.get(dni=dni_alumno)
+        padre = Padre_madre.objects.get(dni=dni_padre)
+        medio = Familia.objects.get(alumno=alumno, padre_madre=padre)
+        medio.delete()
+        return redirect ('padres_del_alumno', dni_alumno)
+    return HttpResponse("Solo por acceder por Post")

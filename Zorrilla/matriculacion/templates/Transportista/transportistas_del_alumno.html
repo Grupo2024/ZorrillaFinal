@@ -7,13 +7,15 @@
 <br>
 <h3><center>Transportistas de {{alumno.apellido}} {{alumno.nombre}}.</center></h3>
 <br>
+
 <table style="width:50%" align="center">
     <tr>
         <th>Nombre</th>
         <th>Apellido</th>
         <th>Dni</th>
-        <th>Nombre Tranposrte</th>
-        <th>Telefono Tranposrte</th>
+        <th>Nombre Transporte</th>
+        <th>Telefono Transporte</th>
+        <th>Desvincular</th>
     </tr>
     {% for a in transportistas %}
     <tr>
@@ -22,8 +24,29 @@
         <td>{{a.transportista.dni}}</td>
         <td>{{a.transportista.nombre_transporte}}</td>
         <td>{{a.transportista.telefono_transportista}}</td>
+        <td><a onclick="desvincular({{a.transportista.dni}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
     </tr>
     {% endfor %}
 </table>
+
+<form id="desvincular_transportista" method="post" action="{% url 'desvincular_transportista' %}">
+    {% csrf_token %}
+    <input type="hidden" value="{{alumno.dni}}" name="dni_alumno">
+    <input type="hidden" value=0 name="dni_transportista" id="dni_transportista">
+</form>
+
+<script>
+
+    function desvincular(dni_transportista){
+        if (confirm("¿Desvincular a este Transportista ?")) {
+            document.getElementById("dni_transportista").value = dni_transportista;
+            var des = document.getElementById("desvincular_transportista");
+            des.submit();
+        } else {
+            return;
+        }
+    }
+
+</script>
 
 {% endblock body %}

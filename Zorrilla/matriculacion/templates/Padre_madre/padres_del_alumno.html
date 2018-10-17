@@ -13,6 +13,7 @@
         <th>Apellido</th>
         <th>Dni</th>
         <th>Email</th>
+        <th>Desvincular</th>
     </tr>
     {% for a in familiares %}
     <tr>
@@ -20,8 +21,29 @@
         <td>{{a.padre_madre.apellido}}</td>
         <td>{{a.padre_madre.dni}}</td>
         <td>{{a.padre_madre.email}}</td>
+        <td><a onclick="desvincular({{a.padre_madre.dni}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
     </tr>
     {% endfor %}
 </table>
+
+<form id="desvincular_familiar" method="post" action="{% url 'desvincular_familiar' %}">
+    {% csrf_token %}
+    <input type="hidden" value="{{alumno.dni}}" name="dni_alumno">
+    <input type="hidden" value=0 name="dni_padre" id="dni_padre">
+</form>
+
+<script>
+
+    function desvincular(dni_padre){
+        if (confirm("¿Desvincular a este Padre ?")) {
+            document.getElementById("dni_padre").value = dni_padre;
+            var des = document.getElementById("desvincular_familiar");
+            des.submit();
+        } else {
+            return;
+        }
+    }
+
+</script>
 
 {% endblock body %}

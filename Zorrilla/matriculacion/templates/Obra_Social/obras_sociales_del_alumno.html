@@ -11,13 +11,35 @@
     <tr>
         <th>Nombre</th>
         <th>Numero de Afiliado</th>
+        <th>Desvincular</th>
     </tr>
     {% for a in obras_sociales %}
     <tr>
         <td>{{a.obra_social.nombre}}</td>
         <td>{{a.numero_afiliado}}</td>
+        <td><a onclick="desvincular({{a.obra_social.id}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
     </tr>
     {% endfor %}
 </table>
+
+<form id="desvincular_obra_social" method="post" action="{% url 'desvincular_obra_social' %}">
+    {% csrf_token %}
+    <input type="hidden" value="{{alumno.dni}}" name="dni_alumno">
+    <input type="hidden" value=0 name="id_obra_social" id="id_obra_social">
+</form>
+
+<script>
+
+    function desvincular(id_obra_social){
+        if (confirm("¿Desvincular de esta Obra Social ?")) {
+            document.getElementById("id_obra_social").value = id_obra_social;
+            var des = document.getElementById("desvincular_obra_social");
+            des.submit();
+        } else {
+            return;
+        }
+    }
+
+</script>
 
 {% endblock body %}
