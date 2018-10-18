@@ -40,6 +40,7 @@ class get_Password(forms.Form):
 
 
 class Modificar_Alumno_Form(forms.Form):
+
     HO = 'Hombre'
     MU = 'Mujer'
 

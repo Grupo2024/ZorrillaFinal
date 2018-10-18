@@ -12,7 +12,6 @@
 
     <p>Nombre:</p>{{alumno_form.nombre}}
     <p>Apellido:</p> {{alumno_form.apellido}}
-    <p>Dni:</p> {{alumno_form.dni}}
     <p>Lugar de nacimiento:</p> {{alumno_form.lugar_nacimiento}}
     <p>Fecha de nacimiento:</p> {{alumno_form.fecha_nacimiento}}
     <p>Domicilio:</p> {{alumno_form.domicilio}}
@@ -46,9 +45,9 @@
                 contentType: false,
                 type: 'POST',
                 success: function(data){
-                alert(data.resultado)
-            }
-                   });
+                    alert(data.resultado)
+                }
+            });
         } else {
             return;
         }

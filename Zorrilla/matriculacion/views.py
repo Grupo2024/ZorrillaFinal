@@ -104,9 +104,9 @@ def cargar_padre(request, dni_alumno):
 
 
 def modificar_alumno(request, dni_alumno):
-    alumno_form = Modificar_Alumno_Form()
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    alumno_form = Modificar_Alumno_Form(initial={'nombre':alumno.nombre, 'apellido':alumno.apellido,'lugar_nacimiento':alumno.lugar_nacimiento, 'fecha_nacimiento':alumno.fecha_nacimiento, 'domicilio':alumno.domicilio, 'email':alumno.email, 'sexo':alumno.sexo, 'telefono_casa':alumno.telefono_casa, 'telefono_padre':alumno.telefono_padre, 'telefono_madre':alumno.telefono_madre, 'telefono_familiar':alumno.telefono_familiar, 'telefono_vecino':alumno.telefono_vecino, 'enfermedad_relevante':alumno.enfermedad_relevante, 'con_quien_vive':alumno.con_quien_vive, 'quien_lo_trae':alumno.quien_lo_trae, 'telefono_que_lo_trae':alumno.telefono_que_lo_trae})
     return render(request, 'modificar_alumno.html', {'alumno_form':alumno_form, 'dni_alumno':dni_alumno})
-
 
 """
 =========
@@ -413,18 +413,31 @@ def cambiar_password(request):
 def aplicar_cambios_alumno(request):
     if request.method == 'POST':
         alumno_form = Modificar_Alumno_Form(request.POST)
-        alumno_form.nombre.initial="HOla"
         dni_alumno = request.POST['dni_alumno']
         if alumno_form.is_valid():
             print "Es valido"
             alumno = Alumno.objects.get(dni=dni_alumno)
             nuevo_nombre = alumno_form.cleaned_data['nombre']
             nuevo_apellido = alumno_form.cleaned_data['apellido']
-            alumno.nombre, alumno.apellido = nuevo_nombre, nuevo_apellido
-            #alumno.save()
-            print(nuevo_nombre)
+            nuevo_lugar_nacimiento = alumno_form.cleaned_data['lugar_nacimiento']
+            nueva_fecha_nacimiento = alumno_form.cleaned_data['fecha_nacimiento']
+            nuevo_domicilio = alumno_form.cleaned_data['domicilio']
+            nuevo_email = alumno_form.cleaned_data['email']
+            nuevo_sexo = alumno_form.cleaned_data['sexo']
+            nuevo_telefono_casa = alumno_form.cleaned_data['telefono_casa']
+            nuevo_telefono_padre = alumno_form.cleaned_data['telefono_padre']
+            nuevo_telefono_madre = alumno_form.cleaned_data['telefono_madre']
+            nuevo_telefono_familiar = alumno_form.cleaned_data['telefono_familiar']
+            nuevo_telefono_vecino = alumno_form.cleaned_data['telefono_vecino']
+            nueva_enfermedad_relevante = alumno_form.cleaned_data['enfermedad_relevante']
+            nuevo_con_quien_vive = alumno_form.cleaned_data['con_quien_vive']
+            nuevo_quien_lo_trae = alumno_form.cleaned_data['quien_lo_trae']
+            nuevo_telefono_que_lo_trae = alumno_form.cleaned_data['telefono_que_lo_trae']
+
+            alumno.nombre, alumno.apellido, alumno.lugar_nacimiento, alumno.fecha_nacimiento, alumno.domicilio, alumno.email, alumno.sexo, alumno.telefono_casa, alumno.telefono_padre, alumno.telefono_madre, alumno.telefono_familiar, alumno.telefono_vecino, alumno.enfermedad_relevante, alumno.con_quien_vive, alumno.quien_lo_trae, alumno.telefono_que_lo_trae  = nuevo_nombre, nuevo_apellido, nuevo_lugar_nacimiento, nueva_fecha_nacimiento, nuevo_domicilio, nuevo_email, nuevo_sexo, nuevo_telefono_casa, nuevo_telefono_padre, nuevo_telefono_madre, nuevo_telefono_familiar, nuevo_telefono_vecino, nueva_enfermedad_relevante, nuevo_con_quien_vive, nuevo_quien_lo_trae, nuevo_telefono_que_lo_trae
+            alumno.save()
             data = {
-                'resultado':str(alumno.nombre)
+                'resultado': "Los datos de " + alumno.nombre + " han sido modificados."
             }
             return JsonResponse(data)
         else:
