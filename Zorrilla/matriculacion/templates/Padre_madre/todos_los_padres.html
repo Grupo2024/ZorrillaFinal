@@ -42,7 +42,7 @@
             <form id="select_padre" method="post">
                 {% csrf_token %}
                 <input name="dni_alumno" id="dni_alumno" value={{dni_alumno}} type="hidden">
-                <input name="dni_padre" id="dni_padre" value=0 type="hidden">
+                <input name="dni_padre" id="dni_padre" value=0>
             </form>
             <a href="{% url 'cargar_padre' dni_alumno %}">Crear Padre</a>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
@@ -58,8 +58,6 @@
         var aux2 = $('input[name=padre]:checked').val();
         document.getElementById("dni_padre").value = aux2;
     });
-    
-    
 
     function mandar_padre(){
         var myForm = document.getElementById('select_padre');

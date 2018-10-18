@@ -230,6 +230,8 @@ def asignar_padre(request):
         dni = request.POST['dni_alumno']
         dni_padre = request.POST['dni_padre']
         alumno = Alumno.objects.get(dni=dni)
+        print dni
+        print dni_padre
         padre = Padre_madre.objects.get(dni=dni_padre)
         secretaria = user_Secretaria.objects.get(user=request.user)
         familia = Familia(alumno=alumno, padre_madre=padre, secretaria=secretaria.secretaria_referenciada)
@@ -409,9 +411,9 @@ def cambiar_password(request):
     return HttpResponse("Solo podes acceder por Post")
 
 def aplicar_cambios_alumno(request):
-    print "arranca"
     if request.method == 'POST':
         alumno_form = Modificar_Alumno_Form(request.POST)
+        alumno_form.nombre.initial="HOla"
         dni_alumno = request.POST['dni_alumno']
         if alumno_form.is_valid():
             print "Es valido"
@@ -419,14 +421,19 @@ def aplicar_cambios_alumno(request):
             nuevo_nombre = alumno_form.cleaned_data['nombre']
             nuevo_apellido = alumno_form.cleaned_data['apellido']
             alumno.nombre, alumno.apellido = nuevo_nombre, nuevo_apellido
-            alumno.save()
+            #alumno.save()
             print(nuevo_nombre)
             data = {
                 'resultado':str(alumno.nombre)
             }
             return JsonResponse(data)
-    errores = str(alumno_form.errors)
-    print errores
+        else:
+            errores = str(alumno_form.errors)
+            print errores
+            data = {
+                'resultado':errores
+            }
+            return JsonResponse(data)
     return HttpResponse("Solo podes acceder por Post")
 
 

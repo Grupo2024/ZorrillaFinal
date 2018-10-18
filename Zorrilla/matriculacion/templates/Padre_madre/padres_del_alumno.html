@@ -36,6 +36,15 @@
     <input type="hidden" value=0 name="dni_padre" id="dni_padre">
 </form>
 
+<button onclick="traer_padres('{% url 'todos_los_padres' alumno.dni %}')">Añadir Padre</button>
+
+<div class="modal fade" id="todos_los_padres">
+    <div class="modal-dialog modal-lg">
+        <div id="datos_padre">
+        </div>
+    </div>
+</div>
+
 <script>
 
     function desvincular(dni_padre){
@@ -47,6 +56,26 @@
             return;
         }
     }
+
+    function traer_padres(url){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_padre").html(data);
+            $('#todos_los_padres').modal('show');
+        });
+    }
+
+    $('input[name=padre]').click(function() {
+        var aux2 = $('input[name=padre]:checked').val();
+        document.getElementById("dni_padre").value = aux2;
+    });
+
 
 </script>
 
