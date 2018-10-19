@@ -44,7 +44,7 @@ class Transportista(Persona):
 
 
 class Obra_Social(models.Model):
-    nombre = models.CharField('Nombre Obra Social', max_length=40, null=True)
+    nombre = models.CharField('Nombre Obra Social', max_length=40, unique=True)
 
     def __str__(self):
         return 'Obra Social: {}'.format(self.nombre)

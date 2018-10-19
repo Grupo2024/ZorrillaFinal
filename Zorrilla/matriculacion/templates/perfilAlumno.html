@@ -8,7 +8,7 @@
 <br>
 <h1 class="card-title" align="center">{{alumno.nombre}} {{alumno.apellido}}</h1>
 <br>
-<div class='row'>
+<div class='row' id="datos_div">
     <div class="card text-center" style="width: 30%; height: 67%; margin-left: 3%">
         <div class="card-body">
 
@@ -62,7 +62,7 @@
                     {% if alumno.obra_social == "No"%}
                         <a onclick="traer_obras_sociales('{% url 'todas_las_obras_sociales' alumno.dni %}')">Asignar Obra Social.</a>
                     {% else %}
-                        <!--<a href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Ver Obras Sociales.</a>-->
+                        <a href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Ver Obras Sociales.</a>
                     {% endif %}</li>
                 <li class="list-group-item">Matriculado: {{alumno.matriculado}}</li>
             </ul>
@@ -155,6 +155,13 @@
         var des = document.getElementById("pa");
         des.submit();
     }
+
+    $('input[name=obra_sociall]').click(function() {
+        var aux = $('input[name=obra_sociall]:checked').val();
+        document.getElementById("id_obra_social").value = aux
+        document.getElementById("asignar_o").style.display = "block";
+        document.getElementById("asignar_obra_btn").style.display = "block";
+    });
 
 </script>
 

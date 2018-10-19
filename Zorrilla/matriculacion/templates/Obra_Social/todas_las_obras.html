@@ -29,7 +29,7 @@
                             {% for a in obras_sociales %}
                             <tr>
                                 <td>{{a.nombre}}</td>
-                                <td><input type="radio" id={{a.dni}} name="obra_sociall" value={{a.dni}}></td>
+                                <td><input type="radio" id={{a.id}} name="obra_sociall" value={{a.id}}></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -51,29 +51,32 @@
                     <p>Nombre:</p>{{obra_social.nombre}}
                 </form>
 
-                <button id="crear_obra" onclick="crear_obra()">Guardar Obra Social</button>
+                <br>
+                <button id="guardar_obra_btn" onclick="crear_obra()">Guardar Obra Social</button>
             </div>
+            <br>
+            <span id="resultado_crear"></span>
 
             <!-- Div Asignar Obra Social -->
 
             <div id="asignar_o">
                 <form id="asign_s" method="post">
                     {% csrf_token %}
-                    <input type="hidden" value={{dni_alumno}} id="dni_alumno" name="dni_alumno">
-                    <input value=0 name="num_afiliado" id="num_afiliado">
-                    <input value=0 name="id_obra_social" id="id_obra_social">
+                    <input value={{dni_alumno}} id="dni_alumno" name="dni_alumno" type="hidden">
+                    <p>Numero de Afiliado:</p><input value=0 name="num_afiliado" id="num_afiliado" type="number">
+                    <input value=0 name="id_obra_social" id="id_obra_social2" type="hidden">
                 </form>
-
-                <button id="crear_obra" onclick="crear_obra()">Guardar Obra Social</button>
+                <br>
             </div>
-
+            <span id="resultado_asginar"></span>
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">
             <button onclick="mostrar_form()" id="mostrar_form_btn">Crear Obra Social</button>
-            <button type="button" class="btn btn-success" id="asig_obra" onclick="mostrar_asignar()">Asignar Obra Social</button>
+            <button type="button" class="btn btn-success" id="asig_obra_btn" onclick="mostrar_asignar()">Asignar Obra Social</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar_btn">Cerrar</button>
-            <button type="button" class="btn btn-success" id="cont_obra_social" onclick="saludar()">Continuar</button>
+            <button type="button" class="btn btn-success" id="asignar_obra_btn" onclick="asignar_obra()">Asignar</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="volver_btn" onclick="refresh_p()">Volver</button>
         </div>
     </div>
 </div>
@@ -82,33 +85,66 @@
 
     $('input[name=obra_sociall]').click(function() {
         var aux = $('input[name=obra_sociall]:checked').val();
-        document.getElementById("id_obra_social").value = aux
-        document.getElementById("cont_obra_social").style.display = "block";
+        document.getElementById("id_obra_social2").value = aux
+        document.getElementById("asignar_o").style.display = "block";
+        document.getElementById("asignar_obra_btn").style.display = "block";
     });
 
-    document.getElementById("cont_btn").style.display = "none";
-    document.getElementById("asig_obra").style.display = "none";
+    document.getElementById("asig_obra_btn").style.display = "none";
     document.getElementById("crear_o").style.display = "none";
     document.getElementById("asignar_o").style.display = "none";
-    document.getElementById("cont_obra_social").style.display = "none";
+    document.getElementById("asignar_obra_btn").style.display = "none";
+    document.getElementById("volver_btn").style.display = "none";
 
 
     function mostrar_form(){
-        document.getElementById("hide_correct").style.display = "none";
+        document.getElementById("hide_for_c").style.display = "none";
         document.getElementById("mostrar_form_btn").style.display = "none";
+        document.getElementById("asignar_o").style.display = "none";
+        document.getElementById("asignar_obra_btn").style.display = "none";
         document.getElementById("crear_o").style.display = "block";
-        document.getElementById("asig_obra").style.display = "block";
-        document.getElementById("cont_obra_social").style.display = "none";
+        document.getElementById("asig_obra_btn").style.display = "block";
     }
 
+    hide_for_c
+
     function mostrar_asignar(){
-        document.getElementById("hide_correct").style.display = "block";
+        document.getElementById("asig_obra_btn").style.display = "none";
+        document.getElementById("hide_for_c").style.display = "block";
         document.getElementById("crear_o").style.display = "none";
         document.getElementById("mostrar_form_btn").style.display = "block";
         document.getElementById("asig_obra").style.display = "none";
     }
 
-    function select_obra(){
+    function asignar_obra(){
+        if(document.getElementById("num_afiliado").value == 0){
+            alert("Cargue un numero de afiliado valido.")
+        } else {
+            var r = confirm("¿Asignar esta Obra Social ?");
+            if (r == true) {
+                var myForm = document.getElementById('asign_s');
+                formData = new FormData(myForm);
+                $.ajax({
+                    url: '{% url 'asignar_obra_social' %}',
+                    data : formData,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function(data){
+                        document.getElementById("hide_for_c").style.display = "none";
+                        document.getElementById("cerrar_btn").style.display = "none";
+                        document.getElementById("asignar_obra_btn").style.display = "none";
+                        document.getElementById("mostrar_form_btn").style.display = "none";
+                        document.getElementById("asignar_o").style.display = "none";
+                        document.getElementById("volver_btn").style.display = "block";
+                        document.getElementById("resultado_asginar").innerHTML = data.resultado
+                    }
+                });
+            } else {
+                return;
+            }
+
+        }
     }
 
     function buscar_obra() {
@@ -141,9 +177,20 @@
             contentType: false,
             type: 'POST',
             success: function(data){
-            alert(data.resultado);
-        }
-               });
+                if (data.error){
+                    document.getElementById("resultado_crear").innerHTML = data.resultado;
+                } else {
+                    document.getElementById("hide_for_c").style.display = "none";
+                    document.getElementById("cerrar_btn").style.display = "none";
+                    document.getElementById("asignar_obra_btn").style.display = "none";
+                    document.getElementById("mostrar_form_btn").style.display = "none";
+                    document.getElementById("guardar_obra_btn").style.display = "none";
+                    document.getElementById("asignar_o").style.display = "none";
+                    document.getElementById("crear_o").style.display = "none";
+                    document.getElementById("asig_obra_btn").style.display = "none";
+                    document.getElementById("volver_btn").style.display = "block";
+                    document.getElementById("resultado_crear").innerHTML = data.resultado;
+                }
+            }
+        });
     }
-
-</script>

@@ -28,6 +28,20 @@
     <input type="hidden" value=0 name="id_obra_social" id="id_obra_social">
 </form>
 
+<div class="modal fade" id="todos_las_obrass">
+    <div class="modal-dialog modal-lg">
+        <div id="datos_obrass">
+        </div>
+    </div>
+</div>
+
+<form action="{% url 'obras_sociales_del_alumno' alumno.dni%}" method="post" id="oda">
+    {% csrf_token %}
+</form>
+
+<a href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
+<button id="btn_os" onclick="traer_obras_sociales('{% url 'todas_las_obras_sociales' alumno.dni %}')">Cargar Obra Social</button>
+
 <script>
 
     function desvincular(id_obra_social){
@@ -38,6 +52,26 @@
         } else {
             return;
         }
+    }
+
+     function traer_obras_sociales(url){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_obrass").html(data);
+            $('#todos_las_obrass').modal('show');
+        });
+    }
+
+
+    function refresh_p(){
+        var des = document.getElementById("oda");
+        des.submit();
     }
 
 </script>

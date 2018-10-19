@@ -262,7 +262,21 @@ def asignar_padre(request):
     return HttpResponse("Solo podes acceder por Post")
 
 def asignar_obra_social(request):
-    pass
+    if request.method == 'POST':
+        dni = request.POST['dni_alumno']
+        id_obra_social = request.POST['id_obra_social']
+        num_afiliado = request.POST['num_afiliado']
+        print (dni)
+        print (id_obra_social)
+        print (num_afiliado)
+        alumno = Alumno.objects.get(dni=dni)
+        obra_Social = Obra_Social.objects.get(id=id_obra_social)
+        usa_Obra = usa_Obra_Social(alumno=alumno, obra_social=obra_Social, numero_afiliado=num_afiliado)
+        usa_Obra.save()
+        data = {
+            'resultado':"Obra Asignada con exito."
+        }
+        return JsonResponse(data)
 
 """
 ========================================
@@ -296,7 +310,7 @@ def todas_las_obras_sociales(request, dni_alumno):
     lista = []
     for a in obras_ya_asignadas:
         lista.append(a.obra_social.id)
-    obra_social = Obra_Social.objects.exclude(id__in=lista)
+    obra_social = Obra_Social.objects.exclude(id__in=lista).order_by("nombre")
     obra_social2 = Obra_SocialForm()
     return render(request,'Obra_Social/todas_las_obras.html', {'obras_sociales':obra_social, 'dni_alumno':dni_alumno, 'obra_social':obra_social2})
 
