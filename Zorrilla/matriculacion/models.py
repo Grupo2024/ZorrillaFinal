@@ -75,8 +75,6 @@ class Alumno(Persona):
 
 class Autorizado(Persona):
     telefono_autorizado = models.IntegerField('Telefono del autorizado')
-    relacion_con_alumno = models.TextField('Que relacion tiene con el alumno', max_length=300)
-    alumno = models.ForeignKey(Alumno, null=False)
 
     def __str__(self):
         return 'Persona: {} {}| dni: {}|'.format(self.nombre, self.apellido, self.dni)    
@@ -137,8 +135,16 @@ class usa_Obra_Social(models.Model):
     numero_afiliado = models.IntegerField('Num Obra Social', null=False)#Numero de afiliacion a la obra social
 
     def __str__(self):
-        return'El alumno {} utiliza la obra social {}'.format(self.alumno.nombre, self.obra_social.nombre)
+        return 'El alumno {} utiliza la obra social {}'.format(self.alumno.nombre, self.obra_social.nombre)
 
+class alumno_Autorizado(models.Model):
+    relacion_con_alumno = models.TextField('Que relacion tiene con el alumno', max_length=50, null=False)
+    alumno = models.ForeignKey(Alumno, null=False)
+    autorizado = models.ForeignKey(Autorizado, null=False)
+    
+    def __str__(self):
+        return '{} {} - {} {}'.format(self.alumno.apellido, self.alumno.nombre, self.autorizado.nombre, self.autorizado.apellido)
+    
 class alumno_Curso(models.Model):
     alumno = models.OneToOneField(Alumno, null=False)
     curso = models.ForeignKey(Curso, null=False)
