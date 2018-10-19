@@ -209,6 +209,24 @@ def crear_transportista(request):
             return JsonResponse(data)
     return HttpResponse("Solo podes acceder por Post")
 
+def crear_obra_social(request):
+    if request.method=="POST":
+        form_obra_s = Obra_SocialForm(request.POST)
+        if form_obra_s.is_valid():
+            form_obra_s.save()
+            data = {
+                'error':False,
+                'resultado': 'Obra Social creada con exito.'
+            }
+            return JsonResponse(data)
+        else:
+            data = {
+                'error':True,
+                'resultado':str(form_obra_s.errors)
+            }
+            return JsonResponse(data)
+    return HttpResponse("Solo podes acceder por Post")
+
 #Funcion que crea una instancia de la Tabla Intermedia entre Alumno y Transportista.
 def asignar_transportista(request):
     if request.method == 'POST':
@@ -243,6 +261,9 @@ def asignar_padre(request):
         return JsonResponse(data)
     return HttpResponse("Solo podes acceder por Post")
 
+def asignar_obra_social(request):
+    pass
+
 """
 ========================================
 Traer Todas las instancias de un modelo.
@@ -267,9 +288,17 @@ def todos_los_padres(request, dni_alumno):
     for a in padres_ya_asignados:
         lista.append(a.padre_madre.dni)
     padre = Padre_madre.objects.exclude(dni__in=lista)
-    padres = Padre_madre.objects.all()
-    print (padres)
     return render(request,'Padre_madre/todos_los_padres.html', {'todos_los_padres':padre, 'dni_alumno':dni_alumno})
+
+def todas_las_obras_sociales(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    obras_ya_asignadas = usa_Obra_Social.objects.filter(alumno=alumno)
+    lista = []
+    for a in obras_ya_asignadas:
+        lista.append(a.obra_social.id)
+    obra_social = Obra_Social.objects.exclude(id__in=lista)
+    obra_social2 = Obra_SocialForm()
+    return render(request,'Obra_Social/todas_las_obras.html', {'obras_sociales':obra_social, 'dni_alumno':dni_alumno, 'obra_social':obra_social2})
 
 #Traer Todos las Matriculaciones con estado 'No' y 'Re'.
 @user_passes_test(check_Secretaria)

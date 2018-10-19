@@ -60,9 +60,9 @@
                 <li class="list-group-item">Enfermedades: {{alumno.enfermedad_relevante}}</li>
                 <li class="list-group-item">Obra social:
                     {% if alumno.obra_social == "No"%}
-                    {{alumno.obra_social}}
+                        <a onclick="traer_obras_sociales('{% url 'todas_las_obras_sociales' alumno.dni %}')">Asignar Obra Social.</a>
                     {% else %}
-                    <a href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Ver Obras Sociales.</a>
+                        <!--<a href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Ver Obras Sociales.</a>-->
                     {% endif %}</li>
                 <li class="list-group-item">Matriculado: {{alumno.matriculado}}</li>
             </ul>
@@ -85,13 +85,17 @@
     </div>
 </div>
 
+<div class="modal fade" id="todos_las_obras_sociales">
+    <div class="modal-dialog modal-lg">
+        <div id="datos_obrass">
+        </div>
+    </div>
+</div>
+
 <form action="{% url 'datos_alumno' alumno.dni%}" method="post" id="pa">
     {% csrf_token %}
 </form>
 
-<form id="tpa_p" action="{% url 'datos_alumno' alumno.dni %}" method="post">
-    {% csrf_token %}
-</form>
 
 <div class="centerB">
     {% if request.user|has_group:"Secretaria" %}
@@ -118,6 +122,20 @@
         });
     }
 
+    function traer_obras_sociales(url){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_obrass").html(data);
+            $('#todos_las_obras_sociales').modal('show');
+        });
+    }
+
     function traer_padres(url){
         $.ajax({
             method: "POST",
@@ -132,13 +150,9 @@
         });
     }
 
-    function refresh_t(){
-        var des = document.getElementById("pa");
-        des.submit();
-    }
 
     function refresh_p(){
-        var des = document.getElementById("tpa_p");
+        var des = document.getElementById("pa");
         des.submit();
     }
 

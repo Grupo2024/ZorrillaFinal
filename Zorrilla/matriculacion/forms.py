@@ -17,6 +17,12 @@ class AlumnoForm(forms.ModelForm):
             'fecha_nacimiento': DateInput()
         }
 
+
+class Obra_SocialForm(forms.ModelForm):
+    class Meta:
+        model= Obra_Social
+        fields = ['nombre']
+
 class PadreForm(forms.ModelForm):
     class Meta:
         model = Padre_madre

@@ -1,0 +1,149 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <span>Obras Sociales:</span>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+
+            <!-- Div con el contenido Base de la Tabla -->
+
+            <div id="hide_for_c">
+                {% if obras_sociales|length != 0%}
+                <div id="hide_correct">
+                    <input type="text"placeholder="Obra Social que desea buscar" id="inputObra" onkeyup="buscar_obra()" size="5">
+                    <select id="filter_by">
+                        <option value=0>Nombre</option>
+                    </select>
+                    <br>
+                    <br>
+                    <table class="table table-bordered" id="tabla_transportistas">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Opcion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for a in obras_sociales %}
+                            <tr>
+                                <td>{{a.nombre}}</td>
+                                <td><input type="radio" id={{a.dni}} name="obra_sociall" value={{a.dni}}></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <h3><center>No hay ninguna Obra Social.</center></h3>
+                {% endif %}
+            </div>
+
+
+            <span id="resultado_asignar_obra_social"></span>
+
+            <!-- Div del Form de Obra Social -->
+
+            <div id="crear_o">
+                <form id="obra_s" method="post">
+                    {% csrf_token %}
+                    <p>Nombre:</p>{{obra_social.nombre}}
+                </form>
+
+                <button id="crear_obra" onclick="crear_obra()">Guardar Obra Social</button>
+            </div>
+
+            <!-- Div Asignar Obra Social -->
+
+            <div id="asignar_o">
+                <form id="asign_s" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" value={{dni_alumno}} id="dni_alumno" name="dni_alumno">
+                    <input value=0 name="num_afiliado" id="num_afiliado">
+                    <input value=0 name="id_obra_social" id="id_obra_social">
+                </form>
+
+                <button id="crear_obra" onclick="crear_obra()">Guardar Obra Social</button>
+            </div>
+
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button onclick="mostrar_form()" id="mostrar_form_btn">Crear Obra Social</button>
+            <button type="button" class="btn btn-success" id="asig_obra" onclick="mostrar_asignar()">Asignar Obra Social</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar_btn">Cerrar</button>
+            <button type="button" class="btn btn-success" id="cont_obra_social" onclick="saludar()">Continuar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $('input[name=obra_sociall]').click(function() {
+        var aux = $('input[name=obra_sociall]:checked').val();
+        document.getElementById("id_obra_social").value = aux
+        document.getElementById("cont_obra_social").style.display = "block";
+    });
+
+    document.getElementById("cont_btn").style.display = "none";
+    document.getElementById("asig_obra").style.display = "none";
+    document.getElementById("crear_o").style.display = "none";
+    document.getElementById("asignar_o").style.display = "none";
+    document.getElementById("cont_obra_social").style.display = "none";
+
+
+    function mostrar_form(){
+        document.getElementById("hide_correct").style.display = "none";
+        document.getElementById("mostrar_form_btn").style.display = "none";
+        document.getElementById("crear_o").style.display = "block";
+        document.getElementById("asig_obra").style.display = "block";
+        document.getElementById("cont_obra_social").style.display = "none";
+    }
+
+    function mostrar_asignar(){
+        document.getElementById("hide_correct").style.display = "block";
+        document.getElementById("crear_o").style.display = "none";
+        document.getElementById("mostrar_form_btn").style.display = "block";
+        document.getElementById("asig_obra").style.display = "none";
+    }
+
+    function select_obra(){
+    }
+
+    function buscar_obra() {
+        var e = document.getElementById("filter_by");
+        var strUser = e.options[e.selectedIndex].value;
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("inputObra");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("tabla_transportistas");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[strUser];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function crear_obra(){
+        var myForm = document.getElementById('obra_s');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: '{% url 'crear_obra_social' %}',
+            data : formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+            alert(data.resultado);
+        }
+               });
+    }
+
+</script>
