@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^logIn/', logIn, name="logIn"),
     url(r'^login/', login, name="login"),
     url(r'^aplicar_cambios_alumno/', aplicar_cambios_alumno, name="aplicar_cambios_alumno"),
+    url(r'^modificar_curso/(\d+)/', modificar_curso, name="modificar_curso"),
     url(r'^recuperar/user', cambiar_password, name="cambiar_password"),
     url(r'^get_Secciones/(\d+)/', get_Secciones, name="get_Secciones"),
     url(r'^re_matricular/(\d+)/', re_matricular, name="re_matricular"),

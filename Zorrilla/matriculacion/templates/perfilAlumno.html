@@ -31,7 +31,7 @@
                 <li class="list-group-item">Telefono fijo: {{alumno.telefono_casa}}</li>
                 <li class="list-group-item">Padres:
                     {% if alumno.familiares == "No"%}
-                    <a onclick="traer_padres('{% url 'todos_los_padres' alumno.dni %}')">Asignar Padre.</a>
+                    <a onclick="traer_instancias('{% url 'todos_los_padres' alumno.dni %}')">Asignar Padre.</a>
                     {% else %}
                     <a href="{% url 'padres_del_alumno' alumno.dni %}">Ver Padres.</a></li>
                 {% endif %}
@@ -44,7 +44,7 @@
                 <li class="list-group-item">Telefono: {{alumno.telefono_que_lo_trae}}</li>
                 <li class="list-group-item">Utiliza transporte:
                     {% if alumno.transporte == "No"%}
-                    <a onclick="traer_transportistas('{% url 'todos_los_transportistas' alumno.dni %}')">Asignar Transportista.</a>
+                    <a onclick="traer_instancias('{% url 'todos_los_transportistas' alumno.dni %}')">Asignar Transportista.</a>
                     {% else %}
                     <a href="{% url 'transportistas_del_alumno' alumno.dni %}">Ver Transportistas.</a>
                     {% endif %}
@@ -60,34 +60,25 @@
                 <li class="list-group-item">Enfermedades: {{alumno.enfermedad_relevante}}</li>
                 <li class="list-group-item">Obra social:
                     {% if alumno.obra_social == "No"%}
-                        <a onclick="traer_obras_sociales('{% url 'todas_las_obras_sociales' alumno.dni %}')">Asignar Obra Social.</a>
+                    <a onclick="traer_instancias('{% url 'todas_las_obras_sociales' alumno.dni %}')">Asignar Obra Social.</a>
                     {% else %}
-                        <a href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Ver Obras Sociales.</a>
+                    <a href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Ver Obras Sociales.</a>
                     {% endif %}</li>
-                <li class="list-group-item">Matriculado: {{alumno.matriculado}}</li>
+                <li class="list-group-item">Matriculado:
+                    {% if alumno.matriculado == "No"%}
+                        {{alumno.matriculado}}
+                    {% else %}
+                        <a onclick="traer_instancias('{% url 'modificar_curso' alumno.dni %}')">Cambiar Curso</a>
+                    {% endif %}</li>
             </ul>
         </div>
     </div>
 </div>
 <br>
 
-<div class="modal fade" id="todos_los_transportistas">
+<div class="modal fade" id="todas_las_instancias">
     <div class="modal-dialog modal-lg">
-        <div id="datos_transportista">
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="todos_los_padres">
-    <div class="modal-dialog modal-lg">
-        <div id="datos_padre">
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="todos_las_obras_sociales">
-    <div class="modal-dialog modal-lg">
-        <div id="datos_obrass">
+        <div id="datos_instancias">
         </div>
     </div>
 </div>
@@ -108,7 +99,8 @@
 
 <script>
 
-    function traer_transportistas(url){
+    function traer_instancias(url){
+        console.log(url);
         $.ajax({
             method: "POST",
             url: url,
@@ -117,39 +109,10 @@
             }
         })
             .done(function (data) {
-            $("#datos_transportista").html(data);
-            $('#todos_los_transportistas').modal('show');
+                $("#datos_instancias").html(data);
+                $('#todas_las_instancias').modal('show');
         });
     }
-
-    function traer_obras_sociales(url){
-        $.ajax({
-            method: "POST",
-            url: url,
-            data: {
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-            }
-        })
-            .done(function (data) {
-            $("#datos_obrass").html(data);
-            $('#todos_las_obras_sociales').modal('show');
-        });
-    }
-
-    function traer_padres(url){
-        $.ajax({
-            method: "POST",
-            url: url,
-            data: {
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-            }
-        })
-            .done(function (data) {
-            $("#datos_padre").html(data);
-            $('#todos_los_padres').modal('show');
-        });
-    }
-
 
     function refresh_p(){
         var des = document.getElementById("pa");

@@ -496,6 +496,13 @@ def aplicar_cambios_alumno(request):
     return HttpResponse("Solo podes acceder por Post")
 
 
+def modificar_curso(request, dni_alumno):
+    print dni_alumno
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    curso_actual = alumno_Curso.objects.get(alumno=alumno)
+    todos_los_cursos = Curso.objects.exclude(id=curso_actual.id)
+    return render(request, 'cambiar_curso.html', {'dni_alumno':alumno.dni, 'todos_los_cursos':todos_los_cursos, 'curso_actual':curso_actual})
+
 """
 ==================
 Crear y Modificar.
