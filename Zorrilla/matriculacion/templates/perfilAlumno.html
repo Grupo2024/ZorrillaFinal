@@ -10,59 +10,64 @@
 <br>
 <div class='row'>
     <div class="card text-center" style="width: 30%; height: 67%; margin-left: 3%">
-    <div class="card-body">
+        <div class="card-body">
 
-    <h4 class="card-title">Datos personales</h4>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Dni: {{alumno.dni}}</li>
-          <li class="list-group-item">Lugar nacimiento: {{alumno.lugar_nacimiento}}</li>
-          <li class="list-group-item">Fecha de nacimiento: {{alumno.fecha_nacimiento}}</li>
-          <li class="list-group-item">Domicilio: {{alumno.fecha_nacimiento}}</li>
-          <li class="list-group-item">Email: {{alumno.email}}</li>
-          <li class="list-group-item">Sexo: {{alumno.sexo}}</li>
-        </ul>
+            <h4 class="card-title">Datos personales</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Dni: {{alumno.dni}}</li>
+                <li class="list-group-item">Lugar nacimiento: {{alumno.lugar_nacimiento}}</li>
+                <li class="list-group-item">Fecha de nacimiento: {{alumno.fecha_nacimiento}}</li>
+                <li class="list-group-item">Domicilio: {{alumno.fecha_nacimiento}}</li>
+                <li class="list-group-item">Email: {{alumno.email}}</li>
+                <li class="list-group-item">Sexo: {{alumno.sexo}}</li>
+            </ul>
+        </div>
     </div>
-  </div>
 
     <div class="card text-center" style="width: 30%; margin-left: 2%">
-    <div class="card-body">
-      <h4 class="card-title">Datos de contacto</h4>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Telefono fijo: {{alumno.telefono_casa}}</li>
-            <li class="list-group-item">Padres: <a href="{% url 'padres_del_alumno' alumno.dni %}">Ver Padres.</a></li>
-          <li class="list-group-item">Telefono del padre: {{alumno.telefono_padre}}</li>
-          <li class="list-group-item">Telefono de familiar: {{alumno.telefono_familiar}}</li>
-          <li class="list-group-item">Telefono de vecino: {{alumno.telefono_vecino}}</li>
-          <li class="list-group-item">Con quien vive: {{alumno.con_quien_vive}}</li>
-          <li class="list-group-item">Autorizados: {{alumno.autorizados}}</li>
-          <li class="list-group-item">Quien lo trae: {{alumno.quien_lo_trae}}</li>
-          <li class="list-group-item">Telefono: {{alumno.telefono_que_lo_trae}}</li>
-          <li class="list-group-item">Utiliza transporte:
-            {% if alumno.transporte == "No"%}
-              <a onclick="traer_transportistas('{% url 'todos_los_transportistas' alumno.dni %}')">Asignar Transportista.</a>
-            {% else %}
-              <a href="{% url 'transportistas_del_alumno' alumno.dni %}">Ver Transportistas.</a>
-            {% endif %}
-        </li>
-        </ul>
+        <div class="card-body">
+            <h4 class="card-title">Datos de contacto</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Telefono fijo: {{alumno.telefono_casa}}</li>
+                <li class="list-group-item">Padres:
+                    {% if alumno.familiares == "No"%}
+                    <a onclick="traer_padres('{% url 'todos_los_padres' alumno.dni %}')">Asignar Padre.</a>
+                    {% else %}
+                    <a href="{% url 'padres_del_alumno' alumno.dni %}">Ver Padres.</a></li>
+                {% endif %}
+                <li class="list-group-item">Telefono del padre: {{alumno.telefono_padre}}</li>
+                <li class="list-group-item">Telefono de familiar: {{alumno.telefono_familiar}}</li>
+                <li class="list-group-item">Telefono de vecino: {{alumno.telefono_vecino}}</li>
+                <li class="list-group-item">Con quien vive: {{alumno.con_quien_vive}}</li>
+                <li class="list-group-item">Autorizados: {{alumno.autorizados}}</li>
+                <li class="list-group-item">Quien lo trae: {{alumno.quien_lo_trae}}</li>
+                <li class="list-group-item">Telefono: {{alumno.telefono_que_lo_trae}}</li>
+                <li class="list-group-item">Utiliza transporte:
+                    {% if alumno.transporte == "No"%}
+                    <a onclick="traer_transportistas('{% url 'todos_los_transportistas' alumno.dni %}')">Asignar Transportista.</a>
+                    {% else %}
+                    <a href="{% url 'transportistas_del_alumno' alumno.dni %}">Ver Transportistas.</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 
-  <div class="card text-center" style="width: 30%; height: 43%;margin-left: 2%">
-    <div class="card-body">
-    <h4 class="card-title">Datos medicos</h4>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Enfermedades: {{alumno.enfermedad_relevante}}</li>
-          <li class="list-group-item">Obra social:
-            {% if alumno.obra_social == "No"%}
-              {{alumno.obra_social}}
-            {% else %}
-              <a href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Ver Obras Sociales.</a>
-            {% endif %}</li>
-          <li class="list-group-item">Matriculado: {{alumno.matriculado}}</li>
-        </ul>
+    <div class="card text-center" style="width: 30%; height: 43%;margin-left: 2%">
+        <div class="card-body">
+            <h4 class="card-title">Datos medicos</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Enfermedades: {{alumno.enfermedad_relevante}}</li>
+                <li class="list-group-item">Obra social:
+                    {% if alumno.obra_social == "No"%}
+                    {{alumno.obra_social}}
+                    {% else %}
+                    <a href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Ver Obras Sociales.</a>
+                    {% endif %}</li>
+                <li class="list-group-item">Matriculado: {{alumno.matriculado}}</li>
+            </ul>
+        </div>
     </div>
-  </div>
 </div>
 <br>
 
@@ -73,14 +78,25 @@
     </div>
 </div>
 
+<div class="modal fade" id="todos_los_padres">
+    <div class="modal-dialog modal-lg">
+        <div id="datos_padre">
+        </div>
+    </div>
+</div>
+
 <form action="{% url 'datos_alumno' alumno.dni%}" method="post" id="pa">
+    {% csrf_token %}
+</form>
+
+<form id="tpa_p" action="{% url 'datos_alumno' alumno.dni %}" method="post">
     {% csrf_token %}
 </form>
 
 <div class="centerB">
     {% if request.user|has_group:"Secretaria" %}
 
-        <a href="{% url 'modificar_alumno' alumno.dni %}"class="btn btn-primary centerB">Modificar Datos del Alumno.</a>
+    <a href="{% url 'modificar_alumno' alumno.dni %}"class="btn btn-primary centerB">Modificar Datos del Alumno.</a>
 
     {% endif %}
     <a href="{% url 'cursos1' %}" class="btn btn-primary centerB">Volver</a>
@@ -102,8 +118,27 @@
         });
     }
 
+    function traer_padres(url){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_padre").html(data);
+            $('#todos_los_padres').modal('show');
+        });
+    }
+
     function refresh_t(){
         var des = document.getElementById("pa");
+        des.submit();
+    }
+
+    function refresh_p(){
+        var des = document.getElementById("tpa_p");
         des.submit();
     }
 

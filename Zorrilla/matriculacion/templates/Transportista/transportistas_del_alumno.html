@@ -40,6 +40,8 @@
     {% endif %}
 </div>
 <button onclick="traer_transportistas('{% url 'todos_los_transportistas' alumno.dni %}')">Cargar Transportista</button>
+<a href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
+
 
 <div class="modal fade" id="todos_los_transportistas">
     <div class="modal-dialog modal-lg">
@@ -89,7 +91,6 @@
         var des = document.getElementById("tda");
         des.submit();
     }
-
 
 </script>
 

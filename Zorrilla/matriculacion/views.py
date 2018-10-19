@@ -318,7 +318,6 @@ def datos_alumno(request, id_alumno):
         alumno.transporte = "No"
     else:
         alumno.transporte = "Si"
-    #matriculado = Matriculacion.objects.get(alumno=alumno, matriculado="Si")
     try:
         matriculado = Matriculacion.objects.get(alumno=alumno, matriculado="Si")
         alumno.matriculado = "Si"
@@ -330,7 +329,11 @@ def datos_alumno(request, id_alumno):
     else:
         alumno.obra_social = "Si"
     familiares = Familia.objects.filter(alumno=alumno)
-    return render(request, 'perfilAlumno.html', {'alumno':alumno, 'familiares':familiares})
+    if not familiares:
+        alumno.familiares = "No"
+    else:
+        alumno.familiares = "Si"
+    return render(request, 'perfilAlumno.html', {'alumno':alumno})
 
 #Funcion que Trae los Familiares, Transportistas del Alumno y los Cursos.
 def get_Secciones(request, dni_alumno):

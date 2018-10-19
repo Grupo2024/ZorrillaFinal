@@ -37,6 +37,7 @@
 </form>
 
 <button onclick="traer_padres('{% url 'todos_los_padres' alumno.dni %}')">Añadir Padre</button>
+<a href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
 
 <div class="modal fade" id="todos_los_padres">
     <div class="modal-dialog modal-lg">
@@ -44,6 +45,10 @@
         </div>
     </div>
 </div>
+
+<form action="{% url 'padres_del_alumno' alumno.dni%}" method="post" id="pda">
+    {% csrf_token %}
+</form>
 
 <script>
 
@@ -71,10 +76,11 @@
         });
     }
 
-    $('input[name=padre]').click(function() {
-        var aux2 = $('input[name=padre]:checked').val();
-        document.getElementById("dni_padre").value = aux2;
-    });
+
+    function refresh_p(){
+        var des = document.getElementById("pda");
+        des.submit();
+    }
 
 
 </script>
