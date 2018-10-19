@@ -39,7 +39,7 @@
           <li class="list-group-item">Telefono: {{alumno.telefono_que_lo_trae}}</li>
           <li class="list-group-item">Utiliza transporte:
             {% if alumno.transporte == "No"%}
-              {{alumno.transporte}}
+              <a onclick="traer_transportistas('{% url 'todos_los_transportistas' alumno.dni %}')">Asignar Transportista.</a>
             {% else %}
               <a href="{% url 'transportistas_del_alumno' alumno.dni %}">Ver Transportistas.</a>
             {% endif %}
@@ -66,6 +66,17 @@
 </div>
 <br>
 
+<div class="modal fade" id="todos_los_transportistas">
+    <div class="modal-dialog modal-lg">
+        <div id="datos_transportista">
+        </div>
+    </div>
+</div>
+
+<form action="{% url 'datos_alumno' alumno.dni%}" method="post" id="pa">
+    {% csrf_token %}
+</form>
+
 <div class="centerB">
     {% if request.user|has_group:"Secretaria" %}
 
@@ -74,5 +85,28 @@
     {% endif %}
     <a href="{% url 'cursos1' %}" class="btn btn-primary centerB">Volver</a>
 </div>
+
+<script>
+
+    function traer_transportistas(url){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_transportista").html(data);
+            $('#todos_los_transportistas').modal('show');
+        });
+    }
+
+    function refresh_t(){
+        var des = document.getElementById("pa");
+        des.submit();
+    }
+
+</script>
 
 {% endblock body %}

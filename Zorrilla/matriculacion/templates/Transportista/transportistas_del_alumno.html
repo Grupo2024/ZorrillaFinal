@@ -5,34 +5,57 @@
 {% block body %}
 
 <br>
-<h3><center>Transportistas de {{alumno.apellido}} {{alumno.nombre}}.</center></h3>
-<br>
+<div id="contenido">
+    {% if transportistas|length != 0 %}
 
-<table style="width:50%" align="center">
-    <tr>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>Dni</th>
-        <th>Nombre Transporte</th>
-        <th>Telefono Transporte</th>
-        <th>Desvincular</th>
-    </tr>
-    {% for a in transportistas %}
-    <tr>
-        <td>{{a.transportista.nombre}}</td>
-        <td>{{a.transportista.apellido}}</td>
-        <td>{{a.transportista.dni}}</td>
-        <td>{{a.transportista.nombre_transporte}}</td>
-        <td>{{a.transportista.telefono_transportista}}</td>
-        <td><a onclick="desvincular({{a.transportista.dni}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
-    </tr>
-    {% endfor %}
-</table>
+    <h3><center>Transportistas de {{alumno.apellido}} {{alumno.nombre}}.</center></h3>
+    <br>
+
+    <table style="width:50%" align="center">
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Dni</th>
+            <th>Nombre Transporte</th>
+            <th>Telefono Transporte</th>
+            <th>Desvincular</th>
+        </tr>
+        {% for a in transportistas %}
+        <tr>
+            <td>{{a.transportista.nombre}}</td>
+            <td>{{a.transportista.apellido}}</td>
+            <td>{{a.transportista.dni}}</td>
+            <td>{{a.transportista.nombre_transporte}}</td>
+            <td>{{a.transportista.telefono_transportista}}</td>
+            <td><a onclick="desvincular({{a.transportista.dni}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+    <h3><center>No hay ningun Transportista.</center></h3>
+
+    {% endif %}
+</div>
+<button onclick="traer_transportistas('{% url 'todos_los_transportistas' alumno.dni %}')">Cargar Transportista</button>
+
+<div class="modal fade" id="todos_los_transportistas">
+    <div class="modal-dialog modal-lg">
+        <div id="datos_transportista">
+        </div>
+    </div>
+</div>
 
 <form id="desvincular_transportista" method="post" action="{% url 'desvincular_transportista' %}">
     {% csrf_token %}
     <input type="hidden" value="{{alumno.dni}}" name="dni_alumno">
     <input type="hidden" value=0 name="dni_transportista" id="dni_transportista">
+</form>
+
+<form action="{% url 'transportistas_del_alumno' alumno.dni%}" method="post" id="tda">
+    {% csrf_token %}
 </form>
 
 <script>
@@ -46,6 +69,27 @@
             return;
         }
     }
+
+    function traer_transportistas(url){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_transportista").html(data);
+            $('#todos_los_transportistas').modal('show');
+        });
+    }
+
+
+    function refresh_t(){
+        var des = document.getElementById("tda");
+        des.submit();
+    }
+
 
 </script>
 

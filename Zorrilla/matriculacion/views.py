@@ -513,6 +513,7 @@ def desvincular_transportista(request):
     if request.method == 'POST':
         dni_alumno = request.POST['dni_alumno']
         dni_transportista = request.POST['dni_transportista']
+        print (dni_transportista)
         alumno = Alumno.objects.get(dni=dni_alumno)
         transportista = Transportista.objects.get(dni=dni_transportista)
         medio = usa_Transporte.objects.get(alumno=alumno, transportista=transportista)
