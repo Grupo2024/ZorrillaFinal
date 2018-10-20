@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^crear_padre_madre', crear_padre_madre, name="crear_padre_madre"),
     url(r'^cambiar_curso', cambiar_curso, name="cambiar_curso"),
     url(r'^form_transportista', form_transportista, name="form_transportista"),
+    url(r'^form_obra_social', form_obra_social, name="form_obra_social"),
     url(r'^todos_los_transportistas_asignar/(\d+)/', todos_los_transportistas_asignar, name="todos_los_transportistas_asignar"),
     url(r'^todos_los_padres_asignar/(\d+)/', todos_los_padres_asignar, name="todos_los_padres_asignar"),
     url(r'^todas_las_obras_sociales_asignar/(\d+)/', todas_las_obras_sociales_asignar, name="todas_las_obras_sociales_asignar"),

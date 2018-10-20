@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+<div id="crear_o">
+    <form id="obra_s" method="post">
+        {% csrf_token %}
+        <p>Nombre:</p>{{obra_social.nombre}}
+    </form>
+
+    <br>
+    <button id="guardar_obra_btn" onclick="crear_obra()">Guardar Obra Social</button>
+
+    <br>
+    <br>
+</div>
+<span id="resultado_crear"></span>
+
+<a href="{% url 'index' %}">Menu</a>
+
+<script>
+
+    function crear_obra(){
+        var myForm = document.getElementById('obra_s');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: '{% url 'crear_obra_social' %}',
+            data : formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                if (data.error){
+                    document.getElementById("resultado_crear").innerHTML = data.resultado;
+                } else {
+                    document.getElementById("crear_o").style.display = "none";
+                    document.getElementById("resultado_crear").innerHTML = data.resultado;
+                }
+            }
+        });
+    }
+
+</script>
+
+{% endblock body %}

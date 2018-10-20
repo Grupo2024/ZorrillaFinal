@@ -102,6 +102,10 @@ def cargar_padre(request, dni_alumno):
     padre_form = PadreForm()
     return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':dni_alumno})
 
+def form_obra_social(request):
+    obra_social = Obra_SocialForm()
+    return render(request, 'Obra_Social/crear_obra_social.html', {'obra_social':obra_social})
+
 @user_passes_test(check_Secretaria)
 def form_modificar_alumno(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
