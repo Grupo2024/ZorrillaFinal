@@ -5,22 +5,27 @@
 {% block body %}
 
 <br>
-<h3><center>Obras Sociales de {{alumno.apellido}} {{alumno.nombre}}.</center></h3>
-<br>
-<table style="width:50%" align="center">
-    <tr>
-        <th>Nombre</th>
-        <th>Numero de Afiliado</th>
-        <th>Desvincular</th>
-    </tr>
-    {% for a in obras_sociales %}
-    <tr>
-        <td>{{a.obra_social.nombre}}</td>
-        <td>{{a.numero_afiliado}}</td>
-        <td><a onclick="desvincular({{a.obra_social.id}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
-    </tr>
-    {% endfor %}
-</table>
+
+{% if obras_sociales|length != 0 %}
+    <h3><center>Obras Sociales de {{alumno.apellido}} {{alumno.nombre}}.</center></h3>
+    <br>
+    <table style="width:50%" align="center">
+        <tr>
+            <th>Nombre</th>
+            <th>Numero de Afiliado</th>
+            <th>Desvincular</th>
+        </tr>
+        {% for a in obras_sociales %}
+        <tr>
+            <td>{{a.obra_social.nombre}}</td>
+            <td>{{a.numero_afiliado}}</td>
+            <td><a onclick="desvincular({{a.obra_social.id}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <h3><center>{{alumno.apellido}} {{alumno.nombre}} no tiene ninguna Obra Social.</center></h3>
+{% endif %}
 
 <form id="desvincular_obra_social" method="post" action="{% url 'desvincular_obra_social' %}">
     {% csrf_token %}
@@ -54,7 +59,7 @@
         }
     }
 
-     function traer_obras_sociales(url){
+    function traer_obras_sociales(url){
         $.ajax({
             method: "POST",
             url: url,
