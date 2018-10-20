@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+{% load poll_extras %}
+
+<br>
+<div id="contenido">
+    {% if obras_sociales|length != 0 %}
+
+    <h3><center>Obras Sociales.</center></h3>
+    <br>
+
+    <table style="width:30%" align="center">
+        <tr>
+            <th>Nombre</th>
+            <th>Info</th>
+        </tr>
+        {% for a in obras_sociales %}
+        <tr>
+            <td>{{a.nombre}}</td>
+            <td><a onclick="info_obra_social('{% url 'datos_obra_social' a.id %}')">Info</a></td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+    <h3><center>No hay ninguna Obra Social.</center></h3>
+
+    {% endif %}
+</div>
+
+<a href="{% url 'index' %}">Menu</a>
+
+<div class="modal fade" id="modal_info">
+    <div class="modal-dialog">
+        <div id="datos_obrass">
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function info_obra_social(url, alum){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_obrass").html(data);
+            $('#modal_info').modal('show');
+        });
+    }
+
+    function buscar_alumno() {
+        var e = document.getElementById("filter_by");
+        var strUser = e.options[e.selectedIndex].value;
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("inputObrass");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("tabla_obras");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[strUser];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+</script>
+
+{% endblock body %}

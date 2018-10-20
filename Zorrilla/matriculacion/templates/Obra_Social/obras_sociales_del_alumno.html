@@ -40,7 +40,7 @@
 </form>
 
 <a href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
-<button id="btn_os" onclick="traer_obras_sociales('{% url 'todas_las_obras_sociales' alumno.dni %}')">Cargar Obra Social</button>
+<button id="btn_os" onclick="traer_obras_sociales('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Cargar Obra Social</button>
 
 <script>
 

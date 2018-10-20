@@ -39,7 +39,7 @@
 
     {% endif %}
 </div>
-<button onclick="traer_transportistas('{% url 'todos_los_transportistas' alumno.dni %}')">Cargar Transportista</button>
+<button onclick="traer_transportistas('{% url 'todos_los_transportistas_asignar' alumno.dni %}')">Cargar Transportista</button>
 <a href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
 
 

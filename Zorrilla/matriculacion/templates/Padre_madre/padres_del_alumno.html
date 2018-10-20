@@ -36,7 +36,7 @@
     <input type="hidden" value=0 name="dni_padre" id="dni_padre">
 </form>
 
-<button onclick="traer_padres('{% url 'todos_los_padres' alumno.dni %}')">Añadir Padre</button>
+<button onclick="traer_padres('{% url 'todos_los_padres_asignar' alumno.dni %}')">Añadir Padre</button>
 <a href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
 
 <div class="modal fade" id="todos_los_padres">

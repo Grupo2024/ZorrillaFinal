@@ -103,7 +103,7 @@ def cargar_padre(request, dni_alumno):
     return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':dni_alumno})
 
 @user_passes_test(check_Secretaria)
-def modificar_alumno(request, dni_alumno):
+def form_modificar_alumno(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     alumno_form = Modificar_Alumno_Form(initial={'nombre':alumno.nombre, 'apellido':alumno.apellido,'lugar_nacimiento':alumno.lugar_nacimiento, 'fecha_nacimiento':alumno.fecha_nacimiento, 'domicilio':alumno.domicilio, 'email':alumno.email, 'sexo':alumno.sexo, 'telefono_casa':alumno.telefono_casa, 'telefono_padre':alumno.telefono_padre, 'telefono_madre':alumno.telefono_madre, 'telefono_familiar':alumno.telefono_familiar, 'telefono_vecino':alumno.telefono_vecino, 'enfermedad_relevante':alumno.enfermedad_relevante, 'con_quien_vive':alumno.con_quien_vive, 'quien_lo_trae':alumno.quien_lo_trae, 'telefono_que_lo_trae':alumno.telefono_que_lo_trae})
     return render(request, 'modificar_alumno.html', {'alumno_form':alumno_form, 'dni_alumno':dni_alumno})
@@ -285,26 +285,26 @@ Traer Todas las instancias de un modelo.
 """
 
 #Traer Todos los Transnportistas.
-def todos_los_transportistas(request, dni_alumno):
+def todos_los_transportistas_asignar(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     transportistas_ya_asignados = usa_Transporte.objects.filter(alumno=alumno)
     lista = []
     for a in transportistas_ya_asignados:
         lista.append(a.transportista.dni)
     transportistas = Transportista.objects.exclude(dni__in=lista)
-    return render(request, 'Transportista/todos_los_transportistas.html',{'transportistas':transportistas, 'dni_alumno':dni_alumno})
+    return render(request, 'Transportista/asginar_transportista.html',{'transportistas':transportistas, 'dni_alumno':dni_alumno})
 
 #Traer Todos los Padres/Madre.
-def todos_los_padres(request, dni_alumno):
+def todos_los_padres_asignar(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     padres_ya_asignados = Familia.objects.filter(alumno=alumno)
     lista = []
     for a in padres_ya_asignados:
         lista.append(a.padre_madre.dni)
     padre = Padre_madre.objects.exclude(dni__in=lista)
-    return render(request,'Padre_madre/todos_los_padres.html', {'todos_los_padres':padre, 'dni_alumno':dni_alumno})
+    return render(request,'Padre_madre/asignar_padre.html', {'todos_los_padres':padre, 'dni_alumno':dni_alumno})
 
-def todas_las_obras_sociales(request, dni_alumno):
+def todas_las_obras_sociales_asignar(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     obras_ya_asignadas = usa_Obra_Social.objects.filter(alumno=alumno)
     lista = []
@@ -312,7 +312,12 @@ def todas_las_obras_sociales(request, dni_alumno):
         lista.append(a.obra_social.id)
     obra_social = Obra_Social.objects.exclude(id__in=lista).order_by("nombre")
     obra_social2 = Obra_SocialForm()
-    return render(request,'Obra_Social/todas_las_obras.html', {'obras_sociales':obra_social, 'dni_alumno':dni_alumno, 'obra_social':obra_social2})
+    return render(request,'Obra_Social/asignar_obra.html', {'obras_sociales':obra_social, 'dni_alumno':dni_alumno, 'obra_social':obra_social2})
+
+@user_passes_test(check_Secretaria)
+def todas_las_obras_sociales(request):
+    obra_social = Obra_Social.objects.all()
+    return render(request, 'Obra_Social/todas_las_obras_sociales.html', {'obras_sociales':obra_social})
 
 #Traer Todos las Matriculaciones con estado 'No' y 'Re'.
 @user_passes_test(check_Secretaria)
@@ -347,10 +352,17 @@ def datos_transportista(request, dni_transportista):
     transportista = Transportista.objects.get(dni=dni_transportista)
     return render(request, 'Transportista/datos_transportista.html', {'transportista':transportista})
 
+
 #Funcion que Trae los datos del Padre elegido previamente
 def datos_padre(request, dni_padre):
     padre = Padre_madre.objects.get(dni=dni_padre)
     return render(request, 'Padre_madre/datos_padre.html', {'padre':padre})
+
+
+def datos_obra_social(request, id_obra_social):
+    obra_social = Obra_Social.objects.get(pk=id_obra_social)
+    todos_los_alumnos = usa_Obra_Social.objects.filter(obra_social=obra_social)
+    return render(request, 'Obra_Social/datos_obra_social.html', {'todos_los_alumnos':todos_los_alumnos, 'obra_social':obra_social})
 
 #Funcion que Trae los datos del Alumno elegido previamente
 @login_required

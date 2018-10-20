@@ -1,0 +1,52 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <h3><strong>Datos de {{obra_social.nombre}}.</strong></h3>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div id="obrass">
+                {% if todos_los_alumnos|length != 0 %}
+                
+                <p>Cantidad de Alumnos con {{obra_social.nombre}}: {{todos_los_alumnos|length}}</p>
+                
+                <input type="text"placeholder="Alumno que desea buscar" id="inputObrass" onkeyup="buscar_alumno()" size="5">
+                <select id="filter_by">
+                    <option value=0>Nombre</option>
+                    <option value=1>Apellido</option>
+                    <option value=2>Dni</option>
+                </select>
+                <br>
+                <br>
+                <table class="table table-bordered" id="tabla_obras">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Dni</th>
+                            <th>Numero de Afiliado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for alumno in todos_los_alumnos %}
+                        <tr>
+                            <td>{{alumno.alumno.nombre}}</td>
+                            <td>{{alumno.alumno.apellido}}</td>
+                            <td>{{alumno.alumno.dni}}</td>
+                            <td>{{alumno.numero_afiliado}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+                <h6><center>No hay ningun Alumno que tenga esta Obra Social.</center></h6>
+            {% endif %}
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar_btn">Cerrar</button>
+        </div>
+    </div>
+</div>
