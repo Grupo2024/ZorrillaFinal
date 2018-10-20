@@ -102,9 +102,14 @@ def cargar_padre(request, dni_alumno):
     padre_form = PadreForm()
     return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':dni_alumno})
 
+#Levantar el Form para cargar una Obra Social.
 def form_obra_social(request):
     obra_social = Obra_SocialForm()
     return render(request, 'Obra_Social/crear_obra_social.html', {'obra_social':obra_social})
+
+#Levantar el Form para cargar un Curso.
+def form_curso(request):
+    return render(request, 'templates_cursos/crear_curso.html')
 
 @user_passes_test(check_Secretaria)
 def form_modificar_alumno(request, dni_alumno):
@@ -138,6 +143,32 @@ def crear_alumno(request):
         aux = alumno_form.errors
         return HttpResponse(str(aux))
 
+
+def crear_curso(request):
+    if request.method == "POST":
+        aNo = request.POST['año']
+        division = request.POST['division']
+        turno = request.POST['turno']
+        if (division == "A" or division == "B"):
+            turno = True
+        else:
+            turno = False
+        if (division == "B" or division == "D"):
+            division = False
+        else:
+            division = True
+        print aNo
+        print division
+        curso, created = Curso.objects.get_or_create(hora=turno, aNo=aNo,seccion=division)
+        if (created == False):
+            msg = "Ya existe este cuso"
+        else:
+            msg = "El curso " + str(curso) + " ha sido creado con exito."
+        data = {
+            'resultado': msg
+        }
+        return JsonResponse(data)
+    return HttpResponse("Solo podes acceder por Post")
 
 #Funcoin que crea al Padre.
 def crear_padre(request):

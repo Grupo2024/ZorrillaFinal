@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+<h4>Crear Curso</h4>
+
+<p>Año:</p>
+<select id="opciones_id">
+    <option id="opciones_año" value="0">Opciones</option>
+    <option value=1>1</option>
+    <option value=2>2</option>
+    <option value=3>3</option>
+    <option value=4>4</option>
+    <option value=5>5</option>
+    <option value=6>6</option>
+</select>
+
+<p>Division:</p>
+<select id="division_id">
+    <option id="opciones_division" value="0">Opciones</option>
+    <option id="a" value="A">A</option>
+    <option id="b" value="B">B</option>
+    <option id="c" value="C">C</option>
+    <option id="d" value="D">D</option>
+</select>
+
+<form id="form_Curso" method="post">
+    {% csrf_token %}
+    <input name="año" id="año" value=0 type="hidden">
+    <input name="division" id="division" value=0 type="hidden">
+    <input name="turno" id="turno" value=0 type="hidden">
+</form>
+
+<button id="btn_crear_curso" onclick="crear_curso()">Crear Curso</button>
+
+<span id="resultado_curso"></span>
+
+<script>
+
+    $('#opciones_id').change(function(){
+        document.getElementById("año").value=$(this).val();
+    })
+
+
+    $('#division_id').change(function(){
+        var aux = $(this).val();
+        document.getElementById("division").value=$(this).val();
+        document.getElementById("turno").value=aux;
+    })
+
+    function crear_curso(){
+        var myForm = document.getElementById('form_Curso');
+        formData = new FormData(myForm);
+        año_selected = document.getElementById("año").value
+        division_selected = document.getElementById("division").value
+        console.log(año_selected);
+        console.log(division_selected);
+        if (año_selected == 0){
+            alert("Elija un Año");
+        } else if (division_selected == 0) {
+            alert("Elija una Division.");
+        } else {
+            if (confirm("¿Crear curso ?")) {
+                $.ajax({
+                    url: '{% url 'crear_curso' %}',
+                    data : formData,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function(data){
+                        document.getElementById("resultado_curso").innerHTML = data.resultado;
+                    }
+                });
+            } else {
+                return;
+            }
+        }
+    }
+
+</script>
+
+{% endblock body %}

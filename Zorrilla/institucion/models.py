@@ -124,7 +124,7 @@ class Curso(models.Model):
     seccion = models.BooleanField('True = B o D, dependiendo de si es turno mañana o tarde', null=False)
 
     def que_turno(self):
-        aux = 'Mañana'
+        aux = 'Maniana'
         if (self.hora == True):
             aux = 'Tarde'
             return aux

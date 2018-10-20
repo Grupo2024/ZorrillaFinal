@@ -199,6 +199,21 @@
                     </div>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseTwo" id="headingTwo">
+                    <h5 class="mb-0">
+                        <a>Cursos</a>
+                    </h5>
+                </div>
+                <div id="collapseSix" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <div class="card-body">
+                        <a href="{% url 'cursos1' %}" class="btn btn-danger asd">Ver Cursos</a>
+                        <br>
+                        <br>
+                        <a href="{% url 'form_curso' %}" class="btn btn-success asd">Agregar Curso</a>
+                    </div>
+                </div>
+            </div>
             {% endif %}
             {% else %}
 
