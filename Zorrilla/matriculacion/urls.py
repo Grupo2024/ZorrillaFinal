@@ -37,11 +37,13 @@ urlpatterns = [
     url(r'^datos_padre/(\d+)/', datos_padre, name="datos_padre"),
     url(r'^datos_obra_social/(?P<id_obra_social>\d+)/', datos_obra_social, name="datos_obra_social"),
     url(r'^padres_del_alumno/(\d+)/', padres_del_alumno, name="padres_del_alumno"),
+    url(r'^usuarios_transportista/(\d+)/', usuarios_transportista, name="usuarios_transportista"),
     url(r'^transportistas_del_alumno/(\d+)/', transportistas_del_alumno, name="transportistas_del_alumno"),
     url(r'^obras_sociales_del_alumno/(\d+)/', obras_sociales_del_alumno, name="obras_sociales_del_alumno"),
     url(r'crear_alumno', crear_alumno, name="crear_alumno"),
     url(r'crear_padre/$', crear_padre, name="crear_padre"),
     url(r'^aceptar_matriculacion/$', aceptar_matriculacion, name="aceptar_matriculacion"),
     url(r'^perfilAlumno/(\d+)/$', datos_alumno, name="datos_alumno"),
+    url(r'^todos_los_transportistas/$', todas_los_transportistas, name="todas_los_transportistas"),
     url(r'^recuperar/$', template_get_pass, name="template_get_pass")
 ]

@@ -319,6 +319,11 @@ def todas_las_obras_sociales(request):
     obra_social = Obra_Social.objects.all()
     return render(request, 'Obra_Social/todas_las_obras_sociales.html', {'obras_sociales':obra_social})
 
+@user_passes_test(check_Secretaria)
+def todas_los_transportistas(request):
+    transportistas = Transportista.objects.all()
+    return render(request, 'Transportista/todos_los_transportistas.html', {'transportistas':transportistas})
+
 #Traer Todos las Matriculaciones con estado 'No' y 'Re'.
 @user_passes_test(check_Secretaria)
 def traer_pedidos(request):
@@ -353,6 +358,11 @@ def datos_transportista(request, dni_transportista):
     return render(request, 'Transportista/datos_transportista.html', {'transportista':transportista})
 
 
+def usuarios_transportista(request, dni_transportista):
+    transportista = Transportista.objects.get(dni=dni_transportista)
+    todos_los_alumnos = usa_Transporte.objects.filter(transportista=transportista)
+    return render(request, 'Transportista/usuarios_transportista.html', {'transportista':transportista, 'todos_los_alumnos':todos_los_alumnos})
+    
 #Funcion que Trae los datos del Padre elegido previamente
 def datos_padre(request, dni_padre):
     padre = Padre_madre.objects.get(dni=dni_padre)
@@ -361,7 +371,7 @@ def datos_padre(request, dni_padre):
 
 def datos_obra_social(request, id_obra_social):
     obra_social = Obra_Social.objects.get(pk=id_obra_social)
-    todos_los_alumnos = usa_Obra_Social.objects.filter(obra_social=obra_social)
+    todos_los_alumnos = usa_Obra_Social.objects.filter(obra_social=obra_social).order_by("alumno__nombre","alumno__nombre","alumno__dni")
     return render(request, 'Obra_Social/datos_obra_social.html', {'todos_los_alumnos':todos_los_alumnos, 'obra_social':obra_social})
 
 #Funcion que Trae los datos del Alumno elegido previamente

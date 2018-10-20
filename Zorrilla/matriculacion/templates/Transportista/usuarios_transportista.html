@@ -1,0 +1,50 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <h3><strong>Datos de {{transportista.nombre_transporte}}.</strong></h3>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div id="obrass">
+                {% if todos_los_alumnos|length != 0 %}
+                
+                <p>Cantidad de Alumnos que utilizan {{transportista.nombre_transporte}}: {{todos_los_alumnos|length}}</p>
+                
+                <input type="text"placeholder="Alumno que desea buscar" id="inputTranss" onkeyup="buscar_alumno()" size="5">
+                <select id="filter_by">
+                    <option value=0>Nombre</option>
+                    <option value=1>Apellido</option>
+                    <option value=2>Dni</option>
+                </select>
+                <br>
+                <br>
+                <table class="table table-bordered" id="tabla_trans">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Dni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for alumno in todos_los_alumnos %}
+                        <tr>
+                            <td>{{alumno.alumno.nombre}}</td>
+                            <td>{{alumno.alumno.apellido}}</td>
+                            <td>{{alumno.alumno.dni}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+                <h5><center>Ningun Alumno usa este Transporte.</center></h5>
+            {% endif %}
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar_btn">Cerrar</button>
+        </div>
+    </div>
+</div>

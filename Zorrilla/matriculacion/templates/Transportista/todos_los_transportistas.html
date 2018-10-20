@@ -6,4 +6,114 @@
 
 {% load poll_extras %}
 
+<br>
+<div id="contenido">
+    {% if transportistas|length != 0 %}
+
+    <h3><center>Transportistas.</center></h3>
+    <br>
+    <input type="text"placeholder="Transportista que desea buscar" id="input" onkeyup="buscar_transportista()" size="5">
+    <select id="filtro">
+        <option value=0>Nombre</option>
+        <option value=1>Apellido</option>
+        <option value=2>Dni</option>
+    </select>
+    <br>
+    <br>
+    <table style="width:30%" align="center" id="tabla">
+        <tr>
+            <th>Nombre Transportista</th>
+            <th>Apellido Transportista</th>
+            <th>Dni Transportista</th>
+            <th>Nombre Transporte</th>
+            <th>Telefono Transporte</th>
+            <th>Info</th>
+        </tr>
+        {% for a in transportistas %}
+        <tr>
+            <td>{{a.nombre}}</td>
+            <td>{{a.apellido}}</td>
+            <td>{{a.dni}}</td>
+            <td>{{a.nombre_transporte}}</td>
+            <td>{{a.telefono_transportista}}</td>
+            <td><a onclick="info_transportista('{% url 'usuarios_transportista' a.dni %}')">Info</a></td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+    <h3><center>No hay ningun Transportistsa.</center></h3>
+
+    {% endif %}
+</div>
+
+<a href="{% url 'index' %}">Menu</a>
+
+<div class="modal fade" id="modal_info">
+    <div class="modal-dialog">
+        <div id="datos_transs">
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function info_transportista(url, alum){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_transs").html(data);
+            $('#modal_info').modal('show');
+        });
+    }
+
+    function buscar_alumno() {
+        var e = document.getElementById("filter_by");
+        var strUser = e.options[e.selectedIndex].value;
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("inputTranss");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("tabla_trans");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[strUser];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    
+    function buscar_transportista() {
+        var e = document.getElementById("filtro");
+        var strUser = e.options[e.selectedIndex].value;
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("input");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("tabla");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[strUser];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+</script>
+
 {% endblock body %}
