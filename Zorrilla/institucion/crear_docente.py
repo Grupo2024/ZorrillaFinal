@@ -78,4 +78,4 @@ def crear_profesor(request):
                 'resultado': "No existe un pedido que contenga esta clave."
             }
             return JsonResponse(data)
-
+    return HttpResponse("Solo podes acceder por Post")

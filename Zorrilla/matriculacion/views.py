@@ -142,24 +142,35 @@ def crear_alumno(request):
     else:
         aux = alumno_form.errors
         return HttpResponse(str(aux))
-
-
+    
+def definir_curso(seccion):
+    if (seccion == "B" or seccion == "D"):
+        print "Es B o D"
+        return True
+    else: 
+        print "Es A o C"
+        return False
+        
+    # HORA: TRUE, SECCION TRUE: --- D
+    # HORA: FALSE, SECCION TRUE: ---- B
+    # HORA: TRUE, SECCION FALSE: ---- C
+    # HORA: FALSE, SECCION FALSE: ----- A
+    
 def crear_curso(request):
     if request.method == "POST":
         aNo = request.POST['año']
-        division = request.POST['division']
-        turno = request.POST['turno']
-        if (division == "A" or division == "B"):
-            turno = True
+        seccion = request.POST['division']
+        hora = request.POST['hora']
+        if hora == "AB":
+            print "Es A o B"
+            hora = False
         else:
-            turno = False
-        if (division == "B" or division == "D"):
-            division = False
-        else:
-            division = True
-        print aNo
-        print division
-        curso, created = Curso.objects.get_or_create(hora=turno, aNo=aNo,seccion=division)
+            hora = True
+            print "Es C o D"
+        seccion = definir_curso(seccion)
+        print hora
+        print seccion
+        curso, created = Curso.objects.get_or_create(aNo=aNo, seccion=seccion, hora=hora)
         if (created == False):
             msg = "Ya existe este cuso"
         else:

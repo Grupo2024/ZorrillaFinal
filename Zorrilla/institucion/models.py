@@ -146,6 +146,11 @@ class Curso(models.Model):
                 return aux
             else:
                 return aux
+            
+    # HORA: TRUE, SECCION TRUE: --- D
+    # HORA: FALSE, SECCION TRUE: ---- B
+    # HORA: TRUE, SECCION FALSE: ---- C
+    # HORA: FALSE, SECCION FALSE: ----- A
 
     def new_turno(self):
         if self.hora:

@@ -30,7 +30,7 @@
     {% csrf_token %}
     <input name="año" id="año" value=0 type="hidden">
     <input name="division" id="division" value=0 type="hidden">
-    <input name="turno" id="turno" value=0 type="hidden">
+    <input name="hora" id="hora" value=0 type="hidden">
 </form>
 
 <button id="btn_crear_curso" onclick="crear_curso()">Crear Curso</button>
@@ -46,8 +46,12 @@
 
     $('#division_id').change(function(){
         var aux = $(this).val();
+        if (aux == "A" || aux =="B"){
+            document.getElementById("hora").value = "AB";
+        } else {
+            document.getElementById("hora").value = "CD";
+        }
         document.getElementById("division").value=$(this).val();
-        document.getElementById("turno").value=aux;
     })
 
     function crear_curso(){
