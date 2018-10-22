@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^desvincular_obra_social', desvincular_obra_social, name="desvincular_obra_social"),
     url(r'^desvincular_familiar', desvincular_familiar, name="desvincular_familiar"),
     url(r'^crear_padre_madre', crear_padre_madre, name="crear_padre_madre"),
+    url(r'^cambiar_curso', cambiar_curso, name="cambiar_curso"),
     url(r'^form_transportista', form_transportista, name="form_transportista"),
     url(r'^todos_los_transportistas/(\d+)/', todos_los_transportistas, name="todos_los_transportistas"),
     url(r'^todos_los_padres/(\d+)/', todos_los_padres, name="todos_los_padres"),

@@ -102,7 +102,7 @@ def cargar_padre(request, dni_alumno):
     padre_form = PadreForm()
     return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':dni_alumno})
 
-
+@user_passes_test(check_Secretaria)
 def modificar_alumno(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     alumno_form = Modificar_Alumno_Form(initial={'nombre':alumno.nombre, 'apellido':alumno.apellido,'lugar_nacimiento':alumno.lugar_nacimiento, 'fecha_nacimiento':alumno.fecha_nacimiento, 'domicilio':alumno.domicilio, 'email':alumno.email, 'sexo':alumno.sexo, 'telefono_casa':alumno.telefono_casa, 'telefono_padre':alumno.telefono_padre, 'telefono_madre':alumno.telefono_madre, 'telefono_familiar':alumno.telefono_familiar, 'telefono_vecino':alumno.telefono_vecino, 'enfermedad_relevante':alumno.enfermedad_relevante, 'con_quien_vive':alumno.con_quien_vive, 'quien_lo_trae':alumno.quien_lo_trae, 'telefono_que_lo_trae':alumno.telefono_que_lo_trae})
@@ -403,6 +403,21 @@ Modificar.
 ==========
 """
 
+def cambiar_curso(request):
+    if request.method == "POST":
+        dni_alumno = request.POST['dni_alumno']
+        id_curso = request.POST['id_curso']
+
+        alumno = Alumno.objects.get(dni=dni_alumno)
+        curso = Curso.objects.get(id=id_curso)
+        alumno_C = alumno_Curso.objects.get(alumno=alumno)
+        alumno_C.curso = curso
+        alumno_C.save()
+        data = {
+            'resultado': "El Alumno " + alumno.nombre + " " + alumno.apellido + " ahora asiste a " + str(alumno_C.curso)
+        }
+        return JsonResponse(data)
+
 #Funcion para cambiar la password del usuario.
 def cambiar_password(request):
     if request.method == "POST":
@@ -495,13 +510,12 @@ def aplicar_cambios_alumno(request):
             return JsonResponse(data)
     return HttpResponse("Solo podes acceder por Post")
 
-
 def modificar_curso(request, dni_alumno):
-    print dni_alumno
     alumno = Alumno.objects.get(dni=dni_alumno)
-    curso_actual = alumno_Curso.objects.get(alumno=alumno)
-    todos_los_cursos = Curso.objects.exclude(id=curso_actual.id)
-    return render(request, 'cambiar_curso.html', {'dni_alumno':alumno.dni, 'todos_los_cursos':todos_los_cursos, 'curso_actual':curso_actual})
+    alumno_C = alumno_Curso.objects.get(alumno=alumno)
+    curso_actual = alumno_C.curso
+    todos_los_cursos = Curso.objects.all().order_by("aNo").exclude(id=curso_actual.id)
+    return render(request, 'cambiar_curso.html', {'alumno':alumno, 'todos_los_cursos':todos_los_cursos, 'curso_actual':curso_actual})
 
 """
 ==================

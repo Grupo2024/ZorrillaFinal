@@ -2,77 +2,100 @@
     <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
-            <span>Transportistas:</span>
+            <span>Cursos</span>
         </div>
         <!-- Modal body -->
         <div class="modal-body">
+            <div id="antes_cambiar">
+                <p>Curso Actual: {{curso_actual}}</p>
 
-            {% if transportistas|length != 0%}
-                <div id="hide_correct">
-                    <input type="text"placeholder="Curso que desea buscar" id="myInput" onkeyup="buscar_transportista()" size="5">
-                    <select id="filter_by">
-                        <option value=0>Nombre</option>
-                        <option value=1>Apellido</option>
-                        <option value=2>Dni</option>
+                <div class="dropdown">
+                    <label for="select_cc">Cambiar de Curso: </label>
+                    <select class="form-control" id="select_cc" onchange="show_table()">
+                        <option value=0>No</option>
+                        <option value=1>Si</option>
                     </select>
+                </div>
+
+                <div id="tabla_cursos">
                     <br>
-                    <br>
-                    <table class="table table-bordered" id="tabla_transportistas">
+                    {% if todos_los_cursos|length != 0 %}
+                    <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Año</th>
-                                <th>Division</th>
-                                <th>Turno</th>
-                                <th>Opcion</th>
+                                <th scope="col">Año</th>
+                                <th scope="col">Division</th>
+                                <th scope="col">Turno</th>
+                                <th scope="col">Opcion</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="table table-hover">
                             {% for curso in todos_los_cursos %}
                             <tr>
                                 <td>{{curso.aNo}}</td>
-                                <td>{{curso.division}}</td>
-                                <td>{{curso.turno}}</td>
+                                <td>{{curso.que_seccion}}</td>
+                                <td>{{curso.que_turno}}</td>
                                 <td><input type="radio" id={{curso.id}} name="cursoss" value={{curso.id}}></td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
+
+                    <span style="color:red" id="msg_advertencia">Advertencia: Los Padres del Alumno seran notificados en caso de realizar una modificacion.</span>
+
+                    {% else %}
+                    <h3><center>No Hay Ningun Curso.</center></h3>
+                    {% endif %}
                 </div>
-            {% else %}
-                <h3><center>No hay ningun Curso.</center></h3>
-            {% endif %}
-            <span id="resultado_asignar_curso"></span>
+                <form id="form_cambiar_curso" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" id="id_curso" name="id_curso" value=0 type="number">
+                    <input type="hidden" id="dni_alumno" name="dni_alumno" value={{alumno.dni}}>
+                </form>
+            </div>
+            <span id="resultado_cambiar_curso"></span>
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">
-            <form id="select_curso" method="post">
-                {% csrf_token %}
-                <input name="dni_alumno" id="dni_alumno" value={{dni_alumno}} type="hidden">
-                <input name="id_curso" id="id_curso" value=0 type="hidden">
-            </form>
-            <a href="{% url 'form_transportista' %}" align="left" id="crear_btn">Crear Transportista</a>
             <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar_btn">Cerrar</button>
-            <button type="button" class="btn btn-success" id="cont_transportista" onclick="select_transportista()">Asignar</button>
-            <button type="button" class="btn btn-success" id="cont_btn" onclick="refresh_p()">Continuar</button>
+            <button type="button" class="btn btn-success" id="volver_btn" onclick="refresh_p()">Volver</button>
+            <button type="button" class="btn btn-info" id="cambiar_curso_btn" onclick="cambiar_curso()">Cambiar Curso</button>
         </div>
     </div>
 </div>
 
-
-
 <script>
 
-    $('input[name=transporte]').click(function() {
-        var aux = $('input[name=transporte]:checked').val();
-        document.getElementById("dni_transportista").value = aux
-        document.getElementById("cont_transportista").style.display = "block";
+    document.getElementById("tabla_cursos").style.display = "none";
+    document.getElementById("cambiar_curso_btn").style.display = "none";
+    document.getElementById("volver_btn").style.display = "none";
+    document.getElementById("msg_advertencia").style.display = "none";
+
+    $('input[name=cursoss]').click(function() {
+        var aux = $('input[name=cursoss]:checked').val();
+        document.getElementById("id_curso").value = aux;
+        document.getElementById("cambiar_curso_btn").style.display = "block";
+        document.getElementById("msg_advertencia").style.display = "block";
     });
 
-    function select_curso(){
-        var aux_form = document.getElementById("select_transportista");
-        var r = confirm("¿Asignar este Transportista ?");
+    function show_table(){
+        var x = document.getElementById("select_cc").value;
+        console.log(x);
+        if (x == 1){
+            document.getElementById("msg_advertencia").style.display = "none";
+            document.getElementById("cambiar_curso_btn").style.display = "none";
+            document.getElementById("tabla_cursos").style.display = "block";
+        } else {
+            document.getElementById("tabla_cursos").style.display = "none";
+            document.getElementById("msg_advertencia").style.display = "none";
+            document.getElementById("cambiar_curso_btn").style.display = "none";
+        }
+    }
+
+    function cambiar_curso(){
+        var r = confirm("¿Cambiar el Curso ?");
         if (r == true) {
-            var myForm = document.getElementById('select_transportista');
+            var myForm = document.getElementById('form_cambiar_curso');
             formData = new FormData(myForm);
             $.ajax({
                 url: '{% url 'cambiar_curso' %}',
@@ -81,31 +104,15 @@
                 contentType: false,
                 type: 'POST',
                 success: function(data){
-                    document.getElementById("resultado_asignar_curso").innerHTML = data.resultado;
-                }
-            });
+                document.getElementById("antes_cambiar").style.display = "none";
+                document.getElementById("cambiar_curso_btn").style.display = "none";
+                document.getElementById("cerrar_btn").style.display = "none";
+                document.getElementById("resultado_cambiar_curso").innerHTML = data.resultado;
+                document.getElementById("volver_btn").style.display = "block";
+            }
+                   });
         } else {
             return;
-        }
-    }
-
-    function buscar_transportista() {
-        var e = document.getElementById("filter_by");
-        var strUser = e.options[e.selectedIndex].value;
-        var input, filter, table, tr, td, i;
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("tabla_transportistas");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[strUser];
-            if (td) {
-                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
         }
     }
 
