@@ -102,6 +102,10 @@ def cargar_padre(request, dni_alumno):
     padre_form = PadreForm()
     return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':dni_alumno})
 
+def form_autorizado(request):
+    autorizado = AutorizadoForm()
+    return render(request, 'Autorizado/crear_autorizado.html', {'autorizado':autorizado})
+
 #Levantar el Form para cargar una Obra Social.
 def form_obra_social(request):
     obra_social = Obra_SocialForm()
@@ -181,6 +185,32 @@ def crear_curso(request):
         return JsonResponse(data)
     return HttpResponse("Solo podes acceder por Post")
 
+def crear_autorizado(request):
+    autorizado_form = AutorizadoForm(request.POST)
+    if autorizado_form.is_valid():
+        autorizado_form.save()
+        dni_autorizado = autorizado_form.cleaned_data['dni']
+        nombre = autorizado_form.cleaned_data['nombre']
+        apellido = autorizado_form.cleaned_data['apellido']
+        autorizado = Autorizado.objects.get(dni=dni_autorizado)
+        subject = "Inicio de Sesion."
+        message = "En el dia de la fecha se le notifica que sus datos han sido cargados en nuestra pagina."
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [autorizado.email]
+        #send_mail( subject, message, email_from, recipient_list)
+        data = {
+            'error':False,
+            'resultado': "Los datos de " + nombre + " " + apellido + " han sido cargados con exito."
+        }
+        return JsonResponse(data)
+    else:
+        resultado = str(autorizado_form.errors)
+        data = {
+            'error':True,
+            'resultado':resultado
+        }
+        return JsonResponse(data)
+        
 #Funcoin que crea al Padre.
 def crear_padre(request):
     padre_form = PadreForm(request.POST)

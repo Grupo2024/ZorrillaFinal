@@ -18,6 +18,10 @@ class AlumnoForm(forms.ModelForm):
             'fecha_nacimiento': DateInput()
         }
 
+class AutorizadoForm(forms.ModelForm):
+    class Meta:
+        model = Autorizado
+        fields = '__all__'
 
 class Obra_SocialForm(forms.ModelForm):
     class Meta:
