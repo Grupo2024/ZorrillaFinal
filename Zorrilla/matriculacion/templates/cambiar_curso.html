@@ -2,16 +2,14 @@
     <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
-            <span>Cursos</span>
+            <h3>Curso Actual: {{curso_actual}}</h3>
         </div>
         <!-- Modal body -->
         <div class="modal-body">
             <div id="antes_cambiar">
-                <p>Curso Actual: {{curso_actual}}</p>
-
                 <div class="dropdown">
                     <label for="select_cc">Cambiar de Curso: </label>
-                    <select class="form-control" id="select_cc" onchange="show_table()">
+                    <select class="form-control" style="width: 30%; margin-left: 32%; margin-top: -8%" id="select_cc" onchange="show_table()">
                         <option value=0>No</option>
                         <option value=1>Si</option>
                     </select>
