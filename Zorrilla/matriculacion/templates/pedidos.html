@@ -79,16 +79,9 @@
     </div>
 </div>
 
-<div class="modal fade" id="todos_los_padres">
+<div class="modal fade" id="todas_las_instancias">
     <div class="modal-dialog modal-lg">
-        <div id="datos_padre">
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="todos_los_transportistas">
-    <div class="modal-dialog modal-lg">
-        <div id="datos_transportista">
+        <div id="datos">
         </div>
     </div>
 </div>
@@ -122,6 +115,10 @@
 
 <script>
 
+    function refresh_p(){
+        var des = document.getElementById("reload");
+        des.submit();
+    }
 
 
     function use_transporte(e) {
@@ -206,22 +203,8 @@
         }
     }
 
-    function traer_transportistas(url){
-        $.ajax({
-            method: "POST",
-            url: url,
-            data: {
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-            }
-        })
-            .done(function (data) {
-            $("#datos_transportista").html(data);
-            $('#modal_cursos').modal('hide');
-            $('#todos_los_transportistas').modal('show');
-        });
-    }
 
-    function traer_padres(url){
+    function traer(url){
         $.ajax({
             method: "POST",
             url: url,
@@ -230,9 +213,9 @@
             }
         })
             .done(function (data) {
-            $("#datos_padre").html(data);
+            $("#datos").html(data);
             $('#modal_cursos').modal('hide');
-            $('#todos_los_padres').modal('show');
+            $('#todas_las_instancias').modal('show');
         });
     }
 
