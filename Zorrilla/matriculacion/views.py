@@ -153,10 +153,10 @@ def crear_alumno(request):
     
 def definir_curso(seccion):
     if (seccion == "B" or seccion == "D"):
-        print "Es B o D"
+        print ("Es B o D")
         return True
     else: 
-        print "Es A o C"
+        print ("Es A o C")
         return False
         
     # HORA: TRUE, SECCION TRUE: --- D
@@ -170,14 +170,14 @@ def crear_curso(request):
         seccion = request.POST['division']
         hora = request.POST['hora']
         if hora == "AB":
-            print "Es A o B"
+            print ("Es A o B")
             hora = False
         else:
             hora = True
-            print "Es C o D"
+            print ("Es C o D")
         seccion = definir_curso(seccion)
-        print hora
-        print seccion
+        print (hora)
+        print (seccion)
         curso, created = Curso.objects.get_or_create(aNo=aNo, seccion=seccion, hora=hora)
         if (created == False):
             msg = "Ya existe este cuso"
@@ -284,7 +284,7 @@ def crear_padre(request):
 def crear_padre_madre(request):
     padre_form = PadreForm(request.POST)
     if padre_form.is_valid():
-        print "Es valido"
+        print ("Es valido")
         padre_form.save()
         dni_padre = padre_form.cleaned_data['dni']
         padre = Padre_madre.objects.get(dni=dni_padre)
@@ -294,9 +294,9 @@ def crear_padre_madre(request):
             'resultado':resultado
         }
     else:
-        print "No es valido"
+        print ("No es valido")
         resultado = str(padre_form.errors)
-        print resultado
+        print (resultado)
         data = {
             'error':True,
             'resultado':resultado
@@ -364,8 +364,8 @@ def asignar_padre(request):
         dni = request.POST['dni_alumno']
         dni_padre = request.POST['dni_padre']
         alumno = Alumno.objects.get(dni=dni)
-        print dni
-        print dni_padre
+        print (dni)
+        print (dni_padre)
         padre = Padre_madre.objects.get(dni=dni_padre)
         secretaria = user_Secretaria.objects.get(user=request.user)
         familia = Familia(alumno=alumno, padre_madre=padre, secretaria=secretaria.secretaria_referenciada)
@@ -614,7 +614,7 @@ def aplicar_cambios_alumno(request):
         alumno_form = Modificar_Alumno_Form(request.POST)
         dni_alumno = request.POST['dni_alumno']
         if alumno_form.is_valid():
-            print "Es valido"
+            print ("Es valido")
             alumno = Alumno.objects.get(dni=dni_alumno)
             nuevo_nombre = alumno_form.cleaned_data['nombre']
             nuevo_apellido = alumno_form.cleaned_data['apellido']
@@ -641,7 +641,7 @@ def aplicar_cambios_alumno(request):
             return JsonResponse(data)
         else:
             errores = str(alumno_form.errors)
-            print errores
+            print (errores)
             data = {
                 'resultado':errores
             }
