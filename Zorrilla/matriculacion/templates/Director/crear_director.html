@@ -59,7 +59,8 @@
 </style>
 <BR>
 <center><h3>CREAR DIRECTOR</h3></center>
-<form method="post" enctype="multipart/form-data" id="form_docente">
+<div id="c_director">
+<form method="post" enctype="multipart/form-data" id="form_director">
     {% csrf_token %}
     <div class='row' style="margin-top:2%">
         <div class="card text-center" style="width: 26%; height:35%; margin-left: 6%">
@@ -197,7 +198,7 @@
                 </div>
             </div>
         </div>
-
+</div>
         </form>
 <span id="resultado_crear"></span>
 
