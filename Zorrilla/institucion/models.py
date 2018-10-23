@@ -13,8 +13,8 @@ from django.contrib.auth.models import User
 class clave_Docente(models.Model):
     clave_logIn = models.CharField(null=False, max_length=10)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-    email_docente = models.EmailField(null=False)
-    dni_docente = models.IntegerField(null=False)
+    email_docente = models.EmailField(null=False, unique=True)
+    dni_docente = models.IntegerField(null=False, unique=True)
     ingresado = models.BooleanField(default=False)#False hasta que se ingrese el docente al sistema.
     
     def change(self):
