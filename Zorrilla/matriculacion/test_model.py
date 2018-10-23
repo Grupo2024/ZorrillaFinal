@@ -16,31 +16,32 @@ def fallo_matriculando(id_matriculacion):
         matriculacion.save()
     else:
         pass
-    
-def docente_existe(email, dni):
-    incoherencias = []
-    docente = Profesor.objects.filter(dni_t=dni)
-    if docente:
-        pass
-    else:
-        incoherencias.append("Dni")
-    if docente:
-        pass
-    else:
-        incoherencias.append(" Email")
-    return incoherencias
+
 
 def new_Password(dni):
-    docente = Profesor.objects.get(dni_t=dni)
+    try:
+        profesor = Profesor.objects.get(dni_t=dni)
+        nombre = profesor.nombre_t
+        apellido = profesor.apellido_t
+    except Profesor.DoesNotExist:
+        nombre = ""
+        apellido = ""
+    try:
+        director = Director.objects.get(dni_t=dni)
+        nombre = director.nombre_t
+        apellido = director.apellido_t
+    except Director.DoesNotExist:
+        nombre = ""
+        apellido = ""
     name_f = ""
     cantidad = 0
     r = random.randint(1111,9999)
-    for a in docente.nombre_t:
+    for a in nombre:
         cantidad = cantidad + 1
         if cantidad == 1:
             name_f = a
             break
         else:
             pass
-    password = name_f + docente.apellido_t + str(r)
+    password = name_f + apellido + str(r)
     return password

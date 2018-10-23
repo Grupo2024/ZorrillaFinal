@@ -106,6 +106,10 @@ def form_autorizado(request):
     autorizado = AutorizadoForm()
     return render(request, 'Autorizado/crear_autorizado.html', {'autorizado':autorizado})
 
+def form_director(request):
+    director = DirectorForm()
+    return render (request, 'Director/crear_director.html', {'director':director})
+
 #Levantar el Form para cargar una Obra Social.
 def form_obra_social(request):
     obra_social = Obra_SocialForm()
@@ -185,6 +189,42 @@ def crear_curso(request):
         return JsonResponse(data)
     return HttpResponse("Solo podes acceder por Post")
 
+def crear_director(request):
+    if request.method == 'POST':
+        director = DirectorForm(request.POST)
+        if director.is_valid():
+            director.save()
+            dni = director.cleaned_data['dni_t']
+            director = Director.objects.get(dni_t=dni)
+            director.cargo = "Director"
+            director.save()
+            password = new_Password(dni)
+            user_d = User.objects.create_user(username=director.nombre_t, password=password)
+            my_group = Group.objects.get(name='Director')
+            my_group.user_set.add(user_d)
+            #Creamos la Clase intermedia.
+            user_director = user_Director(user=user_d, director_referenciado=director)
+            user_director.save()
+            #Email Notificando la creacion del usuario.
+            subject = "Usuario Creado"
+            message = "El Director " + str(director.apellido_t) + "" + str(director.nombre_t) + " ha sido ingresado al sistema, en el cual utilizara como nombre de usuario: " + str(user_d.username) + " y la password " + str(password)
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [director.email_t]
+            send_mail(subject, message, email_from, recipient_list)
+            data = {
+                'error':False,
+                'resultado': "El Director " + str(director.apellido_t) + " " + str(director.nombre_t) + " ha sido creado con exito."
+            }
+            return JsonResponse(data)
+        else:
+            resultado = str(director.errors)
+            data = {
+                'error':True,
+                'resultado':resultado
+            }
+            return JsonResponse(data)
+    return HttpResponse("Solo podes acceder por Post")
+
 def crear_autorizado(request):
     autorizado_form = AutorizadoForm(request.POST)
     if autorizado_form.is_valid():
@@ -197,7 +237,7 @@ def crear_autorizado(request):
         message = "En el dia de la fecha se le notifica que sus datos han sido cargados en nuestra pagina."
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [autorizado.email]
-        #send_mail( subject, message, email_from, recipient_list)
+        send_mail( subject, message, email_from, recipient_list)
         data = {
             'error':False,
             'resultado': "Los datos de " + nombre + " " + apellido + " han sido cargados con exito."

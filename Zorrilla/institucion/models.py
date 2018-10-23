@@ -47,7 +47,7 @@ class Trabajador(models.Model):
     lugar_nacimiento_t = models.CharField('Lugar de Nacimiento', max_length=150, blank=True)
     fecha_nacimiento_t = models.DateField('Fecha Nacimiento', blank=True)
     domicilio_t = models.CharField('Domicilio del trabajador', max_length=150, blank=True)
-    email_t = models.EmailField('Email del trabajador', max_length=70, blank=True)
+    email_t = models.EmailField('Email del trabajador', max_length=70, unique=True)
     sexo_t = models.CharField('Sexo', max_length=6, choices=GENERO_CHOICES)
     #foto = models.ImageField(upload_to=get_image_path, blank=True, null=True)
     #BUSCAR LO DE FOTOS
@@ -58,9 +58,8 @@ class Trabajador(models.Model):
     fecha_inicio_actividad = models.DateField('Fecha de Inicio de Clases en el Colegio', auto_now_add=True)
     antecedentes_laborales = models.TextField('Datos de Trabajos Previos', max_length=300)
     estudios_cursados = models.TextField('Estudios del Trabajador', max_length=300)
-
     #Nuevos datos que faltaban:
-    cargo = models.CharField('Cargo que posee en esta escuela', max_length=150)
+    cargo = models.CharField('Cargo que posee en esta escuela', max_length=50, blank=True)
     
 
     def __str__(self):

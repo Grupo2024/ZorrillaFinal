@@ -23,6 +23,11 @@ class AutorizadoForm(forms.ModelForm):
         model = Autorizado
         fields = '__all__'
 
+class DirectorForm(forms.ModelForm):
+    class Meta:
+        model = Director
+        fields = '__all__'
+
 class Obra_SocialForm(forms.ModelForm):
     class Meta:
         model= Obra_Social
