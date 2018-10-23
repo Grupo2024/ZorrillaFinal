@@ -153,10 +153,10 @@ def crear_alumno(request):
     
 def definir_curso(seccion):
     if (seccion == "B" or seccion == "D"):
-        print "Es B o D"
+        print ("Es B o D")
         return True
     else: 
-        print "Es A o C"
+        print ("Es A o C")
         return False
         
     # HORA: TRUE, SECCION TRUE: --- D
@@ -170,14 +170,14 @@ def crear_curso(request):
         seccion = request.POST['division']
         hora = request.POST['hora']
         if hora == "AB":
-            print "Es A o B"
+            print ("Es A o B")
             hora = False
         else:
             hora = True
-            print "Es C o D"
+            print ("Es C o D")
         seccion = definir_curso(seccion)
-        print hora
-        print seccion
+        print (hora)
+        print (seccion)
         curso, created = Curso.objects.get_or_create(aNo=aNo, seccion=seccion, hora=hora)
         if (created == False):
             msg = "Ya existe este cuso"
@@ -284,7 +284,7 @@ def crear_padre(request):
 def crear_padre_madre(request):
     padre_form = PadreForm(request.POST)
     if padre_form.is_valid():
-        print "Es valido"
+        print ("Es valido")
         padre_form.save()
         dni_padre = padre_form.cleaned_data['dni']
         padre = Padre_madre.objects.get(dni=dni_padre)
@@ -294,9 +294,9 @@ def crear_padre_madre(request):
             'resultado':resultado
         }
     else:
-        print "No es valido"
+        print ("No es valido")
         resultado = str(padre_form.errors)
-        print resultado
+        print (resultado)
         data = {
             'error':True,
             'resultado':resultado
