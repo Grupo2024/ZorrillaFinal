@@ -45,6 +45,7 @@
 </form>
 
 <a href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
+<a href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
 <button id="btn_os" onclick="traer_obras_sociales('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Cargar Obra Social</button>
 
 <script>

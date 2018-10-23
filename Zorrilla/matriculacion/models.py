@@ -114,7 +114,6 @@ class Matriculacion(models.Model):
 class Familia(models.Model):
     alumno = models.ForeignKey(Alumno, null=False)
     padre_madre = models.ForeignKey(Padre_madre, null=False)
-    secretaria = models.ForeignKey(Secretaria, null=False)
     fecha_relacion = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

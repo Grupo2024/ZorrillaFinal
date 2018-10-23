@@ -14,8 +14,6 @@
             <th>Apellido</th>
             <th>Dni</th>
             <th>Email</th>
-            <th>Asignado Por</th>
-            <th>Fecha de Asignacion</th>
             <th>Desvincular</th>
         </tr>
         {% for a in familiares %}
@@ -24,8 +22,6 @@
             <td>{{a.padre_madre.apellido|title}}</td>
             <td>{{a.padre_madre.dni}}</td>
             <td>{{a.padre_madre.email}}</td>
-            <td>{{a.secretaria.nombre_t|title}}</td>
-            <td>{{a.fecha_relacion|date:"d/M/Y"}}</td>
             <td><a onclick="desvincular({{a.padre_madre.dni}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
         </tr>
         {% endfor %}
@@ -41,6 +37,7 @@
 
 <button onclick="traer_padres('{% url 'todos_los_padres_asignar' alumno.dni %}')">Añadir Padre</button>
 <a href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
+<a href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
 
 <div class="modal fade" id="todos_los_padres">
     <div class="modal-dialog modal-lg">

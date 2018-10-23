@@ -262,8 +262,7 @@ def crear_padre(request):
         dni_padre = padre_form.cleaned_data['dni']
         padre = Padre_madre.objects.get(dni=dni_padre)
         print (padre)
-        secretaria = user_Secretaria.objects.get(user=request.user)
-        familia = Familia(alumno=alumno, padre_madre=padre, secretaria=secretaria.secretaria_referenciada)
+        familia = Familia(alumno=alumno, padre_madre=padre)
         familia.save()
         new_Matriculacion = Matriculacion(alumno=alumno, matriculado="No")
         new_Matriculacion.save()
@@ -368,7 +367,7 @@ def asignar_padre(request):
         print (dni_padre)
         padre = Padre_madre.objects.get(dni=dni_padre)
         secretaria = user_Secretaria.objects.get(user=request.user)
-        familia = Familia(alumno=alumno, padre_madre=padre, secretaria=secretaria.secretaria_referenciada)
+        familia = Familia(alumno=alumno, padre_madre=padre)
         familia.save()
         familia.save()
         data = {
@@ -521,8 +520,9 @@ def get_Secciones(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     familiares = Familia.objects.filter(alumno=alumno).order_by("padre_madre__apellido", "padre_madre__nombre")
     transportistas = usa_Transporte.objects.filter(alumno=alumno)
-    cursos = Curso.objects.all()
-    return render(request, 'matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas})
+    cursos = Curso.objects.all().order_by("aNo", "hora")
+    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno)
+    return render(request, 'matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas, 'obras_sociales':obras_sociales})
 
 #Funcion que Trae los Familiares, Transportistas, Curso Actual del Alumno y los Cursos.
 def re_matricular(request, dni_alumno):
