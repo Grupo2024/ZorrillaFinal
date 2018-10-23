@@ -68,7 +68,7 @@
                     {% if alumno.matriculado == "No"%}
                         {{alumno.matriculado}}
                     {% else %}
-                        <a onclick="traer_instancias('{% url 'modificar_curso' alumno.dni %}')">Ver Curso.</a>
+                        <a class="btn btn-outline-dark" onclick="traer_instancias('{% url 'modificar_curso' alumno.dni %}')">Ver Curso</a>
                     {% endif %}</li>
             </ul>
         </div>

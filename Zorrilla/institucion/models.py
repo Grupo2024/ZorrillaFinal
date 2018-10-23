@@ -59,7 +59,7 @@ class Trabajador(models.Model):
     antecedentes_laborales = models.TextField('Datos de Trabajos Previos', max_length=300)
     estudios_cursados = models.TextField('Estudios del Trabajador', max_length=300)
     #Nuevos datos que faltaban:
-    cargo = models.CharField('Cargo que posee en esta escuela', max_length=50, blank=True)
+    #cargo = models.CharField('Cargo que posee en esta escuela', max_length=50, blank=True)
     
 
     def __str__(self):
