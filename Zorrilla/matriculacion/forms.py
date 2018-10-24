@@ -28,6 +28,11 @@ class DirectorForm(forms.ModelForm):
         model = Director
         fields = '__all__'
 
+class SecretariaForm(forms.ModelForm):
+    class Meta:
+        model = Secretaria
+        fields = '__all__'
+
 class Obra_SocialForm(forms.ModelForm):
     class Meta:
         model= Obra_Social

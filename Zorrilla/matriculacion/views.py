@@ -110,6 +110,10 @@ def form_director(request):
     director = DirectorForm()
     return render (request, 'Director/crear_director.html', {'director':director})
 
+def form_secretaria(request):
+    secretaria = SecretariaForm()
+    return render (request, 'Secretaria/crear_secretaria.html', {'secretaria':secretaria})
+
 #Levantar el Form para cargar una Obra Social.
 def form_obra_social(request):
     obra_social = Obra_SocialForm()
@@ -218,6 +222,42 @@ def crear_director(request):
             return JsonResponse(data)
         else:
             resultado = str(director.errors)
+            data = {
+                'error':True,
+                'resultado':resultado
+            }
+            return JsonResponse(data)
+    return HttpResponse("Solo podes acceder por Post")
+
+def crear_secretaria(request):
+    if request.method == 'POST':
+        secretaria = SecretariaForm(request.POST)
+        if secretaria.is_valid():
+            secretaria.save()
+            dni = secretaria.cleaned_data['dni_t']
+            secretaria = Secretaria.objects.get(dni_t=dni)
+            secretaria.cargo = "Secretaria"
+            secretaria.save()
+            password = new_Password(dni)
+            user_d = User.objects.create_user(username=secretaria.nombre_t, password=password)
+            my_group = Group.objects.get(name='Secretaria')
+            my_group.user_set.add(user_d)
+            #Creamos la Clase intermedia.
+            user_secretaria = user_Secretaria(user=user_d, secretaria_referenciada=secretaria)
+            user_secretaria.save()
+            #Email Notificando la creacion del usuario.
+            subject = "Usuario Creado"
+            message = str(secretaria.apellido_t) + "" + str(secretaria.nombre_t) + " ha sido ingresado/a al sistema, en el cual utilizara como nombre de usuario: " + str(user_d.username) + " y la password " + str(password)
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [secretaria.email_t]
+            #send_mail(subject, message, email_from, recipient_list)
+            data = {
+                'error':False,
+                'resultado': str(secretaria.apellido_t) + " " + str(secretaria.nombre_t) + " ha sido creado/a con exito."
+            }
+            return JsonResponse(data)
+        else:
+            resultado = str(secretaria.errors)
             data = {
                 'error':True,
                 'resultado':resultado
