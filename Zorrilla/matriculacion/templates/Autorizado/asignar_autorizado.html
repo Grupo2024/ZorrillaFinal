@@ -65,6 +65,7 @@
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">
+            <a href="{% url 'form_autorizado' %}" align="left" id="crear_btn">Crear Autorizado</a>
             <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar_btn">Cerrar</button>
             <button type="button" class="btn btn-success" id="cont_autorizado" onclick="mandar_autorizado()">Asignar</button>
             <button type="button" class="btn btn-success" data-dismiss="modal" id="volver_btn" onclick="refresh_p()">Continuar</button>
@@ -102,6 +103,7 @@
                     document.getElementById("hide_for_c").style.display = "none";
                     document.getElementById("cerrar_btn").style.display = "none";
                     document.getElementById("cont_autorizado").style.display = "none";
+                    document.getElementById("crear_btn").style.display = "none";
                     document.getElementById("asignar_o").style.display = "none";
                     document.getElementById("resultado_asignar_autorizado").innerHTML = data.resultado
                     document.getElementById("volver_btn").style.display = "block";
