@@ -253,7 +253,7 @@ def crear_secretaria(request):
             #send_mail(subject, message, email_from, recipient_list)
             data = {
                 'error':False,
-                'resultado': str(secretaria.apellido_t) + " " + str(secretaria.nombre_t) + " ha sido creado/a con exito."
+                'resultado': str(secretaria.apellido_t) + " " + str(secretaria.nombre_t) + " ha sido creado/a con exito y utilizara como nombre de usuario: " + str(user_d.username) + " y la password " + str(password)
             }
             return JsonResponse(data)
         else:
