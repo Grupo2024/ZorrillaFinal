@@ -643,11 +643,22 @@ def cambiar_curso(request):
     if request.method == "POST":
         dni_alumno = request.POST['dni_alumno']
         id_curso = request.POST['id_curso']
-
         alumno = Alumno.objects.get(dni=dni_alumno)
         curso = Curso.objects.get(id=id_curso)
         alumno_C = alumno_Curso.objects.get(alumno=alumno)
         alumno_C.curso = curso
+
+        subject = "Curso de " + str(alumno.nombre) + " modificado."
+        secretaria = user_Secretaria.objects.get(user=request.user)
+        message = "En el dia de la fecha la secretaria " + str(secretaria.secretaria_referenciada.apellido_t) + " " + str(secretaria.secretaria_referenciada.nombre_t) + " ha cambiado el curso al que asiste " + str(alumno.nombre) + " por " + str(alumno_C.curso) + "."
+        email_from = settings.EMAIL_HOST_USER
+
+        familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
+
+        for familiar in familiares:
+            recipient_list = [familiar.padre_madre.email]
+            send_mail(subject, message, email_from, recipient_list)
+
         alumno_C.save()
         data = {
             'resultado': "El Alumno " + alumno.nombre + " " + alumno.apellido + " ahora asiste a " + str(alumno_C.curso)
@@ -732,6 +743,20 @@ def aplicar_cambios_alumno(request):
             nuevo_telefono_que_lo_trae = alumno_form.cleaned_data['telefono_que_lo_trae']
 
             alumno.nombre, alumno.apellido, alumno.lugar_nacimiento, alumno.fecha_nacimiento, alumno.domicilio, alumno.email, alumno.sexo, alumno.telefono_casa, alumno.telefono_padre, alumno.telefono_madre, alumno.telefono_familiar, alumno.telefono_vecino, alumno.enfermedad_relevante, alumno.con_quien_vive, alumno.quien_lo_trae, alumno.telefono_que_lo_trae  = nuevo_nombre, nuevo_apellido, nuevo_lugar_nacimiento, nueva_fecha_nacimiento, nuevo_domicilio, nuevo_email, nuevo_sexo, nuevo_telefono_casa, nuevo_telefono_padre, nuevo_telefono_madre, nuevo_telefono_familiar, nuevo_telefono_vecino, nueva_enfermedad_relevante, nuevo_con_quien_vive, nuevo_quien_lo_trae, nuevo_telefono_que_lo_trae
+
+            subject = "Informacion de " + str(alumno.nombre) + " modificada."
+
+            secretaria = user_Secretaria.objects.get(user=request.user)
+
+            message = "En el dia de la fecha la secretaria " + str(secretaria.secretaria_referenciada.apellido_t) + " " + str(secretaria.secretaria_referenciada.nombre_t) + " ha realizado cambios en el perfil de " + str(alumno.nombre) + "."
+            email_from = settings.EMAIL_HOST_USER
+
+            familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
+
+            for familiar in familiares:
+                recipient_list = [familiar.padre_madre.email]
+                send_mail(subject, message, email_from, recipient_list)
+
             alumno.save()
             data = {
                 'resultado': "Los datos de " + alumno.nombre + " han sido modificados."
