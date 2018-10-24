@@ -143,6 +143,7 @@ class alumno_Autorizado(models.Model):
     relacion_con_alumno = models.TextField('Que relacion tiene con el alumno', max_length=50, null=False)
     alumno = models.ForeignKey(Alumno, null=False)
     autorizado = models.ForeignKey(Autorizado, null=False)
+    habilitado = models.BooleanField(default = True)
     
     def __str__(self):
         return '{} {} - {} {}'.format(self.alumno.apellido, self.alumno.nombre, self.autorizado.nombre, self.autorizado.apellido)

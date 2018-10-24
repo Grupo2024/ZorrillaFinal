@@ -433,13 +433,40 @@ def asignar_obra_social(request):
         if created:
             pass
         else:
-            print "Esta ya estaba antes."
             usa_Obra.habilitado = True
             usa_Obra.save()
         data = {
             'resultado':"Obra Asignada con exito."
         }
         return JsonResponse(data)
+    return HttpResponse("Solo podes acceder por Post")
+
+def asignar_autorizado(request):
+    if request.method == 'POST':
+        dni = request.POST['dni_alumno']
+        dni_autorizado = request.POST['dni_autorizado']
+        relacion_con_alumno = RelacionForm(request.POST)
+        if relacion_con_alumno.is_valid():
+            relacion_con_alumno = relacion_con_alumno.cleaned_data['relacion_con_alumno']
+            print (relacion_con_alumno)
+            alumno = Alumno.objects.get(dni=dni)
+            autorizado = Autorizado.objects.get(dni=dni_autorizado)
+            alumno_autorizado, created = alumno_Autorizado.objects.get_or_create(alumno=alumno, autorizado=autorizado)
+            if created:
+                pass
+            else:
+                alumno_autorizado.habilitado = True
+                alumno_autorizado.relacion_con_alumno = relacion_con_alumno
+                alumno_autorizado.save()
+            data = {
+                'resultado':"Autorizado Asignado con exito."
+            }
+            return JsonResponse(data)
+        else:
+            data = {
+                'resultado':str(relacion_con_alumno.errors)
+            }
+            return JsonResponse(data)
     return HttpResponse("Solo podes acceder por Post")
 
 """
@@ -478,6 +505,18 @@ def todas_las_obras_sociales_asignar(request, dni_alumno):
     obra_social2 = Obra_SocialForm()
     return render(request,'Obra_Social/asignar_obra.html', {'obras_sociales':obra_social, 'dni_alumno':dni_alumno, 'obra_social':obra_social2})
 
+def todos_los_autorizados_asignar(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    autorizados_ya_asignadas = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True)
+    print(autorizados_ya_asignadas)
+    lista = []
+    for a in autorizados_ya_asignadas:
+        lista.append(a.autorizado.dni)
+    autorizados = Autorizado.objects.exclude(dni__in=lista).order_by("nombre")
+    relacion_con_alumno = RelacionForm()
+    print(autorizados)
+    return render(request,'Autorizado/asignar_autorizado.html', {'autorizados':autorizados, 'alumno':alumno, 'relacion_con_alumno':relacion_con_alumno})
+
 @user_passes_test(check_Secretaria)
 def todas_las_obras_sociales(request):
     obra_social = Obra_Social.objects.all()
@@ -510,6 +549,11 @@ def obras_sociales_del_alumno(request, dni_alumno):
     obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     return render(request, 'Obra_Social/obras_sociales_del_alumno.html', {'obras_sociales':obras_sociales, 'alumno':alumno})
 
+def autorizados_del_alumno(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    autorizados = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True)
+    return render(request, 'Autorizado/autorizados_del_alumno.html', {'autorizados':autorizados, 'alumno':alumno})
+
 """
 ===================================
 Mostrar los datos de una instancia.
@@ -520,6 +564,10 @@ Mostrar los datos de una instancia.
 def datos_transportista(request, dni_transportista):
     transportista = Transportista.objects.get(dni=dni_transportista)
     return render(request, 'Transportista/datos_transportista.html', {'transportista':transportista})
+
+def datos_autorizado(request, dni_transportista):
+    autorizado = Autorizado.objects.get(dni=dni_transportista)
+    return render(request, 'Autorizado/datos_autorizado.html', {'autorizado':autorizado})
 
 
 def usuarios_transportista(request, dni_transportista):
@@ -571,7 +619,8 @@ def get_Secciones(request, dni_alumno):
     transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
     cursos = Curso.objects.all().order_by("aNo", "hora")
     obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
-    return render(request, 'matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas, 'obras_sociales':obras_sociales})
+    autorizados = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True)
+    return render(request, 'matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas, 'obras_sociales':obras_sociales, 'autorizados':autorizados})
 
 #Funcion que Trae los Familiares, Transportistas, Curso Actual del Alumno y los Cursos.
 def re_matricular(request, dni_alumno):
@@ -798,4 +847,16 @@ def desvincular_familiar(request):
         medio.habilitado = False
         medio.save()
         return redirect ('padres_del_alumno', dni_alumno)
+    return HttpResponse("Solo por acceder por Post")
+
+def desvincular_autorizado(request):
+    if request.method == 'POST':
+        dni_alumno = request.POST['dni_alumno']
+        dni_autorizado = request.POST['dni_autorizado']
+        alumno = Alumno.objects.get(dni=dni_alumno)
+        autorizado = Autorizado.objects.get(dni=dni_autorizado)
+        medio = alumno_Autorizado.objects.get(alumno=alumno, autorizado=autorizado)
+        medio.habilitado = False
+        medio.save()
+        return redirect ('autorizados_del_alumno', dni_alumno)
     return HttpResponse("Solo por acceder por Post")

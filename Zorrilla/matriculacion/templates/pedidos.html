@@ -236,6 +236,15 @@
         document.getElementById("select_curso").value = e.target.value
     }
 
+    function show_autorizados(){
+        var div_trans = document.getElementById("btn_asignar_autorizado");
+        var e = document.getElementById("autorizado").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
 
     function show_padres(){
         var div_trans = document.getElementById("btn_asignar_padre2");

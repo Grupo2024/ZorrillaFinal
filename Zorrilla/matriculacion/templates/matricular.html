@@ -54,6 +54,33 @@
                 </ul>
                 {% endif %}
 
+                <!-- Select Autorizado -->
+
+                <h4><u>Autorizados</u></h4>
+                {% if autorizados|length == 0 %}
+                <span class="badge badge-secondary">Opciones:</span>
+                <select id="autorizado" onchange="show_autorizados()">
+                    <option value=0>No</option>
+                    <option value=1>Si</option>
+                </select>
+                <br>
+                <br>
+                <div id="btn_asignar_autorizado" class="hidden_idv">
+                    <a onclick="traer('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Asignar Autorizado.</a>
+                    <br>
+                    <br>
+                </div>
+                {% else %}
+                <ul>
+                    {% for autorizado in autorizados %}
+                    <li><a href="{% url 'datos_autorizado' autorizado.autorizado.dni %}">{{autorizado.autorizado.apellido}} {{autorizado.autorizado.nombre}}</a></li>
+                    {% endfor %}
+                    <br>
+                    <li><a href="{% url 'autorizados_del_alumno' alumno.dni %}"><u>Desvincular un Autorizado.</u></a></li>
+                    <li><a onclick="traer('{% url 'todos_los_autorizados_asignar' alumno.dni %}')"><u>Asignar otro Autorizado</u></a></li>
+                </ul>
+                {% endif %}
+
                 <!-- Select Transporte -->
 
                 <h4><u>Transporte</u></h4>
@@ -80,6 +107,8 @@
                     <li><a onclick="traer('{% url 'todos_los_transportistas_asignar' alumno.dni %}')"><u>Asignar otro Transportista</u></a></li>
                 </ul>
                 {% endif %}
+
+                <!-- Select Obra Social -->
 
                 <h4><u>Obra Social</u></h4>
                 {% if obras_sociales|length == 0 %}

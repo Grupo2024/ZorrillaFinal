@@ -3,24 +3,6 @@
 {% block navbar %}
 {% endblock navbar %}
 {% block body %}
-<!--
-<div id="c_autorizado">
-    <form id="form_autorizado" method="post">
-        {% csrf_token %}
-        <p>Nombre:</p>{{autorizado.nombre}}
-        <p>Apellido:</p>{{autorizado.apellido}}
-        <p>Dni:</p>{{autorizado.dni}}
-        <p>Lugar de Nacimiento:</p>{{autorizado.lugar_nacimiento}}
-        <p>Fecha de Nacimiento:</p>{{autorizado.fecha_nacimiento}}
-        <p>Domicilio:</p>{{autorizado.domicilio}}
-        <p>Email:</p>{{autorizado.email}}
-        <p>Sexo:</p>{{autorizado.sexo}}
-        <p>Telefono:</p>{{autorizado.telefono_autorizado}}
-
-
-    </form>
-</div>
--->
 
 <style type="text/css">
     input{
@@ -51,7 +33,7 @@
 <BR>
 <center><h3>CREAR AUTORIZADO</h3></center>
 <div id="c_autorizado">
-    <form method="post" enctype="multipart/form-data" id="form_director">
+    <form method="post" enctype="multipart/form-data" id="form_autorizado">
     {% csrf_token %}
     <div class='row' style="margin-top:2%">
         <div class="card text-center" style="width: 26%; height:35%; margin-left: 36.5%">
@@ -117,7 +99,14 @@
                             </div>  
                             <br>
                             <div style="margin-left:-1%">{{ autorizado.telefono_autorizado }}</div>
-                        </div>                        
+                        </div>
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
+                            </div>
+                            <br>
+                            <div style="margin-left:-1%">{{ autorizado.email }}</div>
+                        </div>
 
                     </li>
 

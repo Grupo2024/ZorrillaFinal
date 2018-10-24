@@ -18,6 +18,9 @@ class AlumnoForm(forms.ModelForm):
             'fecha_nacimiento': DateInput()
         }
 
+class RelacionForm(forms.Form):
+    relacion_con_alumno = forms.CharField(required=True)
+
 class AutorizadoForm(forms.ModelForm):
     class Meta:
         model = Autorizado
