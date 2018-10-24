@@ -389,8 +389,13 @@ def asignar_transportista(request):
         dni_transportista = request.POST['dni_transportista']
         alumno = Alumno.objects.get(dni=dni)
         transportista = Transportista.objects.get(dni=dni_transportista)
-        usa_transporte = usa_Transporte(alumno=alumno, transportista=transportista)
-        usa_transporte.save()
+        usa_transporte, created = usa_Transporte.objects.get_or_create(alumno=alumno, transportista=transportista)
+        if created:
+            pass
+        else:
+            print "Esta ya estaba antes."
+            usa_transporte.habilitado = True
+            usa_transporte.save()
         data = {
             'resultado': 'Transportista asignado con exito.'
         }
@@ -403,13 +408,14 @@ def asignar_padre(request):
         dni = request.POST['dni_alumno']
         dni_padre = request.POST['dni_padre']
         alumno = Alumno.objects.get(dni=dni)
-        print (dni)
-        print (dni_padre)
         padre = Padre_madre.objects.get(dni=dni_padre)
-        secretaria = user_Secretaria.objects.get(user=request.user)
-        familia = Familia(alumno=alumno, padre_madre=padre)
-        familia.save()
-        familia.save()
+        familia, created = Familia.objects.get_or_create(alumno=alumno, padre_madre=padre)
+        if created:
+            pass
+        else:
+            print "Esta ya estaba antes."
+            familia.habilitado = True
+            familia.save()
         data = {
             'resultado': 'Padre asignado con exito.'
         }
@@ -421,17 +427,20 @@ def asignar_obra_social(request):
         dni = request.POST['dni_alumno']
         id_obra_social = request.POST['id_obra_social']
         num_afiliado = request.POST['num_afiliado']
-        print (dni)
-        print (id_obra_social)
-        print (num_afiliado)
         alumno = Alumno.objects.get(dni=dni)
         obra_Social = Obra_Social.objects.get(id=id_obra_social)
-        usa_Obra = usa_Obra_Social(alumno=alumno, obra_social=obra_Social, numero_afiliado=num_afiliado)
-        usa_Obra.save()
+        usa_Obra, created = usa_Obra_Social.objects.get_or_create(alumno=alumno, obra_social=obra_Social, numero_afiliado=num_afiliado)
+        if created:
+            pass
+        else:
+            print "Esta ya estaba antes."
+            usa_Obra.habilitado = True
+            usa_Obra.save()
         data = {
             'resultado':"Obra Asignada con exito."
         }
         return JsonResponse(data)
+    return HttpResponse("Solo podes acceder por Post")
 
 """
 ========================================
@@ -442,7 +451,7 @@ Traer Todas las instancias de un modelo.
 #Traer Todos los Transnportistas.
 def todos_los_transportistas_asignar(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    transportistas_ya_asignados = usa_Transporte.objects.filter(alumno=alumno)
+    transportistas_ya_asignados = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
     lista = []
     for a in transportistas_ya_asignados:
         lista.append(a.transportista.dni)
@@ -452,7 +461,7 @@ def todos_los_transportistas_asignar(request, dni_alumno):
 #Traer Todos los Padres/Madre.
 def todos_los_padres_asignar(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    padres_ya_asignados = Familia.objects.filter(alumno=alumno)
+    padres_ya_asignados = Familia.objects.filter(alumno=alumno, habilitado=True)
     lista = []
     for a in padres_ya_asignados:
         lista.append(a.padre_madre.dni)
@@ -461,7 +470,7 @@ def todos_los_padres_asignar(request, dni_alumno):
 
 def todas_las_obras_sociales_asignar(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    obras_ya_asignadas = usa_Obra_Social.objects.filter(alumno=alumno)
+    obras_ya_asignadas = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     lista = []
     for a in obras_ya_asignadas:
         lista.append(a.obra_social.id)
@@ -488,17 +497,17 @@ def traer_pedidos(request):
 
 def padres_del_alumno(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    familia = Familia.objects.filter(alumno=alumno)
+    familia = Familia.objects.filter(alumno=alumno, habilitado=True)
     return render(request, 'Padre_madre/padres_del_alumno.html', {'familiares':familia, 'alumno':alumno})
 
 def transportistas_del_alumno(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    transportistas = usa_Transporte.objects.filter(alumno=alumno)
+    transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
     return render(request, 'Transportista/transportistas_del_alumno.html', {'transportistas':transportistas, 'alumno':alumno})
 
 def obras_sociales_del_alumno(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno)
+    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     return render(request, 'Obra_Social/obras_sociales_del_alumno.html', {'obras_sociales':obras_sociales, 'alumno':alumno})
 
 """
@@ -533,7 +542,7 @@ def datos_obra_social(request, id_obra_social):
 @login_required
 def datos_alumno(request, id_alumno):
     alumno = Alumno.objects.get(dni=id_alumno)
-    transportistas = usa_Transporte.objects.filter(alumno=alumno)
+    transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
     if not transportistas:
         alumno.transporte = "No"
     else:
@@ -543,12 +552,12 @@ def datos_alumno(request, id_alumno):
         alumno.matriculado = "Si"
     except Matriculacion.DoesNotExist:
         alumno.matriculado = "No"
-    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno)
+    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     if not obras_sociales:
         alumno.obra_social = "No"
     else:
         alumno.obra_social = "Si"
-    familiares = Familia.objects.filter(alumno=alumno)
+    familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
     if not familiares:
         alumno.familiares = "No"
     else:
@@ -558,17 +567,17 @@ def datos_alumno(request, id_alumno):
 #Funcion que Trae los Familiares, Transportistas del Alumno y los Cursos.
 def get_Secciones(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    familiares = Familia.objects.filter(alumno=alumno).order_by("padre_madre__apellido", "padre_madre__nombre")
-    transportistas = usa_Transporte.objects.filter(alumno=alumno)
+    familiares = Familia.objects.filter(alumno=alumno, habilitado=True).order_by("padre_madre__apellido", "padre_madre__nombre")
+    transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
     cursos = Curso.objects.all().order_by("aNo", "hora")
-    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno)
+    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     return render(request, 'matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas, 'obras_sociales':obras_sociales})
 
 #Funcion que Trae los Familiares, Transportistas, Curso Actual del Alumno y los Cursos.
 def re_matricular(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    familiares = Familia.objects.filter(alumno=alumno).order_by("padre_madre__apellido", "padre_madre__nombre")
-    transportistas = usa_Transporte.objects.filter(alumno=alumno)
+    familiares = Familia.objects.filter(alumno=alumno, habilitado=True).order_by("padre_madre__apellido", "padre_madre__nombre")
+    transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
     curso2 = alumno_Curso.objects.get(alumno=alumno)
     curso = curso2.curso
     cursos = Curso.objects.all()
@@ -762,7 +771,8 @@ def desvincular_transportista(request):
         alumno = Alumno.objects.get(dni=dni_alumno)
         transportista = Transportista.objects.get(dni=dni_transportista)
         medio = usa_Transporte.objects.get(alumno=alumno, transportista=transportista)
-        medio.delete()
+        medio.habilitado = False
+        medio.save()
         return redirect ('transportistas_del_alumno', dni_alumno)
     return HttpResponse("Solo por acceder por Post")
 
@@ -773,7 +783,8 @@ def desvincular_obra_social(request):
         alumno = Alumno.objects.get(dni=dni_alumno)
         obra_social = Obra_Social.objects.get(pk=id_obra_social)
         medio = usa_Obra_Social.objects.get(alumno=alumno, obra_social=obra_social)
-        medio.delete()
+        medio.habilitado = False
+        medio.save()
         return redirect ('obras_sociales_del_alumno', dni_alumno)
     return HttpResponse("Solo por acceder por Post")
 
@@ -784,6 +795,7 @@ def desvincular_familiar(request):
         alumno = Alumno.objects.get(dni=dni_alumno)
         padre = Padre_madre.objects.get(dni=dni_padre)
         medio = Familia.objects.get(alumno=alumno, padre_madre=padre)
-        medio.delete()
+        medio.habilitado = False
+        medio.save()
         return redirect ('padres_del_alumno', dni_alumno)
     return HttpResponse("Solo por acceder por Post")
