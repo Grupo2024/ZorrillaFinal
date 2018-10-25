@@ -610,6 +610,11 @@ def datos_alumno(request, id_alumno):
         alumno.familiares = "No"
     else:
         alumno.familiares = "Si"
+    autorizados = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True)
+    if not autorizados:
+        alumno.autorizados = "No"
+    else:
+        alumno.autorizados = "Si"
     return render(request, 'perfilAlumno.html', {'alumno':alumno})
 
 #Funcion que Trae los Familiares, Transportistas del Alumno y los Cursos.

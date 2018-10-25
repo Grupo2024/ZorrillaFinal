@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+{% load poll_extras %}
+
+<br>
+<h1 class="card-title" align="center"><u>Datos de {{trabajador.nombre_t}} {{trabajador.apellido_t}}.</u></h1>
+
+<form id="modify_teacher" method="post">
+    {% csrf_token %}
+    <p>Nombre:</p>{{trabajador.nombre_t}}
+    <p>Apellido:</p>{{trabajador.apellido_t}}
+    <p>Lugar de Nacimiento:</p>{{trabajador.lugar_nacimiento_t}}
+    <p>Fecha de Nacimiento:</p>{{trabajador.fecha_nacimiento_t}}
+    <p>Domicilio:</p>{{trabajador.domicilio_t}}
+    <p>Email:</p>{{trabajador.email_t}}
+    <p>Sexo:</p>{{trabajador.sexo_t}}
+    <p>Telefono Particular:</p>{{trabajador.telefono_particular}}
+    <p>Telefono Laboral:</p>{{trabajador.telefono_laboral}}
+    <p>Telefono Familiar:</p>{{trabajador.telefono_familiar}}
+    <p>Datos familiares a cargo:</p>{{trabajador.datos_familiares_cargo}}
+    <p>Fecha de Inicio de Actividad:</p>{{trabajador.fecha_inicio_actividad}}
+    <p>Antecedentes Laborales:</p>{{trabajador.antecedentes_laborales}}
+    <p>Estudios Cursados:</p>{{trabajador.estudios_cursados}}
+</form>
+{% endblock body %}
