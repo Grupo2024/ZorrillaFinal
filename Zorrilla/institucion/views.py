@@ -113,13 +113,27 @@ def docentes(request):
 @user_passes_test(check_Secretaria)
 def profesor(request, id_profesor):
     profesor = Profesor.objects.get(dni_t=id_profesor)
-    return render(request, 'templates_docentes/perfilProfesor.html', {'trabajador':profesor})
+    return render(request, 'templates_docentes/perfilDocente.html', {'trabajador':profesor})
 
-@user_passes_test(check_Profesor)
-def modificar_profesor(request):
-    print (request.user)
-    udocente = user_Docente.objects.get(user__username=request.user)
-    return render(request, 'templates_docentes/perfilProfesor.html', {'trabajador':udocente.docente_referenciado})
+@login_required
+def modificar_perfil(request, clase, dni):
+    if (clase == "Secretaria"):
+        trabajador_elegido = Secretaria.objects.get(dni_t=dni)
+    elif (clase == "Director"):
+        trabajador_elegido = Director.objects.get(dni_t=dni)
+    else:
+        trabajador_elegido = Profesor.objects.get(dni_t=dni)
+    ln = trabajador_elegido.lugar_nacimiento_t
+    trabajador = ModificarForm(initial={'nombre':trabajador_elegido.nombre_t,
+                                        'apellido':trabajador_elegido.apellido_t,
+                                        'lugar_nacimineto':trabajador_elegido.nombre_t,
+                                        'fecha_nacimiento':trabajador_elegido.fecha_nacimiento_t,
+                                        'domicilio':trabajador_elegido.domicilio_t,
+                                        'email':trabajador_elegido.email_t,
+                                        'sexo':trabajador_elegido.sexo_t,
+                                        'telefono_particular':trabajador_elegido.telefono_particular, 'telefono_laboral':trabajador_elegido.telefono_laboral, 'telefono_familiar':trabajador_elegido.telefono_familiar, 'datos_familiares_cargo':trabajador_elegido.datos_familiares_cargo, 'fecha_inicio_actividad':trabajador_elegido.fecha_inicio_actividad,
+                                        'antecedentes_laborales':trabajador_elegido.antecedentes_laborales, 'estudios_cursados':trabajador_elegido.estudios_cursados})
+    return render(request, 'templates_docentes/modificarPerfil.html', {'trabajador':trabajador, 'trabajador_elegido':trabajador_elegido})
 
 @login_required
 def mi_perfil(request):
@@ -127,14 +141,17 @@ def mi_perfil(request):
     if check_Profesor(user):
         udocente = user_Docente.objects.get(user=user)
         trabajador = Profesor.objects.get(dni_t=udocente.docente_referenciado.dni_t)
+        trabajador.cargo = "Profesor"
         return render(request, 'templates_docentes/mi_perfil.html',{'trabajador':trabajador})
     elif check_Director(user):
         udirector = user_Director.objects.get(user=user)
         trabajador = Director.objects.get(dni_t=udirector.director_referenciado.dni_t)
+        trabajador.cargo = "Director"
         return render(request, 'templates_docentes/mi_perfil.html',{'trabajador':trabajador})
     elif check_Secretaria(user):
         usecretaria = user_Secretaria.objects.get(user=user)
         trabajador = Secretaria.objects.get(dni_t=usecretaria.secretaria_referenciada.dni_t)
+        trabajador.cargo = "Secretaria"
         return render(request, 'templates_docentes/mi_perfil.html',{'trabajador':trabajador})
 
 @login_required

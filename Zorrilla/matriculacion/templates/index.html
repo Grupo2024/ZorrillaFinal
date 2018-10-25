@@ -146,7 +146,7 @@
                         <a href="{% url 'docentes' %}" class="btn btn-danger asd">Ver docentes</a>
                         {% endif %}                        
                         {% if request.user|has_group:"Profesor" %}
-                        <a href="{% url 'modificar_profesor' %}" class="btn btn-success asd">Modificar Datos</a>
+                            <a href="{% url 'mi_perfil' %}" class="btn btn-success asd">Modificar Datos</a>
                         {% endif %}
                     </div>
                 </div>
