@@ -13,8 +13,8 @@
     <h3><center>Transportistas</center></h3>
     <br>
     <div align="center">
-        <input type="text"placeholder="Transportista que desea buscar" id="input" onkeyup="buscar_transportista()" size="5">
-        <select id="filtro">
+        <input type="text"placeholder="Transportista que desea buscar" id="input_t" onkeyup="buscar_transportista()" size="5">
+        <select id="filtro_t">
             <option value=0>Nombre</option>
             <option value=1>Apellido</option>
             <option value=2>Dni</option>
@@ -29,7 +29,7 @@
         <div class="table-responsive">
 
 
-            <table id="mytable" class="table table-hover">
+            <table id="tabla_t" class="table table-hover">
 
                 <thead class="thead">
                     <th>Nombre Transportista</th>
@@ -110,12 +110,12 @@
     }
     
     function buscar_transportista() {
-        var e = document.getElementById("filtro");
+        var e = document.getElementById("filtro_t");
         var strUser = e.options[e.selectedIndex].value;
         var input, filter, table, tr, td, i;
-        input = document.getElementById("input");
+        input = document.getElementById("input_t");
         filter = input.value.toUpperCase();
-        table = document.getElementById("tabla");
+        table = document.getElementById("tabla_t");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[strUser];

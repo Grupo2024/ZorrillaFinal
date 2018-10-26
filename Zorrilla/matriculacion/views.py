@@ -698,11 +698,13 @@ def pedido_re_matricular(request):
                         'error':True,
                         'resultado': "Ya hay un pedido de Matriculacion para este alumno."
                     }
+                    return JsonResponse(data)
                 elif matriculacion.matriculado == "Re":
                     data = {
                         'error':True,
                         'resultado': "Ya hay un pedido de Re Matriculacion para este alumno."
                     }
+                    return JsonResponse(data)
                 else:
                     try:
                         padre = Padre_madre.objects.get(dni=dni_padre)
@@ -719,23 +721,27 @@ def pedido_re_matricular(request):
                             matriculacion.save()
                             data = {
                                 'error':False,
-                                'resultado': "El pedido de re matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + " ha sido realizado con exito."
+                                'resultado': "El pedido de re matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + " ha sido creado con exito."
                             }
+                            return JsonResponse(data)
                         else:
                             data = {
                                 'error':True,
                                 'resultado': "El email " + str(email_padre) + " no con corresponde con el dni del padre."
                             }
+                            return JsonResponse(data)
                     except Padre_madre.DoesNotExist:
                         data = {
                             'error':True,
                             'resultado': "No existe un padre con ese dni."
                         }
+                        return JsonResponse(data)
             except Alumno.DoesNotExist:
                 data = {
                     'error':True,
                     'resultado': "No existe un alumno con ese dni."
                 }
+                return JsonResponse(data)
         else:
             data = {
                 'error':True,
