@@ -656,18 +656,24 @@ def pedido_re_matricular(request):
             dni_alumno = re_matricular_form.cleaned_data['dni_alumno']
             dni_padre = re_matricular_form.cleaned_data['dni_padre']
             email_padre = re_matricular_form.cleaned_data['email_padre']
-            alumno, created_alumno = Alumno.objects.get_or_create(dni=dni_alumno)
-            if (created_alumno == False):
-                padre, created_padre = Padre_madre.objects.get_or_create(dni=dni_padre)
-                if (created_padre == False):
+            print (dni_alumno)
+            print (dni_padre)
+            print (email_padre)
+            try:
+                alumno = Alumno.objects.get(dni=dni_alumno)
+                try:
+                    padre = Padre_madre.objects.get(dni=dni_padre)
                     if (padre.email == email_padre):
                         familiares = Familia.objects.filter(alumno=alumno)
                         subject = "Pedido de Re Matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
                         message = "En el dia de la fecha " + str(padre.apellido) + " " + str(padre.nombre) + " ha solicitado un pedido de re matriculacion para " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
                         email_from = settings.EMAIL_HOST_USER
                         for familiar in familiares:
-                            recipient_list = [familiar.email]
-                            send_mail( subject, message, email_from, recipient_list)
+                            recipient_list = [familiar.padre_madre.email]
+                            #send_mail( subject, message, email_from, recipient_list)
+                        matriculacion = Matriculacion.objects.get(alumno=alumno)
+                        matriculacion.matriculado = "Re"
+                        matriculacion.save()
                         data = {
                             'error':False,
                             'resultado': "El pedido de re matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + " ha sido realizado con exito."
@@ -675,19 +681,18 @@ def pedido_re_matricular(request):
                     else:
                         data = {
                             'error':True,
-                            'resultado': "El email " + str(email_padre) + " con corresponde con el dni del padre."
+                            'resultado': "El email " + str(email_padre) + " no con corresponde con el dni del padre."
                         }
-                else:
+                except Padre_madre.DoesNotExist:
                     data = {
                         'error':True,
                         'resultado': "No existe un padre con ese dni."
                     }
-            else:
+            except Alumno.DoesNotExist:
                 data = {
                     'error':True,
                     'resultado': "No existe un alumno con ese dni."
                 }
-
         else:
             data = {
                 'error':True,
