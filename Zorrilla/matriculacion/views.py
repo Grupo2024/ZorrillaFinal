@@ -89,7 +89,7 @@ def formulario(request):
 #Levantar Template para cargar un pedido de Rematriculacion.
 def formReMatricular(request):
     re_matricular_form = ReMatricularForm()
-    return render(request, 're_matricular.html', {'re_matricular_form':re_matricular_form})
+    return render(request, 'Re_matricular/form_re_matricular.html', {'re_matricular_form':re_matricular_form})
 
 #Levantar Template para cargar Transportista.
 def form_transportista(request):
@@ -627,7 +627,7 @@ def get_Secciones(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     familiares = Familia.objects.filter(alumno=alumno, habilitado=True).order_by("padre_madre__apellido", "padre_madre__nombre")
     transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
-    cursos = Curso.objects.all().order_by("aNo", "hora")
+    cursos = Curso.objects.all().order_by("aNo", "-hora")
     obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     autorizados = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True)
     return render(request, 'matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas, 'obras_sociales':obras_sociales, 'autorizados':autorizados})
@@ -639,15 +639,46 @@ def re_matricular(request, dni_alumno):
     transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
     curso2 = alumno_Curso.objects.get(alumno=alumno)
     curso = curso2.curso
-    cursos = Curso.objects.all()
-    recomendacion = Curso.objects.get(aNo=curso.aNo+1)
-    return render(request, 're_matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas, 'curso':curso, 'recomendacion':recomendacion})
+    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
+    autorizados = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True)
+    recomendacion, created = Curso.objects.get_or_create(aNo=curso.aNo+1, hora=curso.hora, seccion=curso.seccion)
+    lista = []
+    lista.append(curso.id)
+    cursos = Curso.objects.exclude(id__in=lista).order_by("aNo", "-hora")
+    return render(request, 'Re_matricular/re_matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas, 'curso':curso, 'recomendacion':recomendacion, 'obras_sociales':obras_sociales, 'autorizados':autorizados})
 
 """
 ==========
 Modificar.
 ==========
 """
+
+def aceptar_re_matriculacion(request):
+    if request.method == "POST":
+        dni_alumno = request.POST['dni_alumno2']
+        selected_curso = request.POST['select_curso2']
+        curso = Curso.objects.get(id=selected_curso)
+        alumno = Alumno.objects.get(dni=dni_alumno)
+        eleccion = alumno_Curso.objects.get(alumno=alumno)
+        eleccion.curso = curso
+        eleccion.save()
+        matriculacion = Matriculacion.objects.get(alumno=alumno)
+        matriculacion.matriculado = "Si"
+        matriculacion.save()
+        familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
+        subject = "Pedido de Re Matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
+        secretaria = user_Secretaria.objects.get(user=request.user)
+        message = "Se le notifica que la Secretaria " + secretaria.secretaria_referenciada.apellido_t + " " + secretaria.secretaria_referenciada.nombre_t + " ha aceptado el pedido de Re Matriculacion de su hijo/a " + alumno.apellido + " " + alumno.nombre + ", el cual ahora asistira a " + str(eleccion.curso) + "."
+        email_from = settings.EMAIL_HOST_USER
+        for familiar in familiares:
+            recipient_list = [familiar.padre_madre.email]
+            #send_mail( subject, message, email_from, recipient_list)
+        data = {
+            'error':False,
+            'resultado': "El pedido de Re Matriculacion de " + alumno.nombre + " ha sido un exito, ahora " + alumno.nombre + " asiste a " + str(eleccion.curso)
+        }
+        return JsonResponse(data)
+    return HttpResponse("Solo podes entrar por POST")
 
 def pedido_re_matricular(request):
     if request.method == "POST":
@@ -661,33 +692,45 @@ def pedido_re_matricular(request):
             print (email_padre)
             try:
                 alumno = Alumno.objects.get(dni=dni_alumno)
-                try:
-                    padre = Padre_madre.objects.get(dni=dni_padre)
-                    if (padre.email == email_padre):
-                        familiares = Familia.objects.filter(alumno=alumno)
-                        subject = "Pedido de Re Matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
-                        message = "En el dia de la fecha " + str(padre.apellido) + " " + str(padre.nombre) + " ha solicitado un pedido de re matriculacion para " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
-                        email_from = settings.EMAIL_HOST_USER
-                        for familiar in familiares:
-                            recipient_list = [familiar.padre_madre.email]
-                            #send_mail( subject, message, email_from, recipient_list)
-                        matriculacion = Matriculacion.objects.get(alumno=alumno)
-                        matriculacion.matriculado = "Re"
-                        matriculacion.save()
-                        data = {
-                            'error':False,
-                            'resultado': "El pedido de re matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + " ha sido realizado con exito."
-                        }
-                    else:
-                        data = {
-                            'error':True,
-                            'resultado': "El email " + str(email_padre) + " no con corresponde con el dni del padre."
-                        }
-                except Padre_madre.DoesNotExist:
+                matriculacion = Matriculacion.objects.get(alumno=alumno)
+                if matriculacion.matriculado == "No":
                     data = {
                         'error':True,
-                        'resultado': "No existe un padre con ese dni."
+                        'resultado': "Ya hay un pedido de Matriculacion para este alumno."
                     }
+                elif matriculacion.matriculado == "Re":
+                    data = {
+                        'error':True,
+                        'resultado': "Ya hay un pedido de Re Matriculacion para este alumno."
+                    }
+                else:
+                    try:
+                        padre = Padre_madre.objects.get(dni=dni_padre)
+                        if (padre.email == email_padre):
+                            familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
+                            subject = "Pedido de Re Matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
+                            message = "En el dia de la fecha " + str(padre.apellido) + " " + str(padre.nombre) + " ha solicitado un pedido de re matriculacion para " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
+                            email_from = settings.EMAIL_HOST_USER
+                            for familiar in familiares:
+                                recipient_list = [familiar.padre_madre.email]
+                                #send_mail( subject, message, email_from, recipient_list)
+                            matriculacion = Matriculacion.objects.get(alumno=alumno)
+                            matriculacion.matriculado = "Re"
+                            matriculacion.save()
+                            data = {
+                                'error':False,
+                                'resultado': "El pedido de re matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + " ha sido realizado con exito."
+                            }
+                        else:
+                            data = {
+                                'error':True,
+                                'resultado': "El email " + str(email_padre) + " no con corresponde con el dni del padre."
+                            }
+                    except Padre_madre.DoesNotExist:
+                        data = {
+                            'error':True,
+                            'resultado': "No existe un padre con ese dni."
+                        }
             except Alumno.DoesNotExist:
                 data = {
                     'error':True,

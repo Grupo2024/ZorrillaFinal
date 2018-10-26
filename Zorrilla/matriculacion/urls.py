@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^pedidos', traer_pedidos, name="traer_pedidos"),
     url(r'^form_autorizado', form_autorizado, name="form_autorizado"),
     url(r'^form_director', form_director, name="form_director"),
+    url(r'^aceptar_re_matriculacion', aceptar_re_matriculacion, name="aceptar_re_matriculacion"),
     url(r'^pedido_re_matricular', pedido_re_matricular, name="pedido_re_matricular"),
     url(r'^crear_obra_social', crear_obra_social, name="crear_obra_social"),
     url(r'^crear_autorizado', crear_autorizado, name="crear_autorizado"),

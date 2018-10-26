@@ -117,7 +117,7 @@ class Secretaria(Trabajador):
 
 class Curso(models.Model):
     hora = models.BooleanField('Clickea para seleccionar turno "Tarde"', null=False)
-    aNo = models.CharField('1ero, 2do, etc...', max_length=5)
+    aNo = models.IntegerField('1ero, 2do, etc...')
     seccion = models.BooleanField('True = B o D, dependiendo de si es turno mañana o tarde', null=False)
 
     def que_turno(self):
