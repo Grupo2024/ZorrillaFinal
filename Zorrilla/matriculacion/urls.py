@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^$', index, name="index"),
     url(r'^form/', formulario, name="form"),
+    url(r'^formReMatricular/', formReMatricular, name="formReMatricular"),
     url(r'^logIn/', logIn, name="logIn"),
     url(r'^login/', login, name="login"),
     url(r'^aplicar_cambios_alumno/', aplicar_cambios_alumno, name="aplicar_cambios_alumno"),
@@ -18,6 +19,7 @@ urlpatterns = [
     url(r'^pedidos', traer_pedidos, name="traer_pedidos"),
     url(r'^form_autorizado', form_autorizado, name="form_autorizado"),
     url(r'^form_director', form_director, name="form_director"),
+    url(r'^pedido_re_matricular', pedido_re_matricular, name="pedido_re_matricular"),
     url(r'^crear_obra_social', crear_obra_social, name="crear_obra_social"),
     url(r'^crear_autorizado', crear_autorizado, name="crear_autorizado"),
     url(r'^crear_director', crear_director, name="crear_director"),

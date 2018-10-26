@@ -21,6 +21,11 @@ class AlumnoForm(forms.ModelForm):
 class RelacionForm(forms.Form):
     relacion_con_alumno = forms.CharField(required=True)
 
+class ReMatricularForm(forms.Form):
+    dni_alumno = forms.IntegerField(required=True)
+    dni_padre = forms.IntegerField(required=True)
+    email_padre = forms.EmailField(required=True)
+
 class AutorizadoForm(forms.ModelForm):
     class Meta:
         model = Autorizado
