@@ -19,6 +19,10 @@
         line-height: 30px;
         color: white;
     }
+
+    div.hidden_idv {     /* this will hide div with class div_class_name */
+        display:none;
+    }
 </style>
 
 <br>
@@ -120,17 +124,6 @@
         des.submit();
     }
 
-
-    function use_transporte(e) {
-        var aux = document.getElementById("transporte").value
-        var sel_div = document.getElementById("new_transporte");
-        if (aux == 0){
-            sel_div.style.display = "none";
-        } else {
-            sel_div.style.display = "block";
-        }
-    }
-
     function traer_secciones(url, alum){
         $.ajax({
             method: "POST",
@@ -192,11 +185,11 @@
                     contentType: false,
                     type: 'POST',
                     success: function(data){
-                        $('#modal_cursos').modal('hide');
-                        footer(data.resultado);
-                        y.style.display = "block";
-                    }
-                });
+                    $('#modal_cursos').modal('hide');
+                    footer(data.resultado);
+                    y.style.display = "block";
+                }
+                       });
             } else {
                 return;
             }
@@ -229,7 +222,39 @@
         aux.submit();
     }
 
- function mandar_padre(){     
+    function show_transportistas(){
+        var div_trans = document.getElementById("btn_asignar_transporte");
+        var e = document.getElementById("transporte").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
+
+    function selectCurso(e) {
+        document.getElementById("select_curso").value = e.target.value
+    }
+
+
+    function show_padres(){
+        var div_trans = document.getElementById("btn_asignar_padre2");
+        var e = document.getElementById("padress").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
+
+    function show_obras(){
+        var div_trans = document.getElementById("btn_asignar_obra");
+        var e = document.getElementById("obrass").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
     }
 </script>
 

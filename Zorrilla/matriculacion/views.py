@@ -612,7 +612,7 @@ def cambiar_password(request):
 def aplicar_cambios_alumno(request):
     if request.method == 'POST':
         alumno_form = Modificar_Alumno_Form(request.POST)
-        dni_alumno = request.POST['dni_alumno']
+        dni_alumno = request.POST['dni']
         if alumno_form.is_valid():
             print ("Es valido")
             alumno = Alumno.objects.get(dni=dni_alumno)
