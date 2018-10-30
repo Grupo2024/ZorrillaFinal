@@ -99,7 +99,12 @@
     <a href="{% url 'form_modificar_alumno' alumno.dni %}"class="btn btn-primary centerB">Modificar Datos del Alumno.</a>
 
     {% endif %}
-    <a href="{% url 'cursos1' %}" class="btn btn-primary centerB">Volver</a>
+
+    {% if alumno.opcion == 'pedido' %}
+        <a href="{% url 'traer_pedidos' %}" class="btn btn-primary centerB">Volver</a>
+    {% else %}
+        <a href="{% url 'volver_curso' alumno.dni %}" class="btn btn-primary centerB">Volver</a>
+    {% endif %}
 </div>
 
 <script>

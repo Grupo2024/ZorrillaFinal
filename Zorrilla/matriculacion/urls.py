@@ -60,7 +60,7 @@ urlpatterns = [
     url(r'crear_alumno', crear_alumno, name="crear_alumno"),
     url(r'crear_padre/$', crear_padre, name="crear_padre"),
     url(r'^aceptar_matriculacion/$', aceptar_matriculacion, name="aceptar_matriculacion"),
-    url(r'^perfilAlumno/(\d+)/$', datos_alumno, name="datos_alumno"),
+    url(r'^perfilAlumno/(?P<opcion>[\w\-]+)-(?P<dni_alumno>\d+)$', datos_alumno, name="datos_alumno"),
     url(r'^todos_los_transportistas/$', todas_los_transportistas, name="todas_los_transportistas"),
     url(r'^recuperar/$', template_get_pass, name="template_get_pass")
 ]
