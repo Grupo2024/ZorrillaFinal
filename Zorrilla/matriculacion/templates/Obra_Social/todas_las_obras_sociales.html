@@ -7,36 +7,39 @@
 {% load poll_extras %}
 
 <br>
-<div id="contenido">
-    {% if obras_sociales|length != 0 %}
+    <div align="center">
+        {% if obras_sociales|length != 0 %}
 
-    <h3><center>Obras Sociales.</center></h3>
-    <br>
+        <div align="center">
+            <h3><center>Obras Sociales</center></h3>
+            <br>
 
-    <input type="text" id="input_filter" onkeyup="filterFunction()" placeholder="Obra Social que desea buscar...">
+            <input type="text" id="input_filter" onkeyup="filterFunction()" placeholder="Obra Social que desea buscar...">
+        </div>
+        <table class="table table-sm table-hover" style="width: 50%" id="funcion_filter">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th >Info</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for a in obras_sociales %}
+                <tr>
+                    <td>{{a.nombre}}</td>
+                    <td ><button class="btn btn-primary" onclick="info_obra_social('{% url 'datos_obra_social' a.id %}')"><i style="font-size:15px" class="fa">&#xf129;</i></button></td>
+                </tr>
+                {% endfor %}
 
-    <table style="width:30%" align="center" id="funcion_filter">
-        <tr>
-            <th>Nombre</th>
-            <th>Info</th>
-        </tr>
-        {% for a in obras_sociales %}
-        <tr>
-            <td>{{a.nombre}}</td>
-            <td><a onclick="info_obra_social('{% url 'datos_obra_social' a.id %}')">Info</a></td>
-        </tr>
-        {% endfor %}
+            </tbody>
+        </table>
 
-    </table>
+        {% else %}
 
-    {% else %}
+        <h3><center>No hay ninguna Obra Social.</center></h3>align
 
-    <h3><center>No hay ninguna Obra Social.</center></h3>
-
-    {% endif %}
-</div>
-
-<a href="{% url 'index' %}">Menu</a>
+        {% endif %}
+    </div>
 
 <div class="modal fade" id="modal_info">
     <div class="modal-dialog">
