@@ -4,33 +4,6 @@
 {% endblock navbar %}
 {% block body %}
 
-
-<!-- 
-<div id="c_director">
-    <form id="form_director" method="post">
-        {% csrf_token %}
-        <p>Nombre:</p>{{director.nombre_t}}
-        <p>Apellido:</p>{{director.apellido_t}}
-        <p>Dni:</p>{{director.dni_t}}
-        <p>Lugar de Nacimiento:</p>{{director.lugar_nacimiento_t}}
-        <p>Fecha de Nacimiento:</p>{{director.fecha_nacimiento_t}}
-        <p>Domicilio:</p>{{director.domicilio_t}}
-        <p>Email:</p>{{director.email_t}}
-        <p>Sexo:</p>{{director.sexo_t}}
-        <p>Telefono Particular:</p>{{director.telefono_particular}}
-        <p>Telefono Laboral</p>{{director.telefono_laboral}}
-        <p>Telefono Familiiar</p>{{director.telefono_familiar}}
-        <p>Datos Familiares</p>{{director.datos_familiares_cargo}}
-        <p>Antecedentes Laborales</p>{{director.antecedentes_laborales}}
-        <p>Estudios Cursados</p>{{director.estudios_cursados}}
-
-    </form>
-</div>
-
-<span id="resultado_crear"></span>
-
-<button onclick="crear_Director()">Crear</button>
--->
 <style type="text/css">
     input{
         width: 128%
@@ -96,7 +69,7 @@
                             <div class="input-group-prepend">
                                 <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
                             </div>
-                            <div style="margin-left: -3%" id="a">{{ director.fecha_nacimiento_t }}</div>
+                            <div style="margin-left: -8%" id="a">{{ director.fecha_nacimiento_t }}</div>
                         </div>
 
                         <div class="input-group input-group-sm mb-3 form-group">
