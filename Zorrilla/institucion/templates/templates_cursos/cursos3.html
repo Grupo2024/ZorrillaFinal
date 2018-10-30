@@ -46,7 +46,7 @@
             <td>{{alumno.alumno.fecha_nacimiento}}</td>
             <td><button class="btn btn-primary" onclick="get_alumno('{% url 'get_alumno' 'telefonos' alumno.alumno.dni %}')" id="info_book"><i style="font-size:15px" class="fa fa-phone-square"></i></button></td>
             <td><button class="btn btn-primary" onclick="get_alumno('{% url 'get_alumno' 'otros' alumno.alumno.dni %}')" id="info_book"><i style="font-size:15px" class="fa fa-child"></i></button></td>
-            <td><a class="btn btn-primary" href="{% url 'datos_alumno' alumno.alumno.dni %}" id="info_book"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
+            <td><a class="btn btn-primary" href="{% url 'datos_alumno' 'curso' alumno.alumno.dni %}" id="info_book"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
         </tr>
         {% endfor %}
     </tbody>

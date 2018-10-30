@@ -593,8 +593,9 @@ def datos_obra_social(request, id_obra_social):
 
 #Funcion que Trae los datos del Alumno elegido previamente
 @login_required
-def datos_alumno(request, id_alumno):
-    alumno = Alumno.objects.get(dni=id_alumno)
+def datos_alumno(request, opcion, dni_alumno):
+    print (opcion)
+    alumno = Alumno.objects.get(dni=dni_alumno)
     transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
     if not transportistas:
         alumno.transporte = "No"
@@ -620,6 +621,10 @@ def datos_alumno(request, id_alumno):
         alumno.autorizados = "No"
     else:
         alumno.autorizados = "Si"
+    if (opcion == 'pedidos'):
+        alumno.opcion = "pedido"
+    else:
+        alumno.opcion = "curso"
     return render(request, 'perfilAlumno.html', {'alumno':alumno})
 
 #Funcion que Trae los Familiares, Transportistas del Alumno y los Cursos.

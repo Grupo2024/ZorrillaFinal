@@ -157,8 +157,8 @@ def mi_perfil(request):
 @login_required
 def volver_curso(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    id_curso = alumno.curso.id
-    return redirect(cursos3, id_curso)
+    alumno_curso = alumno_Curso.objects.get(alumno=alumno)
+    return redirect(cursos3, alumno_curso.curso.id)
 
 def formProfesor(request):
     form = ProfesorForm()
