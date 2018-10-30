@@ -6,12 +6,45 @@
 
 <form id="form_re_matricular" method="post">
     {% csrf_token %}
-    <p>Dni del Alumno:</p>{{re_matricular_form.dni_alumno}}
-    <p>Dni del Padre:</p>{{re_matricular_form.dni_padre}}
-    <p>Email del Padre:</p>{{re_matricular_form.email_padre}}
-</form>
+    <div align="center" style="margin-top:2%">
+        <div class="card text-center" style="width: 25%" >
+        <div class="card-body">
+            <h4 class="card-title">Datos personales</h4>
 
-<button onclick="re_matricular()">Enviar</button>
+            <ul class="list-group list-group-flush">
+
+                <li class="list-group-item">
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend" style="margin-right: 200%;">
+                            <span  class="input-group-text" id="inputGroup-sizing-sm">Dni del Alumno:</span>
+                        </div>
+                        <div style="margin-left: -0.5%;">{{re_matricular_form.dni_alumno}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend" style="margin-right: 200%;">
+                            <span  class="input-group-text" id="inputGroup-sizing-sm">Dni del Padre:</span>
+                        </div>
+                        <div style="margin-left: -0.5%;">{{re_matricular_form.dni_padre}}</div>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3 form-group">
+                        <div class="input-group-prepend" style="margin-right: 200%;">
+                            <span  class="input-group-text" id="inputGroup-sizing-sm">Email del Padre:</span>
+                        </div>
+                        <div style="margin-left: -0.5%; margin-top: 0%;">{{re_matricular_form.email_padre}}</div>
+                    </div>
+                    
+
+                    <button class="btn btn-success" onclick="re_matricular()">Enviar</button>
+                </li>
+
+            </ul>
+        </div>
+        </div>
+        </div>
+</form>
 
 <div class="modal fade" id="re_mat_alumno" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
