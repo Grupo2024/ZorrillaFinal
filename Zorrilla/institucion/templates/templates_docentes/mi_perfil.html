@@ -47,7 +47,7 @@
     </div>
 
     {% if user.is_authenticated %}
-        <a href="{% url 'modificar_perfil' trabajador.cargo trabajador.dni_t %}">Modificar Datos</a>
+        <a style="margin-top: 1%; margin-left: 3%" class="btn btn-info" href="{% url 'modificar_perfil' trabajador.cargo trabajador.dni_t %}">Modificar Datos</a>
     {% endif %}
 </div>
 
