@@ -41,6 +41,7 @@
 </div>
 <button onclick="traer_transportistas('{% url 'todos_los_transportistas_asignar' alumno.dni %}')">Cargar Transportista</button>
 <a href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
+<a href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
 
 
 <div class="modal fade" id="todos_los_transportistas">

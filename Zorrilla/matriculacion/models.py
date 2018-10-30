@@ -114,8 +114,8 @@ class Matriculacion(models.Model):
 class Familia(models.Model):
     alumno = models.ForeignKey(Alumno, null=False)
     padre_madre = models.ForeignKey(Padre_madre, null=False)
-    secretaria = models.ForeignKey(Secretaria, null=False)
     fecha_relacion = models.DateTimeField(auto_now_add=True)
+    habilitado = models.BooleanField(default=True)
 
     def __str__(self):
         return '{} - {}'.format(self.padre_madre.nombre, self.alumno.nombre)
@@ -124,6 +124,7 @@ class Familia(models.Model):
 class usa_Transporte(models.Model):
     alumno = models.ForeignKey(Alumno, null=False)
     transportista = models.ForeignKey(Transportista, null=False)
+    habilitado = models.BooleanField(default=True)
 
     def __str__(self):
         return 'El alumno: {} utiliza el transportista: {}'.format(self.alumno.nombre, self.transportista.nombre_transporte)
@@ -132,6 +133,7 @@ class usa_Transporte(models.Model):
 class usa_Obra_Social(models.Model):
     alumno = models.ForeignKey(Alumno, null=False)
     obra_social = models.ForeignKey(Obra_Social, null=False)
+    habilitado = models.BooleanField(default=True)
     numero_afiliado = models.IntegerField('Num Obra Social', null=False)#Numero de afiliacion a la obra social
 
     def __str__(self):
@@ -141,6 +143,7 @@ class alumno_Autorizado(models.Model):
     relacion_con_alumno = models.TextField('Que relacion tiene con el alumno', max_length=50, null=False)
     alumno = models.ForeignKey(Alumno, null=False)
     autorizado = models.ForeignKey(Autorizado, null=False)
+    habilitado = models.BooleanField(default = True)
     
     def __str__(self):
         return '{} {} - {} {}'.format(self.alumno.apellido, self.alumno.nombre, self.autorizado.nombre, self.autorizado.apellido)

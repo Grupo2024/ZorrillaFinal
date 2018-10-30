@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+{% load poll_extras %}
+
+<br>
+<h1 class="card-title" align="center"><u>Datos de {{trabajador_elegido.nombre_t}} {{trabajador_elegido.apellido_t}}.</u></h1>
+
+<form id="modify_teacher" method="post">
+    {% csrf_token %}
+    <p>Nombre:</p>{{trabajador.nombre}}
+    <p>Apellido:</p>{{trabajador.apellido}}
+    <p>Lugar de Nacimiento:</p>{{trabajador.lugar_nacimiento}}
+    <p>Fecha de Nacimiento:</p>{{trabajador.fecha_nacimiento}}
+    <p>Domicilio:</p>{{trabajador.domicilio}}
+    <p>Email:</p>{{trabajador.email}}
+    <p>Sexo:</p>{{trabajador.sexo}}
+    <p>Telefono Particular:</p>{{trabajador.telefono_particular}}
+    <p>Telefono Laboral:</p>{{trabajador.telefono_laboral}}
+    <p>Telefono Familiar:</p>{{trabajador.telefono_familiar}}
+    <p>Datos familiares a cargo:</p>{{trabajador.datos_familiares_cargo}}
+    <p>Fecha de Inicio de Actividad:</p>{{trabajador.fecha_inicio_actividad}}
+    <p>Antecedentes Laborales:</p>{{trabajador.antecedentes_laborales}}
+    <p>Estudios Cursados:</p>{{trabajador.estudios_cursados}}
+
+    <button class="btn btn-success" style="margin-left: 40%; width: 20%" align="center" type="submit">Modificar datos</button>
+</form>
+{% endblock body %}

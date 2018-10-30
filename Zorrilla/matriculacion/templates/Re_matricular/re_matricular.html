@@ -8,15 +8,19 @@
         </div>
 
         <!-- Modal body -->
-        <form id="form_for_curso" method="post">
+        <form id="form_for_re_matricular" method="post">
             {% csrf_token %}
             <div class="modal-body">
 
                 <!-- Select Curso -->
 
                 <h4><u>Curso</u></h4>
+
+                <p>Curso Actual: {{curso}}.</p>
+                <p>Recomendacion: {{recomendacion}}</p>
+
                 <span class="badge badge-secondary">Cursos:</span>
-                <select id="curso" onchange="selectCurso(event)">
+                <select id="curso2" onchange="selectCurso2(event)">
                     <option value=0>----</option>
                     {% for curso in cursos %}
                     <option value={{curso.id}}>{{curso}}</option>
@@ -30,7 +34,7 @@
                 <h4><u>Familiares</u></h4>
                 {% if familiares|length == 0 %}
                 <span class="badge badge-secondary">Opciones:</span>
-                <select id="padress" onchange="show_padres()">
+                <select id="padress2" onchange="show_padres2()">
                     <option value=0>No</option>
                     <option value=1>Si</option>
                 </select>
@@ -46,7 +50,7 @@
                     {% for familiar in familiares %}
                     <li><a href="{% url 'datos_padre' familiar.padre_madre.dni %}">{{familiar.padre_madre.nombre}} {{familiar.padre_madre.apellido}}</a></li>
                     {% endfor %}
-                    <div id="new_padre">
+                    <div id="new_padre2">
                         <br>
                         <li><a href="{% url 'padres_del_alumno' alumno.dni %}"><u>Desvincular un Familiar.</u></a></li>
                         <li><a onclick="traer('{% url 'todos_los_padres_asignar' alumno.dni %}')"><u>Asignar Otro Padre.</u></a></li>
@@ -59,13 +63,13 @@
                 <h4><u>Autorizados</u></h4>
                 {% if autorizados|length == 0 %}
                 <span class="badge badge-secondary">Opciones:</span>
-                <select id="autorizado" onchange="show_autorizados()">
+                <select id="autorizado2" onchange="show_autorizados2()">
                     <option value=0>No</option>
                     <option value=1>Si</option>
                 </select>
                 <br>
                 <br>
-                <div id="btn_asignar_autorizado" class="hidden_idv">
+                <div id="btn_asignar_autorizado2" class="hidden_idv">
                     <a onclick="traer('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Asignar Autorizado.</a>
                     <br>
                     <br>
@@ -86,13 +90,13 @@
                 <h4><u>Transporte</u></h4>
                 {% if transportistas|length == 0 %}
                 <span class="badge badge-secondary">Opciones:</span>
-                <select id="transporte" onchange="show_transportistas()">
+                <select id="transporte2" onchange="show_transportistas2()">
                     <option value=0>No</option>
                     <option value=1>Si</option>
                 </select>
                 <br>
                 <br>
-                <div id="btn_asignar_transporte" class="hidden_idv">
+                <div id="btn_asignar_transporte2" class="hidden_idv">
                     <a onclick="traer('{% url 'todos_los_transportistas_asignar' alumno.dni %}')">Asignar Transportista.</a>
                     <br>
                     <br>
@@ -113,13 +117,13 @@
                 <h4><u>Obra Social</u></h4>
                 {% if obras_sociales|length == 0 %}
                 <span class="badge badge-secondary">Opciones:</span>
-                <select id="obrass" onchange="show_obras()">
+                <select id="obrass2" onchange="show_obras2()">
                     <option value=0>No</option>
                     <option value=1>Si</option>
                 </select>
                 <br>
                 <br>
-                <div id="btn_asignar_obra" class="hidden_idv">
+                <div id="btn_asignar_obra2" class="hidden_idv">
                     <a onclick="traer('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Asignar Obra Social.</a>
                     <br>
                     <br>
@@ -129,7 +133,7 @@
                     {% for obra_social in obras_sociales %}
                     <li><a href="{% url 'datos_padre' obra_social.obra_social.id %}">{{obra_social.obra_social.nombre}}</a></li>
                     {% endfor %}
-                    <div id="new_obra">
+                    <div id="new_obra2">
                         <br>
                         <li><a href="{% url 'obras_sociales_del_alumno' alumno.dni %}"><u>Desvincular una Obra Social.</u></a></li>
                         <li><a onclick="traer('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')"><u>Asignar Otra Obra Social.</u></a></li>
@@ -139,15 +143,15 @@
 
 
 
-                <input name="select_curso" id="select_curso" value=0  type="hidden">
-                <input name="dni_alumno" id="dni_alumno" type="hidden" value="{{alumno.dni}}">
+                <input name="select_curso2" id="select_curso2" value=0  type="hidden">
+                <input name="dni_alumno2" id="dni_alumno2" type="hidden" value="{{alumno.dni}}">
 
             </div>
         </form>
         <!-- Modal footer -->
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-success" onclick="matricular()">Matricular</button>
+            <button type="button" class="btn btn-success" onclick="re_matricular()">Re Matricular</button>
         </div>
     </div>
 </div>

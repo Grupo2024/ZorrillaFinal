@@ -49,8 +49,6 @@ class Trabajador(models.Model):
     domicilio_t = models.CharField('Domicilio del trabajador', max_length=150, blank=True)
     email_t = models.EmailField('Email del trabajador', max_length=70, unique=True)
     sexo_t = models.CharField('Sexo', max_length=6, choices=GENERO_CHOICES)
-    #foto = models.ImageField(upload_to=get_image_path, blank=True, null=True)
-    #BUSCAR LO DE FOTOS
     telefono_particular = models.IntegerField('Telefono Personal del Trabajador')
     telefono_laboral = models.IntegerField('Telefono Laboral del Trabajador')
     telefono_familiar = models.IntegerField('Telefono de algun Familiar del Trabajador')
@@ -119,7 +117,7 @@ class Secretaria(Trabajador):
 
 class Curso(models.Model):
     hora = models.BooleanField('Clickea para seleccionar turno "Tarde"', null=False)
-    aNo = models.CharField('1ero, 2do, etc...', max_length=5)
+    aNo = models.IntegerField('1ero, 2do, etc...')
     seccion = models.BooleanField('True = B o D, dependiendo de si es turno mañana o tarde', null=False)
 
     def que_turno(self):

@@ -18,6 +18,14 @@ class AlumnoForm(forms.ModelForm):
             'fecha_nacimiento': DateInput()
         }
 
+class RelacionForm(forms.Form):
+    relacion_con_alumno = forms.CharField(required=True)
+
+class ReMatricularForm(forms.Form):
+    dni_alumno = forms.IntegerField(required=True)
+    dni_padre = forms.IntegerField(required=True)
+    email_padre = forms.EmailField(required=True)
+
 class AutorizadoForm(forms.ModelForm):
     class Meta:
         model = Autorizado
@@ -26,6 +34,11 @@ class AutorizadoForm(forms.ModelForm):
 class DirectorForm(forms.ModelForm):
     class Meta:
         model = Director
+        fields = '__all__'
+
+class SecretariaForm(forms.ModelForm):
+    class Meta:
+        model = Secretaria
         fields = '__all__'
 
 class Obra_SocialForm(forms.ModelForm):

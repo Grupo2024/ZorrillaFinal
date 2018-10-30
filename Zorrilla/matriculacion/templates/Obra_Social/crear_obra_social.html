@@ -41,15 +41,28 @@
                 <div class="modal-body row">
                     <span id="resultado_crear"></span>
                 </div>
+                <div class="modal-footer">
+                    <button onclick="refresh_o()" class="btn btn-success" id="continuar_btn">Continuar</button>
+                    <button class="btn btn-danger" data-dismiss="modal" id="salir_btn">Salir</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-
+<form id="rt" action="{% url 'form_obra_social' %}" method="post">
+    {% csrf_token %}
+</form>
 
 
 <script>
+
+    document.getElementById("continuar_btn").style.display = "none";
+
+    function refresh_o(){
+        var volver = document.getElementById("rt");
+        volver.submit();
+    }
 
     function crear_obra(){
         var myForm = document.getElementById('obra_s');
@@ -65,6 +78,8 @@
                 if (data.error){
                     document.getElementById("resultado_crear").innerHTML = data.resultado;
                 } else {
+                    document.getElementById("salir_btn").style.display = "none";
+                    document.getElementById("continuar_btn").style.display = "block";
                     document.getElementById("resultado_crear").innerHTML = data.resultado;
                 }
             }

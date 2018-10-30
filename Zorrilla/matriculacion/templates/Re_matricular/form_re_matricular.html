@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+<form id="form_re_matricular" method="post">
+    {% csrf_token %}
+    <p>Dni del Alumno:</p>{{re_matricular_form.dni_alumno}}
+    <p>Dni del Padre:</p>{{re_matricular_form.dni_padre}}
+    <p>Email del Padre:</p>{{re_matricular_form.email_padre}}
+</form>
+
+<button onclick="re_matricular()">Enviar</button>
+
+<div class="modal fade" id="re_mat_alumno" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Re Matricular Alumno:</h5>
+            </div>
+            <div class="container-fluid">
+                <div class="modal-body row">
+                    <p class="col-sm-2">Resultado: </p>
+                    <span id="resultado"></span>
+                </div>
+                <div class="modal-footer" id="footer">
+                    <button type="button" class="btn btn-primary" id="continuar" onclick="refresh()">Continuar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="form_f5" href="{% url 'formReMatricular' %}" method="post">
+    {% csrf_token %}
+</form>
+
+<script>
+
+    document.getElementById("continuar").style.display = "none";
+    document.getElementById("cerrar").style.display = "none";
+
+    function re_matricular(){
+        if (confirm("¿Solicitar pedido de Re Matriculacion ?")) {
+            var myForm = document.getElementById('form_re_matricular');
+            formData = new FormData(myForm);
+            $.ajax({
+                url: '{% url 'pedido_re_matricular' %}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    $('#re_mat_alumno').modal('show');
+                    console.log(data.resultado);
+                    if (data.error){
+                        document.getElementById("resultado").innerHTML = data.resultado;
+                        document.getElementById("continuar").style.display = "none";
+                        document.getElementById("cerrar").style.display = "block";
+                    } else {
+                        document.getElementById("resultado").innerHTML = data.resultado;
+                        document.getElementById("continuar").style.display = "block";
+                        document.getElementById("cerrar").style.display = "none";
+                   }
+                }
+            });
+        } else {
+            return;
+        }
+    }
+
+    function refresh(){
+        var refr = document.getElementById("form_f5");
+        refr.submit();
+    }
+
+</script>
+
+{% endblock body %}

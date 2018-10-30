@@ -39,7 +39,12 @@
                 <li class="list-group-item">Telefono de familiar: {{alumno.telefono_familiar}}.</li>
                 <li class="list-group-item">Telefono de vecino: {{alumno.telefono_vecino}}.</li>
                 <li class="list-group-item">Con quien vive: {{alumno.con_quien_vive}}.</li>
-                <li class="list-group-item">Autorizados: {{alumno.autorizados}}.</li>
+                <li class="list-group-item">Autorizados:
+                    {% if alumno.autorizados == "No"%}
+                    <a onclick="traer_instancias('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Asignar Autorizado.</a>
+                    {% else %}
+                    <a href="{% url 'autorizados_del_alumno' alumno.dni %}">Ver Autorizados.</a></li>
+                {% endif %}
                 <li class="list-group-item">Quien lo trae: {{alumno.quien_lo_trae}}.</li>
                 <li class="list-group-item">Telefono del que lo Trae: {{alumno.telefono_que_lo_trae}}.</li>
                 <li class="list-group-item">Utiliza transporte:

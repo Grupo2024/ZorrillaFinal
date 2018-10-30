@@ -19,6 +19,10 @@
         line-height: 30px;
         color: white;
     }
+
+    div.hidden_idv {     /* this will hide div with class div_class_name */
+        display:none;
+    }
 </style>
 
 <br>
@@ -46,7 +50,7 @@
 
     {% for m in re_matricular %}
 
-    <div class="card text-center" style="width:20%; margin-left: 3%">
+    <div class="card text-center " style="width:20%; margin-left: 3%">
         <div class="card-body">
             <h4 class="card-title">{{m.alumno.nombre}} {{m.alumno.apellido}}</h4>
             <ul class="list-group list-group-flush">
@@ -65,9 +69,9 @@
     {% endfor %}
 </div>
 
-{% if matriculaciones|length == 0 %}
+{% if matriculaciones|length == 0 and re_matricular|length == 0 %}
 
-<h2><center>No hay ningun pedido</center></h2>
+    <h2><center>No hay ningun pedido</center></h2>
 
 {% endif %}
 
@@ -79,16 +83,9 @@
     </div>
 </div>
 
-<div class="modal fade" id="todos_los_padres">
+<div class="modal fade" id="todas_las_instancias">
     <div class="modal-dialog modal-lg">
-        <div id="datos_padre">
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="todos_los_transportistas">
-    <div class="modal-dialog modal-lg">
-        <div id="datos_transportista">
+        <div id="datos">
         </div>
     </div>
 </div>
@@ -122,16 +119,9 @@
 
 <script>
 
-
-
-    function use_transporte(e) {
-        var aux = document.getElementById("transporte").value
-        var sel_div = document.getElementById("new_transporte");
-        if (aux == 0){
-            sel_div.style.display = "none";
-        } else {
-            sel_div.style.display = "block";
-        }
+    function refresh_p(){
+        var des = document.getElementById("reload");
+        des.submit();
     }
 
     function traer_secciones(url, alum){
@@ -195,9 +185,35 @@
                     contentType: false,
                     type: 'POST',
                     success: function(data){
+                    $('#modal_cursos').modal('hide');
+                    footer(data.resultado);
+                    y.style.display = "block";
+                }
+                       });
+            } else {
+                return;
+            }
+        }
+    }
+
+    function re_matricular(){
+        var curso_elegido = document.getElementById('select_curso2');
+        if (curso_elegido.value == 0){
+            alert("Selecciona un Curso");
+        } else {
+            if (confirm("¿ Re Matricular al Alumno ?")) {
+                var myForm = document.getElementById('form_for_re_matricular');
+                formData = new FormData(myForm);
+                $.ajax({
+                    url: '{% url 'aceptar_re_matriculacion' %}',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function(data){
                         $('#modal_cursos').modal('hide');
-                        footer(data.resultado);
-                        y.style.display = "block";
+                        alert(data.resultado);
+                        refresh_p();
                     }
                 });
             } else {
@@ -206,22 +222,8 @@
         }
     }
 
-    function traer_transportistas(url){
-        $.ajax({
-            method: "POST",
-            url: url,
-            data: {
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-            }
-        })
-            .done(function (data) {
-            $("#datos_transportista").html(data);
-            $('#modal_cursos').modal('hide');
-            $('#todos_los_transportistas').modal('show');
-        });
-    }
 
-    function traer_padres(url){
+    function traer(url){
         $.ajax({
             method: "POST",
             url: url,
@@ -230,9 +232,9 @@
             }
         })
             .done(function (data) {
-            $("#datos_padre").html(data);
+            $("#datos").html(data);
             $('#modal_cursos').modal('hide');
-            $('#todos_los_padres').modal('show');
+            $('#todas_las_instancias').modal('show');
         });
     }
 
@@ -246,7 +248,92 @@
         aux.submit();
     }
 
- function mandar_padre(){     
+    function show_transportistas(){
+        var div_trans = document.getElementById("btn_asignar_transporte");
+        var e = document.getElementById("transporte").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
+
+    function selectCurso(e) {
+        document.getElementById("select_curso").value = e.target.value
+    }
+
+    function show_autorizados(){
+        var div_trans = document.getElementById("btn_asignar_autorizado");
+        var e = document.getElementById("autorizado").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
+
+    function show_padres(){
+        var div_trans = document.getElementById("btn_asignar_padre2");
+        var e = document.getElementById("padress").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
+
+    function show_obras(){
+        var div_trans = document.getElementById("btn_asignar_obra");
+        var e = document.getElementById("obrass").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
+
+    function show_transportistas2(){
+        var div_trans = document.getElementById("btn_asignar_transporte2");
+        var e = document.getElementById("transporte2").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
+
+    function selectCurso2(e) {
+        document.getElementById("select_curso2").value = e.target.value
+    }
+
+    function show_autorizados2(){
+        var div_trans = document.getElementById("btn_asignar_autorizado2");
+        var e = document.getElementById("autorizado2").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
+
+    function show_padres2(){
+        var div_trans = document.getElementById("btn_asignar_padre2");
+        var e = document.getElementById("padress2").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
+
+    function show_obras2(){
+        var div_trans = document.getElementById("btn_asignar_obra2");
+        var e = document.getElementById("obrass2").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
     }
 </script>
 

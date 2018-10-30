@@ -45,6 +45,10 @@
             </ul>
         </div>
     </div>
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'modificar_perfil' trabajador.cargo trabajador.dni_t %}">Modificar Datos</a>
+    {% endif %}
 </div>
 
 {% endblock body %}

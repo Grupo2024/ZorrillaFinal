@@ -10,46 +10,61 @@
 <div id="contenido">
     {% if transportistas|length != 0 %}
 
-    <h3><center>Transportistas.</center></h3>
+    <h3><center>Transportistas</center></h3>
     <br>
-    <input type="text"placeholder="Transportista que desea buscar" id="input" onkeyup="buscar_transportista()" size="5">
-    <select id="filtro">
-        <option value=0>Nombre</option>
-        <option value=1>Apellido</option>
-        <option value=2>Dni</option>
-    </select>
+    <div align="center">
+        <input type="text"placeholder="Transportista que desea buscar" id="input_t" onkeyup="buscar_transportista()" size="5">
+        <select id="filtro_t">
+            <option value=0>Nombre</option>
+            <option value=1>Apellido</option>
+            <option value=2>Dni</option>
+        </select>
+    </div>
+
+
     <br>
-    <br>
-    <table style="width:30%" align="center" id="tabla">
-        <tr>
-            <th>Nombre Transportista</th>
-            <th>Apellido Transportista</th>
-            <th>Dni Transportista</th>
-            <th>Nombre Transporte</th>
-            <th>Telefono Transporte</th>
-            <th>Info</th>
-        </tr>
-        {% for a in transportistas %}
-        <tr>
-            <td>{{a.nombre}}</td>
-            <td>{{a.apellido}}</td>
-            <td>{{a.dni}}</td>
-            <td>{{a.nombre_transporte}}</td>
-            <td>{{a.telefono_transportista}}</td>
-            <td><a onclick="info_transportista('{% url 'usuarios_transportista' a.dni %}')">Info</a></td>
-        </tr>
-        {% endfor %}
 
-    </table>
+    <div class="col-md-12">
+        <h4></h4>
+        <div class="table-responsive">
 
-    {% else %}
 
-    <h3><center>No hay ningun Transportista.</center></h3>
+            <table id="tabla_t" class="table table-hover">
 
-    {% endif %}
-</div>
+                <thead class="thead">
+                    <th>Nombre Transportista</th>
+                    <th>Apellido Transportista</th>
+                    <th>Dni Transportista</th>
+                    <th>Nombre Transporte</th>
+                    <th>Telefono Transporte</th>
+                    <th>Info</th>
+                </thead>
+                {% for a in transportistas %}
+                <tbody>
 
-<a href="{% url 'index' %}">Menu</a>
+                    <tr>
+                        <td>{{a.nombre}}</td>
+                        <td>{{a.apellido}}</td>
+                        <td>{{a.dni}}</td>
+                        <td>{{a.nombre_transporte}}</td>
+                        <td>{{a.telefono_transportista}}</td>
+                        <td><button class="btn btn-primary" onclick="info_transportista('{% url 'usuarios_transportista' a.dni %}')"><i style="font-size:15px" class="fa">&#xf129;</i></button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                
+            </table>
+
+            {% else %}
+
+            <h3><center>No hay ningun Transportista.</center></h3>
+        
+            {% endif %}
+
+        </div>
+
+    </div>
+
 
 <div class="modal fade" id="modal_info">
     <div class="modal-dialog">
@@ -95,12 +110,12 @@
     }
     
     function buscar_transportista() {
-        var e = document.getElementById("filtro");
+        var e = document.getElementById("filtro_t");
         var strUser = e.options[e.selectedIndex].value;
         var input, filter, table, tr, td, i;
-        input = document.getElementById("input");
+        input = document.getElementById("input_t");
         filter = input.value.toUpperCase();
-        table = document.getElementById("tabla");
+        table = document.getElementById("tabla_t");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[strUser];

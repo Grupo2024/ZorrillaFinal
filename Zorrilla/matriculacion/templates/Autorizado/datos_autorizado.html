@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+<br>
+<div class="card text-center" style="width: 30%; margin-left: 35%">
+    <div class="card-body">
+        <h4 class="card-title">Datos del Transportista</h4>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Nombre: {{autorizado.nombre}}</li>
+            <li class="list-group-item">Apellido: {{autorizado.apellido}}</li>
+            <li class="list-group-item">Dni: {{autorizado.dni}}</li>
+            <li class="list-group-item">Lugar Nacimiento: {{autorizado.lugar_nacimiento}}</li>
+            <li class="list-group-item">Fecha Nacimiento: {{autorizado.fecha_nacimiento}}</li>
+            <li class="list-group-item">Domicilio: {{autorizado.domicilio}}</li>
+            <li class="list-group-item">Email: {{autorizado.email}}</li>
+            <li class="list-group-item">Sexo: {{autorizado.sexo}}</li>
+        </ul>
+    </div>
+</div>
+
+<a href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
+
+
+{% endblock body %}

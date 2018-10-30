@@ -86,6 +86,11 @@ def formulario(request):
     padre_form = PadreForm()
     return render(request, 'formulario.html', {'alumno_form':alumno_form, 'padre_form':padre_form})
 
+#Levantar Template para cargar un pedido de Rematriculacion.
+def formReMatricular(request):
+    re_matricular_form = ReMatricularForm()
+    return render(request, 'Re_matricular/form_re_matricular.html', {'re_matricular_form':re_matricular_form})
+
 #Levantar Template para cargar Transportista.
 def form_transportista(request):
     form_transportista = TransportistaForm()
@@ -109,6 +114,10 @@ def form_autorizado(request):
 def form_director(request):
     director = DirectorForm()
     return render (request, 'Director/crear_director.html', {'director':director})
+
+def form_secretaria(request):
+    secretaria = SecretariaForm()
+    return render (request, 'Secretaria/crear_secretaria.html', {'secretaria':secretaria})
 
 #Levantar el Form para cargar una Obra Social.
 def form_obra_social(request):
@@ -225,6 +234,42 @@ def crear_director(request):
             return JsonResponse(data)
     return HttpResponse("Solo podes acceder por Post")
 
+def crear_secretaria(request):
+    if request.method == 'POST':
+        secretaria = SecretariaForm(request.POST)
+        if secretaria.is_valid():
+            secretaria.save()
+            dni = secretaria.cleaned_data['dni_t']
+            secretaria = Secretaria.objects.get(dni_t=dni)
+            secretaria.cargo = "Secretaria"
+            secretaria.save()
+            password = new_Password(dni)
+            user_d = User.objects.create_user(username=secretaria.nombre_t, password=password)
+            my_group = Group.objects.get(name='Secretaria')
+            my_group.user_set.add(user_d)
+            #Creamos la Clase intermedia.
+            user_secretaria = user_Secretaria(user=user_d, secretaria_referenciada=secretaria)
+            user_secretaria.save()
+            #Email Notificando la creacion del usuario.
+            subject = "Usuario Creado"
+            message = str(secretaria.apellido_t) + "" + str(secretaria.nombre_t) + " ha sido ingresado/a al sistema, en el cual utilizara como nombre de usuario: " + str(user_d.username) + " y la password " + str(password)
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [secretaria.email_t]
+            #send_mail(subject, message, email_from, recipient_list)
+            data = {
+                'error':False,
+                'resultado': str(secretaria.apellido_t) + " " + str(secretaria.nombre_t) + " ha sido creado/a con exito y utilizara como nombre de usuario: " + str(user_d.username) + " y la password " + str(password)
+            }
+            return JsonResponse(data)
+        else:
+            resultado = str(secretaria.errors)
+            data = {
+                'error':True,
+                'resultado':resultado
+            }
+            return JsonResponse(data)
+    return HttpResponse("Solo podes acceder por Post")
+
 def crear_autorizado(request):
     autorizado_form = AutorizadoForm(request.POST)
     if autorizado_form.is_valid():
@@ -262,8 +307,7 @@ def crear_padre(request):
         dni_padre = padre_form.cleaned_data['dni']
         padre = Padre_madre.objects.get(dni=dni_padre)
         print (padre)
-        secretaria = user_Secretaria.objects.get(user=request.user)
-        familia = Familia(alumno=alumno, padre_madre=padre, secretaria=secretaria.secretaria_referenciada)
+        familia = Familia(alumno=alumno, padre_madre=padre)
         familia.save()
         new_Matriculacion = Matriculacion(alumno=alumno, matriculado="No")
         new_Matriculacion.save()
@@ -350,8 +394,13 @@ def asignar_transportista(request):
         dni_transportista = request.POST['dni_transportista']
         alumno = Alumno.objects.get(dni=dni)
         transportista = Transportista.objects.get(dni=dni_transportista)
-        usa_transporte = usa_Transporte(alumno=alumno, transportista=transportista)
-        usa_transporte.save()
+        usa_transporte, created = usa_Transporte.objects.get_or_create(alumno=alumno, transportista=transportista)
+        if created:
+            pass
+        else:
+            print "Esta ya estaba antes."
+            usa_transporte.habilitado = True
+            usa_transporte.save()
         data = {
             'resultado': 'Transportista asignado con exito.'
         }
@@ -364,13 +413,14 @@ def asignar_padre(request):
         dni = request.POST['dni_alumno']
         dni_padre = request.POST['dni_padre']
         alumno = Alumno.objects.get(dni=dni)
-        print (dni)
-        print (dni_padre)
         padre = Padre_madre.objects.get(dni=dni_padre)
-        secretaria = user_Secretaria.objects.get(user=request.user)
-        familia = Familia(alumno=alumno, padre_madre=padre, secretaria=secretaria.secretaria_referenciada)
-        familia.save()
-        familia.save()
+        familia, created = Familia.objects.get_or_create(alumno=alumno, padre_madre=padre)
+        if created:
+            pass
+        else:
+            print "Esta ya estaba antes."
+            familia.habilitado = True
+            familia.save()
         data = {
             'resultado': 'Padre asignado con exito.'
         }
@@ -382,17 +432,47 @@ def asignar_obra_social(request):
         dni = request.POST['dni_alumno']
         id_obra_social = request.POST['id_obra_social']
         num_afiliado = request.POST['num_afiliado']
-        print (dni)
-        print (id_obra_social)
-        print (num_afiliado)
         alumno = Alumno.objects.get(dni=dni)
         obra_Social = Obra_Social.objects.get(id=id_obra_social)
-        usa_Obra = usa_Obra_Social(alumno=alumno, obra_social=obra_Social, numero_afiliado=num_afiliado)
-        usa_Obra.save()
+        usa_Obra, created = usa_Obra_Social.objects.get_or_create(alumno=alumno, obra_social=obra_Social, numero_afiliado=num_afiliado)
+        if created:
+            pass
+        else:
+            usa_Obra.habilitado = True
+            usa_Obra.save()
         data = {
             'resultado':"Obra Asignada con exito."
         }
         return JsonResponse(data)
+    return HttpResponse("Solo podes acceder por Post")
+
+def asignar_autorizado(request):
+    if request.method == 'POST':
+        dni = request.POST['dni_alumno']
+        dni_autorizado = request.POST['dni_autorizado']
+        relacion_con_alumno = RelacionForm(request.POST)
+        if relacion_con_alumno.is_valid():
+            relacion_con_alumno = relacion_con_alumno.cleaned_data['relacion_con_alumno']
+            print (relacion_con_alumno)
+            alumno = Alumno.objects.get(dni=dni)
+            autorizado = Autorizado.objects.get(dni=dni_autorizado)
+            alumno_autorizado, created = alumno_Autorizado.objects.get_or_create(alumno=alumno, autorizado=autorizado)
+            if created:
+                pass
+            else:
+                alumno_autorizado.habilitado = True
+                alumno_autorizado.relacion_con_alumno = relacion_con_alumno
+                alumno_autorizado.save()
+            data = {
+                'resultado':"Autorizado Asignado con exito."
+            }
+            return JsonResponse(data)
+        else:
+            data = {
+                'resultado':str(relacion_con_alumno.errors)
+            }
+            return JsonResponse(data)
+    return HttpResponse("Solo podes acceder por Post")
 
 """
 ========================================
@@ -403,7 +483,7 @@ Traer Todas las instancias de un modelo.
 #Traer Todos los Transnportistas.
 def todos_los_transportistas_asignar(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    transportistas_ya_asignados = usa_Transporte.objects.filter(alumno=alumno)
+    transportistas_ya_asignados = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
     lista = []
     for a in transportistas_ya_asignados:
         lista.append(a.transportista.dni)
@@ -413,7 +493,7 @@ def todos_los_transportistas_asignar(request, dni_alumno):
 #Traer Todos los Padres/Madre.
 def todos_los_padres_asignar(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    padres_ya_asignados = Familia.objects.filter(alumno=alumno)
+    padres_ya_asignados = Familia.objects.filter(alumno=alumno, habilitado=True)
     lista = []
     for a in padres_ya_asignados:
         lista.append(a.padre_madre.dni)
@@ -422,13 +502,25 @@ def todos_los_padres_asignar(request, dni_alumno):
 
 def todas_las_obras_sociales_asignar(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    obras_ya_asignadas = usa_Obra_Social.objects.filter(alumno=alumno)
+    obras_ya_asignadas = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     lista = []
     for a in obras_ya_asignadas:
         lista.append(a.obra_social.id)
     obra_social = Obra_Social.objects.exclude(id__in=lista).order_by("nombre")
     obra_social2 = Obra_SocialForm()
     return render(request,'Obra_Social/asignar_obra.html', {'obras_sociales':obra_social, 'dni_alumno':dni_alumno, 'obra_social':obra_social2})
+
+def todos_los_autorizados_asignar(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    autorizados_ya_asignadas = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True)
+    print(autorizados_ya_asignadas)
+    lista = []
+    for a in autorizados_ya_asignadas:
+        lista.append(a.autorizado.dni)
+    autorizados = Autorizado.objects.exclude(dni__in=lista).order_by("nombre")
+    relacion_con_alumno = RelacionForm()
+    print(autorizados)
+    return render(request,'Autorizado/asignar_autorizado.html', {'autorizados':autorizados, 'alumno':alumno, 'relacion_con_alumno':relacion_con_alumno})
 
 @user_passes_test(check_Secretaria)
 def todas_las_obras_sociales(request):
@@ -449,18 +541,23 @@ def traer_pedidos(request):
 
 def padres_del_alumno(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    familia = Familia.objects.filter(alumno=alumno)
+    familia = Familia.objects.filter(alumno=alumno, habilitado=True)
     return render(request, 'Padre_madre/padres_del_alumno.html', {'familiares':familia, 'alumno':alumno})
 
 def transportistas_del_alumno(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    transportistas = usa_Transporte.objects.filter(alumno=alumno)
+    transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
     return render(request, 'Transportista/transportistas_del_alumno.html', {'transportistas':transportistas, 'alumno':alumno})
 
 def obras_sociales_del_alumno(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno)
+    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     return render(request, 'Obra_Social/obras_sociales_del_alumno.html', {'obras_sociales':obras_sociales, 'alumno':alumno})
+
+def autorizados_del_alumno(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    autorizados = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True)
+    return render(request, 'Autorizado/autorizados_del_alumno.html', {'autorizados':autorizados, 'alumno':alumno})
 
 """
 ===================================
@@ -472,6 +569,10 @@ Mostrar los datos de una instancia.
 def datos_transportista(request, dni_transportista):
     transportista = Transportista.objects.get(dni=dni_transportista)
     return render(request, 'Transportista/datos_transportista.html', {'transportista':transportista})
+
+def datos_autorizado(request, dni_transportista):
+    autorizado = Autorizado.objects.get(dni=dni_transportista)
+    return render(request, 'Autorizado/datos_autorizado.html', {'autorizado':autorizado})
 
 
 def usuarios_transportista(request, dni_transportista):
@@ -494,7 +595,7 @@ def datos_obra_social(request, id_obra_social):
 @login_required
 def datos_alumno(request, id_alumno):
     alumno = Alumno.objects.get(dni=id_alumno)
-    transportistas = usa_Transporte.objects.filter(alumno=alumno)
+    transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
     if not transportistas:
         alumno.transporte = "No"
     else:
@@ -504,36 +605,47 @@ def datos_alumno(request, id_alumno):
         alumno.matriculado = "Si"
     except Matriculacion.DoesNotExist:
         alumno.matriculado = "No"
-    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno)
+    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     if not obras_sociales:
         alumno.obra_social = "No"
     else:
         alumno.obra_social = "Si"
-    familiares = Familia.objects.filter(alumno=alumno)
+    familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
     if not familiares:
         alumno.familiares = "No"
     else:
         alumno.familiares = "Si"
+    autorizados = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True)
+    if not autorizados:
+        alumno.autorizados = "No"
+    else:
+        alumno.autorizados = "Si"
     return render(request, 'perfilAlumno.html', {'alumno':alumno})
 
 #Funcion que Trae los Familiares, Transportistas del Alumno y los Cursos.
 def get_Secciones(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    familiares = Familia.objects.filter(alumno=alumno).order_by("padre_madre__apellido", "padre_madre__nombre")
-    transportistas = usa_Transporte.objects.filter(alumno=alumno)
-    cursos = Curso.objects.all()
-    return render(request, 'matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas})
+    familiares = Familia.objects.filter(alumno=alumno, habilitado=True).order_by("padre_madre__apellido", "padre_madre__nombre")
+    transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
+    cursos = Curso.objects.all().order_by("aNo", "-hora")
+    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
+    autorizados = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True)
+    return render(request, 'matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas, 'obras_sociales':obras_sociales, 'autorizados':autorizados})
 
 #Funcion que Trae los Familiares, Transportistas, Curso Actual del Alumno y los Cursos.
 def re_matricular(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    familiares = Familia.objects.filter(alumno=alumno).order_by("padre_madre__apellido", "padre_madre__nombre")
-    transportistas = usa_Transporte.objects.filter(alumno=alumno)
+    familiares = Familia.objects.filter(alumno=alumno, habilitado=True).order_by("padre_madre__apellido", "padre_madre__nombre")
+    transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
     curso2 = alumno_Curso.objects.get(alumno=alumno)
     curso = curso2.curso
-    cursos = Curso.objects.all()
-    recomendacion = Curso.objects.get(aNo=curso.aNo+1)
-    return render(request, 're_matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas, 'curso':curso, 'recomendacion':recomendacion})
+    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
+    autorizados = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True)
+    recomendacion, created = Curso.objects.get_or_create(aNo=curso.aNo+1, hora=curso.hora, seccion=curso.seccion)
+    lista = []
+    lista.append(curso.id)
+    cursos = Curso.objects.exclude(id__in=lista).order_by("aNo", "-hora")
+    return render(request, 'Re_matricular/re_matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas, 'curso':curso, 'recomendacion':recomendacion, 'obras_sociales':obras_sociales, 'autorizados':autorizados})
 
 """
 ==========
@@ -541,15 +653,123 @@ Modificar.
 ==========
 """
 
+def aceptar_re_matriculacion(request):
+    if request.method == "POST":
+        dni_alumno = request.POST['dni_alumno2']
+        selected_curso = request.POST['select_curso2']
+        curso = Curso.objects.get(id=selected_curso)
+        alumno = Alumno.objects.get(dni=dni_alumno)
+        eleccion = alumno_Curso.objects.get(alumno=alumno)
+        eleccion.curso = curso
+        eleccion.save()
+        matriculacion = Matriculacion.objects.get(alumno=alumno)
+        matriculacion.matriculado = "Si"
+        matriculacion.save()
+        familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
+        subject = "Pedido de Re Matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
+        secretaria = user_Secretaria.objects.get(user=request.user)
+        message = "Se le notifica que la Secretaria " + secretaria.secretaria_referenciada.apellido_t + " " + secretaria.secretaria_referenciada.nombre_t + " ha aceptado el pedido de Re Matriculacion de su hijo/a " + alumno.apellido + " " + alumno.nombre + ", el cual ahora asistira a " + str(eleccion.curso) + "."
+        email_from = settings.EMAIL_HOST_USER
+        for familiar in familiares:
+            recipient_list = [familiar.padre_madre.email]
+            #send_mail( subject, message, email_from, recipient_list)
+        data = {
+            'error':False,
+            'resultado': "El pedido de Re Matriculacion de " + alumno.nombre + " ha sido un exito, ahora " + alumno.nombre + " asiste a " + str(eleccion.curso)
+        }
+        return JsonResponse(data)
+    return HttpResponse("Solo podes entrar por POST")
+
+def pedido_re_matricular(request):
+    if request.method == "POST":
+        re_matricular_form = ReMatricularForm(request.POST)
+        if re_matricular_form.is_valid():
+            dni_alumno = re_matricular_form.cleaned_data['dni_alumno']
+            dni_padre = re_matricular_form.cleaned_data['dni_padre']
+            email_padre = re_matricular_form.cleaned_data['email_padre']
+            print (dni_alumno)
+            print (dni_padre)
+            print (email_padre)
+            try:
+                alumno = Alumno.objects.get(dni=dni_alumno)
+                matriculacion = Matriculacion.objects.get(alumno=alumno)
+                if matriculacion.matriculado == "No":
+                    data = {
+                        'error':True,
+                        'resultado': "Ya hay un pedido de Matriculacion para este alumno."
+                    }
+                    return JsonResponse(data)
+                elif matriculacion.matriculado == "Re":
+                    data = {
+                        'error':True,
+                        'resultado': "Ya hay un pedido de Re Matriculacion para este alumno."
+                    }
+                    return JsonResponse(data)
+                else:
+                    try:
+                        padre = Padre_madre.objects.get(dni=dni_padre)
+                        if (padre.email == email_padre):
+                            familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
+                            subject = "Pedido de Re Matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
+                            message = "En el dia de la fecha " + str(padre.apellido) + " " + str(padre.nombre) + " ha solicitado un pedido de re matriculacion para " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
+                            email_from = settings.EMAIL_HOST_USER
+                            for familiar in familiares:
+                                recipient_list = [familiar.padre_madre.email]
+                                #send_mail( subject, message, email_from, recipient_list)
+                            matriculacion = Matriculacion.objects.get(alumno=alumno)
+                            matriculacion.matriculado = "Re"
+                            matriculacion.save()
+                            data = {
+                                'error':False,
+                                'resultado': "El pedido de re matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + " ha sido creado con exito."
+                            }
+                            return JsonResponse(data)
+                        else:
+                            data = {
+                                'error':True,
+                                'resultado': "El email " + str(email_padre) + " no con corresponde con el dni del padre."
+                            }
+                            return JsonResponse(data)
+                    except Padre_madre.DoesNotExist:
+                        data = {
+                            'error':True,
+                            'resultado': "No existe un padre con ese dni."
+                        }
+                        return JsonResponse(data)
+            except Alumno.DoesNotExist:
+                data = {
+                    'error':True,
+                    'resultado': "No existe un alumno con ese dni."
+                }
+                return JsonResponse(data)
+        else:
+            data = {
+                'error':True,
+                'resultado': str(re_matricular_form.errors)
+            }
+        return JsonResponse(data)
+    return HttpResponse("Solo podes acceder por Post")
+
 def cambiar_curso(request):
     if request.method == "POST":
         dni_alumno = request.POST['dni_alumno']
         id_curso = request.POST['id_curso']
-
         alumno = Alumno.objects.get(dni=dni_alumno)
         curso = Curso.objects.get(id=id_curso)
         alumno_C = alumno_Curso.objects.get(alumno=alumno)
         alumno_C.curso = curso
+
+        subject = "Curso de " + str(alumno.nombre) + " modificado."
+        secretaria = user_Secretaria.objects.get(user=request.user)
+        message = "En el dia de la fecha la secretaria " + str(secretaria.secretaria_referenciada.apellido_t) + " " + str(secretaria.secretaria_referenciada.nombre_t) + " ha cambiado el curso al que asiste " + str(alumno.nombre) + " por " + str(alumno_C.curso) + "."
+        email_from = settings.EMAIL_HOST_USER
+
+        familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
+
+        for familiar in familiares:
+            recipient_list = [familiar.padre_madre.email]
+            send_mail(subject, message, email_from, recipient_list)
+
         alumno_C.save()
         data = {
             'resultado': "El Alumno " + alumno.nombre + " " + alumno.apellido + " ahora asiste a " + str(alumno_C.curso)
@@ -612,7 +832,7 @@ def cambiar_password(request):
 def aplicar_cambios_alumno(request):
     if request.method == 'POST':
         alumno_form = Modificar_Alumno_Form(request.POST)
-        dni_alumno = request.POST['dni_alumno']
+        dni_alumno = request.POST['dni']
         if alumno_form.is_valid():
             print ("Es valido")
             alumno = Alumno.objects.get(dni=dni_alumno)
@@ -634,6 +854,20 @@ def aplicar_cambios_alumno(request):
             nuevo_telefono_que_lo_trae = alumno_form.cleaned_data['telefono_que_lo_trae']
 
             alumno.nombre, alumno.apellido, alumno.lugar_nacimiento, alumno.fecha_nacimiento, alumno.domicilio, alumno.email, alumno.sexo, alumno.telefono_casa, alumno.telefono_padre, alumno.telefono_madre, alumno.telefono_familiar, alumno.telefono_vecino, alumno.enfermedad_relevante, alumno.con_quien_vive, alumno.quien_lo_trae, alumno.telefono_que_lo_trae  = nuevo_nombre, nuevo_apellido, nuevo_lugar_nacimiento, nueva_fecha_nacimiento, nuevo_domicilio, nuevo_email, nuevo_sexo, nuevo_telefono_casa, nuevo_telefono_padre, nuevo_telefono_madre, nuevo_telefono_familiar, nuevo_telefono_vecino, nueva_enfermedad_relevante, nuevo_con_quien_vive, nuevo_quien_lo_trae, nuevo_telefono_que_lo_trae
+
+            subject = "Informacion de " + str(alumno.nombre) + " modificada."
+
+            secretaria = user_Secretaria.objects.get(user=request.user)
+
+            message = "En el dia de la fecha la secretaria " + str(secretaria.secretaria_referenciada.apellido_t) + " " + str(secretaria.secretaria_referenciada.nombre_t) + " ha realizado cambios en el perfil de " + str(alumno.nombre) + "."
+            email_from = settings.EMAIL_HOST_USER
+
+            familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
+
+            for familiar in familiares:
+                recipient_list = [familiar.padre_madre.email]
+                send_mail(subject, message, email_from, recipient_list)
+
             alumno.save()
             data = {
                 'resultado': "Los datos de " + alumno.nombre + " han sido modificados."
@@ -722,7 +956,8 @@ def desvincular_transportista(request):
         alumno = Alumno.objects.get(dni=dni_alumno)
         transportista = Transportista.objects.get(dni=dni_transportista)
         medio = usa_Transporte.objects.get(alumno=alumno, transportista=transportista)
-        medio.delete()
+        medio.habilitado = False
+        medio.save()
         return redirect ('transportistas_del_alumno', dni_alumno)
     return HttpResponse("Solo por acceder por Post")
 
@@ -733,7 +968,8 @@ def desvincular_obra_social(request):
         alumno = Alumno.objects.get(dni=dni_alumno)
         obra_social = Obra_Social.objects.get(pk=id_obra_social)
         medio = usa_Obra_Social.objects.get(alumno=alumno, obra_social=obra_social)
-        medio.delete()
+        medio.habilitado = False
+        medio.save()
         return redirect ('obras_sociales_del_alumno', dni_alumno)
     return HttpResponse("Solo por acceder por Post")
 
@@ -744,6 +980,19 @@ def desvincular_familiar(request):
         alumno = Alumno.objects.get(dni=dni_alumno)
         padre = Padre_madre.objects.get(dni=dni_padre)
         medio = Familia.objects.get(alumno=alumno, padre_madre=padre)
-        medio.delete()
+        medio.habilitado = False
+        medio.save()
         return redirect ('padres_del_alumno', dni_alumno)
+    return HttpResponse("Solo por acceder por Post")
+
+def desvincular_autorizado(request):
+    if request.method == 'POST':
+        dni_alumno = request.POST['dni_alumno']
+        dni_autorizado = request.POST['dni_autorizado']
+        alumno = Alumno.objects.get(dni=dni_alumno)
+        autorizado = Autorizado.objects.get(dni=dni_autorizado)
+        medio = alumno_Autorizado.objects.get(alumno=alumno, autorizado=autorizado)
+        medio.habilitado = False
+        medio.save()
+        return redirect ('autorizados_del_alumno', dni_alumno)
     return HttpResponse("Solo por acceder por Post")

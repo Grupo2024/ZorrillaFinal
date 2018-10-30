@@ -2,7 +2,7 @@
     <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
-            <h3>Curso Actual: {{curso_actual}}</h3>
+            <h3 id="titulo">Curso Actual: {{curso_actual}}</h3>
         </div>
         <!-- Modal body -->
         <div class="modal-body">
@@ -105,6 +105,8 @@
                 document.getElementById("antes_cambiar").style.display = "none";
                 document.getElementById("cambiar_curso_btn").style.display = "none";
                 document.getElementById("cerrar_btn").style.display = "none";
+                var element = document.getElementById("titulo");
+                element.innerHTML = "Cambio Realizado con exito.";
                 document.getElementById("resultado_cambiar_curso").innerHTML = data.resultado;
                 document.getElementById("volver_btn").style.display = "block";
             }
