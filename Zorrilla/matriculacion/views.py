@@ -398,7 +398,7 @@ def asignar_transportista(request):
         if created:
             pass
         else:
-            print "Esta ya estaba antes."
+            print ("Esta ya estaba antes.")
             usa_transporte.habilitado = True
             usa_transporte.save()
         data = {
@@ -418,7 +418,7 @@ def asignar_padre(request):
         if created:
             pass
         else:
-            print "Esta ya estaba antes."
+            print ("Esta ya estaba antes.")
             familia.habilitado = True
             familia.save()
         data = {
