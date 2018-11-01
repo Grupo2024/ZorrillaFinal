@@ -174,12 +174,17 @@ def all_the_books(request):
     return render (request, 'biblioteca.html', {'documentos':documents, 'form':form})
 
 def filtered_books(request):
-    cantidad = request.POST['cantidad']
-    print (cantidad)
-    genero = request.POST['ordenar_por']
-    print (genero)
-    sentido = request.POST['sentido']
-    print (sentido)
-    documents = Document.objects.filter(habilitado="Habilitado").order_by(str(sentido) + str(genero))[:cantidad]
-    form = DocumentForm()
-    return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
+    if request.method == "POST":
+        cantidad = request.POST['cantidad']
+        print (cantidad)
+        genero = request.POST['ordenar_por']
+        print (genero)
+        sentido = request.POST['sentido']
+        print (sentido)
+        if (sentido == "+"):
+            sentido = ""
+        documents = Document.objects.filter(habilitado="Habilitado").order_by(str(sentido) + str(genero))[:cantidad]
+        form = DocumentForm()
+        return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
+    else:
+        return HttpResponse("Solo podes acceder por Post.")

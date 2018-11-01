@@ -185,15 +185,15 @@
                                     <br>
                                     <! -- Orden -->
                                     <span>Orden:</span>
-                                    <select id="filter_orden" onchange="filter_orden_function(event)">
+                                    <select id="filter_orden" onchange="filter_sentido_function(event)">
                                         <option value=0>-----</option>
-                                        <option value="">Ascendente</option>
+                                        <option value="+">Ascendente</option>
                                         <option value="-">Descendente</option>
                                     </select>
                                     <br>
-                                    <input id="ordenar_por" name="ordenar_por" value=0>
-                                    <input id="cantidad" name="cantidad" value=0>
-                                    <input id="sentido" name="sentido" value=0>
+                                    <input type="hidden" id="ordenar_por" name="ordenar_por" value=0>
+                                    <input type="hidden" id="cantidad" name="cantidad" value=0>
+                                    <input type="hidden" id="sentido" name="sentido" value=0>
                                     <button onclick="filtrar()">Filtrar</button>
                                 </div>
                             </form>
@@ -223,21 +223,17 @@
     function filtrar(){
         if (document.getElementById("ordenar_por").value == 0){
             alert("Ingrese un Filtro");
+        } else if (document.getElementById("cantidad").value == 0){
+            alert("Ingrese una Cantidad");
+        } else if (document.getElementById("sentido").value == 0){
+            alert("Ingrese un Sentido");
         } else {
-            if (document.getElementById("cantidad").value == 0){
-                alert("Ingrese una Cantidad");
-            } else{
-                if (document.getElementById("sentido").value == 0){
-                    alert("Ingrese un Sentido");
-                } else {
-                    var x = document.getElementById("form_filtered_books");
-                    x.submit();
-                }
-            }
+            var x = document.getElementById("form_filtered_books");
+            x.submit();
         }
     }
 
-    function filter_orden_function(e) {
+    function filter_sentido_function(e) {
         document.getElementById("sentido").value = e.target.value
     }
 
