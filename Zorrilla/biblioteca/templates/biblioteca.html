@@ -5,206 +5,214 @@
 {% block body %}
 
 {% load poll_extras %}
-  
+
 <div class="main">
-  <br>
-  <div class="container">
-    <div class="row">
-      <div class="">
-        <!-- Buscador -->
-        <input style="margin-left: 4%;" type="text" placeholder=" Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
-        <!-- Dropdown filter -->
-        <button type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by">Buscar por</button>
-        <div class="dropdown-menu" id="filter_by">
-            <option class="dropdown-item" value=0>Titulo</option>
-            <option class="dropdown-item" value=1>Descripción</option>
-            <option class="dropdown-item" value=2>Fecha</option>
-        </div>
-        <!-- Filter button -->
-        <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#myModal2">
-        <i class="fa fa-filter" aria-hidden="true"></i> Filtrar
-
-        {% if user.is_authenticated %}
-            <button style="margin-left: 144%; margin-top: -5%" class="btn btn-success" data-toggle="modal" data-target="#myModal">Añadir libro</button>
-        {% endif %}
-
-        {% if request.user|has_group:"Director" %}
-            <button style="margin-left: 131%; margin-top: -5.5%" class="btn btn-dark" onclick="informe('{% url 'informe' %}')">Informe</button>
-        {% endif %}
-        
-  </div>
-  </div>
-
-    <div class="modal fade" id="modal_info">
-          <div id="datos_modal_info">
-          </div>
-      </div>
-                
-      <div class="modal fade" id="modal_historia">
-          <div id="modal_historia_info">
-          </div>
-      </div>
-                
-      <div class="modal fade" id="modal_estadistica">
-          <div id="modal_estadistica_info">
-          </div>
-      </div>
-
-  <div class="container">
-      <div class="row">
-          <div style="margin-left: 0%" class="col-12">
-          <h4>hbgvfcd</h4>
-      <table class="table table-sm table-hover">
-        <thead>
-          <tr>
-            <th scope="col" onclick="sortTable(0)">Titulo</th>
-            <th scope="col" onclick="sortTable(1)">Descripción</th>
-            <th scope="col" onclick="sortTable(2)">Fecha</th>
-            <th scope="col" >Info</th>
-            {% if request.user|has_group:"Profesor" %}
-              <th scope="col" >Borrar</th>
-            {% endif %}
-            {% if request.user|has_group:"Director" %}
-              <th scope="col" >Historia</th>
-              <th scope="col" >Estado</th>
-            {% endif %}  
-            <th scope="col" >Ver libro</th>
-          
-          </tr>
-        </thead>
-        <tbody>
-          {% for doc in documentos %}
-          <tr>
-            <td>{{doc.titulo}}</td>
-            <td>{{doc.descripcion}}</td>
-            <td>{{doc.fecha}}</td>
-            <td><button class="btn btn-primary" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></button></td>
-            {% if request.user|has_group:"Profesor" %}
-              <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
-            {% endif %}
-            {% if request.user|has_group:"Director" %}
-              <td><button class="btn btn-primary fa fa-history" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book"></button></td>
-              <td><button class="btn btn-primary" onclick="deshabilitar_libro('{% url 'cambiar_estado_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf085;</i></button></td>
-            {% endif %}
-            <td><a class="btn btn-primary text-white" href="{{ doc.documento.url }}">Abrir</a></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-              
-      <div id="snackbar"><span id="span_result"></span></div>
-              
-      <!-- The Modal -->
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="font-weight-bold" id="Heading">Cargar Libro</h4>            
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-              </div>
-              <div class="modal-body">
-                  <form method="post" enctype="multipart/form-data" id="form_for_book">
-                    {% csrf_token %}
-
-                    <div class="form-group">
-                        <label class="form_biblo" >Descripcion:</label>
-                        <div>
-                          {{ form.descripcion }}
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                      <label class="form_biblo">Elija un archivo:</label>
-                      <div style="margin-left: 3%;">
-                          {{form.documento}}
-                      </div>
-                    </div>
-
-
-                    <div class="form-group">
-                      <label class="form_biblo">Titulo:</label>
-                      <div>
-                        {{ form.titulo}}
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label class="form_biblo">Genero:</label>
-                      <div style="margin-left: 3%;">
-                        {{ form.genero}}
-                      </div>
-                    </div>
-
-                    <div class="form-group" id="sub">
-                      <label class="form_biblo">Autor:</label>
-                      <div>
-                        {{ form.autor}}
-                      </div>
-                    </div>
-                      <span id="estado" style="color:red"></span>
-
-                  <!-- Modal footer -->
-                  </div>
-                    </form>
-              <button class="btn btn-success" align="center"  onclick="load_book()">Cargar</button>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="">
+                <!-- Buscador -->
+                <input style="margin-left: 4%;" type="text" placeholder=" Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
+                <!-- Dropdown filter -->
+                <button type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by">Buscar por</button>
+                <div class="dropdown-menu" id="filter_by">
+                    <option class="dropdown-item" value=0>Titulo</option>
+                    <option class="dropdown-item" value=1>Descripción</option>
+                    <option class="dropdown-item" value=2>Fecha</option>
                 </div>
-              </div>
+                <!-- Filter button -->
+                <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#myModal2">
+                    <i class="fa fa-filter" aria-hidden="true"></i> Filtrar</button>
+
+                {% if user.is_authenticated %}
+                <button style="margin-left: 144%; margin-top: -5%" class="btn btn-success" data-toggle="modal" data-target="#myModal">Añadir libro</button>
+                {% endif %}
+
+                {% if request.user|has_group:"Director" %}
+                <button style="margin-left: 131%; margin-top: -5.5%" class="btn btn-dark" onclick="informe('{% url 'informe' %}')">Informe</button>
+                {% endif %}
             </div>
         </div>
-      
-    <div class="modal fade" id="myModal2">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Filtros</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-        <!-- Modal body -->
-          <form id="filtros" action="{% url 'filtered_books' %}" method="post">
-              {% csrf_token %}
-        <div class="modal-body">
 
-      <!-- Dropdown filter orden -->
-        <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by2">Ordenar Por:</button>
-        <div class="dropdown-menu" id="filter_by2">
-            <option class="dropdown-item" value=0>Titulo</option>
-            <option class="dropdown-item" value=1>Descripción</option>
-            <option class="dropdown-item" value=2>Fecha</option>
+        <div class="modal fade" id="modal_info">
+            <div id="datos_modal_info">
+            </div>
         </div>
 
-         <!-- Dropdown filter cantidad -->
-        <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by3">Cantidad:</button>
-        <div class="dropdown-menu" id="filter_by3">
-            <option class="dropdown-item" value=5>5</option>
-            <option class="dropdown-item" value=10>10</option>
-            <option class="dropdown-item" value=15>15</option>
-            <option class="dropdown-item" value=25>25</option>
-            <option class="dropdown-item" value=50>50</option>
+        <div class="modal fade" id="modal_historia">
+            <div id="modal_historia_info">
+            </div>
         </div>
 
-        <!-- Dropdown filter sentido -->
-        <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by3">Sentido:</button>
-        <div class="dropdown-menu" id="filter_by3">
-            <option class="dropdown-item" value='Ascendente'>Ascendente</option>
-            <option class="dropdown-item" value='Descendente'>Descendente</option>
+        <div class="modal fade" id="modal_estadistica">
+            <div id="modal_estadistica_info">
+            </div>
         </div>
-        
-        <!-- Modal footer -->
-        <div style="margin-top: 5%" class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-            <button type="submit" class="btn btn-success">Filtrar</button>
+
+        <div class="container">
+            <div class="row">
+                <div style="margin-left: 0%" class="col-12">
+                    <br>
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col" onclick="sortTable(0)">Titulo</th>
+                                <th scope="col" onclick="sortTable(1)">Descripción</th>
+                                <th scope="col" onclick="sortTable(2)">Fecha</th>
+                                <th scope="col" >Info</th>
+                                {% if request.user|has_group:"Profesor" %}
+                                <th scope="col" >Borrar</th>
+                                {% endif %}
+                                {% if request.user|has_group:"Director" %}
+                                <th scope="col" >Historia</th>
+                                <th scope="col" >Estado</th>
+                                {% endif %}
+                                <th scope="col" >Ver libro</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doc in documentos %}
+                            <tr>
+                                <td>{{doc.titulo}}</td>
+                                <td>{{doc.descripcion}}</td>
+                                <td>{{doc.fecha}}</td>
+                                <td><button class="btn btn-primary" onclick="info_libro('{% url 'info_libro' doc.id %}', {{doc.id}})" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></button></td>
+                                {% if request.user|has_group:"Profesor" %}
+                                <td><button class="btn btn-danger" onclick="eliminar_libro('{% url 'eliminar_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf00d;</i></button></td>
+                                {% endif %}
+                                {% if request.user|has_group:"Director" %}
+                                <td><button class="btn btn-primary fa fa-history" onclick="historia_libro('{% url 'historia_libro' doc.id %}', {{doc.id}})" id="delete_book"></button></td>
+                                <td><button class="btn btn-primary" onclick="deshabilitar_libro('{% url 'cambiar_estado_libro' doc.id %}', {{doc.id}})" id="delete_book"><i style="font-size:15px" class="fa">&#xf085;</i></button></td>
+                                {% endif %}
+                                <td><a class="btn btn-primary text-white" href="{{ doc.documento.url }}">Abrir</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div id="snackbar"><span id="span_result"></span></div>
+
+                    <!-- The Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="font-weight-bold" id="Heading">Cargar Libro</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" enctype="multipart/form-data" id="form_for_book">
+                                        {% csrf_token %}
+
+                                        <div class="form-group">
+                                            <label class="form_biblo" >Descripcion:</label>
+                                            <div>
+                                                {{ form.descripcion }}
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="form_biblo">Elija un archivo:</label>
+                                            <div style="margin-left: 3%;">
+                                                {{form.documento}}
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="form_biblo">Titulo:</label>
+                                            <div>
+                                                {{ form.titulo}}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form_biblo">Genero:</label>
+                                            <div style="margin-left: 3%;">
+                                                {{ form.genero}}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="sub">
+                                            <label class="form_biblo">Autor:</label>
+                                            <div>
+                                                {{ form.autor}}
+                                            </div>
+                                        </div>
+                                        <span id="estado" style="color:red"></span>
+                                        <!-- Modal footer -->
+                                        </div>
+                                    </form>
+                                <button class="btn btn-success" align="center"  onclick="load_book()">Cargar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="myModal2">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Filtros</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <!-- Modal body -->
+                            <form id="filtros" action="{% url 'filtered_books' %}" method="post">
+                                {% csrf_token %}
+                                <div class="modal-body">
+
+                                    <!-- Dropdown filter orden -->
+                                    <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by2">Ordenar Por:</button>
+                                    <div class="dropdown-menu" id="filter_by2">
+                                        <option class="dropdown-item" value=0>Titulo</option>
+                                        <option class="dropdown-item" value=1>Descripción</option>
+                                        <option class="dropdown-item" value=2>Fecha</option>
+                                    </div>
+
+                                    <!-- Dropdown filter cantidad -->
+                                    <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by3">Cantidad:</button>
+                                    <div class="dropdown-menu" id="filter_by3">
+                                        <option class="dropdown-item" value=5>5</option>
+                                        <option class="dropdown-item" value=10>10</option>
+                                        <option class="dropdown-item" value=15>15</option>
+                                        <option class="dropdown-item" value=25>25</option>
+                                        <option class="dropdown-item" value=50>50</option>
+                                    </div>
+
+                                    <!-- Dropdown filter sentido -->
+                                    <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by3">Sentido:</button>
+                                    <div class="dropdown-menu" id="filter_by3">
+                                        <option class="dropdown-item" value='Ascendente'>Ascendente</option>
+                                        <option class="dropdown-item" value='Descendente'>Descendente</option>
+                                    </div>
+
+                                    <!-- Modal footer -->
+                                    <div style="margin-top: 5%" class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="btn btn-success">Filtrar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
-        </form>
-      </div>
     </div>
-  </div>
+</div>
+
+<form id="reload" action="{% url 'biblioteca' %}" method="post">
+    {% csrf_token %}
+</form>
 
 <script>
-    
+
     var input = document.getElementById("sub");
     input.addEventListener("keyup", function(event) {
         event.preventDefault();
@@ -212,20 +220,20 @@
             load_book();
         }
     });
-    
+
     function updateDiv()
     {
-      $( "#mytable" ).load(window.location.href + " #mytable" );
+        $( "#mytable" ).load(window.location.href + " #mytable" );
     }
-        
+
     function set_filter(e) {
         document.getElementById("ordenado").value = e.target.value
     }
-    
+
     function set_cantidad(e) {
         document.getElementById("cantidad").value = e.target.value
     }
-    
+
     function set_sentido(e) {
         document.getElementById("input_sentido").value = e.target.value
         var aux = ""
@@ -237,7 +245,7 @@
         }
 
     }
-    
+
     function load_book(){
         var myForm = document.getElementById('form_for_book');
         formData = new FormData(myForm);
@@ -255,177 +263,174 @@
                 }else{
                     var x = document.getElementById("myModal");
                     $(x).modal('hide');
-                    updateDiv();
-                    var y = document.getElementById("snackbar");
-                    y.className = "show";
-                    document.getElementById("span_result").innerHTML = data.estado;
-                    setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
+                     var y = document.getElementById("reload");
+                    y.submit();
                 }
             }
         });
     }
-    
-function sortTable(n) {
-    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById("mytable");
-    switching = true;
-    dir = "asc";
-    while (switching) {
-        switching = false;
-        rows = table.getElementsByTagName("TR");
-        for (i = 1; i < (rows.length - 1); i++) {
-            shouldSwitch = false;
-            x = rows[i].getElementsByTagName("TD")[n];
-            y = rows[i + 1].getElementsByTagName("TD")[n];
-            if (dir == "asc") {
-                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                    shouldSwitch= true;
-                break;
-                }
-          } else if (dir == "desc") {
-            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-              shouldSwitch = true;
-              break;
-            }
-          }
-    }
-    if (shouldSwitch) {
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-      switchcount ++;
-    } else {
-      if (switchcount == 0 && dir == "asc") {
-        dir = "desc";
+
+    function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("mytable");
         switching = true;
-      }
-    }
-  }
-}
-
-function myFunction() {
-  var e = document.getElementById("filter_by");
-  var strUser = e.options[e.selectedIndex].value;
-  var input, filter, table, tr, td, i;
-  input = document.getElementById("myInput");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("mytable");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[strUser];
-    if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-  }
-}
-
-
-
-function eliminar_libro(url, alum) {
-  var r = confirm("Eliminar Libro ?");
-  if (r == true) {
-    $.ajax({
-      method: "POST",
-      url: url,
-      data: {
-        csrfmiddlewaretoken: '{{ csrf_token }}'
-      }
-    })
-    .done(function (data) {
-      var y = document.getElementById("snackbar");
-      y.className = "show";
-      document.getElementById("span_result").innerHTML = data.estado;
-      setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
-      updateDiv();
-    });
-  } else {
-    return;
-  }
-
-};
-
-function deshabilitar_libro(url, alum) {
-  var r = confirm("Cambiar Estado del Libro ?");
-  if (r == true) {
-    $.ajax({
-      method: "POST",
-      url: url,
-      data: {
-        csrfmiddlewaretoken: '{{ csrf_token }}'
-      }
-    })
-    .done(function (data) {
-      var y = document.getElementById("snackbar");
-      y.className = "show";
-      document.getElementById("span_result").innerHTML = data.estado;
-      setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
-      updateDiv();
-    });
-  } else {
-    return;
-  }
-
-};
-
-function info_libro(url, alum) {
-    $.ajax({
-        method: "POST",
-        url: url,
-        data: {
-            csrfmiddlewaretoken: '{{ csrf_token }}'
+        dir = "asc";
+        while (switching) {
+            switching = false;
+            rows = table.getElementsByTagName("TR");
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch= true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount ++;
+            } else {
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
         }
-    })
-    .done(function (data) {
-        $("#datos_modal_info").html(data);
-        $('#modal_info').modal('show'); 
-    });
-};
-   
-function informe(url) {
-    $.ajax({
-        method: "POST",
-        url: url,
-        data: {
-            csrfmiddlewaretoken: '{{ csrf_token }}'
-        }
-    })
-    .done(function (documentos) {
-        $("#modal_estadistica_info").html(documentos);
-        $('#modal_estadistica').modal('show'); 
-    });
-};
-  
-function historia_libro(url, alum) {
-    $.ajax({
-        method: "POST",
-        url: url,
-        data: {
-            csrfmiddlewaretoken: '{{ csrf_token }}'
-        }
-    })
-    .done(function (data) {
-        $("#modal_historia_info").html(data);
-        $('#modal_historia').modal('show'); 
-    });
-};
-
-/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-var dropdown = document.getElementsByClassName("dropdown-btn");
-var i;
-for (i = 0; i < dropdown.length; i++) {
-  dropdown[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var dropdownContent = this.nextElementSibling;
-    if (dropdownContent.style.display === "block") {
-      dropdownContent.style.display = "none";
-    } else {
-      dropdownContent.style.display = "block";
     }
-  });
-}
+
+    function myFunction() {
+        var e = document.getElementById("filter_by");
+        var strUser = e.options[e.selectedIndex].value;
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("mytable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[strUser];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+
+
+    function eliminar_libro(url, alum) {
+        var r = confirm("Eliminar Libro ?");
+        if (r == true) {
+            $.ajax({
+                method: "POST",
+                url: url,
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                }
+            })
+                .done(function (data) {
+                var y = document.getElementById("snackbar");
+                y.className = "show";
+                document.getElementById("span_result").innerHTML = data.estado;
+                setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
+                updateDiv();
+            });
+        } else {
+            return;
+        }
+
+    };
+
+    function deshabilitar_libro(url, alum) {
+        var r = confirm("Cambiar Estado del Libro ?");
+        if (r == true) {
+            $.ajax({
+                method: "POST",
+                url: url,
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                }
+            })
+                .done(function (data) {
+                var y = document.getElementById("snackbar");
+                y.className = "show";
+                document.getElementById("span_result").innerHTML = data.estado;
+                setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
+                updateDiv();
+            });
+        } else {
+            return;
+        }
+
+    };
+
+    function info_libro(url, alum) {
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_modal_info").html(data);
+            $('#modal_info').modal('show');
+        });
+    };
+
+    function informe(url) {
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (documentos) {
+            $("#modal_estadistica_info").html(documentos);
+            $('#modal_estadistica').modal('show');
+        });
+    };
+
+    function historia_libro(url, alum) {
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#modal_historia_info").html(data);
+            $('#modal_historia').modal('show');
+        });
+    };
+
+    /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    var i;
+    for (i = 0; i < dropdown.length; i++) {
+        dropdown[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var dropdownContent = this.nextElementSibling;
+            if (dropdownContent.style.display === "block") {
+                dropdownContent.style.display = "none";
+            } else {
+                dropdownContent.style.display = "block";
+            }
+        });
+    }
 
 </script>
 
