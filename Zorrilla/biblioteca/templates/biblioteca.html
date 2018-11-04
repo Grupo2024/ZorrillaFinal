@@ -12,14 +12,14 @@
         <div class="row">
             <div class="">
                 <!-- Buscador -->
-                <input style="margin-left: 4%;" type="text" placeholder=" Nombre del libro que desee buscar" id="myInput" onkeyup="myFunction()">
+                <input style="margin-left: 4%;" type="text" placeholder=" Nombre del libro que desee buscar" id="myInput" onkeyup="filterLibros()">
                 <!-- Dropdown filter -->
-                <button type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by">Buscar por</button>
-                <div class="dropdown-menu" id="filter_by">
-                    <option class="dropdown-item" value=0>Titulo</option>
-                    <option class="dropdown-item" value=1>Descripción</option>
-                    <option class="dropdown-item" value=2>Fecha</option>
-                </div>
+                <span>Opciones:</span>
+                <select id="filter_by">
+                    <option value=0>Titulo</option>
+                    <option value=1>Descripción</option>
+                    <option value=2>Fecha</option>
+                </select>
                 <!-- Filter button -->
                 <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#myModal2">
                     <i class="fa fa-filter" aria-hidden="true"></i> Filtrar</button>
@@ -53,7 +53,7 @@
             <div class="row">
                 <div style="margin-left: 0%" class="col-12">
                     <br>
-                    <table class="table table-sm table-hover">
+                    <table class="table table-sm table-hover" id="tabla">
                         <thead>
                             <tr>
                                 <th scope="col" onclick="sortTable(0)">Titulo</th>
@@ -90,8 +90,6 @@
                             {% endfor %}
                         </tbody>
                     </table>
-
-                    <div id="snackbar"><span id="span_result"></span></div>
 
                     <!-- The Modal -->
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
@@ -162,40 +160,41 @@
                             </div>
 
                             <!-- Modal body -->
-                            <form id="filtros" action="{% url 'filtered_books' %}" method="post">
+                            <form id="filtros" action="{% url 'filtered_books' %}" method="post" id="form_filtered_books">
                                 {% csrf_token %}
                                 <div class="modal-body">
-
-                                    <!-- Dropdown filter orden -->
-                                    <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by2">Ordenar Por:</button>
-                                    <div class="dropdown-menu" id="filter_by2">
-                                        <option class="dropdown-item" value=0>Titulo</option>
-                                        <option class="dropdown-item" value=1>Descripción</option>
-                                        <option class="dropdown-item" value=2>Fecha</option>
-                                    </div>
-
-                                    <!-- Dropdown filter cantidad -->
-                                    <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by3">Cantidad:</button>
-                                    <div class="dropdown-menu" id="filter_by3">
-                                        <option class="dropdown-item" value=5>5</option>
-                                        <option class="dropdown-item" value=10>10</option>
-                                        <option class="dropdown-item" value=15>15</option>
-                                        <option class="dropdown-item" value=25>25</option>
-                                        <option class="dropdown-item" value=50>50</option>
-                                    </div>
-
-                                    <!-- Dropdown filter sentido -->
-                                    <button type="button" style="margin-left: 5%" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter_by3">Sentido:</button>
-                                    <div class="dropdown-menu" id="filter_by3">
-                                        <option class="dropdown-item" value='Ascendente'>Ascendente</option>
-                                        <option class="dropdown-item" value='Descendente'>Descendente</option>
-                                    </div>
-
-                                    <!-- Modal footer -->
-                                    <div style="margin-top: 5%" class="modal-footer">
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                                        <button type="submit" class="btn btn-success">Filtrar</button>
-                                    </div>
+                                    <! -- Ordenar Por -->
+                                    <span>Ordenar Por:</span>
+                                    <select id="filter_ordenar_por" onchange="filter_order_por(event)">
+                                        <option value=0>-----</option>
+                                        <option value="titulo">Titulo</option>
+                                        <option value="descripcion">Descripción</option>
+                                        <option value="fecha">Fecha</option>
+                                    </select>
+                                    <br>
+                                    <! -- Cantidad -->
+                                    <span>Cantidad:</span>
+                                    <select id="filter_cantidad" onchange="filter_cantidad_function(event)">
+                                        <option value=0>-----</option>
+                                        <option value=1>1</option>
+                                        <option value=5>5</option>
+                                        <option value=10>10</option>
+                                        <option value=25>25</option>
+                                        <option value=50>50</option>
+                                    </select>
+                                    <br>
+                                    <! -- Orden -->
+                                    <span>Orden:</span>
+                                    <select id="filter_orden" onchange="filter_orden_function(event)">
+                                        <option value=0>-----</option>
+                                        <option value="">Ascendente</option>
+                                        <option value="-">Descendente</option>
+                                    </select>
+                                    <br>
+                                    <input id="ordenar_por" name="ordenar_por" value=0>
+                                    <input id="cantidad" name="cantidad" value=0>
+                                    <input id="sentido" name="sentido" value=0>
+                                    <button onclick="filtrar()">Filtrar</button>
                                 </div>
                             </form>
                         </div>
@@ -221,29 +220,33 @@
         }
     });
 
-    function updateDiv()
-    {
-        $( "#mytable" ).load(window.location.href + " #mytable" );
+    function filtrar(){
+        if (document.getElementById("ordenar_por").value == 0){
+            alert("Ingrese un Filtro");
+        } else {
+            if (document.getElementById("cantidad").value == 0){
+                alert("Ingrese una Cantidad");
+            } else{
+                if (document.getElementById("sentido").value == 0){
+                    alert("Ingrese un Sentido");
+                } else {
+                    var x = document.getElementById("form_filtered_books");
+                    x.submit();
+                }
+            }
+        }
     }
 
-    function set_filter(e) {
-        document.getElementById("ordenado").value = e.target.value
+    function filter_orden_function(e) {
+        document.getElementById("sentido").value = e.target.value
     }
 
-    function set_cantidad(e) {
+    function filter_cantidad_function(e) {
         document.getElementById("cantidad").value = e.target.value
     }
 
-    function set_sentido(e) {
-        document.getElementById("input_sentido").value = e.target.value
-        var aux = ""
-        var sentido = document.getElementById("sentido")
-        if (document.getElementById("input_sentido").value = "Ascendente"){
-            sentido.value = "";
-        } else {
-            sentido.value = "-";
-        }
-
+    function filter_order_por(e) {
+        document.getElementById("ordenar_por").value = e.target.value
     }
 
     function load_book(){
@@ -263,7 +266,7 @@
                 }else{
                     var x = document.getElementById("myModal");
                     $(x).modal('hide');
-                     var y = document.getElementById("reload");
+                    var y = document.getElementById("reload");
                     y.submit();
                 }
             }
@@ -306,28 +309,6 @@
             }
         }
     }
-
-    function myFunction() {
-        var e = document.getElementById("filter_by");
-        var strUser = e.options[e.selectedIndex].value;
-        var input, filter, table, tr, td, i;
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("mytable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[strUser];
-            if (td) {
-                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    }
-
-
 
     function eliminar_libro(url, alum) {
         var r = confirm("Eliminar Libro ?");
@@ -417,24 +398,5 @@
         });
     };
 
-    /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-    var dropdown = document.getElementsByClassName("dropdown-btn");
-    var i;
-    for (i = 0; i < dropdown.length; i++) {
-        dropdown[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var dropdownContent = this.nextElementSibling;
-            if (dropdownContent.style.display === "block") {
-                dropdownContent.style.display = "none";
-            } else {
-                dropdownContent.style.display = "block";
-            }
-        });
-    }
-
 </script>
-
-
-
-</html>
 {% endblock body %}

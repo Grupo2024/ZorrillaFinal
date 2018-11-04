@@ -176,7 +176,7 @@ def all_the_books(request):
 def filtered_books(request):
     cantidad = request.POST['cantidad']
     print (cantidad)
-    genero = request.POST['ordenado']
+    genero = request.POST['ordenar_por']
     print (genero)
     sentido = request.POST['sentido']
     print (sentido)
