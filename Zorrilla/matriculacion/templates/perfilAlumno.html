@@ -70,10 +70,14 @@
                     <a href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Ver Obras Sociales.</a>
                     {% endif %}</li>
                 <li class="list-group-item">Matriculado:
-                    {% if alumno.matriculado == "No"%}
+                    {% if alumno.matriculado == "Si"%}
+                        <a class="btn btn-outline-dark" onclick="traer_instancias('{% url 'modificar_curso' alumno.dni %}')">Ver Curso</a>
+                    {% elif alumno.matriculado == "No" %}
+                        {{alumno.matriculado}}
+                    {% elif alumno.matriculado == "Pe" %}
                         {{alumno.matriculado}}
                     {% else %}
-                        <a class="btn btn-outline-dark" onclick="traer_instancias('{% url 'modificar_curso' alumno.dni %}')">Ver Curso</a>
+                        {{alumno.matriculado}}
                     {% endif %}</li>
             </ul>
         </div>

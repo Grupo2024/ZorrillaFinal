@@ -309,7 +309,7 @@ def crear_padre(request):
         print (padre)
         familia = Familia(alumno=alumno, padre_madre=padre)
         familia.save()
-        new_Matriculacion = Matriculacion(alumno=alumno, matriculado="No")
+        new_Matriculacion = Matriculacion.objects.get(alumno=alumno, matriculado="No")
         new_Matriculacion.save()
         resultado = "Los pedidos de Matriculacion de " + str(padre.apellido) + " " + str(padre.nombre) + " y de " + str(alumno.apellido) + " " + str(alumno.nombre) + " han sido creados con exito."
         data = {
@@ -537,7 +537,8 @@ def todas_los_transportistas(request):
 def traer_pedidos(request):
     matriculaciones = Matriculacion.objects.filter(matriculado="No")
     re_matriculaciones = Matriculacion.objects.filter(matriculado = "Re")
-    return render(request, 'pedidos.html', {'matriculaciones':matriculaciones, 're_matricular':re_matriculaciones})
+    egresos = Matriculacion.objects.filter(matriculado="Pe")
+    return render(request, 'pedidos.html', {'matriculaciones':matriculaciones, 're_matricular':re_matriculaciones, 'egresos':egresos})
 
 def padres_del_alumno(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
@@ -601,11 +602,25 @@ def datos_alumno(request, opcion, dni_alumno):
         alumno.transporte = "No"
     else:
         alumno.transporte = "Si"
+    """
     try:
         matriculado = Matriculacion.objects.get(alumno=alumno, matriculado="Si")
         alumno.matriculado = "Si"
     except Matriculacion.DoesNotExist:
         alumno.matriculado = "No"
+    """
+    matriculacion = Matriculacion.objects.get(alumno=alumno)
+    if (matriculacion.matriculado == "Si"):
+        alumno.matriculado = "Si"
+    elif (matriculacion.matriculado == "No"):
+        alumno.matriculado = "No"
+    elif (matriculacion.matriculado == "Pe"):
+        alumno.matriculado = "En Proceso de Egreso."
+    elif (matriculacion.matriculado == "Re"):
+        alumno.matriculado = "En Proceso de Re Matriculacion."
+    else:
+        alumno.matriculado = "Egresado."
+    print alumno.matriculado
     obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     if not obras_sociales:
         alumno.obra_social = "No"
@@ -642,7 +657,7 @@ def re_matricular(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     familiares = Familia.objects.filter(alumno=alumno, habilitado=True).order_by("padre_madre__apellido", "padre_madre__nombre")
     transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
-    curso2 = alumno_Curso.objects.get(alumno=alumno)
+    curso2 = Matriculacion.objects.get(alumno=alumno)
     curso = curso2.curso
     obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     autorizados = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True)
@@ -652,11 +667,36 @@ def re_matricular(request, dni_alumno):
     cursos = Curso.objects.exclude(id__in=lista).order_by("aNo", "-hora")
     return render(request, 'Re_matricular/re_matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas, 'curso':curso, 'recomendacion':recomendacion, 'obras_sociales':obras_sociales, 'autorizados':autorizados})
 
+def egresar(request, dni_alumno):
+    alumno = Alumno.objects.get(dni=dni_alumno)
+    return render(request, 'egresar.html', {'alumno':alumno})
+
 """
 ==========
 Modificar.
 ==========
 """
+
+def pedido_egreso(request):
+    if request.method == "POST":
+        dni_alumno = request.POST['dni_alumno']
+        alumno = Alumno.objects.get(dni=dni_alumno)
+        matriculacion = Matriculacion.objects.get(alumno=alumno)
+        matriculacion.matriculado = "Pe"
+        matriculacion.save()
+        familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
+        subject = "Pedido de Egresso de " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
+        secretaria = user_Secretaria.objects.get(user=request.user)
+        message = "Se le notifica que la Secretaria " + secretaria.secretaria_referenciada.apellido_t + " " + secretaria.secretaria_referenciada.nombre_t + " ha creado un pedido de Egreso para su hijo/a " + alumno.apellido + " " +  alumno.nombre + "."
+        email_from = settings.EMAIL_HOST_USER
+        for familiar in familiares:
+            recipient_list = [familiar.padre_madre.email]
+            #send_mail( subject, message, email_from, recipient_list)
+        data = {
+            'resultado': "El pedido de Egreso de " + alumno.nombre + " ha sido un exito."
+        }
+        return JsonResponse(data)
+    return HttpResponse("Solo podes entrar por POST")
 
 def aceptar_re_matriculacion(request):
     if request.method == "POST":
@@ -664,26 +704,46 @@ def aceptar_re_matriculacion(request):
         selected_curso = request.POST['select_curso2']
         curso = Curso.objects.get(id=selected_curso)
         alumno = Alumno.objects.get(dni=dni_alumno)
-        eleccion = alumno_Curso.objects.get(alumno=alumno)
-        eleccion.curso = curso
-        eleccion.save()
         matriculacion = Matriculacion.objects.get(alumno=alumno)
+        matriculacion.curso = curso
         matriculacion.matriculado = "Si"
         matriculacion.save()
         familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
         subject = "Pedido de Re Matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
         secretaria = user_Secretaria.objects.get(user=request.user)
-        message = "Se le notifica que la Secretaria " + secretaria.secretaria_referenciada.apellido_t + " " + secretaria.secretaria_referenciada.nombre_t + " ha aceptado el pedido de Re Matriculacion de su hijo/a " + alumno.apellido + " " + alumno.nombre + ", el cual ahora asistira a " + str(eleccion.curso) + "."
+        message = "Se le notifica que la Secretaria " + secretaria.secretaria_referenciada.apellido_t + " " + secretaria.secretaria_referenciada.nombre_t + " ha aceptado el pedido de Re Matriculacion de su hijo/a " + alumno.apellido + " " + alumno.nombre + ", el cual ahora asistira a " + str(matriculacion.curso) + "."
         email_from = settings.EMAIL_HOST_USER
         for familiar in familiares:
             recipient_list = [familiar.padre_madre.email]
             #send_mail( subject, message, email_from, recipient_list)
         data = {
             'error':False,
-            'resultado': "El pedido de Re Matriculacion de " + alumno.nombre + " ha sido un exito, ahora " + alumno.nombre + " asiste a " + str(eleccion.curso)
+            'resultado': "El pedido de Re Matriculacion de " + alumno.nombre + " ha sido un exito, ahora " + alumno.nombre + " asiste a " + str(matriculacion.curso)
         }
         return JsonResponse(data)
     return HttpResponse("Solo podes entrar por POST")
+
+def egresar_alumno(request):
+    if request.method == "POST":
+        dni_alumno = request.POST['dni_alumno']
+        alumno = Alumno.objects.get(dni=dni_alumno)
+        matriculacion = Matriculacion.objects.get(alumno=alumno)
+        matriculacion.matriculado = "Eg"
+        matriculacion.save()
+        familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
+        subject = "Pedido de Egreso de " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
+        secretaria = user_Secretaria.objects.get(user=request.user)
+        message = "Se le notifica que la Secretaria " + secretaria.secretaria_referenciada.apellido_t + " " + secretaria.secretaria_referenciada.nombre_t + " ha aceptado el pedido de Egreso de su hijo/a " + alumno.apellido + " " + alumno.nombre + "."
+        email_from = settings.EMAIL_HOST_USER
+        for familiar in familiares:
+            recipient_list = [familiar.padre_madre.email]
+            #send_mail( subject, message, email_from, recipient_list)
+        data = {
+            'error':False,
+            'resultado': "El pedido de Egreso de " + alumno.nombre + " ha sido un exito."
+        }
+        return JsonResponse(data)
+
 
 def pedido_re_matricular(request):
     if request.method == "POST":
@@ -761,12 +821,11 @@ def cambiar_curso(request):
         id_curso = request.POST['id_curso']
         alumno = Alumno.objects.get(dni=dni_alumno)
         curso = Curso.objects.get(id=id_curso)
-        alumno_C = alumno_Curso.objects.get(alumno=alumno)
+        alumno_C = Matriculacion.objects.get(alumno=alumno)
         alumno_C.curso = curso
-
         subject = "Curso de " + str(alumno.nombre) + " modificado."
         secretaria = user_Secretaria.objects.get(user=request.user)
-        message = "En el dia de la fecha la secretaria " + str(secretaria.secretaria_referenciada.apellido_t) + " " + str(secretaria.secretaria_referenciada.nombre_t) + " ha cambiado el curso al que asiste " + str(alumno.nombre) + " por " + str(alumno_C.curso) + "."
+        message = "En el dia de la fecha la secretaria " + str(secretaria.secretaria_referenciada.apellido_t) + " " + str(secretaria.secretaria_referenciada.nombre_t) + " ha cambiado el curso al que asiste su hijo/a " + str(alumno.nombre) + " por " + str(alumno_C.curso) + "."
         email_from = settings.EMAIL_HOST_USER
 
         familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
@@ -889,7 +948,7 @@ def aplicar_cambios_alumno(request):
 
 def modificar_curso(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    alumno_C = alumno_Curso.objects.get(alumno=alumno)
+    alumno_C = Matriculacion.objects.get(alumno=alumno)
     curso_actual = alumno_C.curso
     todos_los_cursos = Curso.objects.all().order_by("aNo").exclude(id=curso_actual.id)
     return render(request, 'cambiar_curso.html', {'alumno':alumno, 'todos_los_cursos':todos_los_cursos, 'curso_actual':curso_actual})
@@ -909,13 +968,12 @@ def aceptar_matriculacion(request):
         print (selected_curso)
         curso = Curso.objects.get(id=selected_curso)
         alumno = Alumno.objects.get(dni=dni_alumno)
-        eleccion = alumno_Curso(alumno=alumno, curso=curso)
-        eleccion.save()
         matriculacion = Matriculacion.objects.get(alumno=alumno)
         matriculacion.matriculado = "Si"
+        matriculacion.curso = curso
         matriculacion.save()
         data = {
-            'resultado': "El alumno " + str(alumno.apellido) + " " + str(alumno.nombre) + " asiste al curso " + str(eleccion.curso),
+            'resultado': "El alumno " + str(alumno.apellido) + " " + str(alumno.nombre) + " asiste al curso " + str(matriculacion.curso),
             'error': False
         }
         return JsonResponse(data, safe=True)

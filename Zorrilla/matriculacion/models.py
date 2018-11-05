@@ -108,6 +108,7 @@ class Matriculacion(models.Model):
     alumno = models.ForeignKey(Alumno, null=False)
     fecha_matriculacion = models.DateTimeField('Fecha Matriculacion', auto_now_add=True)
     matriculado = models.CharField('Estado', max_length=2, choices=MATRICULACION_CHOICES)
+    curso = models.ForeignKey(Curso, null=False)
 
     def __str__(self):
         return 'El alumno: {} tiene un estado de matriculacion {}'.format(self.alumno.nombre, self.matriculado)
@@ -155,10 +156,3 @@ class alumno_Autorizado(models.Model):
     
     def __str__(self):
         return '{} {} - {} {}'.format(self.alumno.apellido, self.alumno.nombre, self.autorizado.nombre, self.autorizado.apellido)
-    
-class alumno_Curso(models.Model):
-    alumno = models.OneToOneField(Alumno, null=False)
-    curso = models.ForeignKey(Curso, null=False)
-
-    def __str__(self):
-        return 'El alumno {} asiste al curso {}'.format(self.alumno.nombre, self.curso)

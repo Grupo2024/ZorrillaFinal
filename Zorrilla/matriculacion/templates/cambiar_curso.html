@@ -64,13 +64,13 @@
             <span id="resultado"></span>
             <form id="pedido_egreso" method="post">
                 {% csrf_token %}
-                <input id="dni_alumno" name="alumno" value={{alumno.dni}} type="hidden">
+                <input id="dni_alumno" name="dni_alumno" value={{alumno.dni}} type="hidden">
             </form>
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar_btn">Cerrar</button>
-            <button type="button" class="btn btn-success" id="volver_btn" onclick="refresh_p()">Volver</button>
+            <button type="button" class="btn btn-success" id="volver_btn" onclick="refresh_p()">Continuar</button>
             <button type="button" class="btn btn-info" id="cambiar_curso_btn" onclick="cambiar_curso()">Cambiar Curso</button>
             <button type="button" class="btn btn-info" id="egresar_btn" onclick="egresar_alumno()">Egresar</button>
         </div>
@@ -146,15 +146,15 @@
                 contentType: false,
                 type: 'POST',
                 success: function(data){
-                document.getElementById("esconder_resultado").style.display = "none";
-                document.getElementById("cambiar_curso_btn").style.display = "none";
-                document.getElementById("cerrar_btn").style.display = "none";
-                var element = document.getElementById("titulo");
-                element.innerHTML = "Cambio Realizado con exito.";
-                document.getElementById("resultado").innerHTML = data.resultado;
-                document.getElementById("volver_btn").style.display = "block";
-            }
-                   });
+                    document.getElementById("esconder_resultado").style.display = "none";
+                    document.getElementById("cambiar_curso_btn").style.display = "none";
+                    document.getElementById("cerrar_btn").style.display = "none";
+                    var element = document.getElementById("titulo");
+                    element.innerHTML = "Cambio Realizado con exito.";
+                    document.getElementById("resultado").innerHTML = data.resultado;
+                    document.getElementById("volver_btn").style.display = "block";
+                }
+            });
         } else {
             return;
         }
@@ -163,7 +163,7 @@
     function egresar_alumno(){
         var r = confirm("¿Egresar al Alumno ?");
         if (r == true) {
-            var myForm = document.getElementById('{{alumno.dni}}');
+            var myForm = document.getElementById('pedido_egreso');
             formData = new FormData(myForm);
             $.ajax({
                 url: '{% url 'pedido_egreso' %}',
@@ -172,6 +172,10 @@
                 contentType: false,
                 type: 'POST',
                 success: function(data){
+                    document.getElementById("esconder_resultado").style.display = "none";
+                    document.getElementById("egresar_btn").style.display = "none";
+                    document.getElementById("volver_btn").style.display = "block";
+                    document.getElementById("resultado").innerHTML = data.resultado;
                 }
            });
         } else {
