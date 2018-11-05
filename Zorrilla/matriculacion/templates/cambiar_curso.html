@@ -6,7 +6,7 @@
         </div>
         <!-- Modal body -->
         <div class="modal-body">
-            <div id="antes_cambiar">
+            <div id="esconder_resultado">
                 <div class="dropdown">
                     <label for="select_cc">Cambiar de Curso: </label>
                     <select class="form-control" style="width: 30%; margin-left: 32%; margin-top: -8%" id="select_cc" onchange="show_table()">
@@ -14,8 +14,7 @@
                         <option value=1>Si</option>
                     </select>
                 </div>
-
-                <div id="tabla_cursos">
+                <div id="contenido_cambiar_curso">
                     <br>
                     {% if todos_los_cursos|length != 0 %}
                     <table class="table table-hover">
@@ -44,30 +43,56 @@
                     {% else %}
                     <h3><center>No Hay Ningun Curso.</center></h3>
                     {% endif %}
+                    <form id="form_cambiar_curso" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" id="id_curso" name="id_curso" value=0 type="number">
+                        <input type="hidden" id="dni_alumno" name="dni_alumno" value={{alumno.dni}}>
+                    </form>
                 </div>
-                <form id="form_cambiar_curso" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" id="id_curso" name="id_curso" value=0 type="number">
-                    <input type="hidden" id="dni_alumno" name="dni_alumno" value={{alumno.dni}}>
-                </form>
+                <br>
+                <div class="dropdown">
+                    <label for="select_eg">Egresar al Alumno:</label>
+                    <select class="form-control" style="width: 30%; margin-left: 32%; margin-top: -8%" id="select_eg" onchange="show_egres()">
+                        <option value=0>No</option>
+                        <option value=1>Si</option>
+                    </select>
+                </div>
+
+                <br>
+                <span style="color:red" id="msg_advertencia_egreso">Advertencia: Si el Alumno pasa a estar como Egresado, el mismo ya no pertenecera a ningun Curso y no podra volver a pertenecer a ninguno. Ademas los padres del mismo seran notificados.</span>
             </div>
-            <span id="resultado_cambiar_curso"></span>
+            <span id="resultado"></span>
+            <form id="pedido_egreso" method="post">
+                {% csrf_token %}
+                <input id="dni_alumno" name="alumno" value={{alumno.dni}} type="hidden">
+            </form>
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar_btn">Cerrar</button>
             <button type="button" class="btn btn-success" id="volver_btn" onclick="refresh_p()">Volver</button>
             <button type="button" class="btn btn-info" id="cambiar_curso_btn" onclick="cambiar_curso()">Cambiar Curso</button>
+            <button type="button" class="btn btn-info" id="egresar_btn" onclick="egresar_alumno()">Egresar</button>
         </div>
     </div>
 </div>
 
 <script>
 
-    document.getElementById("tabla_cursos").style.display = "none";
+    //Botones
+
     document.getElementById("cambiar_curso_btn").style.display = "none";
     document.getElementById("volver_btn").style.display = "none";
+    document.getElementById("egresar_btn").style.display = "none";
+
+    //Contenido de los Select
+
+    document.getElementById("contenido_cambiar_curso").style.display = "none";
     document.getElementById("msg_advertencia").style.display = "none";
+
+    //Spans
+
+    document.getElementById("msg_advertencia_egreso").style.display = "none";
 
     $('input[name=cursoss]').click(function() {
         var aux = $('input[name=cursoss]:checked').val();
@@ -79,14 +104,33 @@
     function show_table(){
         var x = document.getElementById("select_cc").value;
         console.log(x);
+        //Mostrar Cambiar Curso
         if (x == 1){
+            document.getElementById("contenido_cambiar_curso").style.display = "block";
+            document.getElementById("msg_advertencia_egreso").style.display = "none";
             document.getElementById("msg_advertencia").style.display = "none";
             document.getElementById("cambiar_curso_btn").style.display = "none";
-            document.getElementById("tabla_cursos").style.display = "block";
+            document.getElementById("egresar_btn").style.display = "none";
+        //Esconder Cambiar Curso
         } else {
-            document.getElementById("tabla_cursos").style.display = "none";
+            document.getElementById("contenido_cambiar_curso").style.display = "none";
             document.getElementById("msg_advertencia").style.display = "none";
             document.getElementById("cambiar_curso_btn").style.display = "none";
+        }
+    }
+
+    function show_egres(){
+        var x = document.getElementById("select_eg").value;
+        //Mostrar Egresar
+        if (x == 1){
+            document.getElementById("contenido_cambiar_curso").style.display = "none";
+            document.getElementById("msg_advertencia_egreso").style.display = "block";
+            document.getElementById("egresar_btn").style.display = "block";
+            document.getElementById("cambiar_curso_btn").style.display = "none";
+        }else{
+            document.getElementById("cambiar_curso_btn").style.display = "none";
+            document.getElementById("msg_advertencia_egreso").style.display = "none";
+            document.getElementById("egresar_btn").style.display = "none";
         }
     }
 
@@ -102,15 +146,34 @@
                 contentType: false,
                 type: 'POST',
                 success: function(data){
-                document.getElementById("antes_cambiar").style.display = "none";
+                document.getElementById("esconder_resultado").style.display = "none";
                 document.getElementById("cambiar_curso_btn").style.display = "none";
                 document.getElementById("cerrar_btn").style.display = "none";
                 var element = document.getElementById("titulo");
                 element.innerHTML = "Cambio Realizado con exito.";
-                document.getElementById("resultado_cambiar_curso").innerHTML = data.resultado;
+                document.getElementById("resultado").innerHTML = data.resultado;
                 document.getElementById("volver_btn").style.display = "block";
             }
                    });
+        } else {
+            return;
+        }
+    }
+
+    function egresar_alumno(){
+        var r = confirm("¿Egresar al Alumno ?");
+        if (r == true) {
+            var myForm = document.getElementById('{{alumno.dni}}');
+            formData = new FormData(myForm);
+            $.ajax({
+                url: '{% url 'pedido_egreso' %}',
+                data : formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                }
+           });
         } else {
             return;
         }

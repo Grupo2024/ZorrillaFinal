@@ -90,11 +90,19 @@ class Matriculacion(models.Model):
     SI = 'Si'
     NO = 'No'
     RE = 'Re'
+    EG = 'Eg'
+    PE = 'Pe'
+
+    #RE = Re Matricular
+    #EG = Egresado
+    #PE = Por Egresar
 
     MATRICULACION_CHOICES = (
         (SI , 'Si'),
         (NO , 'No'),
-        (RE, 'Re')
+        (RE, 'Re'),
+        (EG, 'Eg'),
+        (PE, 'Pe')
     )
 
     alumno = models.ForeignKey(Alumno, null=False)
