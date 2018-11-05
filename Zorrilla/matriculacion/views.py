@@ -602,24 +602,11 @@ def datos_alumno(request, opcion, dni_alumno):
         alumno.transporte = "No"
     else:
         alumno.transporte = "Si"
-    """
     try:
         matriculado = Matriculacion.objects.get(alumno=alumno, matriculado="Si")
         alumno.matriculado = "Si"
     except Matriculacion.DoesNotExist:
         alumno.matriculado = "No"
-    """
-    matriculacion = Matriculacion.objects.get(alumno=alumno)
-    if (matriculacion.matriculado == "Si"):
-        alumno.matriculado = "Si"
-    elif (matriculacion.matriculado == "No"):
-        alumno.matriculado = "No"
-    elif (matriculacion.matriculado == "Pe"):
-        alumno.matriculado = "En Proceso de Egreso."
-    elif (matriculacion.matriculado == "Re"):
-        alumno.matriculado = "En Proceso de Re Matriculacion."
-    else:
-        alumno.matriculado = "Egresado."
     print alumno.matriculado
     obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     if not obras_sociales:

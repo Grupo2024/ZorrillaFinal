@@ -79,15 +79,13 @@ def cursos2(request, turno):
 @login_required
 def cursos3(request, id_curso):
     curso = Curso.objects.get(pk=id_curso)
-    alumnos_curso = Matriculacion.objects.filter(curso=curso, matriculado="Si")
+    matriculacion = Matriculacion.objects.filter(curso=curso, matriculado="Si")
     data_curso = {
-        """
-        'turno':alumnos_curso.curso.que_turno(),
-        'año':alumnos_curso.curso.aNo,
-        'seccion':curso.alumnos_curso.que_seccion()
-        """
-    }
-    return render(request, 'templates_cursos/cursos3.html', {'alumnos_curso':alumnos_curso, 'curso':data_curso})
+        'turno':curso.que_turno(),
+        'año':curso.aNo,
+        'seccion':curso.que_seccion()
+}
+    return render(request, 'templates_cursos/cursos3.html', {'matriculaciones':matriculacion, 'curso':data_curso})
 
 
 @login_required

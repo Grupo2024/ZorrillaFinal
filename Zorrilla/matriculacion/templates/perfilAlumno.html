@@ -72,13 +72,10 @@
                 <li class="list-group-item">Matriculado:
                     {% if alumno.matriculado == "Si"%}
                         <a class="btn btn-outline-dark" onclick="traer_instancias('{% url 'modificar_curso' alumno.dni %}')">Ver Curso</a>
-                    {% elif alumno.matriculado == "No" %}
-                        {{alumno.matriculado}}
-                    {% elif alumno.matriculado == "Pe" %}
-                        {{alumno.matriculado}}
                     {% else %}
-                        {{alumno.matriculado}}
-                    {% endif %}</li>
+                        <a>No esta Matriculado</a>
+                    {% endif %}
+                </li>
             </ul>
         </div>
     </div>
@@ -105,9 +102,9 @@
     {% endif %}
 
     {% if alumno.opcion == 'pedido' %}
-        <a href="{% url 'traer_pedidos' %}" class="btn btn-outline-primary centerB">Volver</a>
+    <a href="{% url 'traer_pedidos' %}" class="btn btn-outline-primary centerB">Volver</a>
     {% else %}
-        <a href="{% url 'volver_curso' alumno.dni %}" class="btn btn-outline-primary centerB">Volver</a>
+    <a href="{% url 'volver_curso' alumno.dni %}" class="btn btn-outline-primary centerB">Volver</a>
     {% endif %}
 </div>
 
@@ -123,8 +120,8 @@
             }
         })
             .done(function (data) {
-                $("#datos_instancias").html(data);
-                $('#todas_las_instancias').modal('show');
+            $("#datos_instancias").html(data);
+            $('#todas_las_instancias').modal('show');
         });
     }
 

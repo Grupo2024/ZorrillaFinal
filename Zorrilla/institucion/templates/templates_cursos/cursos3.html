@@ -6,7 +6,7 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{%url 'cursos1'%}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{%url 'cursos1' %}">Home</a></li>
         <li class="breadcrumb-item"><a>{{curso.año}}</a></li>
         <li class="breadcrumb-item"><a>{{curso.seccion}}</a></li>
         <li class="breadcrumb-item "aria-current="page">{{curso.turno}}</li>
@@ -38,7 +38,7 @@
             <th>Perfil Alumno</th>
         </tr>
     <tbody>
-        {% for alumno in alumnos_curso %}
+        {% for alumno in matriculaciones %}
         <tr>
             <td>{{alumno.alumno.dni}}</td>
             <td>{{alumno.alumno.apellido|title}}</td>
