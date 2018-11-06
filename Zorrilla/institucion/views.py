@@ -123,17 +123,87 @@ def modificar_perfil(request, clase, dni):
         trabajador_elegido = Director.objects.get(dni_t=dni)
     else:
         trabajador_elegido = Profesor.objects.get(dni_t=dni)
-    ln = trabajador_elegido.lugar_nacimiento_t
+
     trabajador = ModificarForm(initial={'nombre':trabajador_elegido.nombre_t,
                                         'apellido':trabajador_elegido.apellido_t,
-                                        'lugar_nacimineto':trabajador_elegido.nombre_t,
+                                        'dni':trabajador_elegido.dni_t,
+                                        'trabajo':clase,
+                                        'lugar_nacimineto':trabajador_elegido.lugar_nacimiento_t,
                                         'fecha_nacimiento':trabajador_elegido.fecha_nacimiento_t,
                                         'domicilio':trabajador_elegido.domicilio_t,
                                         'email':trabajador_elegido.email_t,
                                         'sexo':trabajador_elegido.sexo_t,
-                                        'telefono_particular':trabajador_elegido.telefono_particular, 'telefono_laboral':trabajador_elegido.telefono_laboral, 'telefono_familiar':trabajador_elegido.telefono_familiar, 'datos_familiares_cargo':trabajador_elegido.datos_familiares_cargo, 'fecha_inicio_actividad':trabajador_elegido.fecha_inicio_actividad,
+                                        'telefono_particular':trabajador_elegido.telefono_particular, 'telefono_laboral':trabajador_elegido.telefono_laboral, 'telefono_familiar':trabajador_elegido.telefono_familiar, 'datos_familiares_cargo':trabajador_elegido.datos_familiares_cargo,
                                         'antecedentes_laborales':trabajador_elegido.antecedentes_laborales, 'estudios_cursados':trabajador_elegido.estudios_cursados})
     return render(request, 'templates_docentes/modificarPerfil.html', {'trabajador':trabajador, 'trabajador_elegido':trabajador_elegido})
+
+@login_required
+def modificar_datos_perfil(request):
+    if request.method == "POST":
+        trabajador_form = ModificarForm(request.POST)
+        dni_trabajador = request.POST['dni_user']
+        trabajo = request.POST['trabajo']
+        user = User.objects.get(username=request.user)
+        if trabajador_form.is_valid():
+            if (trabajo == "Secretaria"):
+                trabajador = Secretaria.objects.get(dni_t=dni_trabajador)
+                user_Trabajador = user_Secretaria.objects.get(secretaria_referenciada=trabajador)
+            elif (trabajo == "Director"):
+                trabajador = Director.objects.get(dni_t=dni_trabajador)
+                user_Trabajador = user_Director.objects.get(director_referenciado=trabajador)
+            else:
+                trabajador = Profesor.objects.get(dni_t=dni_trabajador)
+                user_Trabajador = user_Docente.objects.get(docente_referenciado=trabajador)
+
+            if (user_Trabajador.user == user):
+                print (trabajador)
+                nuevo_nombre = trabajador_form.cleaned_data['nombre']
+                nuevo_apellido = trabajador_form.cleaned_data['apellido']
+                nuevo_lugar_nacimiento = trabajador_form.cleaned_data['lugar_nacimiento']
+                nueva_fecha_nacimiento = trabajador_form.cleaned_data['fecha_nacimiento']
+                nuevo_domicilio = trabajador_form.cleaned_data['domicilio']
+                nuevo_email = trabajador_form.cleaned_data['email']
+                nuevo_sexo = trabajador_form.cleaned_data['sexo']
+                nuevo_telefono_particular = trabajador_form.cleaned_data['telefono_particular']
+                nuevo_telefono_laboral = trabajador_form.cleaned_data['telefono_laboral']
+                nuevo_telefono_familiar = trabajador_form.cleaned_data['telefono_familiar']
+                nuevo_datos_familiares_cargo = trabajador_form.cleaned_data['datos_familiares_cargo']
+                nuevo_antecedentes_laborales = trabajador_form.cleaned_data['antecedentes_laborales']
+                nuevo_estudios_cursados = trabajador_form.cleaned_data['estudios_cursados']
+
+
+
+                trabajador.nombre_t, trabajador.apellido_t, trabajador.lugar_nacimiento_t, trabajador.fecha_nacimiento_t, trabajador.domicilio_t, trabajador.email_t, trabajador.sexo_t, trabajador.telefono_particular,trabajador.telefono_laboral, trabajador.telefono_familiar, trabajador.datos_familiares_cargo, trabajador.antecedentes_laborales, trabajador.estudios_cursados = nuevo_nombre, nuevo_apellido, nuevo_lugar_nacimiento, nueva_fecha_nacimiento, nuevo_domicilio, nuevo_email, nuevo_sexo, nuevo_telefono_particular, nuevo_telefono_laboral, nuevo_telefono_familiar, nuevo_datos_familiares_cargo, nuevo_antecedentes_laborales, nuevo_estudios_cursados
+                trabajador.save()
+
+                subject = "Perfil Modificado"
+                message = "Se le notifica que se han realizado cambios en su perfil de " + str(trabajo) + " dentro del Sistema."
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [nuevo_email]
+                #send_mail( subject, message, email_from, recipient_list )
+                data = {
+                    'error':False,
+                    'resultado': "Perfil Modificado con Exito."
+                }
+                print ("es valido")
+                return JsonResponse(data)
+
+            else:
+                data = {
+                    'error':True,
+                    'resultado': "Error el Perfil no corresponde con el Usuario Actual."
+                }
+                return JsonResponse(data)
+
+        else:
+            data = {
+                'error':True,
+                'resultado': str(trabajador_form.errors)
+            }
+            return JsonResponse(data)
+
+    else:
+        return HttpResponse("Solo podes entrar por post")
 
 @login_required
 def mi_perfil(request):

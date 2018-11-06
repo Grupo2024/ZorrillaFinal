@@ -5,61 +5,10 @@
 {% block body %}
 {% load poll_extras %}
 
-
-
-<style type="text/css">
-    input{
-        width: 128%
-    }
-    #a{
-        width:81%
-    }
-    textarea {
-        width: 100%;
-        height: 30%;
-    }
-
-    #myProgress {
-        width: 100%;
-        background-color: #ddd;
-    }
-
-    #myBar {
-        width: 10%;
-        height: 30px;
-        background-color: #4CAF50;
-        text-align: center;
-        line-height: 30px;
-        color: white;
-    }
-</style>
 <br>
 <h1 class="card-title" align="center"><u>Datos de {{trabajador_elegido.nombre_t}} {{trabajador_elegido.apellido_t}}.</u></h1>
 
-<!--
-<form id="modify_teacher" method="post">
-    {% csrf_token %}
-    <p>Nombre:</p>{{trabajador.apellido}}
-    <p>Apellido:</p>{{trabajador.apellido}}
-    <p>Lugar de Nacimiento:</p>{{trabajador.lugar_nacimiento}}
-    <p>Fecha de Nacimiento:</p>{{trabajador.fecha_nacimiento}}
-    <p>Domicilio:</p>{{trabajador.domicilio}}
-    <p>Email:</p>{{trabajador.email}}
-    <p>Sexo:</p>{{trabajador.sexo}}
-    <p>Telefono Particular:</p>{{trabajador.telefono_particular}}
-    <p>Telefono Laboral:</p>{{trabajador.telefono_laboral}}
-    <p>Telefono Familiar:</p>{{trabajador.telefono_familiar}}
-    <p>Datos familiares a cargo:</p>{{trabajador.datos_familiares_cargo}}
-    <p>Fecha de Inicio de Actividad:</p>{{trabajador.fecha_inicio_actividad}}
-    <p>Antecedentes Laborales:</p>{{trabajador.antecedentes_laborales}}
-    <p>Estudios Cursados:</p>{{trabajador.estudios_cursados}}
-
-    <button class="btn btn-success" style="margin-left: 40%; width: 20%" align="center" type="submit">Modificar datos</button>
-</form> 
--->
-
-
-<form id="modify_teacher" method="post">
+<form id="modify_user" method="post">
     {% csrf_token %}
     <div class='row' style="margin-top:2%">
         <div class="card text-center" style="width: 26%; height:35%; margin-left: 6%">
@@ -190,7 +139,36 @@
                 </div>
             </div>
         </div>
-</div>
-        </form>
-            <center><button onclick="crear_Autorizado()" class="btn btn-success" style="width:30%">Cargar</button></center>
+    </div>
+    <input type="hidden" id="dni_user" name="dni_user" value={{trabajador_elegido.dni_t}}>
+    <input type="hidden" id="trabajo" name="trabajo" value={{trabajador_elegido.trabajo}}>
+</form>
+
+{{ trabajador.fecha_inicio_actividad }}
+<center><button onclick="actualizar_datos()" class="btn btn-success" style="width:30%">Cargar</button></center>
+
+<script>
+
+
+    function actualizar_datos(){
+        if (confirm("¿ Cambiar datos ?")) {
+            var myForm = document.getElementById('modify_user');
+            formData = new FormData(myForm);
+            $.ajax({
+                url: '{% url 'modificar_datos_perfil' %}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                alert(data.resultado);
+            }
+                   });
+        } else {
+            return;
+        }
+    }
+
+
+</script>
 {% endblock body %}

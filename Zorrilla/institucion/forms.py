@@ -39,6 +39,5 @@ class ModificarForm(forms.Form):
     telefono_laboral = forms.IntegerField(required=True)
     telefono_familiar = forms.IntegerField(required=True)
     datos_familiares_cargo = forms.CharField(required=True, widget=forms.Textarea)
-    fecha_inicio_actividad = forms.DateField(required=True)
     antecedentes_laborales = forms.CharField(required=True, widget=forms.Textarea)
     estudios_cursados = forms.CharField(required=True, widget=forms.Textarea)
