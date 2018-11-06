@@ -108,7 +108,7 @@ class Matriculacion(models.Model):
     alumno = models.ForeignKey(Alumno, null=False)
     fecha_matriculacion = models.DateTimeField('Fecha Matriculacion', auto_now_add=True)
     matriculado = models.CharField('Estado', max_length=2, choices=MATRICULACION_CHOICES)
-    curso = models.ForeignKey(Curso, null=False)
+    curso = models.ForeignKey(Curso, null=True)
 
     def __str__(self):
         return 'El alumno: {} tiene un estado de matriculacion {}'.format(self.alumno.nombre, self.matriculado)

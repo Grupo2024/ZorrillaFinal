@@ -309,7 +309,7 @@ def crear_padre(request):
         print (padre)
         familia = Familia(alumno=alumno, padre_madre=padre)
         familia.save()
-        new_Matriculacion = Matriculacion.objects.get(alumno=alumno, matriculado="No")
+        new_Matriculacion = Matriculacion(alumno=alumno, matriculado="No")
         new_Matriculacion.save()
         resultado = "Los pedidos de Matriculacion de " + str(padre.apellido) + " " + str(padre.nombre) + " y de " + str(alumno.apellido) + " " + str(alumno.nombre) + " han sido creados con exito."
         data = {
