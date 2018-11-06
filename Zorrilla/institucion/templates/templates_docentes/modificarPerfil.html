@@ -5,6 +5,32 @@
 {% block body %}
 {% load poll_extras %}
 
+<style type="text/css">
+    input{
+        width: 128%
+    }
+    #a{
+        width:81%
+    }
+    textarea {
+        width: 100%;
+        height: 30%;
+    }
+
+    #myProgress {
+        width: 100%;
+        background-color: #ddd;
+    }
+
+    #myBar {
+        width: 10%;
+        height: 30px;
+        background-color: #4CAF50;
+        text-align: center;
+        line-height: 30px;
+        color: white;
+    }
+</style>
 <br>
 <h1 class="card-title" align="center"><u>Datos de {{trabajador_elegido.nombre_t}} {{trabajador_elegido.apellido_t}}.</u></h1>
 
@@ -101,7 +127,7 @@
                             <div class="input-group-prepend">
                                 <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Datos familiares a cargo:</span>
                             </div>
-                            <div style="margin-left: -5%; margin-top: 0%;; height:50%">{{ trabajador.datos_familiares_cargo }}</div>
+                            <div style="margin-left: -5%; margin-top: 0%; height:50%">{{ trabajador.datos_familiares_cargo }}</div>
                         </div>
 
                         <div class="input-group input-group-sm mb-3 form-group">
