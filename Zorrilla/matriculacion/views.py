@@ -607,7 +607,7 @@ def datos_alumno(request, opcion, dni_alumno):
         alumno.matriculado = "Si"
     except Matriculacion.DoesNotExist:
         alumno.matriculado = "No"
-    print alumno.matriculado
+    print (alumno.matriculado)
     obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     if not obras_sociales:
         alumno.obra_social = "No"

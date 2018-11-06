@@ -3,7 +3,7 @@
 
         <!-- Modal Header -->
         <div class="modal-header">
-            <h4 class="modal-title">Datos de {{alumno.nombre}}</h4>
+            <h4 class="modal-title">{{alumno.nombre}} {{alumno.apellido}}</h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
@@ -14,14 +14,12 @@
 
                 <!-- Select Curso -->
 
-                <h4><u>Curso</u></h4>
+                <h4>Curso: {{curso}}</h4>
 
-                <p>Curso Actual: {{curso}}.</p>
-                <p>Recomendacion: {{recomendacion}}</p>
-
-                <span class="badge badge-secondary">Cursos:</span>
-                <select id="curso2" onchange="selectCurso2(event)">
-                    <option value=0>----</option>
+                <small>Recomendacion: {{recomendacion}}</small>
+                <br>
+                <select class="btn btn-outline-dark" id="curso2" onchange="selectCurso2(event)">
+                    <option value=0>Cursos</option>
                     {% for curso in cursos %}
                     <option value={{curso.id}}>{{curso}}</option>
                     {% endfor %}
@@ -46,31 +44,28 @@
                     <br>
                 </div>
                 {% else %}
-                <ul>
                     {% for familiar in familiares %}
-                    <li><a href="{% url 'datos_padre' familiar.padre_madre.dni %}">{{familiar.padre_madre.nombre}} {{familiar.padre_madre.apellido}}</a></li>
+                    <a class="btn btn-info" href="{% url 'datos_padre' familiar.padre_madre.dni %}">{{familiar.padre_madre.nombre}} {{familiar.padre_madre.apellido}}</a>
                     {% endfor %}
                     <div id="new_padre2">
                         <br>
-                        <li><a href="{% url 'padres_del_alumno' alumno.dni %}"><u>Desvincular un Familiar.</u></a></li>
-                        <li><a onclick="traer('{% url 'todos_los_padres_asignar' alumno.dni %}')"><u>Asignar Otro Padre.</u></a></li>
+                        <a class="btn btn-danger" href="{% url 'padres_del_alumno' alumno.dni %}">Desvincular un Familiar</a>
+                        <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_padres_asignar' alumno.dni %}')">Asignar Otro Padre</a>
                     </div>
-                </ul>
                 {% endif %}
 
                 <!-- Select Autorizado -->
 
-                <h4><u>Autorizados</u></h4>
+                <h4>Autorizados</h4>
                 {% if autorizados|length == 0 %}
-                <span class="badge badge-secondary">Opciones:</span>
-                <select id="autorizado2" onchange="show_autorizados2()">
+                <select class="btn btn-outline-dark" id="autorizado2" onchange="show_autorizados2()">
                     <option value=0>No</option>
                     <option value=1>Si</option>
                 </select>
                 <br>
                 <br>
                 <div id="btn_asignar_autorizado2" class="hidden_idv">
-                    <a onclick="traer('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Asignar Autorizado.</a>
+                    <a class="btn btn-outline-dark" onclick="traer('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Asignar Autorizado</a>
                     <br>
                     <br>
                 </div>
@@ -80,8 +75,8 @@
                     <li><a href="{% url 'datos_autorizado' autorizado.autorizado.dni %}">{{autorizado.autorizado.apellido}} {{autorizado.autorizado.nombre}}</a></li>
                     {% endfor %}
                     <br>
-                    <li><a href="{% url 'autorizados_del_alumno' alumno.dni %}"><u>Desvincular un Autorizado.</u></a></li>
-                    <li><a onclick="traer('{% url 'todos_los_autorizados_asignar' alumno.dni %}')"><u>Asignar otro Autorizado</u></a></li>
+                    <li><a class="btn btn-danger" href="{% url 'autorizados_del_alumno' alumno.dni %}"><u>Desvincular un Autorizado.</u></a></li>
+                    <li><a class="btn btn-success" onclick="traer('{% url 'todos_los_autorizados_asignar' alumno.dni %}')"><u>Asignar otro Autorizado</u></a></li>
                 </ul>
                 {% endif %}
 
@@ -89,15 +84,14 @@
 
                 <h4><u>Transporte</u></h4>
                 {% if transportistas|length == 0 %}
-                <span class="badge badge-secondary">Opciones:</span>
-                <select id="transporte2" onchange="show_transportistas2()">
+                <select class="btn btn-outline-dark" id="transporte2" onchange="show_transportistas2()">
                     <option value=0>No</option>
                     <option value=1>Si</option>
                 </select>
                 <br>
                 <br>
                 <div id="btn_asignar_transporte2" class="hidden_idv">
-                    <a onclick="traer('{% url 'todos_los_transportistas_asignar' alumno.dni %}')">Asignar Transportista.</a>
+                    <a class="btn btn-outline-dark" onclick="traer('{% url 'todos_los_transportistas_asignar' alumno.dni %}')">Asignar Transportista</a>
                     <br>
                     <br>
                 </div>
@@ -107,8 +101,8 @@
                     <li><a href="{% url 'datos_transportista' transportista.transportista.dni %}">{{transportista.transportista.apellido}} {{transportista.transportista.nombre}}</a></li>
                     {% endfor %}
                     <br>
-                    <li><a href="{% url 'transportistas_del_alumno' alumno.dni %}"><u>Desvincular un Transportista.</u></a></li>
-                    <li><a onclick="traer('{% url 'todos_los_transportistas_asignar' alumno.dni %}')"><u>Asignar otro Transportista</u></a></li>
+                    <li><a class="btn btn-danger" href="{% url 'transportistas_del_alumno' alumno.dni %}"><u>Desvincular un Transportista</u></a></li>
+                    <li><a class="btn btn-success" onclick="traer('{% url 'todos_los_transportistas_asignar' alumno.dni %}')"><u>Asignar otro Transportista</u></a></li>
                 </ul>
                 {% endif %}
 
@@ -116,15 +110,14 @@
 
                 <h4><u>Obra Social</u></h4>
                 {% if obras_sociales|length == 0 %}
-                <span class="badge badge-secondary">Opciones:</span>
-                <select id="obrass2" onchange="show_obras2()">
+                <select class="btn btn-outline-dark" id="obrass2" onchange="show_obras2()">
                     <option value=0>No</option>
                     <option value=1>Si</option>
                 </select>
                 <br>
                 <br>
                 <div id="btn_asignar_obra2" class="hidden_idv">
-                    <a onclick="traer('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Asignar Obra Social.</a>
+                    <a class="btn btn-outline-dark" onclick="traer('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Asignar Obra Social</a>
                     <br>
                     <br>
                 </div>
@@ -135,8 +128,8 @@
                     {% endfor %}
                     <div id="new_obra2">
                         <br>
-                        <li><a href="{% url 'obras_sociales_del_alumno' alumno.dni %}"><u>Desvincular una Obra Social.</u></a></li>
-                        <li><a onclick="traer('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')"><u>Asignar Otra Obra Social.</u></a></li>
+                        <li><a class="btn btn-danger" href="{% url 'obras_sociales_del_alumno' alumno.dni %}"><u>Desvincular una Obra Social</u></a></li>
+                        <li><a class="btn btn-success" onclick="traer('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')"><u>Asignar Otra Obra Social</u></a></li>
                     </div>
                 </ul>
                 {% endif %}
