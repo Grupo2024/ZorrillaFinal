@@ -634,7 +634,7 @@ def get_Secciones(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     familiares = Familia.objects.filter(alumno=alumno, habilitado=True).order_by("padre_madre__apellido", "padre_madre__nombre")
     transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
-    cursos = Curso.objects.all().order_by("aNo", "-hora")
+    cursos = Curso.objects.all().order_by("aNo", "hora","seccion")
     obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     autorizados = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True)
     return render(request, 'matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas, 'obras_sociales':obras_sociales, 'autorizados':autorizados})
