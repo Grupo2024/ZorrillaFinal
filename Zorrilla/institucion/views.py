@@ -67,7 +67,7 @@ def cursos2(request, turno):
         aux = False
     else:
         aux = True
-    curso = Curso.objects.filter(hora=aux).order_by('aNo')
+    curso = Curso.objects.filter(hora=aux).order_by('aNo', 'hora','seccion')
     for a in curso:
         a.new_turno()
 
