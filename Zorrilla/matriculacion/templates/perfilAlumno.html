@@ -31,9 +31,9 @@
                 <li class="list-group-item">Telefono fijo: {{alumno.telefono_casa}}.</li>
                 <li class="list-group-item">Padres:
                     {% if alumno.familiares == "No"%}
-                    <a onclick="traer_instancias('{% url 'todos_los_padres_asignar' alumno.dni %}')">Asignar Padre.</a>
+                    <a onclick="traer_instancias('{% url 'todos_los_padres_asignar' alumno.dni %}')">Asignar Padre</a>
                     {% else %}
-                    <a class="btn btn-outline-dark" href="{% url 'padres_del_alumno' alumno.dni %}">Ver Padres.</a></li>
+                    <a class="btn btn-success" href="{% url 'padres_del_alumno' alumno.dni %}">Ver Padres</a></li>
                 {% endif %}
                 <li class="list-group-item">Telefono del padre: {{alumno.telefono_padre}}.</li>
                 <li class="list-group-item">Telefono de familiar: {{alumno.telefono_familiar}}.</li>
@@ -41,7 +41,7 @@
                 <li class="list-group-item">Con quien vive: {{alumno.con_quien_vive}}.</li>
                 <li class="list-group-item">Autorizados:
                     {% if alumno.autorizados == "No"%}
-                    <a class="btn btn-outline-dark" onclick="traer_instancias('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Asignar Autorizado.</a>
+                    <a class="btn btn-success text-white" onclick="traer_instancias('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Asignar Autorizado</a>
                     {% else %}
                     <a href="{% url 'autorizados_del_alumno' alumno.dni %}">Ver Autorizados.</a></li>
                 {% endif %}
@@ -49,7 +49,7 @@
                 <li class="list-group-item">Telefono del que lo Trae: {{alumno.telefono_que_lo_trae}}.</li>
                 <li class="list-group-item">Utiliza transporte:
                     {% if alumno.transporte == "No"%}
-                    <a class="btn btn-outline-dark" onclick="traer_instancias('{% url 'todos_los_transportistas_asignar' alumno.dni %}')">Asignar Transportista.</a>
+                    <a class="btn btn-success text-white" onclick="traer_instancias('{% url 'todos_los_transportistas_asignar' alumno.dni %}')">Asignar Transportista</a>
                     {% else %}
                     <a href="{% url 'transportistas_del_alumno' alumno.dni %}">Ver Transportistas.</a>
                     {% endif %}
@@ -65,13 +65,13 @@
                 <li class="list-group-item">Enfermedades: {{alumno.enfermedad_relevante}}</li>
                 <li class="list-group-item">Obra social:
                     {% if alumno.obra_social == "No"%}
-                    <a class="btn btn-outline-dark" onclick="traer_instancias('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Asignar Obra Social.</a>
+                    <a class="btn btn-success text-white" onclick="traer_instancias('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Asignar Obra Social</a>
                     {% else %}
                     <a href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Ver Obras Sociales.</a>
                     {% endif %}</li>
                 <li class="list-group-item">Matriculado:
                     {% if alumno.matriculado == "Si"%}
-                        <a class="btn btn-outline-dark" onclick="traer_instancias('{% url 'modificar_curso' alumno.dni %}')">Ver Curso</a>
+                        <a class="btn btn-success text-white" onclick="traer_instancias('{% url 'modificar_curso' alumno.dni %}')">Ver Curso</a>
                     {% else %}
                         <a>No esta Matriculado</a>
                     {% endif %}
