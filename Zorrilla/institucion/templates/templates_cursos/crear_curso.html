@@ -5,60 +5,82 @@
 {% block body %}
 
 <br>
+    <div class="card text-center" style="width: 16%; margin-left: 41%">
+        <div class="card-body">
+                <h4>Crear Curso</h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
 
-        <div class="card text-center" style="width: 16%; margin-left: 41%">
-            <div class="card-body">
-                    <h4>Crear Curso</h4>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-        
-                            <div class="input-group input-group-sm mb-3 form-group">
-                                <div class="input-group-prepend" style=" margin-right: 800%;">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">Año:</span>
-                                </div>
-                                <select id="opciones_id">
-                                    <option id="opciones_año" value="0">Opciones</option>
-                                    <option value=1>1</option>
-                                    <option value=2>2</option>
-                                    <option value=3>3</option>
-                                    <option value=4>4</option>
-                                    <option value=5>5</option>
-                                    <option value=6>6</option>
-                                </select>
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend" style=" margin-right: 800%;">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Año:</span>
                             </div>
-        
-                            <div class="input-group input-group-sm mb-3 form-group">
-                                <div class="input-group-prepend"  style="margin-right: 800%;">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">Divicion:</span>
-                                </div>
-                                <select id="division_id">
-                                    <option id="opciones_division" value="0">Opciones</option>
-                                    <option id="a" value="A">A</option>
-                                    <option id="b" value="B">B</option>
-                                    <option id="c" value="C">C</option>
-                                    <option id="d" value="D">D</option>
-                                </select>
-                            </div>
+                            <select id="opciones_id">
+                                <option id="opciones_año" value="0">Opciones</option>
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                                <option value=5>5</option>
+                                <option value=6>6</option>
+                            </select>
+                        </div>
 
-                            <div class="input-group input-group-sm mb-3 form-group">
-                                <form id="form_Curso" method="post">
-                                    {% csrf_token %}
-                                    <input name="año" id="año" value=0 type="hidden">
-                                    <input name="division" id="division" value=0 type="hidden">
-                                    <input name="hora" id="hora" value=0 type="hidden">
-                                </form>
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend"  style="margin-right: 800%;">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Divicion:</span>
                             </div>
-        
-        
-                        </li>
-        
-                    </ul>
-                </div>
-                <button class="btn btn-success" id="btn_crear_curso" onclick="crear_curso()">Crear Curso</button>
+                            <select id="division_id">
+                                <option id="opciones_division" value="0">Opciones</option>
+                                <option id="a" value="A">A</option>
+                                <option id="b" value="B">B</option>
+                                <option id="c" value="C">C</option>
+                                <option id="d" value="D">D</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <form id="form_Curso" method="post">
+                                {% csrf_token %}
+                                <input name="año" id="año" value=0 type="hidden">
+                                <input name="division" id="division" value=0 type="hidden">
+                                <input name="hora" id="hora" value=0 type="hidden">
+                            </form>
+                        </div>
+
+
+                    </li>
+
+                </ul>
             </div>
+            <button class="btn btn-success" id="btn_crear_curso" onclick="crear_curso()">Crear Curso</button>
+        </div>
 
 
-<span id="resultado_curso"></span>
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Resultado</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <span id="resultado_curso"></span>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Continuar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 
@@ -97,6 +119,7 @@
                     contentType: false,
                     type: 'POST',
                     success: function(data){
+                        $("#myModal").modal()
                         document.getElementById("resultado_curso").innerHTML = data.resultado;
                     }
                 });
