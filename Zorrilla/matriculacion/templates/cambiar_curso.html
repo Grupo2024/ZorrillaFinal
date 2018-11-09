@@ -101,6 +101,11 @@
         document.getElementById("msg_advertencia").style.display = "block";
     });
 
+    function uncheck_table(){
+        var aux = $('input[name=cursoss]:checked').val();
+        aux.selected = false;
+    }
+
     function show_table(){
         var x = document.getElementById("select_cc").value;
         console.log(x);
@@ -111,11 +116,12 @@
             document.getElementById("msg_advertencia").style.display = "none";
             document.getElementById("cambiar_curso_btn").style.display = "none";
             document.getElementById("egresar_btn").style.display = "none";
-        //Esconder Cambiar Curso
+            //Esconder Cambiar Curso
         } else {
             document.getElementById("contenido_cambiar_curso").style.display = "none";
             document.getElementById("msg_advertencia").style.display = "none";
             document.getElementById("cambiar_curso_btn").style.display = "none";
+            uncheck_table();
         }
     }
 
@@ -127,10 +133,12 @@
             document.getElementById("msg_advertencia_egreso").style.display = "block";
             document.getElementById("egresar_btn").style.display = "block";
             document.getElementById("cambiar_curso_btn").style.display = "none";
+            uncheck_table();
         }else{
             document.getElementById("cambiar_curso_btn").style.display = "none";
             document.getElementById("msg_advertencia_egreso").style.display = "none";
             document.getElementById("egresar_btn").style.display = "none";
+            uncheck_table();
         }
     }
 
@@ -146,15 +154,15 @@
                 contentType: false,
                 type: 'POST',
                 success: function(data){
-                    document.getElementById("esconder_resultado").style.display = "none";
-                    document.getElementById("cambiar_curso_btn").style.display = "none";
-                    document.getElementById("cerrar_btn").style.display = "none";
-                    var element = document.getElementById("titulo");
-                    element.innerHTML = "Cambio Realizado con exito.";
-                    document.getElementById("resultado").innerHTML = data.resultado;
-                    document.getElementById("volver_btn").style.display = "block";
-                }
-            });
+                document.getElementById("esconder_resultado").style.display = "none";
+                document.getElementById("cambiar_curso_btn").style.display = "none";
+                document.getElementById("cerrar_btn").style.display = "none";
+                var element = document.getElementById("titulo");
+                element.innerHTML = "Cambio Realizado con exito.";
+                document.getElementById("resultado").innerHTML = data.resultado;
+                document.getElementById("volver_btn").style.display = "block";
+            }
+                   });
         } else {
             return;
         }
@@ -172,13 +180,13 @@
                 contentType: false,
                 type: 'POST',
                 success: function(data){
-                    document.getElementById("cerrar_btn").style.display = "none";
-                    document.getElementById("esconder_resultado").style.display = "none";
-                    document.getElementById("egresar_btn").style.display = "none";
-                    document.getElementById("volver_btn").style.display = "block";
-                    document.getElementById("resultado").innerHTML = data.resultado;
-                }
-           });
+                document.getElementById("cerrar_btn").style.display = "none";
+                document.getElementById("esconder_resultado").style.display = "none";
+                document.getElementById("egresar_btn").style.display = "none";
+                document.getElementById("volver_btn").style.display = "block";
+                document.getElementById("resultado").innerHTML = data.resultado;
+            }
+                   });
         } else {
             return;
         }
