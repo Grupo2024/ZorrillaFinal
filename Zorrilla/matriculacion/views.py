@@ -529,7 +529,7 @@ def todas_las_obras_sociales(request):
 
 @user_passes_test(check_Secretaria)
 def todas_los_transportistas(request):
-    transportistas = Transportista.objects.all()
+    transportistas = Transportista.objects.all().order_by('apellido', 'nombre', 'dni')
     return render(request, 'Transportista/todos_los_transportistas.html', {'transportistas':transportistas})
 
 #Traer Todos las Matriculaciones con estado 'No' y 'Re'.
