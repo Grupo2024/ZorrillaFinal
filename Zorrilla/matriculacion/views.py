@@ -154,7 +154,10 @@ def crear_alumno(request):
             'apellido_alumno':apellido_alumno,
             'nombre_alumno':nombre_alumno
         }
-
+        new_nombre = nombre_alumno.lower()
+        new_apellido = apellido_alumno.lower()
+        alumno.nombre, alumno.apellido = new_nombre, new_apellido
+        alumno.save()
         matriculacion = Matriculacion(alumno=alumno, matriculado="No")
         matriculacion.save()
         padre_form = PadreForm()
@@ -222,7 +225,7 @@ def crear_director(request):
             message = "El Director " + str(director.apellido_t) + "" + str(director.nombre_t) + " ha sido ingresado al sistema, en el cual utilizara como nombre de usuario: " + str(user_d.username) + " y la password " + str(password)
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [director.email_t]
-            send_mail(subject, message, email_from, recipient_list)
+            #send_mail(subject, message, email_from, recipient_list)
             data = {
                 'error':False,
                 'resultado': "El Director " + str(director.apellido_t) + " " + str(director.nombre_t) + " ha sido creado con exito."
@@ -285,11 +288,15 @@ def crear_autorizado(request):
         message = "En el dia de la fecha se le notifica que sus datos han sido cargados en nuestra pagina."
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [autorizado.email]
-        send_mail( subject, message, email_from, recipient_list)
+        #send_mail( subject, message, email_from, recipient_list)
         data = {
             'error':False,
             'resultado': "Los datos de " + nombre + " " + apellido + " han sido cargados con exito."
         }
+        new_nombre = nombre.lower()
+        new_apellido = apellido.lower()
+        autorizado.nombre, autorizado.apellido = new_nombre, new_apellido
+        autorizado.save()
         return JsonResponse(data)
     else:
         resultado = str(autorizado_form.errors)
@@ -305,20 +312,30 @@ def crear_padre(request):
     dni_alumno = request.POST['dni_alumno']
     alumno = Alumno.objects.get(dni=dni_alumno)
     if padre_form.is_valid():
-        print ("es valido")
         padre_form.save()
         dni_padre = padre_form.cleaned_data['dni']
         padre = Padre_madre.objects.get(dni=dni_padre)
-        print (padre)
-        familia = Familia(alumno=alumno, padre_madre=padre)
-        familia.save()
-        new_Matriculacion = Matriculacion(alumno=alumno, matriculado="No")
-        new_Matriculacion.save()
         resultado = "Los pedidos de Matriculacion de " + str(padre.apellido) + " " + str(padre.nombre) + " y de " + str(alumno.apellido) + " " + str(alumno.nombre) + " han sido creados con exito."
         data = {
             'error': False,
             'resultado':resultado
         }
+
+        nombre = padre_form.cleaned_data['nombre']
+        apellido = padre_form.cleaned_data['apellido']
+
+        new_nombre = nombre.lower()
+        new_apellido = apellido.lower()
+
+        padre.nombre, padre.apellido = new_nombre, new_apellido
+        padre.save()
+
+        familia = Familia(alumno=alumno, padre_madre=padre)
+        familia.save()
+
+        new_Matriculacion = Matriculacion(alumno=alumno, matriculado="No")
+        new_Matriculacion.save()
+
         return JsonResponse(data)
     else:
         resultado = str(padre_form.errors)
@@ -837,7 +854,7 @@ def cambiar_curso(request):
 
         for familiar in familiares:
             recipient_list = [familiar.padre_madre.email]
-            send_mail(subject, message, email_from, recipient_list)
+            #send_mail(subject, message, email_from, recipient_list)
 
         alumno_C.save()
         data = {
@@ -864,7 +881,7 @@ def cambiar_password(request):
                     message = "El usuario " + str(userD.user.username) + " utilizara la siguiente contraseña " + str(new_pass)
                     email_from = settings.EMAIL_HOST_USER
                     recipient_list = [profesor.email_t]
-                    send_mail( subject, message, email_from, recipient_list)
+                    #send_mail( subject, message, email_from, recipient_list)
                     print ("funciona")
                     userd = User.objects.get(username=userD.user.username)
                     print ("Vieja Pass" + str(userd.password))
@@ -935,7 +952,7 @@ def aplicar_cambios_alumno(request):
 
             for familiar in familiares:
                 recipient_list = [familiar.padre_madre.email]
-                send_mail(subject, message, email_from, recipient_list)
+                #send_mail(subject, message, email_from, recipient_list)
 
             alumno.save()
             data = {
