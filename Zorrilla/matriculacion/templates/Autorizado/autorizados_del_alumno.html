@@ -13,8 +13,8 @@
 
     <table style="width:50%" align="center">
         <tr>
-            <th>Nombre</th>
             <th>Apellido</th>
+            <th>Nombre</th>
             <th>Dni</th>
             <th>Relacion con {{alumno.nombre}}</th>
             <th>Desvincular</th>
@@ -22,10 +22,10 @@
         </tr>
         {% for a in autorizados %}
         <tr>
-            <td>{{a.autorizado.nombre}}</td>
-            <td>{{a.autorizado.apellido}}</td>
+            <td>{{a.autorizado.apellido|title}}</td>
+            <td>{{a.autorizado.nombre|title}}</td>
             <td>{{a.autorizado.dni}}</td>
-            <td>{{a.relacion_con_alumno}}</td>
+            <td>{{a.relacion_con_alumno|title}}</td>
             <td><a onclick="desvincular({{a.autorizado.dni}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
             <td><a onclick="#">Editar</a></td>
         </tr>

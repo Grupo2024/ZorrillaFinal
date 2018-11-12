@@ -320,22 +320,16 @@ def crear_padre(request):
             'error': False,
             'resultado':resultado
         }
-
         nombre = padre_form.cleaned_data['nombre']
         apellido = padre_form.cleaned_data['apellido']
-
         new_nombre = nombre.lower()
         new_apellido = apellido.lower()
-
         padre.nombre, padre.apellido = new_nombre, new_apellido
         padre.save()
-
         familia = Familia(alumno=alumno, padre_madre=padre)
         familia.save()
-
         new_Matriculacion = Matriculacion(alumno=alumno, matriculado="No")
         new_Matriculacion.save()
-
         return JsonResponse(data)
     else:
         resultado = str(padre_form.errors)
@@ -522,8 +516,8 @@ def todos_los_transportistas_asignar(request, dni_alumno):
     lista = []
     for a in transportistas_ya_asignados:
         lista.append(a.transportista.dni)
-    transportistas = Transportista.objects.exclude(dni__in=lista)
-    return render(request, 'Transportista/asginar_transportista.html',{'transportistas':transportistas, 'dni_alumno':dni_alumno})
+    transportistas = Transportista.objects.exclude(dni__in=lista).order_by("apellido","nombre","dni")
+    return render(request, 'Transportista/asignar_transportista.html',{'transportistas':transportistas, 'dni_alumno':dni_alumno})
 
 #Traer Todos los Padres/Madre.
 def todos_los_padres_asignar(request, dni_alumno):
@@ -532,7 +526,7 @@ def todos_los_padres_asignar(request, dni_alumno):
     lista = []
     for a in padres_ya_asignados:
         lista.append(a.padre_madre.dni)
-    padre = Padre_madre.objects.exclude(dni__in=lista)
+    padre = Padre_madre.objects.exclude(dni__in=lista).order_by("apellido","nombre","dni")
     return render(request,'Padre_madre/asignar_padre.html', {'todos_los_padres':padre, 'dni_alumno':dni_alumno})
 
 def todas_las_obras_sociales_asignar(request, dni_alumno):
@@ -552,7 +546,7 @@ def todos_los_autorizados_asignar(request, dni_alumno):
     lista = []
     for a in autorizados_ya_asignadas:
         lista.append(a.autorizado.dni)
-    autorizados = Autorizado.objects.exclude(dni__in=lista).order_by("nombre")
+    autorizados = Autorizado.objects.exclude(dni__in=lista).order_by("apellido","nombre","dni")
     relacion_con_alumno = RelacionForm()
     print(autorizados)
     return render(request,'Autorizado/asignar_autorizado.html', {'autorizados':autorizados, 'alumno':alumno, 'relacion_con_alumno':relacion_con_alumno})
@@ -577,12 +571,12 @@ def traer_pedidos(request):
 
 def padres_del_alumno(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    familia = Familia.objects.filter(alumno=alumno, habilitado=True)
+    familia = Familia.objects.filter(alumno=alumno, habilitado=True).order_by("padre_madre__apellido", "padre_madre__nombre", "padre_madre__dni")
     return render(request, 'Padre_madre/padres_del_alumno.html', {'familiares':familia, 'alumno':alumno})
 
 def transportistas_del_alumno(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
+    transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True).order_by("transportista__apellido", "transportista__nombre", "transportista__dni")
     return render(request, 'Transportista/transportistas_del_alumno.html', {'transportistas':transportistas, 'alumno':alumno})
 
 def obras_sociales_del_alumno(request, dni_alumno):
@@ -592,7 +586,7 @@ def obras_sociales_del_alumno(request, dni_alumno):
 
 def autorizados_del_alumno(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    autorizados = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True)
+    autorizados = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True).order_by("autorizado__apellido", "autorizado__nombre", "autorizado__dni")
     return render(request, 'Autorizado/autorizados_del_alumno.html', {'autorizados':autorizados, 'alumno':alumno})
 
 """
@@ -610,7 +604,6 @@ def datos_autorizado(request, dni_transportista):
     autorizado = Autorizado.objects.get(dni=dni_transportista)
     return render(request, 'Autorizado/datos_autorizado.html', {'autorizado':autorizado})
 
-
 def usuarios_transportista(request, dni_transportista):
     transportista = Transportista.objects.get(dni=dni_transportista)
     todos_los_alumnos = usa_Transporte.objects.filter(transportista=transportista)
@@ -620,7 +613,6 @@ def usuarios_transportista(request, dni_transportista):
 def datos_padre(request, dni_padre):
     padre = Padre_madre.objects.get(dni=dni_padre)
     return render(request, 'Padre_madre/datos_padre.html', {'padre':padre})
-
 
 def datos_obra_social(request, id_obra_social):
     obra_social = Obra_Social.objects.get(pk=id_obra_social)
@@ -774,9 +766,6 @@ def pedido_re_matricular(request):
             dni_alumno = re_matricular_form.cleaned_data['dni_alumno']
             dni_padre = re_matricular_form.cleaned_data['dni_padre']
             email_padre = re_matricular_form.cleaned_data['email_padre']
-            print (dni_alumno)
-            print (dni_padre)
-            print (email_padre)
             try:
                 alumno = Alumno.objects.get(dni=dni_alumno)
                 matriculacion = Matriculacion.objects.get(alumno=alumno)
@@ -922,8 +911,9 @@ def aplicar_cambios_alumno(request):
         if alumno_form.is_valid():
             print ("Es valido")
             alumno = Alumno.objects.get(dni=dni_alumno)
-            nuevo_nombre = alumno_form.cleaned_data['nombre']
-            nuevo_apellido = alumno_form.cleaned_data['apellido']
+
+            nombre = alumno_form.cleaned_data['nombre']
+            apellido = alumno_form.cleaned_data['apellido']
             nuevo_lugar_nacimiento = alumno_form.cleaned_data['lugar_nacimiento']
             nueva_fecha_nacimiento = alumno_form.cleaned_data['fecha_nacimiento']
             nuevo_domicilio = alumno_form.cleaned_data['domicilio']
@@ -939,7 +929,8 @@ def aplicar_cambios_alumno(request):
             nuevo_quien_lo_trae = alumno_form.cleaned_data['quien_lo_trae']
             nuevo_telefono_que_lo_trae = alumno_form.cleaned_data['telefono_que_lo_trae']
 
-            alumno.nombre, alumno.apellido, alumno.lugar_nacimiento, alumno.fecha_nacimiento, alumno.domicilio, alumno.email, alumno.sexo, alumno.telefono_casa, alumno.telefono_padre, alumno.telefono_madre, alumno.telefono_familiar, alumno.telefono_vecino, alumno.enfermedad_relevante, alumno.con_quien_vive, alumno.quien_lo_trae, alumno.telefono_que_lo_trae  = nuevo_nombre, nuevo_apellido, nuevo_lugar_nacimiento, nueva_fecha_nacimiento, nuevo_domicilio, nuevo_email, nuevo_sexo, nuevo_telefono_casa, nuevo_telefono_padre, nuevo_telefono_madre, nuevo_telefono_familiar, nuevo_telefono_vecino, nueva_enfermedad_relevante, nuevo_con_quien_vive, nuevo_quien_lo_trae, nuevo_telefono_que_lo_trae
+            nuevo_nombre = nombre.lower()
+            nuevo_apellido = apellido.lower()
 
             subject = "Informacion de " + str(alumno.nombre) + " modificada."
 
@@ -953,6 +944,8 @@ def aplicar_cambios_alumno(request):
             for familiar in familiares:
                 recipient_list = [familiar.padre_madre.email]
                 #send_mail(subject, message, email_from, recipient_list)
+
+            alumno.nombre, alumno.apellido, alumno.lugar_nacimiento, alumno.fecha_nacimiento, alumno.domicilio, alumno.email, alumno.sexo, alumno.telefono_casa, alumno.telefono_padre, alumno.telefono_madre, alumno.telefono_familiar, alumno.telefono_vecino, alumno.enfermedad_relevante, alumno.con_quien_vive, alumno.quien_lo_trae, alumno.telefono_que_lo_trae  = nuevo_nombre, nuevo_apellido, nuevo_lugar_nacimiento, nueva_fecha_nacimiento, nuevo_domicilio, nuevo_email, nuevo_sexo, nuevo_telefono_casa, nuevo_telefono_padre, nuevo_telefono_madre, nuevo_telefono_familiar, nuevo_telefono_vecino, nueva_enfermedad_relevante, nuevo_con_quien_vive, nuevo_quien_lo_trae, nuevo_telefono_que_lo_trae
 
             alumno.save()
             data = {
