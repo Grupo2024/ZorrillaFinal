@@ -329,26 +329,36 @@ def crear_padre(request):
         return JsonResponse(data)
     
 def crear_padre_madre(request):
-    padre_form = PadreForm(request.POST)
-    if padre_form.is_valid():
-        print ("Es valido")
-        padre_form.save()
-        dni_padre = padre_form.cleaned_data['dni']
-        padre = Padre_madre.objects.get(dni=dni_padre)
-        resultado = "El Padre " + str(padre.apellido) + " " + str(padre.nombre) + " ha sido creado con exito."
-        data = {
-            'error':False,
-            'resultado':resultado
-        }
+    if request.method == "POST":
+        padre_form = PadreForm(request.POST)
+        if padre_form.is_valid():
+            print ("Es valido")
+            padre_form.save()
+            dni_padre = padre_form.cleaned_data['dni']
+            padre = Padre_madre.objects.get(dni=dni_padre)
+            nombre = padre_form.cleaned_data['nombre']
+            apellido = padre_form.cleaned_data['apellido']
+            new_nombre = nombre.lower()
+            new_apellido = apellido.lower()
+            resultado = "El Padre " + str(padre.apellido) + " " + str(padre.nombre) + " ha sido creado con exito."
+            data = {
+                'error':False,
+                'resultado':resultado
+            }
+            padre.nombre, padre.apellido = new_nombre, new_apellido
+            padre.save()
+            return JsonResponse(data)
+        else:
+            print ("No es valido")
+            resultado = str(padre_form.errors)
+            print (resultado)
+            data = {
+                'error':True,
+                'resultado':resultado
+            }
+            return JsonResponse(data)
     else:
-        print ("No es valido")
-        resultado = str(padre_form.errors)
-        print (resultado)
-        data = {
-            'error':True,
-            'resultado':resultado
-        }
-        return JsonResponse(data)
+        return HttpResponse("Solo podes acceder por Post")
 
 #Funcion que Crea al Transportista.
 def crear_transportista(request):

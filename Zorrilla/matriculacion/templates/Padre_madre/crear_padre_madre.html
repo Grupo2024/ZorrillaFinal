@@ -122,7 +122,7 @@
     {% csrf_token %}
 </form>
 
-<button class="btn btn-success" onclick="matricular_Padre()" id="btn_padre">Cargar</button>
+<center><button class="btn btn-success" onclick="matricular_Padre()" id="btn_padre">Cargar</button></center>
 
 <!-- The Modal -->
 <div class="modal fade" id="myModal">
@@ -141,7 +141,7 @@
             </div>
 
             <div class="modal-footer" id="footer">
-                <button type="button" style="display: none;" class="btn btn-success" onclick="volver_pedidos()" id="continuar">Continuar</button>
+                <button type="button" style="display: none;" class="btn btn-success" onclick="volver_index()" id="continuar">Continuar</button>
                 <button type="button" style="display: none;" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
             </div>
         </div>
@@ -151,26 +151,35 @@
 <script>
 
     function matricular_Padre(){
-        var myForm = document.getElementById('form_padre');
-        formData = new FormData(myForm);
-        $('#myModal').modal('show');
-        $.ajax({
-            url: '{% url 'crear_padre_madre' %}',
-            data: formData,
-            processData: false,
-            contentType: false,
-            type: 'POST',
-            success: function(data){
-                document.getElementById("resultado_crear_p").innerHTML = data.resultado;
-                if (data.error){
-                    document.getElementById("continuar").style.display = "none";
-                    document.getElementById("volver").style.display = "block";
-                }else{
-                   document.getElementById("continuar").style.display = "block";
-                    document.getElementById("volver").style.display = "none";
+        if (confirm("Press a button!")) {
+            var myForm = document.getElementById('form_padre');
+            formData = new FormData(myForm);
+            $('#myModal').modal('show');
+            $.ajax({
+                url: '{% url 'crear_padre_madre' %}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    document.getElementById("resultado_crear_p").innerHTML = data.resultado;
+                    if (data.error){
+                        document.getElementById("continuar").style.display = "none";
+                        document.getElementById("volver").style.display = "block";
+                    }else{
+                       document.getElementById("continuar").style.display = "block";
+                        document.getElementById("volver").style.display = "none";
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            return;
+        } 
+    }
+    
+    function volver_index(){
+        var x = document.getElementById("pedidos")
+        x.submit();
     }
 
 </script>

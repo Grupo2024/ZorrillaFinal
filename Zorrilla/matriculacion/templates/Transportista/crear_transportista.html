@@ -150,26 +150,30 @@
     }
 
     function matricular_Transportista(){
-        var myForm = document.getElementById('form_transportista');
-        formData = new FormData(myForm);
-        $('#myModal').modal('show');
-        $.ajax({
-            url: '{% url 'crear_transportista' %}',
-            data: formData,
-            processData: false,
-            contentType: false,
-            type: 'POST',
-            success: function(data){
-                document.getElementById("resultado_crear_t").innerHTML = data.resultado;
-                if (data.error){
-                    document.getElementById("continuar").style.display = "none";
-                    document.getElementById("volver").style.display = "block";
-                }else{
-                   document.getElementById("continuar").style.display = "block";
-                    document.getElementById("volver").style.display = "none";
+        if (confirm("Press a button!")) {
+            var myForm = document.getElementById('form_transportista');
+            formData = new FormData(myForm);
+            $('#myModal').modal('show');
+            $.ajax({
+                url: '{% url 'crear_transportista' %}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    document.getElementById("resultado_crear_t").innerHTML = data.resultado;
+                    if (data.error){
+                        document.getElementById("continuar").style.display = "none";
+                        document.getElementById("volver").style.display = "block";
+                    }else{
+                       document.getElementById("continuar").style.display = "block";
+                        document.getElementById("volver").style.display = "none";
+                    }
                 }
-            }
-        });
+            });    
+        } else {
+            return;
+        } 
     }
 
 </script>
