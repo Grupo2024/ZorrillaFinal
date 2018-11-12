@@ -117,17 +117,21 @@ def profesor(request, id_profesor):
 
 @login_required
 def modificar_perfil(request, clase, dni):
+    print (clase)
+    print (dni)
     if (clase == "Secretaria"):
         trabajador_elegido = Secretaria.objects.get(dni_t=dni)
+        trabajador_elegido.trabajo = "Secretaria"
     elif (clase == "Director"):
         trabajador_elegido = Director.objects.get(dni_t=dni)
+        trabajador_elegido.trabajo = "Director"
     else:
         trabajador_elegido = Profesor.objects.get(dni_t=dni)
+        trabajador_elegido.trabajo = "Profesor"
 
     trabajador = ModificarForm(initial={'nombre':trabajador_elegido.nombre_t,
                                         'apellido':trabajador_elegido.apellido_t,
                                         'dni':trabajador_elegido.dni_t,
-                                        'trabajo':clase,
                                         'lugar_nacimineto':trabajador_elegido.lugar_nacimiento_t,
                                         'fecha_nacimiento':trabajador_elegido.fecha_nacimiento_t,
                                         'domicilio':trabajador_elegido.domicilio_t,
@@ -143,6 +147,7 @@ def modificar_datos_perfil(request):
         trabajador_form = ModificarForm(request.POST)
         dni_trabajador = request.POST['dni_user']
         trabajo = request.POST['trabajo']
+        print (trabajo)
         user = User.objects.get(username=request.user)
         if trabajador_form.is_valid():
             if (trabajo == "Secretaria"):
@@ -154,7 +159,6 @@ def modificar_datos_perfil(request):
             else:
                 trabajador = Profesor.objects.get(dni_t=dni_trabajador)
                 user_Trabajador = user_Docente.objects.get(docente_referenciado=trabajador)
-
             if (user_Trabajador.user == user):
                 print (trabajador)
                 nuevo_nombre = trabajador_form.cleaned_data['nombre']
@@ -170,8 +174,6 @@ def modificar_datos_perfil(request):
                 nuevo_datos_familiares_cargo = trabajador_form.cleaned_data['datos_familiares_cargo']
                 nuevo_antecedentes_laborales = trabajador_form.cleaned_data['antecedentes_laborales']
                 nuevo_estudios_cursados = trabajador_form.cleaned_data['estudios_cursados']
-
-
 
                 trabajador.nombre_t, trabajador.apellido_t, trabajador.lugar_nacimiento_t, trabajador.fecha_nacimiento_t, trabajador.domicilio_t, trabajador.email_t, trabajador.sexo_t, trabajador.telefono_particular,trabajador.telefono_laboral, trabajador.telefono_familiar, trabajador.datos_familiares_cargo, trabajador.antecedentes_laborales, trabajador.estudios_cursados = nuevo_nombre, nuevo_apellido, nuevo_lugar_nacimiento, nueva_fecha_nacimiento, nuevo_domicilio, nuevo_email, nuevo_sexo, nuevo_telefono_particular, nuevo_telefono_laboral, nuevo_telefono_familiar, nuevo_datos_familiares_cargo, nuevo_antecedentes_laborales, nuevo_estudios_cursados
                 trabajador.save()
@@ -212,17 +214,15 @@ def mi_perfil(request):
         udocente = user_Docente.objects.get(user=user)
         trabajador = Profesor.objects.get(dni_t=udocente.docente_referenciado.dni_t)
         trabajador.cargo = "Profesor"
-        return render(request, 'templates_docentes/mi_perfil.html',{'trabajador':trabajador})
     elif check_Director(user):
         udirector = user_Director.objects.get(user=user)
         trabajador = Director.objects.get(dni_t=udirector.director_referenciado.dni_t)
         trabajador.cargo = "Director"
-        return render(request, 'templates_docentes/mi_perfil.html',{'trabajador':trabajador})
     elif check_Secretaria(user):
         usecretaria = user_Secretaria.objects.get(user=user)
         trabajador = Secretaria.objects.get(dni_t=usecretaria.secretaria_referenciada.dni_t)
         trabajador.cargo = "Secretaria"
-        return render(request, 'templates_docentes/mi_perfil.html',{'trabajador':trabajador})
+    return render(request, 'templates_docentes/mi_perfil.html',{'trabajador':trabajador})
 
 @login_required
 def volver_curso(request, dni_alumno):

@@ -45,10 +45,10 @@
             </ul>
         </div>
     </div>
-
-    {% if user.is_authenticated %}
-        <a style="margin-top: 1%; margin-left: 3%" class="btn btn-info" href="{% url 'modificar_perfil' trabajador.cargo trabajador.dni_t %}">Modificar Datos</a>
-    {% endif %}
 </div>
+
+{% if user.is_authenticated %}
+    <center><a style="margin-top: 1%; margin-left: 3%" class="btn btn-info" href="{% url 'modificar_perfil' trabajador.cargo trabajador.dni_t %}">Modificar Datos</a></center>
+{% endif %}
 
 {% endblock body %}
