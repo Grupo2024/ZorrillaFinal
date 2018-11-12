@@ -8,7 +8,7 @@
 
 <div class="main">
     <br>
-    <div class="container">
+    <div class="container" style="margin-left: -10%;">
         <div class="row">
             <div class="">
                 <!-- Buscador -->
@@ -23,9 +23,9 @@
                 <!-- Filter button -->
                 <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#myModal2">
                     <i class="fa fa-filter" aria-hidden="true"></i> Filtrar</button>
-
+                <!-- Añadir button -->
                 {% if user.is_authenticated %}
-                <button style="margin-left: 144%; margin-top: -5%" class="btn btn-success" data-toggle="modal" data-target="#myModal">Añadir libro</button>
+                <button style="margin-left: 90%; margin-top: -5.2%" class="btn btn-success" data-toggle="modal" data-target="#myModal">Añadir libro</button>
                 {% endif %}
 
                 {% if request.user|has_group:"Director" %}
