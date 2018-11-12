@@ -154,6 +154,9 @@ def crear_alumno(request):
             'apellido_alumno':apellido_alumno,
             'nombre_alumno':nombre_alumno
         }
+
+        matriculacion = Matriculacion(alumno=alumno, matriculado="No")
+        matriculacion.save()
         padre_form = PadreForm()
         return render(request, 'Padre_madre/cargar_padre.html', {'padre_form':padre_form, 'datos_alumno':datos_alumno})
     else:
