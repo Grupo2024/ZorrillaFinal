@@ -352,17 +352,22 @@ def crear_padre_madre(request):
 
 #Funcion que Crea al Transportista.
 def crear_transportista(request):
-    print ("crear transportista")
     if request.method == 'POST':
         form_transportista = TransportistaForm(request.POST)
         if form_transportista.is_valid():
             form_transportista.save()
             nombre = form_transportista.cleaned_data['nombre']
             apellido = form_transportista.cleaned_data['apellido']
+            dni = form_transportista.cleaned_data['dni']
+            transportista = Transportista.objects.get(dni=dni)
+            new_nombre = nombre.lower()
+            new_apellido = apellido.lower()
             data = {
                 'error':False,
-                'resultado': 'El transportista ' + str(nombre) + ' ' + str(apellido) + ' ha sido cargado con exito.'
+                'resultado': 'El transportista ' + str(transportista.nombre) + ' ' + str(transportista.apellido) + ' ha sido cargado con exito.'
             }
+            transportista.nombre, transportista.apellido = new_nombre, new_apellido
+            transportista.save()
             return JsonResponse(data)
         else:
             data = {
