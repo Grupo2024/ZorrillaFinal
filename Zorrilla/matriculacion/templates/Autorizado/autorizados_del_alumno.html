@@ -17,7 +17,8 @@
             <th>Apellido</th>
             <th>Dni</th>
             <th>Relacion con {{alumno.nombre}}</th>
-            <th>Opcion</th>
+            <th>Desvincular</th>
+            <th>Editar</th>
         </tr>
         {% for a in autorizados %}
         <tr>
@@ -26,6 +27,7 @@
             <td>{{a.autorizado.dni}}</td>
             <td>{{a.relacion_con_alumno}}</td>
             <td><a onclick="desvincular({{a.autorizado.dni}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
+            <td><a onclick="#">Editar</a></td>
         </tr>
         {% endfor %}
 

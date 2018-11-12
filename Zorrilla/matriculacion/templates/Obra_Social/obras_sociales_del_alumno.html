@@ -14,12 +14,14 @@
             <th>Nombre</th>
             <th>Numero de Afiliado</th>
             <th>Desvincular</th>
+            <th>Editar</th>
         </tr>
         {% for a in obras_sociales %}
         <tr>
             <td>{{a.obra_social.nombre}}</td>
             <td>{{a.numero_afiliado}}</td>
             <td><a onclick="desvincular({{a.obra_social.id}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
+            <td><a onclick="#">Editar</a></td>
         </tr>
         {% endfor %}
     </table>

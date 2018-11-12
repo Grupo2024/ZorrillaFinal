@@ -19,6 +19,7 @@
             <th>Nombre Transporte</th>
             <th>Telefono Transporte</th>
             <th>Desvincular</th>
+            <th>Editar</th>
         </tr>
         {% for a in transportistas %}
         <tr>
@@ -28,6 +29,7 @@
             <td>{{a.transportista.nombre_transporte}}</td>
             <td>{{a.transportista.telefono_transportista}}</td>
             <td><a onclick="desvincular({{a.transportista.dni}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
+            <td><a onclick="#">Editar</a></td>
         </tr>
         {% endfor %}
 
