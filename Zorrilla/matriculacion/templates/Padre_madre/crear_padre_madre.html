@@ -6,8 +6,8 @@
 
 <style type="text/css">
     #myProgress {
-            width: 100%;
-            background-color: #ddd;
+        width: 100%;
+        background-color: #ddd;
     }
     #myBar {
         width: 10%;
@@ -31,7 +31,7 @@
 
 <br>
 <form id="form_padre" style="margin-left: 30%;" method="post" >
-{% csrf_token %}
+    {% csrf_token %}
     <input type="hidden" value={{dni_alumno}} name="dni_alumno">
     <div class="card text-center" style="width: 45%; margin-left: 6%">
         <div class="card-body">
@@ -112,94 +112,68 @@
                         </div>
                         <div style="margin-left: -0.5%;">{{padre_form.telefono_trabajo}}</div>
                     </div>
-
-
                 </li>
-
             </ul>
         </div>
-        <button class="btn btn-success" onclick="matricular_Padre('{% url 'crear_padre_madre' %}')" id="btn_padre">Cargar</button>
     </div>
-        
 </form>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<form id="pedidos" action="{% url 'index' %}" method="post">
+    {% csrf_token %}
+</form>
+
+<button class="btn btn-success" onclick="matricular_Padre()" id="btn_padre">Cargar</button>
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
+
+            <!-- Modal Header -->
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Matriculando Padre:</h5>
+                <h4 class="modal-title">Resultado</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <div class="container-fluid">
-                <div class="modal-body row">
-                    <p class="col-sm-2">Resultado: </p><span style='visibility:hidden;'>..</span>
-                    <div class="col-sm-9">
-                        <div id="myProgress">
-                            <p id="myBar" value="10%"></p>
-                        </div>
-                    </div>
-                    <span id="resultado"></span>
-                </div>
-                <div class="modal-footer" id="footer">
-                    <a type="button" class="btn btn-secondary" data-dismiss="modal" href="{% url 'traer_pedidos' %}" id="continuar">Continuar</a>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="close_modal()" id="volver">Volver</button>
-                </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <span id="resultado_crear_p"></span>
+            </div>
+
+            <div class="modal-footer" id="footer">
+                <button type="button" style="display: none;" class="btn btn-success" onclick="volver_pedidos()" id="continuar">Continuar</button>
+                <button type="button" style="display: none;" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        function sleep() {
-            return new Promise(resolve => setTimeout(resolve, 1000));
-        }
+<script>
 
-        async function footer(a){
-            var elem = document.getElementById("myBar");
-            var width = 10;
-            var id = setInterval(frame, 10);
-            function frame() {
-                if (width >= 100) {
-                    clearInterval(id);
-                } else {
-                    width++;
-                    elem.style.width = width + '%';
-                    elem.innerHTML = width * 1  + '%';
+    function matricular_Padre(){
+        var myForm = document.getElementById('form_padre');
+        formData = new FormData(myForm);
+        $('#myModal').modal('show');
+        $.ajax({
+            url: '{% url 'crear_padre_madre' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                document.getElementById("resultado_crear_p").innerHTML = data.resultado;
+                if (data.error){
+                    document.getElementById("continuar").style.display = "none";
+                    document.getElementById("volver").style.display = "block";
+                }else{
+                   document.getElementById("continuar").style.display = "block";
+                    document.getElementById("volver").style.display = "none";
                 }
             }
-            await sleep();
-            elem.style.display = "none";
-            var resultado = document.getElementById("resultado");
-            resultado.innerHTML = a;
-            return a
+        });
+    }
 
-        }
-
-        function matricular_Padre(url){
-            var myForm = document.getElementById('form_padre');
-            formData = new FormData(myForm);
-            console.log("llega");
-            var elem = document.getElementById("myBar");
-            elem.style.display = "block";
-            var resultado = document.getElementById("resultado");
-            resultado.innerHTML = "";
-            var x = document.getElementById("continuar");
-            var y = document.getElementById("volver");
-            x.style.display = "none";
-            y.style.display = "none";
-            $('#myModal').modal('show');
-            $.ajax({
-                url: url,
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    console.log(data.error);
-                    alert(data.resultado)
-                }
-            });
-        }
-
-    </script>
+</script>
 
 
 {% endblock body %}
