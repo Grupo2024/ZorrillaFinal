@@ -4,30 +4,6 @@
 {% endblock navbar %}
 {% block body %}
 
-<style>
-    .loader {
-        border: 12px solid #f3f3f3; /* Light grey */
-        border-top: 12px solid #3498db; /* Blue */
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        animation: spin 2s linear infinite;
-    }
-
-    /* Safari */
-    @-webkit-keyframes spin {
-        0% { -webkit-transform: rotate(0deg); }
-        100% { -webkit-transform: rotate(360deg); }
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-</style>
-
-
 <div class="card mx-auto" style="width: 35%; margin-top: 5%">
     <form method="POST" id=login_form>
         <article class="card-body">
@@ -67,8 +43,7 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                <span>Resultado: <span id="resultado_curso"></span></span><div class="loader"></div>
-                <span id="resultado_curso"></span>
+                <span id="resultado_clave"></span>
             </div>
 
             <!-- Modal footer -->
@@ -101,26 +76,24 @@
     }
 
     function send_key(){
-        var myForm = document.getElementById('login_form');
-        formData = new FormData(myForm);
-        document.getElementById('resultado_curso').innerHTML = "Resultado"
-        $('#myModal').modal('show');
-        /*
-        $.ajax({
-            url: '/email_for_logIn/',
-            data: formData,
-            processData: false,
-            contentType: false,
-            type: 'POST',
-            success: function(data){
-                if (data.error){
-
-                }else{
-
+        if (confirm("¿Mandar clave ?")) {
+            var myForm = document.getElementById('login_form');
+            formData = new FormData(myForm);
+            $('#myModal').modal('show');
+            $.ajax({
+                url: '/email_for_logIn/',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    $("#myModal").modal()
+                    document.getElementById("resultado_clave").innerHTML = data.resultado;
                 }
-            }
-        });
-        */
+            });
+        } else {
+            return;
+        }
     }
 
 </script>

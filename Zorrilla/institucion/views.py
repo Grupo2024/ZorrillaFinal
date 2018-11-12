@@ -31,7 +31,6 @@ def email_for_logIn(request):
             recipient_list = [docente_email]
             send_mail( subject, message, email_from, recipient_list )
             data = {
-                'error':False,
                 'resultado': "Pedido enviado"
             }
             print ("es valido")
@@ -40,10 +39,11 @@ def email_for_logIn(request):
             print ("No es valido")
             print (form.errors)
             data = {
-                'error':True,
                 'resultado': str(form.errors)
             }
             return JsonResponse(data)
+    else:
+        return HttpResponse("Solo podes entrar por POST")
 
 @user_passes_test(check_Secretaria)
 def template_email_docente(request):
