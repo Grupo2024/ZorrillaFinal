@@ -8,8 +8,8 @@
 
 <div class="main">
     <br>
-    <div class="container" style="margin-left: -10%;">
-        <div class="row">
+    <div class="container" style="margin-left: -12.5%;">
+        <div class="row"></div>
             <div class="">
                 <!-- Buscador -->
                 <input style="margin-left: 4%;" type="text" placeholder=" Nombre del libro que desee buscar" id="myInput" onkeyup="filterLibros()">
@@ -25,9 +25,9 @@
                     <i class="fa fa-filter" aria-hidden="true"></i> Filtrar</button>
                 <!-- Añadir button -->
                 {% if user.is_authenticated %}
-                <button style="margin-left: 90%; margin-top: -5.2%" class="btn btn-success" data-toggle="modal" data-target="#myModal">Añadir libro</button>
+                <button style="margin-left: 60%; margin-top: -3.4%" class="btn btn-success" data-toggle="modal" data-target="#myModal">Añadir libro</button>
                 {% endif %}
-
+                    
                 {% if request.user|has_group:"Director" %}
                 <button style="margin-left: 131%; margin-top: -5.5%" class="btn btn-dark" onclick="informe('{% url 'informe' %}')">Informe</button>
                 {% endif %}
@@ -51,7 +51,7 @@
 
         <div class="container">
             <div class="row">
-                <div style="margin-left: 0%" class="col-12">
+                <div style="margin-left: -9%" class="col-12">
                     <br>
                     <table class="table table-sm table-hover" id="tabla">
                         <thead>
