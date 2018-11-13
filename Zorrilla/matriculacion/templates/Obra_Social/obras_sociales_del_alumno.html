@@ -26,6 +26,13 @@
 {% else %}
     <h3><center>{{alumno.apellido}} {{alumno.nombre}} no tiene ninguna Obra Social.</center></h3>
 {% endif %}
+<br>
+
+<center>
+    <button class="btn btn-success text-white centerB" id="btn_os" onclick="traer_obras_sociales('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Cargar Obra Social</button>
+    <a class="btn btn-primary centerB" href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
+    <a class="btn btn-primary centerB" href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
+</center>
 
 <form id="desvincular_obra_social" method="post" action="{% url 'desvincular_obra_social' %}">
     {% csrf_token %}
@@ -44,9 +51,6 @@
     {% csrf_token %}
 </form>
 
-<a href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
-<a href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
-<button id="btn_os" onclick="traer_obras_sociales('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Cargar Obra Social</button>
 
 <script>
 
