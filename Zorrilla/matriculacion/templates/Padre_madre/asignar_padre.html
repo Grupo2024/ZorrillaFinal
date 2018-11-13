@@ -49,7 +49,7 @@
                 <input name="dni_alumno" id="dni_alumno" value={{dni_alumno}} type="hidden">
                 <input name="dni_padre" id="dni_padre_2" value=0 type="hidden">
             </form>
-            <a href="{% url 'cargar_padre' dni_alumno %}" id="crear_padre_btn">Crear Padre</a>
+            <a class="btn btn-primary centerB" href="{% url 'cargar_padre' dni_alumno %}" id="crear_padre_btn">Crear Padre</a>
             <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar_btn">Cerrar</button>
             <button type="button" class="btn btn-success" id="cont_padre" onclick="mandar_padre()">Asignar</button>
             <button type="button" class="btn btn-success" id="cont_btn_p" onclick="refresh_p()">Continuar</button>
