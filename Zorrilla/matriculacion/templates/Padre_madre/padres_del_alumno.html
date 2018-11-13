@@ -7,8 +7,12 @@
 <br>
 {% if familiares|length != 0%}
     <h3><center>Padres de {{alumno.apellido}} {{alumno.nombre}}.</center></h3>
+  
     <br>
-    <table style="width:50%" align="center">
+
+
+    <table class="table table-sm table-hover" id="tabla" align="center" style="width:50%">
+        
         <tr>
             <th>Nombre</th>
             <th>Apellido</th>
@@ -23,8 +27,8 @@
             <td>{{a.padre_madre.apellido|title}}</td>
             <td>{{a.padre_madre.dni}}</td>
             <td>{{a.padre_madre.email}}</td>
-            <td><a onclick="desvincular({{a.padre_madre.dni}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
-            <td><a onclick="#">Editar</a></td>
+            <td><button class="btn btn-warning" onclick="desvincular({{a.padre_madre.dni}})"><i class="fa fa-ban"></i></button></td>
+            <td><button class="btn btn-info" onclick="#"><i class="fa fa-edit"></i></button></td>
         </tr>
         {% endfor %}
     </table>
@@ -37,9 +41,12 @@
     <input type="hidden" value=0 name="dni_padre" id="dni_padre">
 </form>
 
-<a class="btn btn-success text-white centerB" onclick="traer_padres('{% url 'todos_los_padres_asignar' alumno.dni %}')">Añadir Padre</a>
-<a class="btn btn-primary centerB" href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
-<a class="btn btn-primary centerB" href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
+
+<center>
+    <a class="btn btn-primary centerB" href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
+    <a class="btn btn-primary centerB" href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
+    <a class="btn btn-success text-white centerB" onclick="traer_padres('{% url 'todos_los_padres_asignar' alumno.dni %}')">Añadir Padre</a>
+</center>
 
 <div class="modal fade" id="todos_los_padres">
     <div class="modal-dialog modal-lg">
