@@ -19,8 +19,8 @@
                 <table class="table table-bordered" id="tabla_padres">
                     <thead>
                         <tr>
-                            <th>Nombre</th>
                             <th>Apellido</th>
+                            <th>Nombre</th>
                             <th>Dni</th>
                             <th>Opcion</th>
                         </tr>
@@ -28,8 +28,8 @@
                     <tbody>
                         {% for padre in todos_los_padres %}
                         <tr>
-                            <td>{{padre.nombre}}</td>
-                            <td>{{padre.apellido}}</td>
+                            <td>{{padre.apellido|title}}</td>
+                            <td>{{padre.nombre|title}}</td>
                             <td>{{padre.dni}}</td>
                             <td><input type="radio" id={{padre.dni}} name="padre" value={{padre.dni}}></td>
                         </tr>

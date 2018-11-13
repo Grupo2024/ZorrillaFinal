@@ -15,6 +15,7 @@
             <th>Dni</th>
             <th>Email</th>
             <th>Desvincular</th>
+            <th>Editar</th>
         </tr>
         {% for a in familiares %}
         <tr>
@@ -23,6 +24,7 @@
             <td>{{a.padre_madre.dni}}</td>
             <td>{{a.padre_madre.email}}</td>
             <td><a onclick="desvincular({{a.padre_madre.dni}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
+            <td><a onclick="#">Editar</a></td>
         </tr>
         {% endfor %}
     </table>
@@ -35,9 +37,9 @@
     <input type="hidden" value=0 name="dni_padre" id="dni_padre">
 </form>
 
-<button onclick="traer_padres('{% url 'todos_los_padres_asignar' alumno.dni %}')">Añadir Padre</button>
-<a href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
-<a href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
+<a class="btn btn-success text-white centerB" onclick="traer_padres('{% url 'todos_los_padres_asignar' alumno.dni %}')">Añadir Padre</a>
+<a class="btn btn-primary centerB" href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
+<a class="btn btn-primary centerB" href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
 
 <div class="modal fade" id="todos_los_padres">
     <div class="modal-dialog modal-lg">

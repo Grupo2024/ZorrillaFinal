@@ -23,8 +23,8 @@
                     <table class="table table-bordered" id="tabla_autorizados">
                         <thead>
                             <tr>
-                                <th>Nombre</th>
                                 <th>Apellido</th>
+                                <th>Nombre</th>
                                 <th>Dni</th>
                                 <th>Opcion</th>
                             </tr>
@@ -32,8 +32,8 @@
                         <tbody>
                             {% for a in autorizados %}
                             <tr>
-                                <td>{{a.nombre}}</td>
-                                <td>{{a.apellido}}</td>
+                                <td>{{a.apellido|title}}</td>
+                                <td>{{a.nombre|title}}</td>
                                 <td>{{a.dni}}</td>
                                 <td><input type="radio" id={{a.dni}} name="autorizadoss" value={{a.dni}}></td>
                             </tr>
@@ -65,7 +65,7 @@
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">
-            <a href="{% url 'form_autorizado' %}" align="left" id="crear_btn">Crear Autorizado</a>
+            <a class="btn btn-success text-white" href="{% url 'form_autorizado' %}" align="left" id="crear_btn">Crear Autorizado</a>
             <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar_btn">Cerrar</button>
             <button type="button" class="btn btn-success" id="cont_autorizado" onclick="mandar_autorizado()">Asignar</button>
             <button type="button" class="btn btn-success" data-dismiss="modal" id="volver_btn" onclick="refresh_p()">Continuar</button>
