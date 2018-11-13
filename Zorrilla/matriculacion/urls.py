@@ -20,14 +20,13 @@ urlpatterns = [
     url(r'^logout_me_out', logout_me_out, name="logout_me_out"),
     url(r'^pedidos', traer_pedidos, name="traer_pedidos"),
     url(r'^form_autorizado', form_autorizado, name="form_autorizado"),
-    url(r'^form_director', form_director, name="form_director"),
+
     url(r'^aceptar_re_matriculacion', aceptar_re_matriculacion, name="aceptar_re_matriculacion"),
     url(r'^pedido_re_matricular', pedido_re_matricular, name="pedido_re_matricular"),
     url(r'^pedido_egreso', pedido_egreso, name="pedido_egreso"),
     url(r'^crear_obra_social', crear_obra_social, name="crear_obra_social"),
     url(r'^crear_autorizado', crear_autorizado, name="crear_autorizado"),
-    url(r'^crear_director', crear_director, name="crear_director"),
-    url(r'^crear_secretaria', crear_secretaria, name="crear_secretaria"),
+
     url(r'^form_modificar_alumno/(\d+)/', form_modificar_alumno, name="form_modificar_alumno"),
     url(r'^desvincular_transportista', desvincular_transportista, name="desvincular_transportista"),
     url(r'^desvincular_autorizado', desvincular_autorizado, name="desvincular_autorizado"),
@@ -37,7 +36,9 @@ urlpatterns = [
     url(r'^cambiar_curso', cambiar_curso, name="cambiar_curso"),
     url(r'^form_transportista', form_transportista, name="form_transportista"),
     url(r'^form_curso', form_curso, name="form_curso"),
-    url(r'^form_secretaria', form_secretaria, name="form_secretaria"),
+
+    url(r'^form_secretaria_director/(?P<opcion>[\w\-]+)/$', form_secretaria_director, name="form_secretaria_director"),
+
     url(r'^asignar_autorizado', asignar_autorizado, name="asignar_autorizado"),
     url(r'^crear_curso', crear_curso, name="crear_curso"),
     url(r'^form_obra_social', form_obra_social, name="form_obra_social"),
@@ -46,6 +47,9 @@ urlpatterns = [
     url(r'^todas_las_obras_sociales_asignar/(\d+)/', todas_las_obras_sociales_asignar, name="todas_las_obras_sociales_asignar"),
     url(r'^asignar_padre', asignar_padre, name="asignar_padre"),
     url(r'^asignar_obra_social', asignar_obra_social, name="asignar_obra_social"),
+
+    url(r'^crear_trabajador', crear_trabajador, name="crear_trabajador"),
+
     url(r'^todas_las_obras_sociales', todas_las_obras_sociales, name="todas_las_obras_sociales"),
     url(r'^crear_transportista', crear_transportista, name="crear_transportista"),
     url(r'^asignar_transportista', asignar_transportista, name="asignar_transportista"),

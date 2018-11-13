@@ -25,12 +25,16 @@ def daddy():
         grupo_profesor, created = Group.objects.get_or_create(name='Profesor')
         user_director = User.objects.create_user(username="director", password=password)
         grupo_director, created = Group.objects.get_or_create(name='Director')
+        grupo_admin, created = Group.objects.get_or_create(name='Admin_Secretaria')
         grupo_secretaria = Group.objects.get(name='Secretaria') 
+        user_admin = User.objects.create_user(username="admin_s", password=password)
         grupo_secretaria.user_set.add(user_secretaria)
         my_group2 = Group.objects.get(name='Profesor') 
         my_group2.user_set.add(user_profesor)
         my_group3 = Group.objects.get(name='Director') 
         my_group3.user_set.add(user_director)
+        grupo_admin = Group.objects.get(name='Admin_Secretaria')
+        my_group2.user_set.add(user_admin)
         #new_group, created = Group.objects.get_or_create(name='new_group')
         a = Secretaria(nombre_t="a", apellido_t="a", dni_t=11111111, lugar_nacimiento_t="a", 
         fecha_nacimiento_t="1980-01-01", domicilio_t="a", email_t="mumi@gmail.com", sexo_t="Mujer", 
@@ -111,13 +115,9 @@ def form_autorizado(request):
     autorizado = AutorizadoForm()
     return render(request, 'Autorizado/crear_autorizado.html', {'autorizado':autorizado})
 
-def form_director(request):
-    director = DirectorForm()
-    return render (request, 'Director/crear_director.html', {'director':director})
-
-def form_secretaria(request):
-    secretaria = SecretariaForm()
-    return render (request, 'Secretaria/crear_secretaria.html', {'secretaria':secretaria})
+def form_secretaria_director(request, opcion):
+    trabajador = SDForm()
+    return render (request, 'Admin_Secretaria/form_secretaria_director.html', {'trabajador':trabajador, 'cargo':opcion})
 
 #Levantar el Form para cargar una Obra Social.
 def form_obra_social(request):
@@ -166,6 +166,97 @@ def crear_alumno(request):
         aux = alumno_form.errors
         return HttpResponse(str(aux))
     
+def crear_trabajador(request):
+    trabajador = SDForm(request.POST)
+    if trabajador.is_valid():
+        nombre = trabajador.cleaned_data['nombre']
+        apellido = trabajador.cleaned_data['apellido']
+        dni = trabajador.cleaned_data['dni']
+        lugar_nacimiento = trabajador.cleaned_data['lugar_nacimiento']
+        fecha_nacimiento = trabajador.cleaned_data['fecha_nacimiento']
+        domicilio = trabajador.cleaned_data['domicilio']
+        email = trabajador.cleaned_data['email']
+        sexo = trabajador.cleaned_data['sexo']
+        telefono_particular = trabajador.cleaned_data['telefono_particular']
+        telefono_laboral = trabajador.cleaned_data['telefono_laboral']
+        telefono_familiar = trabajador.cleaned_data['telefono_familiar']
+        datos_familiares_cargo = trabajador.cleaned_data['datos_familiares_cargo']
+        antecedentes_laborales = trabajador.cleaned_data['antecedentes_laborales']
+        estudios_cursados = trabajador.cleaned_data['estudios_cursados']
+        cargo = request.POST['cargo']
+        print (cargo)
+        grupo = 0
+        if (cargo == "Secretara"):
+            try:
+                secretaria = Secretaria.objects.get(dni_t=dni)
+                try:
+                    secretaria = Secretaria.objects.get(dni_t=dni, email_t=email)
+                except Secretaria.DoesNotExist:
+                    data = {
+                        'error':True,
+                        'resultado': 'Ya existe una Secretaria con esa direccion de Email.'
+                    }
+                    return JsonResponse(data)
+            except Secretaria.DoesNotExist:
+                data = {
+                    'error':True,
+                    'resultado': 'Ya existe una Secretaria con ese Dni.'
+                }
+                return JsonResponse(data)
+        else:
+            try:
+                director = Director.objects.get(dni_t=dni)
+                try:
+                    director = Director.objects.get(dni_t=dni, email_t=email)
+                    grupo = 1
+                except Director.DoesNotExist:
+                    data = {
+                        'error':True,
+                        'resultado': 'Ya existe un Director con esa direccion de Email.'
+                    }
+                return JsonResponse(data)
+            except Director.DoesNotExist:
+                data = {
+                    'error':True,
+                    'resultado': 'Ya existe un Director con ese Dni.'
+                }
+                return JsonResponse(data)
+
+
+        password = "hola1234"
+        user = User.objects.create_user(username=nombre + "a", password=password)
+
+        if (grupo == 0):
+            trabajadorr = Secretaria(nombre_t= nombre, apellido_t=apellido,dni_t=dni,lugar_nacimiento_t=lugar_nacimiento, fecha_nacimiento_t=fecha_nacimiento,domicilio_t=domicilio,email_t=email,sexo_t=sexo, telefono_particular=telefono_particular, telefono_laboral=telefono_laboral, telefono_familiar=telefono_familiar, datos_familiares_cargo=datos_familiares_cargo, antecedentes_laborales=antecedentes_laborales, estudios_cursados=estudios_cursados)
+            trabajadorr.save()
+            grupo = Group.objects.get(name='Secretaria')
+            grupo.user_set.add(user)
+
+        else:
+            trabajadorr = Director(nombre_t= nombre, apellido_t=apellido,dni_t=dni,lugar_nacimiento_t=lugar_nacimiento, fecha_nacimiento_t=fecha_nacimiento,domicilio_t=domicilio,email_t=email,sexo_t=sexo, telefono_particular=telefono_particular, telefono_laboral=telefono_laboral, telefono_familiar=telefono_familiar, datos_familiares_cargo=datos_familiares_cargo, antecedentes_laborales=antecedentes_laborales, estudios_cursados=estudios_cursados)
+            trabajadorr.save()
+            grupo = Group.objects.get(name='Director')
+            grupo.user_set.add(user)
+
+        subject = "Usuario Creado"
+        message = "Los datos de " + str(trabajadorr.apellido_t) + "" + str(trabajadorr.nombre_t) + " ha sido ingresado al sistema, en el cual utilizara como nombre de usuario: " + str(user.username) + " y la password " + str(password)
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [trabajador_crear.email_t]
+        #send_mail(subject, message, email_from, recipient_list)
+        data = {
+            'error':False,
+            'resultado': cargo + " creado/a con exito."
+        }
+        return JsonResponse(data)
+
+    else:
+        aux = trabajador.errors
+        data = {
+            'error':True,
+            'resultado':str(aux)
+        }
+        return JsonResponse(data)
+
 def definir_curso(seccion):
     if (seccion == "B" or seccion == "D"):
         print ("Es B o D")
@@ -202,78 +293,6 @@ def crear_curso(request):
             'resultado': msg
         }
         return JsonResponse(data)
-    return HttpResponse("Solo podes acceder por Post")
-
-def crear_director(request):
-    if request.method == 'POST':
-        director = DirectorForm(request.POST)
-        if director.is_valid():
-            director.save()
-            dni = director.cleaned_data['dni_t']
-            director = Director.objects.get(dni_t=dni)
-            director.cargo = "Director"
-            director.save()
-            password = new_Password(dni)
-            user_d = User.objects.create_user(username=director.nombre_t, password=password)
-            my_group = Group.objects.get(name='Director')
-            my_group.user_set.add(user_d)
-            #Creamos la Clase intermedia.
-            user_director = user_Director(user=user_d, director_referenciado=director)
-            user_director.save()
-            #Email Notificando la creacion del usuario.
-            subject = "Usuario Creado"
-            message = "El Director " + str(director.apellido_t) + "" + str(director.nombre_t) + " ha sido ingresado al sistema, en el cual utilizara como nombre de usuario: " + str(user_d.username) + " y la password " + str(password)
-            email_from = settings.EMAIL_HOST_USER
-            recipient_list = [director.email_t]
-            #send_mail(subject, message, email_from, recipient_list)
-            data = {
-                'error':False,
-                'resultado': "El Director " + str(director.apellido_t) + " " + str(director.nombre_t) + " ha sido creado con exito."
-            }
-            return JsonResponse(data)
-        else:
-            resultado = str(director.errors)
-            data = {
-                'error':True,
-                'resultado':resultado
-            }
-            return JsonResponse(data)
-    return HttpResponse("Solo podes acceder por Post")
-
-def crear_secretaria(request):
-    if request.method == 'POST':
-        secretaria = SecretariaForm(request.POST)
-        if secretaria.is_valid():
-            secretaria.save()
-            dni = secretaria.cleaned_data['dni_t']
-            secretaria = Secretaria.objects.get(dni_t=dni)
-            secretaria.cargo = "Secretaria"
-            secretaria.save()
-            password = new_Password(dni)
-            user_d = User.objects.create_user(username=secretaria.nombre_t, password=password)
-            my_group = Group.objects.get(name='Secretaria')
-            my_group.user_set.add(user_d)
-            #Creamos la Clase intermedia.
-            user_secretaria = user_Secretaria(user=user_d, secretaria_referenciada=secretaria)
-            user_secretaria.save()
-            #Email Notificando la creacion del usuario.
-            subject = "Usuario Creado"
-            message = str(secretaria.apellido_t) + "" + str(secretaria.nombre_t) + " ha sido ingresado/a al sistema, en el cual utilizara como nombre de usuario: " + str(user_d.username) + " y la password " + str(password)
-            email_from = settings.EMAIL_HOST_USER
-            recipient_list = [secretaria.email_t]
-            #send_mail(subject, message, email_from, recipient_list)
-            data = {
-                'error':False,
-                'resultado': str(secretaria.apellido_t) + " " + str(secretaria.nombre_t) + " ha sido creado/a con exito y utilizara como nombre de usuario: " + str(user_d.username) + " y la password " + str(password)
-            }
-            return JsonResponse(data)
-        else:
-            resultado = str(secretaria.errors)
-            data = {
-                'error':True,
-                'resultado':resultado
-            }
-            return JsonResponse(data)
     return HttpResponse("Solo podes acceder por Post")
 
 def crear_autorizado(request):
@@ -1014,7 +1033,7 @@ def login(request):
             }
         else:
             data = {
-            'estado': "nombre de usuario o contraseña no son correctos",
+            'estado': "Nombre de usuario o contraseña no son correctos",
             'error': True
             }
     return JsonResponse(data, safe=True)

@@ -56,9 +56,6 @@ class Trabajador(models.Model):
     fecha_inicio_actividad = models.DateField('Fecha de Inicio de Clases en el Colegio', auto_now_add=True)
     antecedentes_laborales = models.TextField('Datos de Trabajos Previos', max_length=300)
     estudios_cursados = models.TextField('Estudios del Trabajador', max_length=300)
-    #Nuevos datos que faltaban:
-    #cargo = models.CharField('Cargo que posee en esta escuela', max_length=50, blank=True)
-    
 
     def __str__(self):
         return 'Trabajador: {} {}| dni: {}| sexo: {}'.format(self.nombre_t,

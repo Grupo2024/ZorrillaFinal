@@ -31,15 +31,33 @@ class AutorizadoForm(forms.ModelForm):
         model = Autorizado
         fields = '__all__'
 
-class DirectorForm(forms.ModelForm):
-    class Meta:
-        model = Director
-        fields = '__all__'
+class SDForm(forms.Form):
+    HO = 'Hombre'
+    MU = 'Mujer'
 
-class SecretariaForm(forms.ModelForm):
-    class Meta:
-        model = Secretaria
-        fields = '__all__'
+    GENERO_CHOICES = (
+        (HO , 'Hombre'),
+        (MU , 'Mujer')
+    )
+    nombre = forms.CharField(required=True)
+    apellido = forms.CharField(required=True)
+    dni = forms.IntegerField(required=True)
+    lugar_nacimiento = forms.CharField(required=True)
+    fecha_nacimiento = forms.DateField(required=True)
+    domicilio = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
+    sexo = forms.ChoiceField(choices=GENERO_CHOICES)
+    telefono_particular = forms.IntegerField(required=True)
+    telefono_laboral = forms.IntegerField(required=True)
+    telefono_familiar = forms.IntegerField(required=True)
+    datos_familiares_cargo = forms.CharField(required=True)
+    antecedentes_laborales = forms.CharField(required=True)
+    estudios_cursados = forms.CharField(required=True)
+    cargo = forms.CharField(required=False)
+
+    widgets = {
+            'fecha_nacimiento': DateInput()
+        }
 
 class Obra_SocialForm(forms.ModelForm):
     class Meta:

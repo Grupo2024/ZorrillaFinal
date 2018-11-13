@@ -105,6 +105,9 @@
 
 
         {% if user.is_authenticated %}
+
+        <a href="{% url 'form_secretaria_director' 'Secretaria' %}" class="btn btn-success asd">Agregar Secretaria</a>
+
         <div id="accordion" align="center" style="width: 40%; margin-left: 30%; margin-top: 5%">
             <div class="card">
                 <div class="card-header btn collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" id="headingOne">
@@ -135,7 +138,7 @@
                 </div>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                     <div class="card-body">
-                        {% if request.user|has_group:"Secretaria" %}
+                        {% if request.user|has_group:"Secretaria" or  request.user|has_group:"Admin_Secretaria"%}
                         <a href="{% url 'formProfesor' %}" class="btn btn-success asd">Agregar docente</a>
                         <br>
                         <br>
@@ -143,11 +146,11 @@
                         <br>
                         <br>
                         {% endif %}
-                        {% if request.user|has_group:"Secretaria" or request.user|has_group:"Director" %}
+                        {% if request.user|has_group:"Secretaria" or request.user|has_group:"Director" or  request.user|has_group:"Admin_Secretaria"%}
                         <a href="{% url 'docentes' %}" class="btn btn-danger asd">Ver docentes</a>
                         {% endif %}                        
                         {% if request.user|has_group:"Profesor" %}
-                            <a href="{% url 'mi_perfil' %}" class="btn btn-success asd">Modificar Datos</a>
+                        <a href="{% url 'mi_perfil' %}" class="btn btn-success asd">Modificar Datos</a>
                         {% endif %}
                     </div>
                 </div>
@@ -160,7 +163,7 @@
                 </div>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                     <div class="card-body">
-                        {% if request.user|has_group:"Secretaria" or request.user|has_group:"Director" %}
+                        {% if request.user|has_group:"Secretaria" or request.user|has_group:"Director"%}
                         <a href="{% url 'estadisticas' %}" class="btn btn-primary asd">Estadisticas</a>
                         <br>
                         <br>
@@ -185,6 +188,44 @@
                     </div>
                 </div>
             </div>
+            {% if request.user|has_group:"Admin_Secretaria" %}
+            <div class="card">
+                <div class="card-header collapsed" data-toggle="collapse" data-target="#headingDir" aria-expanded="false" aria-controls="collapseDir" id="headingDir">
+                    <h5 class="mb-0">
+                        <a>Director</a>
+                    </h5>
+                </div>
+                <div id="collapseDir" class="collapse" aria-labelledby="headingDir" data-parent="#accordion">
+                    <div class="card-body">
+                        <a href="{% url 'index' %}" class="btn btn-success asd">Agregar Director</a>
+                        <br>
+                        <br>
+                        <a href="{% url 'index' %}" class="btn btn-primary asd">Ver Directores</a>
+                        <br>
+                        <br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header collapsed" data-toggle="collapse" data-target="#headingSecr" aria-expanded="false" aria-controls="collapseSecr" id="headingSecr">
+                    <h5 class="mb-0">
+                        <a>Secretaria</a>
+                    </h5>
+                </div>
+
+                <div id="collapseSecr" class="collapse" aria-labelledby="headingSecr" data-parent="#accordion">
+                    <div class="card-body">
+                        <a href="{% url 'index' %}" class="btn btn-success asd">Agregar Secretaria</a>
+                        <br>
+                        <br>
+                        <a href="{% url 'index' %}" class="btn btn-primary asd">Ver Secretarias</a>
+                        <br>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
             <div class="card">
                 <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseTwo" id="headingTwo">
                     <h5 class="mb-0">
@@ -215,95 +256,96 @@
                     </div>
                 </div>
             </div>
-            {% endif %}
-            {% else %}
+        </div>
+        {% endif %}
+        {% else %}
 
-            <div class="parallax">
-                <br>
-                <br>
-                <br>
-                <br>
-                <h1 class="display-1 font-weight-bold text-center text-white" style="margin-top: 6%;">Primario Zorrilla</h1>
+        <div class="parallax">
+            <br>
+            <br>
+            <br>
+            <br>
+            <h1 class="display-1 font-weight-bold text-center text-white" style="margin-top: 6%;">Primario Zorrilla</h1>
 
-                <button class="btn btn-light btn-lg  d-block mx-auto " onclick="scrollWin()" style="width: 20%; margin-top: 10%;">Ver Mas</button>
+            <button class="btn btn-light btn-lg  d-block mx-auto " onclick="scrollWin()" style="width: 20%; margin-top: 10%;">Ver Mas</button>
 
-            </div>
+        </div>
 
-            <div class="parallax_blur">
-                <br>
-                <br>
-                <br>
+        <div class="parallax_blur">
+            <br>
+            <br>
+            <br>
 
-                <div class="row justify-content-around">
+            <div class="row justify-content-around">
 
-                    <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
-                        <div class="flipper">
-                            <div class="front" >
-                                <!-- front content -->
-                                <div style="width: 150%;">
-                                    <img class="card-img-top" src="{% static "img/3zorrilla.jpeg" %}" alt="card image">
-                                </div>
-                            </div>
-                            <div class="back" >
-                                <!-- back content -->
-                                <div style="background-color: white">
-                                    <p class="card-text" style="text-align: justify">Juan Zorrilla de San Martín (Montevideo, 28 de diciembre de 1855 - 3 de noviembre de 1931) fue un escritor, periodista, docente y diplomático uruguayo.
-                                        Junto a su hermano Alejandro, en 1865 fue llevado por su padre a cursar sus estudios en el Colegio de la Inmaculada Concepción de Santa Fe, República Argentina. Entre 1867 y 1872 estudió en el Colegio de los Padres Bayoneses, en Montevideo, lugar en el que comenzó sus estudios universitarios. Se recibió de bachiller en Santa Fe, en 1872. Entre 1874 y 1877 estudió en el Colegio de los Padres Jesuitas de Santiago de Chile hasta completar sus estudios como Licenciado en Letras y Ciencias Políticas. En ese período colaboró en la redacción de “La estrella de Chile” y publicó “Notas de un Himno”. En Chile recibió la influencia de las lecturas románticas de José Zorrilla, José de Espronceda y sobre todo, Gustavo Adolfo Bécquer.
-                                    </p>
-                                    <a href="https://es.wikipedia.org/wiki/Juan_Zorrilla_de_San_Mart%C3%ADn" class="btn btn-info " style=" align-self: center">Info Button</a>
-                                </div>
+                <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+                    <div class="flipper">
+                        <div class="front" >
+                            <!-- front content -->
+                            <div style="width: 150%;">
+                                <img class="card-img-top" src="{% static "img/3zorrilla.jpeg" %}" alt="card image">
                             </div>
                         </div>
-                    </div>
-
-                    <div class="card text-white bg-primary  text-center p-2" style="width: 35%;">
-                        <div class="card-header">INFORMACION</div>
-                        <div class="card-body">
-                            <h5 class="card-title">Telefonos</h5>
-                            <h6>Cecilia: 73456321</h6>
-                            <h6>Roberto: 54623245</h6>
-                            <br>
-                            <h5 class="card-title">Mails</h5>
-                            <h6>nose@gmail.com</h6>
-                            <h6>nose2@gmail.com</h6>
-                            <br>
-                            <h5>Ubicacion</h5>
-                            <div id="map"></div>
+                        <div class="back" >
+                            <!-- back content -->
+                            <div style="background-color: white">
+                                <p class="card-text" style="text-align: justify">Juan Zorrilla de San Martín (Montevideo, 28 de diciembre de 1855 - 3 de noviembre de 1931) fue un escritor, periodista, docente y diplomático uruguayo.
+                                    Junto a su hermano Alejandro, en 1865 fue llevado por su padre a cursar sus estudios en el Colegio de la Inmaculada Concepción de Santa Fe, República Argentina. Entre 1867 y 1872 estudió en el Colegio de los Padres Bayoneses, en Montevideo, lugar en el que comenzó sus estudios universitarios. Se recibió de bachiller en Santa Fe, en 1872. Entre 1874 y 1877 estudió en el Colegio de los Padres Jesuitas de Santiago de Chile hasta completar sus estudios como Licenciado en Letras y Ciencias Políticas. En ese período colaboró en la redacción de “La estrella de Chile” y publicó “Notas de un Himno”. En Chile recibió la influencia de las lecturas románticas de José Zorrilla, José de Espronceda y sobre todo, Gustavo Adolfo Bécquer.
+                                </p>
+                                <a href="https://es.wikipedia.org/wiki/Juan_Zorrilla_de_San_Mart%C3%ADn" class="btn btn-info " style=" align-self: center">Info Button</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <br>
-                <br>
+
+                <div class="card text-white bg-primary  text-center p-2" style="width: 35%;">
+                    <div class="card-header">INFORMACION</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Telefonos</h5>
+                        <h6>Cecilia: 73456321</h6>
+                        <h6>Roberto: 54623245</h6>
+                        <br>
+                        <h5 class="card-title">Mails</h5>
+                        <h6>nose@gmail.com</h6>
+                        <h6>nose2@gmail.com</h6>
+                        <br>
+                        <h5>Ubicacion</h5>
+                        <div id="map"></div>
+                    </div>
+                </div>
             </div>
-            {% endif %}
+            <br>
+            <br>
+        </div>
+        {% endif %}
 
-            <script>
-                function scrollWin() {
-                    window.scrollBy(0, 730)
-                }
+        <script>
+            function scrollWin() {
+                window.scrollBy(0, 730)
+            }
 
-                function initMap() {
-                    var uluru = {lat: -31.3729118, lng: -64.2350452};
-                    var map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: 16,
-                        center: uluru
-                    });
-                    var marker = new google.maps.Marker({
-                        position: uluru,
-                        map: map
-                    });
-                }
-                var myVar;
+            function initMap() {
+                var uluru = {lat: -31.3729118, lng: -64.2350452};
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 16,
+                    center: uluru
+                });
+                var marker = new google.maps.Marker({
+                    position: uluru,
+                    map: map
+                });
+            }
+            var myVar;
 
-                function myFunction() {
-                    myVar = setTimeout(showPage, 500);
-                }
+            function myFunction() {
+                myVar = setTimeout(showPage, 500);
+            }
 
-                function showPage() {
-                    document.getElementById("loader").style.display = "none";
-                    document.getElementById("myDiv").style.display = "block";
-                }
-            </script>
+            function showPage() {
+                document.getElementById("loader").style.display = "none";
+                document.getElementById("myDiv").style.display = "block";
+            }
+        </script>
 
 
         </div>
