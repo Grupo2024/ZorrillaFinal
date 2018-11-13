@@ -39,10 +39,13 @@
 
     {% endif %}
 </div>
-<button onclick="traer_autorizados('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Cargar Autorizado</button>
-<a href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
-<a href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
+<br>
 
+<center>
+    <button class="btn btn-success text-white centerB" onclick="traer_autorizados('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Cargar Autorizado</button>
+    <a class="btn btn-primary centerB" href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
+    <a class="btn btn-primary centerB" href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
+</center>
 
 <div class="modal fade" id="todos_los_autorizados">
     <div class="modal-dialog modal-lg">
