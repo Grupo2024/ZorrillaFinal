@@ -12,6 +12,7 @@ from .forms import *
 from django.conf import settings
 from django.core.mail import send_mail
 from biblioteca.decorators import *
+from institucion.forms import *
 
 # Create your views here.
 
@@ -224,10 +225,8 @@ def crear_trabajador(request):
                     return JsonResponse(data)
                 except Director.DoesNotExist:
                     pass
-
         username2 = ""
         password2 = ""
-
         if (grupo == 0):
             trabajadorr = Secretaria(nombre_t= nombre, apellido_t=apellido,dni_t=dni,lugar_nacimiento_t=lugar_nacimiento, fecha_nacimiento_t=fecha_nacimiento,domicilio_t=domicilio,email_t=email,sexo_t=sexo, telefono_particular=telefono_particular, telefono_laboral=telefono_laboral, telefono_familiar=telefono_familiar, datos_familiares_cargo=datos_familiares_cargo, antecedentes_laborales=antecedentes_laborales, estudios_cursados=estudios_cursados)
             trabajadorr.save()
@@ -252,7 +251,6 @@ def crear_trabajador(request):
             password2 = str(user.password)
             user_D = user_Director(user=user, director_referenciado=trabajadorr)
             user_D.save()
-
         subject = "Usuario Creado"
         message = "Los datos de " + str(trabajadorr.apellido_t) + "" + str(trabajadorr.nombre_t) + " ha sido ingresado al sistema, en el cual utilizara como nombre de usuario: " + str(username2) + " y la password " + str(password2) + "."
         email_from = settings.EMAIL_HOST_USER
@@ -263,7 +261,6 @@ def crear_trabajador(request):
             'resultado': cargo + " creado/a con exito."
         }
         return JsonResponse(data)
-
     else:
         aux = trabajador.errors
         data = {
@@ -893,11 +890,32 @@ def cambiar_password(request):
             print ("es valido")
             email = form.cleaned_data['email']
             dni = form.cleaned_data['dni']
-            try:
-                profesor = Profesor.objects.get(email_t=email)
+            cargo = form.cleaned_data['cargo']
+            trabajador = ""
+            if (cargo == "Profesor"):
                 try:
-                    profesor = Profesor.objects.get(dni_t=dni)
-                    userD = user_Docente.objects.get(docente_referenciado=profesor)
+                    trabajador = Profesor.objects.get(dni_t=dni)
+                    try:
+                        trabajador = Profesor.objects.get(email_t=email)
+                        pass
+                    except Profesor.DoesNotExist:
+                        data = {
+                            'resultado': "No existe un profesor con esta direccion de Email.",
+                            'error':True
+                        }
+                        return JsonResponse(data)
+                except Profesor.DoesNotExist:
+                        data = {
+                            'resultado': "No existe un profesor con ese Dni.",
+                            'error':True
+                        }
+                        return JsonResponse(data)
+            elif (cargo == "Secretaria"):
+
+            else:
+
+            """
+            userD = user_Docente.objects.get(docente_referenciado=profesor)
                     print (userD.user.username)
                     new_pass = create_pass_user(profesor)
                     subject = "Recuperar Contraseña"
@@ -916,18 +934,7 @@ def cambiar_password(request):
                         'error':False
                     }
                     return JsonResponse(data)
-                except Profesor.DoesNotExist:
-                    data = {
-                        'resultado': "No existe un profesor con esta direccion de Email.",
-                        'error':True
-                    }
-                    return JsonResponse(data)
-            except Profesor.DoesNotExist:
-                    data = {
-                        'resultado': "No existe un profesor con ese Dni.",
-                        'error':True
-                    }
-                    return JsonResponse(data)
+            """
         else:
             print (form.errors)
             aux = form.errors

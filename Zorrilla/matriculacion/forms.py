@@ -82,9 +82,20 @@ class TransportistaForm(forms.ModelForm):
         }
 
 class get_Password(forms.Form):
+
+    PR = 'Profesor'
+    SE = 'Secretaria'
+    DI = 'Director'
+
+    CARGO_CHOICES = (
+        (PR , 'Profesor'),
+        (SE , 'Secretaria'),
+        (DI , 'Director')
+    )
+
     dni = forms.IntegerField(required=True)
     email = forms.EmailField(required=True)
-
+    cargo = forms.ChoiceField(choices=CARGO_CHOICES)
 
 class Modificar_Alumno_Form(forms.Form):
 
