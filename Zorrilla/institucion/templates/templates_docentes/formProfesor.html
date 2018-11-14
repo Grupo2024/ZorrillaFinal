@@ -198,20 +198,24 @@
         });
 
         function crear_Profesor(){
-            var myForm = document.getElementById('form_docente');
-            formData = new FormData(myForm);
-            $('#myModal').modal('show');
-            $.ajax({
-                url: 'crear_profesor/',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    console.log(data.error);
-                    document.getElementById("resultado").innerHTML = data.resultado;
-                }
-            });
+            if (confirm("¿Cargar Datos ?")) {
+                var myForm = document.getElementById('form_docente');
+                formData = new FormData(myForm);
+                $('#myModal').modal('show');
+                $.ajax({
+                    url: '{% url 'crear_profesor' %}',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function(data){
+                        console.log(data.error);
+                        document.getElementById("resultado").innerHTML = data.resultado;
+                    }
+                });
+            } else {
+                return;
+            }
         }
 
         function close_modal(){
