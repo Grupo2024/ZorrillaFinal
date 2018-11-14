@@ -11,7 +11,7 @@ class DateInput(forms.DateInput):
 
 class ProfesorForm(forms.ModelForm):
     class Meta:
-        model = Profesor
+        model = Trabajador
         fields =('nombre_t','apellido_t','dni_t','fecha_nacimiento_t','lugar_nacimiento_t','domicilio_t','email_t','sexo_t','telefono_particular','telefono_laboral',
  'telefono_familiar','datos_familiares_cargo','antecedentes_laborales','estudios_cursados')
         widgets = {

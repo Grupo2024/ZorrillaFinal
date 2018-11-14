@@ -35,14 +35,14 @@
                             <div class="input-group-prepend">
                                 <span style="margin-left: -16%;" class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
                             </div>
-                            <div style="margin-left: -9%;">{{ trabajador.nombre }}</div>
+                            <div style="margin-left: -9%;">{{ trabajador.nombre|title }}</div>
                         </div>
 
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
                                 <span style="margin-left: -15%;" class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
                             </div>
-                            <div style="margin-left: -9%;">{{ trabajador.apellido }}</div>
+                            <div style="margin-left: -9%;">{{ trabajador.apellido|title }}</div>
                         </div>
 
                         <div class="input-group input-group-sm mb-3 form-group">
@@ -56,7 +56,7 @@
                             <div class="input-group-prepend">
                                 <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
                             </div>
-                            <div style="margin-left: -8%">{{ trabajador.lugar_nacimiento }}</div>
+                            <div style="margin-left: -8%">{{ trabajador.lugar_nacimiento|title }}</div>
                         </div>
 
                         <div class="input-group input-group-sm mb-3 form-group">
@@ -64,7 +64,7 @@
                                 <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
                             </div>
                             <br>
-                            <div id="a"  style="margin-left:-6.5%">{{ trabajador.domicilio}}</div>
+                            <div id="a"  style="margin-left:-6.5%">{{ trabajador.domicilio|title }}</div>
                         </div>
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
@@ -113,7 +113,7 @@
                             <div class="input-group-prepend">
                                 <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Datos familiares a cargo:</span>
                             </div>
-                            <div style="margin-left: -5%; margin-top: 0%; height:50%">{{ trabajador.datos_familiares_cargo }}</div>
+                            <div style="margin-left: -5%; margin-top: 0%; height:50%">{{ trabajador.datos_familiares_cargo|title }}</div>
                         </div>
 
                         <div class="input-group input-group-sm mb-3 form-group">
@@ -138,14 +138,14 @@
                                 <div class="input-group-prepend">
                                     <span style="margin-left: -8%;" class="input-group-text" id="inputGroup-sizing-sm">Estudios cursados:</span>
                                 </div>
-                                <div id="b" style="margin-left: -4%;; height:50%">{{ trabajador.estudios_cursados }}</div>
+                                <div id="b" style="margin-left: -4%;; height:50%">{{ trabajador.estudios_cursados|title }}</div>
                             </div>
                             <div class="input-group input-group-sm mb-3 form-group">
                                 <div class="input-group-prepend">
-                                    <span style="margin-left: -7.5%;" class="input-group-text" id="inputGroup-sizing-sm">Antecedentes laborales:</span>
+                                    <span style="margin-left: -7.5%;" class="input-group-text" id="inputGroup-sizing-sm">Antecedentes laborales|title :</span>
                                 </div>
                                 <br>
-                                <div style="margin-left:-5%; height:50%">{{ trabajador.antecedentes_laborales }}</div>
+                                <div style="margin-left:-5%; height:50%">{{ trabajador.antecedentes_laborales|title }}</div>
                             </div>
                         </li>
                     </ul>
@@ -182,7 +182,7 @@
     </div>
 </div>
 
-<form id="form_refresh" action="{% url 'modificar_perfil' trabajador_elegido.trabajo trabajador_elegido.dni_t %}" method="post">
+<form id="form_refresh" action="{% url 'modificar_perfil' trabajador_elegido.dni_t %}" method="post">
     {% csrf_token %}
 </form>
 

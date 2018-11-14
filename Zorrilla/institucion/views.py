@@ -116,29 +116,13 @@ def profesor(request, id_profesor):
     return render(request, 'templates_docentes/perfilDocente.html', {'trabajador':profesor})
 
 @login_required
-def modificar_perfil(request, clase, dni):
-    print (clase)
+def modificar_perfil(request, dni):
     print (dni)
-    if (clase == "Secretaria"):
-        trabajador_elegido = Secretaria.objects.get(dni_t=dni)
-        trabajador_elegido.trabajo = "Secretaria"
-    elif (clase == "Director"):
-        trabajador_elegido = Director.objects.get(dni_t=dni)
-        trabajador_elegido.trabajo = "Director"
-    else:
-        trabajador_elegido = Profesor.objects.get(dni_t=dni)
-        trabajador_elegido.trabajo = "Profesor"
-
-    trabajador = ModificarForm(initial={'nombre':trabajador_elegido.nombre_t,
-                                        'apellido':trabajador_elegido.apellido_t,
-                                        'dni':trabajador_elegido.dni_t,
-                                        'lugar_nacimineto':trabajador_elegido.lugar_nacimiento_t,
-                                        'fecha_nacimiento':trabajador_elegido.fecha_nacimiento_t,
-                                        'domicilio':trabajador_elegido.domicilio_t,
-                                        'email':trabajador_elegido.email_t,
-                                        'sexo':trabajador_elegido.sexo_t,
-                                        'telefono_particular':trabajador_elegido.telefono_particular, 'telefono_laboral':trabajador_elegido.telefono_laboral, 'telefono_familiar':trabajador_elegido.telefono_familiar, 'datos_familiares_cargo':trabajador_elegido.datos_familiares_cargo,
-                                        'antecedentes_laborales':trabajador_elegido.antecedentes_laborales, 'estudios_cursados':trabajador_elegido.estudios_cursados})
+    trabajador_elegido = Trabajador.objects.get(dni_t=dni)
+    trabajador = ModificarForm(initial={'nombre':trabajador_elegido.nombre_t,'apellido':trabajador_elegido.apellido_t,
+'dni':trabajador_elegido.dni_t,'lugar_nacimineto':trabajador_elegido.lugar_nacimiento_t,'fecha_nacimiento':trabajador_elegido.fecha_nacimiento_t,'domicilio':trabajador_elegido.domicilio_t,'email':trabajador_elegido.email_t,'sexo':trabajador_elegido.sexo_t,
+'telefono_particular':trabajador_elegido.telefono_particular, 'telefono_laboral':trabajador_elegido.telefono_laboral, 'telefono_familiar':trabajador_elegido.telefono_familiar, 'datos_familiares_cargo':trabajador_elegido.datos_familiares_cargo,
+'antecedentes_laborales':trabajador_elegido.antecedentes_laborales, 'estudios_cursados':trabajador_elegido.estudios_cursados})
     return render(request, 'templates_docentes/modificarPerfil.html', {'trabajador':trabajador, 'trabajador_elegido':trabajador_elegido})
 
 @login_required
@@ -150,19 +134,13 @@ def modificar_datos_perfil(request):
         print (trabajo)
         user = User.objects.get(username=request.user)
         if trabajador_form.is_valid():
-            if (trabajo == "Secretaria"):
-                trabajador = Secretaria.objects.get(dni_t=dni_trabajador)
-                user_Trabajador = user_Secretaria.objects.get(secretaria_referenciada=trabajador)
-            elif (trabajo == "Director"):
-                trabajador = Director.objects.get(dni_t=dni_trabajador)
-                user_Trabajador = user_Director.objects.get(director_referenciado=trabajador)
-            else:
-                trabajador = Profesor.objects.get(dni_t=dni_trabajador)
-                user_Trabajador = user_Docente.objects.get(docente_referenciado=trabajador)
-            if (user_Trabajador.user == user):
-                print (trabajador)
-                nuevo_nombre = trabajador_form.cleaned_data['nombre']
-                nuevo_apellido = trabajador_form.cleaned_data['apellido']
+            trabajador = Trabajador.objects.get(dni_t=dni_trabajador)
+            user_T = user_Trabajador.objects.get(trabajador=trabajador)
+            if (user_T.user == user):
+                nombre = trabajador_form.cleaned_data['nombre']
+                apellido = trabajador_form.cleaned_data['apellido']
+                nuevo_nombre = nombre.lower()
+                nuevo_apellido = apellido.lower()
                 nuevo_lugar_nacimiento = trabajador_form.cleaned_data['lugar_nacimiento']
                 nueva_fecha_nacimiento = trabajador_form.cleaned_data['fecha_nacimiento']
                 nuevo_domicilio = trabajador_form.cleaned_data['domicilio']
@@ -210,19 +188,9 @@ def modificar_datos_perfil(request):
 @login_required
 def mi_perfil(request):
     user = User.objects.get(username=request.user)
-    if check_Profesor(user):
-        udocente = user_Docente.objects.get(user=user)
-        trabajador = Profesor.objects.get(dni_t=udocente.docente_referenciado.dni_t)
-        trabajador.cargo = "Profesor"
-    elif check_Director(user):
-        udirector = user_Director.objects.get(user=user)
-        trabajador = Director.objects.get(dni_t=udirector.director_referenciado.dni_t)
-        trabajador.cargo = "Director"
-    elif check_Secretaria(user):
-        usecretaria = user_Secretaria.objects.get(user=user)
-        trabajador = Secretaria.objects.get(dni_t=usecretaria.secretaria_referenciada.dni_t)
-        trabajador.cargo = "Secretaria"
-    return render(request, 'templates_docentes/mi_perfil.html',{'trabajador':trabajador})
+    u_trabajador = user_Trabajador.objects.get(user=user)
+    trabajador = u_trabajador.trabajador
+    return render(request, 'templates_docentes/mi_perfil.html', {'trabajador':trabajador})
 
 @login_required
 def volver_curso(request, dni_alumno):

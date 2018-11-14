@@ -34,6 +34,15 @@ class Trabajador(models.Model):
     
     HO = 'Hombre'
     MU = 'Mujer'
+    PR = 'Profesor'
+    SE = 'Secretaria'
+    DI = 'Director'
+
+    CARGO_CHOICES = (
+        (PR , 'Profesor'),
+        (SE , 'Secretaria'),
+        (DI , 'Director')
+    )
     
     GENERO_CHOICES = (
         (HO , 'Hombre'),
@@ -49,6 +58,7 @@ class Trabajador(models.Model):
     domicilio_t = models.CharField('Domicilio del trabajador', max_length=150, blank=True)
     email_t = models.EmailField('Email del trabajador', max_length=70, unique=True)
     sexo_t = models.CharField('Sexo', max_length=6, choices=GENERO_CHOICES)
+    cargo_t = models.CharField('Sexo', max_length=10, choices=CARGO_CHOICES)
     telefono_particular = models.IntegerField('Telefono Personal del Trabajador')
     telefono_laboral = models.IntegerField('Telefono Laboral del Trabajador')
     telefono_familiar = models.IntegerField('Telefono de algun Familiar del Trabajador')
@@ -57,29 +67,37 @@ class Trabajador(models.Model):
     antecedentes_laborales = models.TextField('Datos de Trabajos Previos', max_length=300)
     estudios_cursados = models.TextField('Estudios del Trabajador', max_length=300)
 
+    def create_pass_user(self):
+        name_f = ""
+        cantidad = 0
+        r = random.randint(1111,9999)
+        for a in self.nombre_t:
+            cantidad = cantidad + 1
+            if cantidad == 1:
+                name_f = a
+                break
+            else:
+                pass
+        password = name_f + str(r) + self.apellido_t
+        return password
+
+    def create_username(self):
+        name_f = ""
+        cantidad = 0
+        r = random.randint(1111,9999)
+        for a in self.nombre_t:
+            cantidad = cantidad + 1
+            if cantidad == 1:
+                name_f = a
+                break
+            else:
+                pass
+        username = name_f + self.apellido_t
+        return username
+
     def __str__(self):
         return 'Trabajador: {} {}| dni: {}| sexo: {}'.format(self.nombre_t,
          self.apellido_t, self.dni_t, self.sexo_t)
-
-    class Meta:
-        abstract = True
-
-
-class Profesor(Trabajador):
-
-    def __str__(self):
-        return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre_t, self.apellido_t, self.dni_t, self.sexo_t)
-
-class Director(Trabajador):
-
-    def __str__(self):
-        return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre_t, self.apellido_t, self.dni_t, self.sexo_t)
-
-
-class Secretaria(Trabajador):
-
-    def __str__(self):
-        return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre_t, self.apellido_t, self.dni_t, self.sexo_t)
 
 
 class Curso(models.Model):
@@ -132,26 +150,10 @@ class Curso(models.Model):
     def __str__(self):
         return '{}-{} {}'.format(self.aNo, self.que_seccion() ,self.que_turno())
 
-class user_Docente(models.Model):
-    user = models.OneToOneField(User)
-    docente_referenciado = models.OneToOneField(Profesor, on_delete=models.CASCADE)
+class user_Trabajador(models.Model):
+    user = models.OneToOneField(User, unique=True)
+    trabajador = models.OneToOneField(Trabajador, on_delete=models.CASCADE, unique=True)
 
     def __str__(self):
-        return 'El usuario {} pertenece al profesor: {}'.format(self.user, self.docente_referenciado)
-
-
-class user_Secretaria(models.Model):
-    user = models.OneToOneField(User)
-    secretaria_referenciada = models.OneToOneField(Secretaria, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return 'El usuario {} pertenece a la secretaria: {}'.format(self.user, self.secretaria_referenciada)
-
-
-class user_Director(models.Model):
-    user = models.OneToOneField(User)
-    director_referenciado = models.OneToOneField(Director, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return 'El usuario {} pertenece al director: {}'.format(self.user, self.director_referenciado)
+        return 'El usuario {} pertenece al trabajador: {}'.format(self.user, self.trabajado.nombre_t, self.trabajado.apellido_t)
 
