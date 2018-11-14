@@ -58,7 +58,7 @@ class Trabajador(models.Model):
     domicilio_t = models.CharField('Domicilio del trabajador', max_length=150, blank=True)
     email_t = models.EmailField('Email del trabajador', max_length=70, unique=True)
     sexo_t = models.CharField('Sexo', max_length=6, choices=GENERO_CHOICES)
-    cargo_t = models.CharField('Sexo', max_length=10, choices=CARGO_CHOICES)
+    cargo_t = models.CharField('Cargo', max_length=10, choices=CARGO_CHOICES)
     telefono_particular = models.IntegerField('Telefono Personal del Trabajador')
     telefono_laboral = models.IntegerField('Telefono Laboral del Trabajador')
     telefono_familiar = models.IntegerField('Telefono de algun Familiar del Trabajador')
@@ -96,8 +96,8 @@ class Trabajador(models.Model):
         return username
 
     def __str__(self):
-        return 'Trabajador: {} {}| dni: {}| sexo: {}'.format(self.nombre_t,
-         self.apellido_t, self.dni_t, self.sexo_t)
+        return 'Trabajador: {} {}| dni: {}| sexo: {} puesto: {}'.format(self.nombre_t,
+         self.apellido_t, self.dni_t, self.sexo_t, self.cargo_t)
 
 
 class Curso(models.Model):
@@ -155,5 +155,5 @@ class user_Trabajador(models.Model):
     trabajador = models.OneToOneField(Trabajador, on_delete=models.CASCADE, unique=True)
 
     def __str__(self):
-        return 'El usuario {} pertenece al trabajador: {}'.format(self.user, self.trabajado.nombre_t, self.trabajado.apellido_t)
+        return 'El usuario {} pertenece al trabajador: {}'.format(self.user, self.trabajador.nombre_t, self.trabajador.apellido_t)
 

@@ -2,8 +2,6 @@
 from __future__ import unicode_literals
 from django.shortcuts import render, redirect
 from .models import *
-from .creation import *
-from .test_model import *
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
@@ -38,15 +36,15 @@ def daddy():
         my_group2.user_set.add(user_admin)
         #new_group, created = Group.objects.get_or_create(name='new_group')
         a = Trabajador(nombre_t="a", apellido_t="a", dni_t=11111111, lugar_nacimiento_t="a",
-        fecha_nacimiento_t="1980-01-01", domicilio_t="a", email_t="mumi@gmail.com", sexo_t="Mujer", 
+        fecha_nacimiento_t="1980-01-01", domicilio_t="a", email_t="mumi@gmail.com", sexo_t="Mujer",cargo_t="SE",
         telefono_particular=1, telefono_laboral=1, telefono_familiar=1, datos_familiares_cargo="a",
         fecha_inicio_actividad="2018-03-01", antecedentes_laborales="a", estudios_cursados="a") 
         b = Trabajador(nombre_t="b", apellido_t="b", dni_t=22222222, lugar_nacimiento_t="b",
-        fecha_nacimiento_t="1980-02-02", domicilio_t="b", email_t="pancho@gmail.com", sexo_t="Hombre", 
+        fecha_nacimiento_t="1980-02-02", domicilio_t="b", email_t="pancho@gmail.com", sexo_t="Hombre", cargo_t="PR",
         telefono_particular=2, telefono_laboral=2, telefono_familiar=2, datos_familiares_cargo="b",
         fecha_inicio_actividad="2018-02-02", antecedentes_laborales="b", estudios_cursados="b")
         c = Trabajador(nombre_t="c", apellido_t="c", dni_t=33333333, lugar_nacimiento_t="c",
-        fecha_nacimiento_t="1980-03-03", domicilio_t="c", email_t="arce@gmail.com", sexo_t="dudoso", 
+        fecha_nacimiento_t="1980-03-03", domicilio_t="c", email_t="arce@gmail.com", sexo_t="dudoso",cargo_t="DI",
         telefono_particular=3, telefono_laboral=3, telefono_familiar=3, datos_familiares_cargo="c",
         fecha_inicio_actividad="2018-03-03", antecedentes_laborales="c", estudios_cursados="c")
         a.save()
@@ -188,79 +186,47 @@ def crear_trabajador(request):
         nombre = new_nombre.lower()
         apellido = new_apellido.lower()
         grupo = 0
-        if (cargo == "Secretaria"):
+        try:
+            trabajador = Trabajador.objects.get(dni_t=dni)
+            data = {
+                'error':True,
+                'resultado': 'Ya existe un Trabajador con ese Dni.'
+            }
+            return JsonResponse(data)
+        except Trabajador.DoesNotExist:
             try:
-                secretaria = Secretaria.objects.get(dni_t=dni)
+                trabajador = Trabajador.objects.get(email_t=email)
                 data = {
                     'error':True,
-                    'resultado': 'Ya existe una Secretaria con ese Dni.'
+                    'resultado': 'Ya existe un Trabajador con esa direccion de Email.'
                 }
                 return JsonResponse(data)
-            except Secretaria.DoesNotExist:
-                try:
-                    secretaria = Secretaria.objects.get(email_t=email)
-                    data = {
-                        'error':True,
-                        'resultado': 'Ya existe una Secretaria con esa direccion de Email.'
-                    }
-                    return JsonResponse(data)
-                except Secretaria.DoesNotExist:
-                    pass
-        else:
-            grupo = 1
-            try:
-                director = Director.objects.get(dni_t=dni)
+            except Trabajador.DoesNotExist:
+                trabajadorr = Trabajador(nombre_t= nombre, apellido_t=apellido,dni_t=dni,lugar_nacimiento_t=lugar_nacimiento, fecha_nacimiento_t=fecha_nacimiento,domicilio_t=domicilio,email_t=email,sexo_t=sexo, telefono_particular=telefono_particular, telefono_laboral=telefono_laboral, telefono_familiar=telefono_familiar, datos_familiares_cargo=datos_familiares_cargo, antecedentes_laborales=antecedentes_laborales, estudios_cursados=estudios_cursados, cargo_t=cargo)
+                trabajadorr.save()
+                username = trabajadorr.create_username()
+                password = trabajadorr.create_pass_user()
+                user = User.objects.create_user(username=username, password=password)
+                if (grupo == 0):
+                    grupo = Group.objects.get(name='Secretaria')
+                    grupo.user_set.add(user)
+                else:
+                    user = User.objects.create_user(username=username, password=password)
+                    grupo = Group.objects.get(name='Director')
+
+                user_S = user_Trabajador(user=user, trabajador=trabajadorr)
+                user_S.save()
+
+                subject = "Usuario Creado"
+                message = "Los datos de " + str(trabajadorr.apellido_t) + "" + str(trabajadorr.nombre_t) + " ha sido ingresado al sistema, en el cual utilizara como nombre de usuario: " + str(username) + " y la password " + str(password) + "."
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [trabajadorr.email_t]
+                #send_mail(subject, message, email_from, recipient_list)
                 data = {
-                    'error':True,
-                    'resultado': 'Ya existe un Director con ese Dni.'
+                    'error':False,
+                    'resultado': "Datos cargados con exito."
                 }
                 return JsonResponse(data)
-            except Director.DoesNotExist:
-                try:
-                    director = Director.objects.get(email_t=email)
-                    data = {
-                        'error':True,
-                        'resultado': 'Ya existe una Director con esa direccion de Email.'
-                    }
-                    return JsonResponse(data)
-                except Director.DoesNotExist:
-                    pass
-        username2 = ""
-        password2 = ""
-        if (grupo == 0):
-            trabajadorr = Secretaria(nombre_t= nombre, apellido_t=apellido,dni_t=dni,lugar_nacimiento_t=lugar_nacimiento, fecha_nacimiento_t=fecha_nacimiento,domicilio_t=domicilio,email_t=email,sexo_t=sexo, telefono_particular=telefono_particular, telefono_laboral=telefono_laboral, telefono_familiar=telefono_familiar, datos_familiares_cargo=datos_familiares_cargo, antecedentes_laborales=antecedentes_laborales, estudios_cursados=estudios_cursados)
-            trabajadorr.save()
-            username = create_username(trabajadorr)
-            password = create_pass_user(trabajadorr)
-            user = User.objects.create_user(username=username, password=password)
-            grupo = Group.objects.get(name='Secretaria')
-            username2 = user.username
-            password2 = str(user.password)
-            grupo.user_set.add(user)
-            user_S = user_Secretaria(user=user, secretaria_referenciada=trabajadorr)
-            user_S.save()
-        else:
-            trabajadorr = Director(nombre_t= nombre, apellido_t=apellido,dni_t=dni,lugar_nacimiento_t=lugar_nacimiento, fecha_nacimiento_t=fecha_nacimiento,domicilio_t=domicilio,email_t=email,sexo_t=sexo, telefono_particular=telefono_particular, telefono_laboral=telefono_laboral, telefono_familiar=telefono_familiar, datos_familiares_cargo=datos_familiares_cargo, antecedentes_laborales=antecedentes_laborales, estudios_cursados=estudios_cursados)
-            trabajadorr.save()
-            username = create_username(trabajadorr)
-            password = create_pass_user(trabajadorr)
-            user = User.objects.create_user(username=username, password=password)
-            grupo = Group.objects.get(name='Director')
-            grupo.user_set.add(user)
-            username2 = user.username
-            password2 = str(user.password)
-            user_D = user_Director(user=user, director_referenciado=trabajadorr)
-            user_D.save()
-        subject = "Usuario Creado"
-        message = "Los datos de " + str(trabajadorr.apellido_t) + "" + str(trabajadorr.nombre_t) + " ha sido ingresado al sistema, en el cual utilizara como nombre de usuario: " + str(username2) + " y la password " + str(password2) + "."
-        email_from = settings.EMAIL_HOST_USER
-        recipient_list = [trabajadorr.email_t]
-        #send_mail(subject, message, email_from, recipient_list)
-        data = {
-            'error':False,
-            'resultado': cargo + " creado/a con exito."
-        }
-        return JsonResponse(data)
     else:
         aux = trabajador.errors
         data = {
@@ -731,8 +697,8 @@ def pedido_egreso(request):
         matriculacion.save()
         familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
         subject = "Pedido de Egresso de " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
-        secretaria = user_Secretaria.objects.get(user=request.user)
-        message = "Se le notifica que la Secretaria " + secretaria.secretaria_referenciada.apellido_t + " " + secretaria.secretaria_referenciada.nombre_t + " ha creado un pedido de Egreso para su hijo/a " + alumno.apellido + " " +  alumno.nombre + "."
+        secretaria = user_Trabajador.objects.get(user=request.user)
+        message = "Se le notifica que la Secretaria " + secretaria.trabajador.apellido_t + " " + secretaria.trabajador.nombre_t + " ha creado un pedido de Egreso para su hijo/a " + alumno.apellido + " " +  alumno.nombre + "."
         email_from = settings.EMAIL_HOST_USER
         for familiar in familiares:
             recipient_list = [familiar.padre_madre.email]
@@ -755,8 +721,8 @@ def aceptar_re_matriculacion(request):
         matriculacion.save()
         familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
         subject = "Pedido de Re Matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
-        secretaria = user_Secretaria.objects.get(user=request.user)
-        message = "Se le notifica que la Secretaria " + secretaria.secretaria_referenciada.apellido_t + " " + secretaria.secretaria_referenciada.nombre_t + " ha aceptado el pedido de Re Matriculacion de su hijo/a " + alumno.apellido + " " + alumno.nombre + ", el cual ahora asistira a " + str(matriculacion.curso) + "."
+        secretaria = user_Trabajador.objects.get(user=request.user)
+        message = "Se le notifica que la Secretaria " + secretaria.trabajador.apellido_t + " " + secretaria.trabajador.nombre_t + " ha aceptado el pedido de Re Matriculacion de su hijo/a " + alumno.apellido + " " + alumno.nombre + ", el cual ahora asistira a " + str(matriculacion.curso) + "."
         email_from = settings.EMAIL_HOST_USER
         for familiar in familiares:
             recipient_list = [familiar.padre_madre.email]
@@ -777,8 +743,8 @@ def egresar_alumno(request):
         matriculacion.save()
         familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
         subject = "Pedido de Egreso de " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
-        secretaria = user_Secretaria.objects.get(user=request.user)
-        message = "Se le notifica que la Secretaria " + secretaria.secretaria_referenciada.apellido_t + " " + secretaria.secretaria_referenciada.nombre_t + " ha aceptado el pedido de Egreso de su hijo/a " + alumno.apellido + " " + alumno.nombre + "."
+        secretaria = user_Trabajador.objects.get(user=request.user)
+        message = "Se le notifica que la Secretaria " + secretaria.trabajador.apellido_t + " " + secretaria.trabajador.nombre_t + " ha aceptado el pedido de Egreso de su hijo/a " + alumno.apellido + " " + alumno.nombre + "."
         email_from = settings.EMAIL_HOST_USER
         for familiar in familiares:
             recipient_list = [familiar.padre_madre.email]
@@ -866,8 +832,8 @@ def cambiar_curso(request):
         alumno_C = Matriculacion.objects.get(alumno=alumno)
         alumno_C.curso = curso
         subject = "Curso de " + str(alumno.nombre) + " modificado."
-        secretaria = user_Secretaria.objects.get(user=request.user)
-        message = "En el dia de la fecha la secretaria " + str(secretaria.secretaria_referenciada.apellido_t) + " " + str(secretaria.secretaria_referenciada.nombre_t) + " ha cambiado el curso al que asiste su hijo/a " + str(alumno.nombre) + " por " + str(alumno_C.curso) + "."
+        secretaria = user_Trabajador.objects.get(user=request.user)
+        message = "En el dia de la fecha la secretaria " + str(secretaria.trabajador.apellido_t) + " " + str(secretaria.trabajador.nombre_t) + " ha cambiado el curso al que asiste su hijo/a " + str(alumno.nombre) + " por " + str(alumno_C.curso) + "."
         email_from = settings.EMAIL_HOST_USER
 
         familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
@@ -890,51 +856,37 @@ def cambiar_password(request):
             print ("es valido")
             email = form.cleaned_data['email']
             dni = form.cleaned_data['dni']
-            cargo = form.cleaned_data['cargo']
-            trabajador = ""
-            if (cargo == "Profesor"):
+            try:
+                trabajador = Trabajador.objects.get(dni_t=dni)
                 try:
-                    trabajador = Profesor.objects.get(dni_t=dni)
-                    try:
-                        trabajador = Profesor.objects.get(email_t=email)
-                        pass
-                    except Profesor.DoesNotExist:
-                        data = {
-                            'resultado': "No existe un profesor con esta direccion de Email.",
-                            'error':True
-                        }
-                        return JsonResponse(data)
-                except Profesor.DoesNotExist:
-                        data = {
-                            'resultado': "No existe un profesor con ese Dni.",
-                            'error':True
-                        }
-                        return JsonResponse(data)
-            #elif (cargo == "Secretaria"):
-
-            #else:
-
-            """
-            userD = user_Docente.objects.get(docente_referenciado=profesor)
-                    print (userD.user.username)
-                    new_pass = create_pass_user(profesor)
+                    trabajador = Trabajador.objects.get(email_t=email)
+                    user_T = user_Trabajador.objects.get(trabajador=trabajador)
+                    new_pass = trabajador.create_pass_user()
                     subject = "Recuperar Contraseña"
-                    message = "El usuario " + str(userD.user.username) + " utilizara la siguiente contraseña " + str(new_pass)
+                    message = "El usuario " + str(user_T.user.username) + " utilizara la siguiente contraseña " + str(new_pass)
                     email_from = settings.EMAIL_HOST_USER
-                    recipient_list = [profesor.email_t]
-                    #send_mail( subject, message, email_from, recipient_list)
-                    print ("funciona")
-                    userd = User.objects.get(username=userD.user.username)
-                    print ("Vieja Pass" + str(userd.password))
+                    recipient_list = [trabajador.email_t]
+                    send_mail( subject, message, email_from, recipient_list)
+                    userd = User.objects.get(username=user_T.user.username)
                     userd.set_password(new_pass)
                     userd.save()
-                    print ("nueva pass" + str(userd.password))
                     data = {
                         'resultado': "Clave cambiada con exito.",
                         'error':False
                     }
                     return JsonResponse(data)
-            """
+                except Trabajador.DoesNotExist:
+                    data = {
+                        'resultado': "No existe un Trabajador con esta direccion de Email.",
+                        'error':True
+                    }
+                    return JsonResponse(data)
+            except Trabajador.DoesNotExist:
+                    data = {
+                        'resultado': "No existe un Trabajador con ese Dni.",
+                        'error':True
+                    }
+                    return JsonResponse(data)
         else:
             print (form.errors)
             aux = form.errors
@@ -975,9 +927,9 @@ def aplicar_cambios_alumno(request):
 
             subject = "Informacion de " + str(alumno.nombre) + " modificada."
 
-            secretaria = user_Secretaria.objects.get(user=request.user)
+            secretaria = user_Trabajador.objects.get(user=request.user)
 
-            message = "En el dia de la fecha la secretaria " + str(secretaria.secretaria_referenciada.apellido_t) + " " + str(secretaria.secretaria_referenciada.nombre_t) + " ha realizado cambios en el perfil de " + str(alumno.nombre) + "."
+            message = "En el dia de la fecha la secretaria " + str(secretaria.trabajador.apellido_t) + " " + str(secretaria.trabajador.nombre_t) + " ha realizado cambios en el perfil de " + str(alumno.nombre) + "."
             email_from = settings.EMAIL_HOST_USER
 
             familiares = Familia.objects.filter(alumno=alumno, habilitado=True)

@@ -106,7 +106,9 @@
 
         {% if user.is_authenticated %}
 
-        <a href="{% url 'form_secretaria_director' 'Secretaria' %}" class="btn btn-success asd">Agregar Secretaria</a>
+        <a href="{% url 'form_secretaria_director' 'SE' %}" class="btn btn-success asd">Agregar Secretaria</a>
+        <br>
+        <a href="{% url 'form_secretaria_director' 'DI' %}" class="btn btn-success asd">Agregar Director</a>
 
         <div id="accordion" align="center" style="width: 40%; margin-left: 30%; margin-top: 5%">
             <div class="card">

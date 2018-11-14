@@ -43,18 +43,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="form-group">
-                        <label class="form_biblo">Cargo:</label>
-                        <div id="sub">
-                            {{ form.cargo }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </form>
     </article>
     <button class="btn btn-success" align="center"  onclick="new_pass()">Buscar</button>
@@ -109,19 +97,19 @@
                 contentType: false,
                 type: 'POST',
                 success: function(data){
-                    document.getElementById("resultado_crear_t").innerHTML = data.resultado;
-                    if (data.error){
-                        document.getElementById("continuar").style.display = "none";
-                        document.getElementById("volver").style.display = "block";
-                    }else{
-                       document.getElementById("continuar").style.display = "block";
-                        document.getElementById("volver").style.display = "none";
-                    }
-                }
-            });
-        } else {
-            return;
+                document.getElementById("resultado_crear_t").innerHTML = data.resultado;
+                if (data.error){
+                document.getElementById("continuar").style.display = "none";
+                document.getElementById("volver").style.display = "block";
+            }else{
+                   document.getElementById("continuar").style.display = "block";
+            document.getElementById("volver").style.display = "none";
         }
+    }
+    });
+    } else {
+        return;
+    }
     }
 
     function login(){
