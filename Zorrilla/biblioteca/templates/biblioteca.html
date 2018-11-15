@@ -5,6 +5,14 @@
 {% block body %}
 
 {% load poll_extras %}
+<style type="">
+  
+  option{
+    background-color: white;
+    color: black;
+  }
+
+</style>
 
 <div class="main">
     <br>
@@ -15,7 +23,7 @@
                 <input style="margin-left: 4%;" type="text" placeholder=" Nombre del libro que desee buscar" id="myInput" onkeyup="filterLibros()">
                 <!-- Dropdown filter -->
                 <span>Opciones:</span>
-                <select id="filter_by">
+                <select class="btn btn-outline-dark" id="filter_by">
                     <option value=0>Titulo</option>
                     <option value=1>Descripción</option>
                     <option value=2>Fecha</option>
@@ -163,19 +171,18 @@
                             <form id="filtros" action="{% url 'filtered_books' %}" method="post" id="form_filtered_books">
                                 {% csrf_token %}
                                 <div class="modal-body">
-                                    <! -- Ordenar Por -->
+                                    <!-- Ordenar Por  -->
                                     <span>Ordenar Por:</span>
-                                    <select id="filter_ordenar_por" onchange="filter_order_por(event)">
+                                    <select class="btn btn-outline-dark" id="filter_ordenar_por" onchange="filter_order_por(event)">
                                         <option value=0>-----</option>
                                         <option value="titulo">Titulo</option>
                                         <option value="descripcion">Descripción</option>
                                         <option value="fecha">Fecha</option>
                                     </select>
                                     <br>
-                                    <! -- Cantidad -->
+                                    <!-- Cantidad -->
                                     <span>Cantidad:</span>
-                                    <select id="filter_cantidad" onchange="filter_cantidad_function(event)">
-                                        <option value=0>-----</option>
+                                    <select class="btn btn-outline-dark" id="filter_cantidad" onchange="filter_cantidad_function(event)">
                                         <option value=1>1</option>
                                         <option value=5>5</option>
                                         <option value=10>10</option>
@@ -183,10 +190,9 @@
                                         <option value=50>50</option>
                                     </select>
                                     <br>
-                                    <! -- Orden -->
+                                    <!-- Orden -->
                                     <span>Orden:</span>
-                                    <select id="filter_orden" onchange="filter_sentido_function(event)">
-                                        <option value=0>-----</option>
+                                    <select class="btn btn-outline-dark" id="filter_orden" onchange="filter_sentido_function(event)">
                                         <option value="+">Ascendente</option>
                                         <option value="-">Descendente</option>
                                     </select>
@@ -194,7 +200,7 @@
                                     <input type="hidden" id="ordenar_por" name="ordenar_por" value=0>
                                     <input type="hidden" id="cantidad" name="cantidad" value=0>
                                     <input type="hidden" id="sentido" name="sentido" value=0>
-                                    <button onclick="filtrar()">Filtrar</button>
+                                    <button class="btn btn-info" onclick="filtrar()">Filtrar</button>
                                 </div>
                             </form>
                         </div>

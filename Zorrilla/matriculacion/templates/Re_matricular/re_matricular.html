@@ -10,10 +10,13 @@
         <!-- Modal body -->
         <form id="form_for_re_matricular" method="post">
             {% csrf_token %}
-            <div class="modal-body">
+            <div style="width:100%" class="modal-body">
 
                 <!-- Select Curso -->
-
+<div class='row'>
+    <div class="card text-center" style="width: auto; margin-left: 3%">
+        <div class="card-body">
+            <h4 class="card-title">Datos personales</h4>
                 <h4>Curso: {{curso}}</h4>
 
                 <small>Recomendacion: {{recomendacion}}</small>
@@ -26,9 +29,10 @@
                 </select>
 
                 <!-- Select Familiar -->
-
-                <br>
-                <br>
+        </div>
+    </div>
+    <div class="card text-center" style="margin-left: 2%">
+        <div class="card-body">
                 <h4>Familiares</h4>
                 {% if familiares|length == 0 %}
                 <select class="btn btn-outline-dark" id="padress2" onchange="show_padres2()">
@@ -53,9 +57,11 @@
                         <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_padres_asignar' alumno.dni %}')">Asignar Otro Padre</a>
                     </div>
                 {% endif %}
-
+        </div>
+    </div>
                 <!-- Select Autorizado -->
-
+    <div class="card text-center" style="margin-left: 2%">
+        <div class="card-body">
                 <h4>Autorizados</h4>
                 {% if autorizados|length == 0 %}
                 <select class="btn btn-outline-dark" id="autorizado2" onchange="show_autorizados2()">
@@ -79,7 +85,11 @@
                     <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Asignar otro Autorizado</a>
                 {% endif %}
 
+        </div>
+    </div>
                 <!-- Select Transporte -->
+    <div class="card text-center" style="margin-left: 2%">
+        <div class="card-body">            
 
                 <h4>Transporte</h4>
                 {% if transportistas|length == 0 %}
@@ -103,8 +113,11 @@
                     <a class="btn btn-danger" href="{% url 'transportistas_del_alumno' alumno.dni %}">Desvincular un Transportista</a></li>
                     <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_transportistas_asignar' alumno.dni %}')">Asignar otro Transportista</a>
                 {% endif %}
-
+        </div>
+    </div>
                 <!-- Select Obra Social -->
+    <div class="card text-center" style="margin-left: 2%">
+        <div class="card-body">
 
                 <h4>Obra Social</h4>
                 {% if obras_sociales|length == 0 %}
@@ -137,6 +150,7 @@
                 <input name="dni_alumno2" id="dni_alumno2" type="hidden" value="{{alumno.dni}}">
 
             </div>
+        </div>
         </form>
         <!-- Modal footer -->
         <div class="modal-footer">
