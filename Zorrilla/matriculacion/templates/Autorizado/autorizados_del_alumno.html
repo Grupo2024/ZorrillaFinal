@@ -25,7 +25,7 @@
             <td>{{a.autorizado.nombre|title}}</td>
             <td>{{a.autorizado.dni}}</td>
             <td>{{a.relacion_con_alumno|title}}</td>
-            <td><button class="btn btn-primary" onclick="desvincular({{a.autorizado.dni}})"><i style="font-size:15px" class="fa fa-info-circle"></i></button> </td>
+            <td><button class="btn btn-primary" onclick="desvincular({{a.autorizado.dni}})"><i style="font-size:15px" class="fa fa-ban"></i></button> </td>
             <td><a onclick="#">Editar</a></td>
         </tr>
         {% endfor %}
