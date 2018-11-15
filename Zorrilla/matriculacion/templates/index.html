@@ -105,11 +105,6 @@
 
 
         {% if user.is_authenticated %}
-
-        <a href="{% url 'form_secretaria_director' 'SE' %}" class="btn btn-success asd">Agregar Secretaria</a>
-        <br>
-        <a href="{% url 'form_secretaria_director' 'DI' %}" class="btn btn-success asd">Agregar Director</a>
-
         <div id="accordion" align="center" style="width: 40%; margin-left: 30%; margin-top: 5%">
             <div class="card">
                 <div class="card-header btn collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" id="headingOne">
@@ -190,44 +185,38 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
             {% if request.user|has_group:"Admin_Secretaria" %}
             <div class="card">
-                <div class="card-header collapsed" data-toggle="collapse" data-target="#headingDir" aria-expanded="false" aria-controls="collapseDir" id="headingDir">
+                <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseDir" aria-expanded="false" aria-controls="collapseDir" id="headingDir">
                     <h5 class="mb-0">
                         <a>Director</a>
                     </h5>
                 </div>
                 <div id="collapseDir" class="collapse" aria-labelledby="headingDir" data-parent="#accordion">
                     <div class="card-body">
-                        <a href="{% url 'index' %}" class="btn btn-success asd">Agregar Director</a>
-                        <br>
-                        <br>
-                        <a href="{% url 'index' %}" class="btn btn-primary asd">Ver Directores</a>
+                        <a href="{% url 'form_secretaria_director' 'DI' %}" class="btn btn-success asd">Agregar Director</a>
                         <br>
                         <br>
                     </div>
                 </div>
             </div>
-
             <div class="card">
-                <div class="card-header collapsed" data-toggle="collapse" data-target="#headingSecr" aria-expanded="false" aria-controls="collapseSecr" id="headingSecr">
+                <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseSec" aria-expanded="false" aria-controls="collapseSec" id="headingSec">
                     <h5 class="mb-0">
                         <a>Secretaria</a>
                     </h5>
                 </div>
-
-                <div id="collapseSecr" class="collapse" aria-labelledby="headingSecr" data-parent="#accordion">
+                <div id="collapseSec" class="collapse" aria-labelledby="headingSec" data-parent="#accordion">
                     <div class="card-body">
-                        <a href="{% url 'index' %}" class="btn btn-success asd">Agregar Secretaria</a>
-                        <br>
-                        <br>
-                        <a href="{% url 'index' %}" class="btn btn-primary asd">Ver Secretarias</a>
+                        <a href="{% url 'form_secretaria_director' 'SE' %}" class="btn btn-success asd">Agregar Secretaria</a>
                         <br>
                         <br>
                     </div>
                 </div>
             </div>
             {% endif %}
+            {% if request.user|has_group:"Secretaria" %}
             <div class="card">
                 <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseTwo" id="headingTwo">
                     <h5 class="mb-0">
@@ -258,8 +247,9 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
-        {% endif %}
+
         {% else %}
 
         <div class="parallax">
