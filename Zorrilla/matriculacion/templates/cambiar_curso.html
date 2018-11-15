@@ -17,27 +17,28 @@
                 <div id="contenido_cambiar_curso">
                     <br>
                     {% if todos_los_cursos|length != 0 %}
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">Año</th>
-                                <th scope="col">Division</th>
-                                <th scope="col">Turno</th>
-                                <th scope="col">Opcion</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table table-hover">
-                            {% for curso in todos_los_cursos %}
-                            <tr>
-                                <td>{{curso.aNo}}</td>
-                                <td>{{curso.que_seccion}}</td>
-                                <td>{{curso.que_turno}}</td>
-                                <td><input type="radio" id={{curso.id}} name="cursoss" value={{curso.id}}></td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-
+                    <div class="table-wrapper-scroll-y">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Año</th>
+                                    <th scope="col">Division</th>
+                                    <th scope="col">Turno</th>
+                                    <th scope="col">Opcion</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table table-hover">
+                                {% for curso in todos_los_cursos %}
+                                <tr>
+                                    <td>{{curso.aNo}}</td>
+                                    <td>{{curso.que_seccion}}</td>
+                                    <td>{{curso.que_turno}}</td>
+                                    <td><input type="radio" id={{curso.id}} name="cursoss" value={{curso.id}}></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                     <span style="color:red" id="msg_advertencia">Advertencia: Los Padres del Alumno seran notificados en caso de realizar una modificacion.</span>
 
                     {% else %}

@@ -325,7 +325,8 @@ def crear_padre(request):
         padre.save()
         familia = Familia(alumno=alumno, padre_madre=padre)
         familia.save()
-        new_Matriculacion = Matriculacion(alumno=alumno, matriculado="No")
+        new_Matriculacion = Matriculacion.objects.get(alumno=alumno)
+        new_Matriculacion.matriculado="No"
         new_Matriculacion.save()
         return JsonResponse(data)
     else:
