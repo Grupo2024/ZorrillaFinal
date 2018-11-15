@@ -18,6 +18,6 @@ urlpatterns = [
     url(r'^perfilProfesor/(\d+)/$', profesor, name="profesor"),
     url(r'^get_alumno/(?P<string>[\w\-]+)-(?P<dni_alumno>\d+)$', get_alumno, name="get_alumno"),
     url(r'crear_profesor/', crear_profesor, name="crear_profesor"),
-    url(r'modificar_perfil/(?P<clase>[\w\-]+)-(?P<dni>\d+)/$', modificar_perfil, name="modificar_perfil"),
+    url(r'modificar_perfil/(?P<dni>\d+)/$', modificar_perfil, name="modificar_perfil"),
     url(r'^formProfesor', formProfesor, name="formProfesor"),
 ]

@@ -226,32 +226,36 @@
     }
 
     function crear_Padre(){
-        var myForm = document.getElementById('form_padre');
-        var x = document.getElementById("title");
-        var j = document.getElementById("msg_alumno")
-        formData = new FormData(myForm);
-        var url = '{% url 'crear_padre' %}'
-        $.ajax({
-            url: url,
-            data: formData,
-            processData: false,
-            contentType: false,
-            type: 'POST',
-            success: function(data){
-                if (data.error && x.style.display === "none"){
-                    document.getElementById("resultado2").innerHTML = data.resultado;
-                    x.style.display = "block";
-                } else{
-                    var aux=document.getElementById("res_c_padre")
-                    aux.style.display="none"
-                    document.getElementById("resultado2").innerHTML = data.resultado;
-                    var btn_continuar = document.getElementById("continuar");
-                    btn_continuar.style.display = "block"
-                    x.style.display = "none";
-                    j.style.display = "none";
+        if (confirm("¿Cargar Datos ?")) {
+            var myForm = document.getElementById('form_padre');
+            var x = document.getElementById("title");
+            var j = document.getElementById("msg_alumno")
+            formData = new FormData(myForm);
+            var url = '{% url 'crear_padre' %}'
+            $.ajax({
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    if (data.error && x.style.display === "none"){
+                        document.getElementById("resultado2").innerHTML = data.resultado;
+                        x.style.display = "block";
+                    } else{
+                        var aux=document.getElementById("res_c_padre")
+                        aux.style.display="none"
+                        document.getElementById("resultado2").innerHTML = data.resultado;
+                        var btn_continuar = document.getElementById("continuar");
+                        btn_continuar.style.display = "block"
+                        x.style.display = "none";
+                        j.style.display = "none";
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            return;
+        }
     }
 
 
