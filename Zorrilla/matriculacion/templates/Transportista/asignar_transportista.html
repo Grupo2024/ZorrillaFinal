@@ -30,8 +30,8 @@
                             <tbody>
                                 {% for t in transportistas %}
                                 <tr>
-                                    <td>{{t.nombre}}</td>
-                                    <td>{{t.apellido}}</td>
+                                    <td>{{t.nombre|title}}</td>
+                                    <td>{{t.apellido|title}}</td>
                                     <td>{{t.dni}}</td>
                                     <td><input type="radio" id={{t.dni}} name="transporte" value={{t.dni}}></td>
                                 </tr>

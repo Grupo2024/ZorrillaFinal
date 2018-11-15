@@ -18,7 +18,7 @@
                 <br>
                 <br>
                 <div class="table-wrapper-scroll-y">
-                    <table class="table table-bordered table-striped" id="tabla_autorizados">
+                    <table class="table table-bordered table-striped" id="tabla_padres">
                         <thead>
                             <tr>
                                 <th>Apellido</th>
@@ -30,10 +30,10 @@
                         <tbody>
                             {% for padre in todos_los_padres %}
                             <tr>
-                                <td>{{padre.apellido|title}}</td>
                                 <td>{{padre.nombre|title}}</td>
+                                <td>{{padre.apellido|title}}</td>
                                 <td>{{padre.dni}}</td>
-                                <td><input type="radio" id={{a.dni}} name="autorizadoss" value={{a.dni}}></td>
+                                <td><input type="radio" id={{padre.dni}} name="padre" value={{padre.dni}}></td>
                             </tr>
                         </tbody>
                         {% endfor %}
@@ -43,8 +43,9 @@
                 {% else %}
                 <h3><center>No hay ningun Padre.</center></h3>
                 {% endif %}
-                <span id="resultado_padres"></span>
             </div>
+            <span id="resultado_padres"></span>
+        </div>
             <!-- Modal footer -->
             <div class="modal-footer">
                 <form id="select_padre" method="post">

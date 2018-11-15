@@ -4,14 +4,26 @@
 {% endblock navbar %}
 {% block body %}
 
+<style>
+
+    .table-wrapper-scroll-y {
+      display: block;
+      max-height: 200px;
+      overflow-y: auto;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+
+</style>
+
 <br>
 <div id="contenido">
     {% if autorizados|length != 0 %}
 
-    <h3><center>Autorizados de {{alumno.apellido}} {{alumno.nombre}}.</center></h3>
+    <h3><center>Autorizados de {{alumno.apellido|title}} {{alumno.nombre|title}}.</center></h3>
     <br>
 
     <table class="table table-sm table-hover" id="tabla" align="center" style="width:50%">
+        <tr>
             <th>Apellido</th>
             <th>Nombre</th>
             <th>Dni</th>

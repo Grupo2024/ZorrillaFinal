@@ -53,11 +53,12 @@
 
 
                 <!-- Div Asignar Autorizado -->
-
+                <br>
+                <br>
                 <div id="asignar_o">
                     <form id="asign_a" method="post">
                         {% csrf_token %}
-                        <p>Relacion con {{alumno.nombre}}:</p>{{relacion_con_alumno.relacion_con_alumno}}
+                        <p>Relacion con {{alumno.nombre|title}}:</p>{{relacion_con_alumno.relacion_con_alumno}}
                         <input value={{alumno.dni}} id="dni_alumno" name="dni_alumno" type="hidden">
                         <input value=0 id="dni_autorizado" name="dni_autorizado" type="hidden">
                     </form>
