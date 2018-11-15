@@ -53,7 +53,7 @@ class Trabajador(models.Model):
     nombre_t = models.CharField('Nombre del trabajador', max_length=40)
     apellido_t = models.CharField('Apellido del trabajador', max_length=40)
     dni_t = models.IntegerField('Dni del trabajador', primary_key=True)
-    lugar_nacimiento_t = models.CharField('Lugar de Nacimiento', max_length=150, blank=True)
+    lugar_nacimiento_t = models.CharField('Lugar de Nacimiento', max_length=150)
     fecha_nacimiento_t = models.DateField('Fecha Nacimiento', blank=True)
     domicilio_t = models.CharField('Domicilio del trabajador', max_length=150, blank=True)
     email_t = models.EmailField('Email del trabajador', max_length=70, unique=True)
@@ -94,6 +94,9 @@ class Trabajador(models.Model):
                 pass
         username = name_f + self.apellido_t
         return username
+
+    def field_text(a):
+        return a.title()
 
     def __str__(self):
         return 'Trabajador: {} {}| dni: {}| sexo: {} puesto: {}'.format(self.nombre_t,
