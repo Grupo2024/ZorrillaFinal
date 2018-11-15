@@ -115,8 +115,8 @@ def form_autorizado(request):
     return render(request, 'Autorizado/crear_autorizado.html', {'autorizado':autorizado})
 
 def form_secretaria_director(request, opcion):
-    trabajador = SDForm()
-    return render (request, 'Admin_Secretaria/form_secretaria_director.html', {'trabajador':trabajador, 'cargo':opcion})
+    form = ProfesorForm()
+    return render (request, 'Admin_Secretaria/form_secretaria_director.html', {'form':form, 'cargo':opcion})
 
 #Levantar el Form para cargar una Obra Social.
 def form_obra_social(request):
@@ -166,7 +166,7 @@ def crear_alumno(request):
         return HttpResponse(str(aux))
     
 def crear_trabajador(request):
-    trabajador = SDForm(request.POST)
+    trabajador = ProfesorForm(request.POST)
     if trabajador.is_valid():
         new_nombre = trabajador.cleaned_data['nombre']
         new_apellido = trabajador.cleaned_data['apellido']
