@@ -5,8 +5,20 @@
 {% block body %}
 
 {% load poll_extras %}
+
+<style>
+
+    .table-wrapper-scroll-y {
+      display: block;
+      max-height: 200px;
+      overflow-y: auto;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+
+</style>
+
 <br>
-<h1 class="card-title" align="center">{{alumno.nombre}} {{alumno.apellido}}</h1>
+<h1 class="card-title" align="center">{{alumno.nombre|title}} {{alumno.apellido|title}}</h1>
 <br>
 <div class='row' id="datos_div">
     <div class="card text-center" style="width: 30%; height: 67%; margin-left: 3%">
