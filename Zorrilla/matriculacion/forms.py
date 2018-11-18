@@ -53,6 +53,12 @@ class PadreForm(forms.ModelForm):
             'fecha_nacimiento': DateInput()
         }
 
+class EditarPadreForm(forms.ModelForm):
+    class Meta:
+        model = Padre_madre
+        fields = ['nombre', 'apellido','lugar_nacimiento','fecha_nacimiento','domicilio','email','sexo','profesion','telefono_trabajo']
+
+
 class TransportistaForm(forms.ModelForm):
     class Meta:
         model = Transportista

@@ -108,7 +108,8 @@ def template_get_pass(request):
 #Levantar el Form para cargar al Padre.
 def cargar_padre(request, dni_alumno):
     padre_form = PadreForm()
-    return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':dni_alumno})
+    objetivo = "Cargar"
+    return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':dni_alumno, 'objetivo':objetivo})
 
 def form_autorizado(request):
     autorizado = AutorizadoForm()
@@ -132,6 +133,14 @@ def form_modificar_alumno(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     alumno_form = Modificar_Alumno_Form(initial={'nombre':alumno.nombre, 'apellido':alumno.apellido,'lugar_nacimiento':alumno.lugar_nacimiento, 'fecha_nacimiento':alumno.fecha_nacimiento, 'domicilio':alumno.domicilio, 'email':alumno.email, 'sexo':alumno.sexo, 'telefono_casa':alumno.telefono_casa, 'telefono_padre':alumno.telefono_padre, 'telefono_madre':alumno.telefono_madre, 'telefono_familiar':alumno.telefono_familiar, 'telefono_vecino':alumno.telefono_vecino, 'enfermedad_relevante':alumno.enfermedad_relevante, 'con_quien_vive':alumno.con_quien_vive, 'quien_lo_trae':alumno.quien_lo_trae, 'telefono_que_lo_trae':alumno.telefono_que_lo_trae})
     return render(request, 'modificar_alumno.html', {'alumno_form':alumno_form, 'dni_alumno':dni_alumno})
+
+@user_passes_test(check_Secretaria)
+def form_editar_padre(request, dni_padre):
+    objetivo = "Editar"
+    padre = Padre_madre.objects.get(dni=dni_padre)
+    padre_form =EditarPadreForm(initial={'nombre':padre.nombre.title(), 'apellido':padre.apellido.title(),'lugar_nacimiento':padre.lugar_nacimiento,'fecha_nacimiento':padre.fecha_nacimiento,'domicilio':padre.domicilio.title(),'email':padre.email, 'sexo':padre.sexo, 'profesion':padre.profesion.title(), 'telefono_trabajo':padre.telefono_trabajo})
+    return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'objetivo':objetivo, 'dni_padre':padre.dni})
+
 
 """
 =========
@@ -312,7 +321,7 @@ def crear_padre(request):
         padre_form.save()
         dni_padre = padre_form.cleaned_data['dni']
         padre = Padre_madre.objects.get(dni=dni_padre)
-        resultado = "Los pedidos de Matriculacion de " + str(padre.apellido) + " " + str(padre.nombre) + " y de " + str(alumno.apellido) + " " + str(alumno.nombre) + " han sido creados con exito."
+        resultado = "Los pedidos de Matriculacion de " + str(padre.apellido.title()) + " " + str(padre.nombre.title()) + " y de " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + " han sido creados con exito."
         data = {
             'error': False,
             'resultado':resultado
@@ -709,6 +718,45 @@ def pedido_egreso(request):
         }
         return JsonResponse(data)
     return HttpResponse("Solo podes entrar por POST")
+
+@user_passes_test(check_Secretaria)
+def editar_padre(request):
+    if request.method == 'POST':
+        padre_form = EditarPadreForm(request.POST)
+        if padre_form.is_valid():
+            dni_p = request.POST['dni_padre']
+            padre = Padre_madre.objects.get(dni=dni_p)
+            nombre = padre_form.cleaned_data['nombre']
+            apellido = padre_form.cleaned_data['apellido']
+            nuevo_lugar_nacimiento = padre_form.cleaned_data['lugar_nacimiento']
+            nueva_fecha_nacimiento = padre_form.cleaned_data['fecha_nacimiento']
+            nuevo_domicilio = padre_form.cleaned_data['domicilio']
+            nuevo_email = padre_form.cleaned_data['email']
+            nuevo_sexo = padre_form.cleaned_data['sexo']
+            nuevo_profesion = padre_form.cleaned_data['profesion']
+            telefono_trabajo = padre_form.cleaned_data['telefono_trabajo']
+            nuevo_nombre = nombre.lower()
+            nuevo_apellido = apellido.lower()
+            padre.nombre, padre.apellido, padre.lugar_nacimiento, padre.fecha_nacimiento, padre.domicilio, padre.email, padre.sexo, padre.profesion, padre.telefono_trabajado = nuevo_nombre, nuevo_apellido, nuevo_lugar_nacimiento, nueva_fecha_nacimiento, nuevo_domicilio, nuevo_email, nuevo_sexo, nuevo_profesion, telefono_trabajo
+            subject = "Perfil Modificado."
+            secretaria = user_Trabajador.objects.get(user=request.user)
+            message = "Se le notifica que la Secretaria " + secretaria.trabajador.apellido_t.title() + " " + secretaria.trabajador.nombre_t.title() + " ha realizado cambios en su perfil."
+            email_from = settings.EMAIL_HOST_USER
+            #send_mail( subject, message, email_from, recipient_list)
+            padre.save()
+            data = {
+                'error':False,
+                'resultado': "Los Datos de " + padre.nombre.title() + " " + padre.apellido.title() + " han sido modificados con exito."
+            }
+            return JsonResponse(data)
+        else:
+            data = {
+                'error':True,
+                'resultado':str(padre_form.errors)
+            }
+            return JsonResponse(data)
+    else:
+        return HttpResponse("Solo podes entrar por POST")
 
 def aceptar_re_matriculacion(request):
     if request.method == "POST":

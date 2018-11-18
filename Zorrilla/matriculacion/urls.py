@@ -52,6 +52,7 @@ urlpatterns = [
 
     url(r'^todas_las_obras_sociales', todas_las_obras_sociales, name="todas_las_obras_sociales"),
     url(r'^crear_transportista', crear_transportista, name="crear_transportista"),
+    url(r'^editar_padre', editar_padre, name="editar_padre"),
     url(r'^asignar_transportista', asignar_transportista, name="asignar_transportista"),
     url(r'^datos_transportista/(\d+)/', datos_transportista, name="datos_transportista"),
     url(r'^cargar_padre/(\d+)/', cargar_padre, name="cargar_padre"),
@@ -59,6 +60,7 @@ urlpatterns = [
     url(r'^datos_autorizado/(\d+)/', datos_autorizado, name="datos_autorizado"),
     url(r'^datos_obra_social/(?P<id_obra_social>\d+)/', datos_obra_social, name="datos_obra_social"),
     url(r'^padres_del_alumno/(\d+)/', padres_del_alumno, name="padres_del_alumno"),
+    url(r'^form_editar_padre/(\d+)/', form_editar_padre, name="form_editar_padre"),
     url(r'^usuarios_transportista/(\d+)/', usuarios_transportista, name="usuarios_transportista"),
     url(r'^transportistas_del_alumno/(\d+)/', transportistas_del_alumno, name="transportistas_del_alumno"),
     url(r'^autorizados_del_alumno/(\d+)/', autorizados_del_alumno, name="autorizados_del_alumno"),

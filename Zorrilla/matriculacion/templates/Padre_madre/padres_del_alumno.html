@@ -35,7 +35,7 @@
             <td>{{a.padre_madre.dni}}</td>
             <td>{{a.padre_madre.email}}</td>
             <td><button class="btn btn-warning" onclick="desvincular({{a.padre_madre.dni}})"><i class="fa fa-ban"></i></button></td>
-            <td><button class="btn btn-info" onclick="#"><i class="fa fa-edit"></i></button></td>
+            <td><a class="btn btn-info" href="{% url 'form_editar_padre' a.padre_madre.dni %}"><i class="fa fa-edit"></i></a></td>
         </tr>
         {% endfor %}
     </table>
