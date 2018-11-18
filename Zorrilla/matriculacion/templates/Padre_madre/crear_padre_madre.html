@@ -109,10 +109,6 @@
     </div>
 </form>
 
-<form id="pedidos" action="{% url 'index' %}" method="post">
-    {% csrf_token %}
-</form>
-
 {% if objetivo == 'Cargar'%}
     <center><button class="btn btn-success" onclick="matricular_Padre()" id="btn_padre">Cargar</button></center>
 {% else %}
@@ -137,7 +133,7 @@
 
             <div class="modal-footer" id="footer">
                 <button type="button" style="display: none;" class="btn btn-success" onclick="volver_index()" id="continuar">Continuar</button>
-                <button type="button" style="display: none;" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
+                <a class="btn btn-primary" href="{% url 'index' %}">Volver</a>
             </div>
         </div>
     </div>
@@ -198,12 +194,6 @@
             return;
         }
     }
-
-    function volver_index(){
-        var x = document.getElementById("pedidos")
-        x.submit();
-    }
-
 </script>
 
 

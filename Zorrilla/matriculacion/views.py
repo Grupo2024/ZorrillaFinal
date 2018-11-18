@@ -113,8 +113,9 @@ def cargar_padre(request, dni_alumno):
     return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'dni_alumno':dni_alumno, 'objetivo':objetivo})
 
 def form_autorizado(request):
+    opcion = "Crear"
     autorizado = AutorizadoForm()
-    return render(request, 'Autorizado/crear_autorizado.html', {'autorizado':autorizado})
+    return render(request, 'Autorizado/crear_autorizado.html', {'autorizado':autorizado, 'opcion':opcion})
 
 def form_secretaria_director(request, opcion):
     form = ProfesorForm()
@@ -142,11 +143,21 @@ def form_editar_padre(request, dni_padre):
     padre_form =EditarPadreForm(initial={'nombre':padre.nombre.title(), 'apellido':padre.apellido.title(),'lugar_nacimiento':padre.lugar_nacimiento,'fecha_nacimiento':padre.fecha_nacimiento,'domicilio':padre.domicilio.title(),'email':padre.email, 'sexo':padre.sexo, 'profesion':padre.profesion.title(), 'telefono_trabajo':padre.telefono_trabajo})
     return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'objetivo':objetivo, 'dni_padre':padre.dni})
 
+@user_passes_test(check_Secretaria)
 def form_editar_transportista(request, dni_transportista):
     transportista = Transportista.objects.get(dni=dni_transportista)
     opcion = "Editar"
     form_transportista = EditarTransportistaForm(initial={'nombre':transportista.nombre.title(),'apellido':transportista.apellido.title(), 'lugar_nacimiento':transportista.lugar_nacimiento.title(),'fecha_nacimiento':transportista.fecha_nacimiento,'domicilio':transportista.domicilio.title(),'email':transportista.email,'sexo':transportista.sexo,'nombre_transporte':transportista.nombre_transporte.title(),'telefono_transportista':transportista.telefono_transportista,'detalles_transportista':transportista.detalles_transportista})
     return render(request, 'Transportista/crear_transportista.html', {'form_transportista':form_transportista, 'opcion':opcion, 'dni_transportista':transportista.dni})
+
+@user_passes_test(check_Secretaria)
+def form_editar_autorizado(request, dni_autorizado):
+    autorizado_elegido = Autorizado.objects.get(dni=dni_autorizado)
+    opcion = "Editar"
+    autorizado = EditarAutorizadoForm(initial={'nombre':autorizado_elegido.nombre.title(),'apellido':autorizado_elegido.apellido.title(),'lugar_nacimiento':autorizado_elegido.lugar_nacimiento.title(),'fecha_nacimiento':autorizado_elegido.fecha_nacimiento,'domicilio':autorizado_elegido.domicilio.title(),'email':autorizado_elegido.email,'sexo':autorizado_elegido.sexo,'telefono_autorizado':autorizado_elegido.telefono_autorizado})
+    return render(request, 'Autorizado/crear_autorizado.html', {'autorizado':autorizado, 'opcion':opcion, 'dni':autorizado_elegido.dni})
+    
+    
 """
 =========
 Creacion.
@@ -499,7 +510,8 @@ def asignar_autorizado(request):
             autorizado = Autorizado.objects.get(dni=dni_autorizado)
             alumno_autorizado, created = alumno_Autorizado.objects.get_or_create(alumno=alumno, autorizado=autorizado)
             if created:
-                pass
+                alumno_autorizado.relacion_con_alumno = relacion_con_alumno
+                alumno_autorizado.save()
             else:
                 alumno_autorizado.habilitado = True
                 alumno_autorizado.relacion_con_alumno = relacion_con_alumno
@@ -763,6 +775,42 @@ def editar_padre(request):
     else:
         return HttpResponse("Solo podes entrar por POST")
 
+@user_passes_test(check_Secretaria)
+def editar_autorizado(request):
+    if request.method == 'POST':
+        autorizado = EditarAutorizadoForm(request.POST)
+        if autorizado.is_valid():
+            dni_t = request.POST['dni']
+            autorizado_elegido = Autorizado.objects.get(dni=dni_t)
+            nombre = autorizado.cleaned_data['nombre']
+            apellido = autorizado.cleaned_data['apellido']
+            nuevo_lugar_nacimiento = autorizado.cleaned_data['lugar_nacimiento']
+            nueva_fecha_nacimiento = autorizado.cleaned_data['fecha_nacimiento']
+            nuevo_domicilio = autorizado.cleaned_data['domicilio']
+            nuevo_email = autorizado.cleaned_data['email']
+            nuevo_sexo = autorizado.cleaned_data['sexo']
+            nuevo_telefono_autorizado = autorizado.cleaned_data['telefono_autorizado']
+            
+            nuevo_nombre = nombre.lower()
+            nuevo_apellido = apellido.lower()
+            
+            autorizado.nombre, autorizado.apellido, autorizado.lugar_nacimiento, autorizado.fecha_nacimiento, autorizado.domicilio, autorizado.email, autorizado.sexo,autorizado.telefono_autorizado = nuevo_nombre, nuevo_apellido, nuevo_lugar_nacimiento, nueva_fecha_nacimiento, nuevo_domicilio, nuevo_email, nuevo_sexo,nuevo_telefono_autorizado
+            autorizado.save()
+            
+            data = {
+                'error':False,
+                'resultado': "Los Datos de " + autorizado.nombre.title() + " " + autorizado.apellido.title() + " han sido modificados con exito."
+            }
+            return JsonResponse(data)
+        else:
+            data = {
+                'error':True,
+                'resultado':str(autorizado.errors)
+            }
+            return JsonResponse(data)
+    else:
+        return HttpResponse("Solo podes entrar por POST")
+    
 @user_passes_test(check_Secretaria)
 def editar_transportista(request):
     if request.method == 'POST':

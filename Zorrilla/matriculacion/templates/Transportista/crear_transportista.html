@@ -141,22 +141,13 @@
 
             <div class="modal-footer" id="footer">
                 <button type="button" style="display: none;" class="btn btn-success" onclick="volver_pedidos()" id="continuar">Continuar</button>
-                <button type="button" style="display: none;" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
+                <a class="btn btn-primary" href="{% url 'index' %}">Volver</a>
             </div>
         </div>
     </div>
 </div>
 
-<form id="pedidos" action="{% url 'index' %}" method="post">
-    {% csrf_token %}
-</form>
-
 <script>
-
-    function volver_pedidos(){
-        var aux_form = document.getElementById("pedidos");
-        aux_form.submit();
-    }
 
     function matricular_Transportista(){
         if (confirm("¿Crear Transportista ?")) {

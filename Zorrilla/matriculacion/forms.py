@@ -30,6 +30,11 @@ class AutorizadoForm(forms.ModelForm):
     class Meta:
         model = Autorizado
         fields = '__all__'
+        
+class EditarAutorizadoForm(forms.ModelForm):
+    class Meta:
+        model = Autorizado
+        fields = ['nombre', 'apellido','lugar_nacimiento','fecha_nacimiento','domicilio','email','sexo','telefono_autorizado']
 
 class SDForm(forms.Form):
     class Meta:

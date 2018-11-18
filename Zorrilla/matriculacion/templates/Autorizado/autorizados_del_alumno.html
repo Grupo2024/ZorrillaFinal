@@ -27,7 +27,7 @@
             <th>Apellido</th>
             <th>Nombre</th>
             <th>Dni</th>
-            <th>Relacion con {{alumno.nombre}}</th>
+            <th>Relacion con {{alumno.nombre|title}}</th>
             <th>Desvincular</th>
             <th>Editar</th>
         </tr>
@@ -37,8 +37,8 @@
             <td>{{a.autorizado.nombre|title}}</td>
             <td>{{a.autorizado.dni}}</td>
             <td>{{a.relacion_con_alumno|title}}</td>
-            <td><button class="btn btn-primary" onclick="desvincular({{a.autorizado.dni}})"><i style="font-size:15px" class="fa fa-ban"></i></button> </td>
-            <td><a onclick="#">Editar</a></td>
+            <td><button class="btn btn-warning" onclick="desvincular({{a.autorizado.dni}})"><i class="fa fa-ban"></i></button></td>
+            <td><a class="btn btn-info" href="{% url 'form_editar_autorizado' a.autorizado.dni %}"><i class="fa fa-edit"></i></a></td>
         </tr>
         {% endfor %}
 
