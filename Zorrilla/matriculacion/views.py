@@ -33,7 +33,7 @@ def daddy():
         my_group3 = Group.objects.get(name='Director') 
         my_group3.user_set.add(user_director)
         grupo_admin = Group.objects.get(name='Admin_Secretaria')
-        my_group2.user_set.add(user_admin)
+        grupo_admin.user_set.add(user_admin)
         #new_group, created = Group.objects.get_or_create(name='new_group')
         a = Trabajador(nombre_t="a", apellido_t="a", dni_t=11111111, lugar_nacimiento_t="a",
         fecha_nacimiento_t="1980-01-01", domicilio_t="a", email_t="mumi@gmail.com", sexo_t="Mujer",cargo_t="SE",
@@ -613,6 +613,17 @@ def autorizados_del_alumno(request, dni_alumno):
     autorizados = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True).order_by("autorizado__apellido", "autorizado__nombre", "autorizado__dni")
     return render(request, 'Autorizado/autorizados_del_alumno.html', {'autorizados':autorizados, 'alumno':alumno})
 
+@user_passes_test(check_Admin_s)
+def trabajador_sd(request, cargo):
+    if (cargo == 'Secretarias'):
+        msg = "Secretaria"
+        trabajadores = Trabajador.objects.filter(cargo_t="SE")
+    else:
+        msg = "Director"
+        trabajadores = Trabajador.objects.filter(cargo_t="DI")
+    return render(request, 'Admin_Secretaria/tabla.html', {'cargo':cargo,'trabajadores':trabajadores, 'msg':msg})
+    
+
 """
 ===================================
 Mostrar los datos de una instancia.
@@ -632,6 +643,12 @@ def usuarios_transportista(request, dni_transportista):
     transportista = Transportista.objects.get(dni=dni_transportista)
     todos_los_alumnos = usa_Transporte.objects.filter(transportista=transportista)
     return render(request, 'Transportista/usuarios_transportista.html', {'transportista':transportista, 'todos_los_alumnos':todos_los_alumnos})
+
+def datus_usuario_t(request, dni_trabajador):
+    trabajador = Trabajador.objects.get(dni_t=dni_trabajador)
+    user_T = user_Trabajador.objects.get(trabajador=trabajador)
+    
+    return render(request, 'Admin_Secretaria/user_trabajador.html', {'trabajador':user_T})
     
 #Funcion que Trae los datos del Padre elegido previamente
 def datos_padre(request, dni_padre):

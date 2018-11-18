@@ -38,11 +38,13 @@ urlpatterns = [
     url(r'^form_curso', form_curso, name="form_curso"),
 
     url(r'^form_secretaria_director/(?P<opcion>[\w\-]+)/$', form_secretaria_director, name="form_secretaria_director"),
+    url(r'^trabajador_sd/(?P<cargo>[\w\-]+)/$', trabajador_sd, name="trabajador_sd"),
 
     url(r'^asignar_autorizado', asignar_autorizado, name="asignar_autorizado"),
     url(r'^crear_curso', crear_curso, name="crear_curso"),
     url(r'^form_obra_social', form_obra_social, name="form_obra_social"),
     url(r'^form_editar_transportista/(\d+)/', form_editar_transportista, name="form_editar_transportista"),
+    url(r'^datus_usuario_t/(\d+)/', datus_usuario_t, name="datus_usuario_t"),
     url(r'^todos_los_transportistas_asignar/(\d+)/', todos_los_transportistas_asignar, name="todos_los_transportistas_asignar"),
     url(r'^todos_los_padres_asignar/(\d+)/', todos_los_padres_asignar, name="todos_los_padres_asignar"),
     url(r'^todas_las_obras_sociales_asignar/(\d+)/', todas_las_obras_sociales_asignar, name="todas_las_obras_sociales_asignar"),
