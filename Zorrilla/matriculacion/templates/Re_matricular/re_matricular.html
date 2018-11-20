@@ -16,19 +16,15 @@
     <div class="card text-center" style="width: 45%; margin-left: 4%">
         <div class="card-body">
                 <h4>Curso: {{curso}}</h4>
-
-                <small>Recomendacion: {{recomendacion}}</small>
-                <br>
                 <select class="btn btn-outline-dark" id="curso2" onchange="selectCurso2(event)">
                     <option value=0>Cursos</option>
                     {% for curso in cursos %}
                     <option value={{curso.id}}>{{curso}}</option>
                     {% endfor %}
                 </select>
-
-                <!-- Select Familiar -->
         </div>
     </div>
+                <!-- Select Familiar -->
     <div class="card text-center" style="width: 45%; margin-left: 2%">
         <div class="card-body">
                 <h4>Familiares</h4>
@@ -156,3 +152,6 @@
         </div>
     </div>
 </div>
+    <div class="card-footer">
+            <small class="text-muted">Recomendacion: {{recomendacion}}</small>
+    </div>
