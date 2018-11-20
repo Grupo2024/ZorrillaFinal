@@ -30,33 +30,19 @@ class AutorizadoForm(forms.ModelForm):
     class Meta:
         model = Autorizado
         fields = '__all__'
+        
+class EditarAutorizadoForm(forms.ModelForm):
+    class Meta:
+        model = Autorizado
+        fields = ['nombre', 'apellido','lugar_nacimiento','fecha_nacimiento','domicilio','email','sexo','telefono_autorizado']
 
 class SDForm(forms.Form):
-    HO = 'Hombre'
-    MU = 'Mujer'
-
-    GENERO_CHOICES = (
-        (HO , 'Hombre'),
-        (MU , 'Mujer')
-    )
-    nombre = forms.CharField(required=True)
-    apellido = forms.CharField(required=True)
-    dni = forms.IntegerField(required=True)
-    lugar_nacimiento = forms.CharField(required=True)
-    fecha_nacimiento = forms.DateField(required=True)
-    domicilio = forms.CharField(required=True)
-    email = forms.EmailField(required=True)
-    sexo = forms.ChoiceField(choices=GENERO_CHOICES)
-    telefono_particular = forms.IntegerField(required=True)
-    telefono_laboral = forms.IntegerField(required=True)
-    telefono_familiar = forms.IntegerField(required=True)
-    datos_familiares_cargo = forms.CharField(required=True)
-    antecedentes_laborales = forms.CharField(required=True)
-    estudios_cursados = forms.CharField(required=True)
-    cargo = forms.CharField(required=False)
-
-    widgets = {
-            'fecha_nacimiento': DateInput()
+    class Meta:
+        model = Trabajador
+        fields =('nombre_t','apellido_t','dni_t','fecha_nacimiento_t','lugar_nacimiento_t','domicilio_t','email_t','sexo_t','telefono_particular','telefono_laboral',
+ 'telefono_familiar','datos_familiares_cargo','antecedentes_laborales','estudios_cursados')
+        widgets = {
+            'fecha_nacimiento_t': DateInput()
         }
 
 class Obra_SocialForm(forms.ModelForm):
@@ -71,6 +57,18 @@ class PadreForm(forms.ModelForm):
         widgets = {
             'fecha_nacimiento': DateInput()
         }
+
+class EditarPadreForm(forms.ModelForm):
+    class Meta:
+        model = Padre_madre
+        fields = ['nombre', 'apellido','lugar_nacimiento','fecha_nacimiento','domicilio','email','sexo','profesion','telefono_trabajo']
+
+class EditarTransportistaForm(forms.ModelForm):
+    class Meta:
+        model = Transportista
+        fields = ['nombre', 'apellido', 'lugar_nacimiento','fecha_nacimiento','domicilio','email','sexo','nombre_transporte',
+'telefono_transportista','detalles_transportista']
+
 
 class TransportistaForm(forms.ModelForm):
     class Meta:

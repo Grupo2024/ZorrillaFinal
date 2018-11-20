@@ -21,11 +21,15 @@
 <div id="c_autorizado">
     <form method="post" enctype="multipart/form-data" id="form_autorizado">
     {% csrf_token %}
+    <input name="dni" id="dni" type="hidden" value={{dni}} >
     <div class='row' style="margin-top:2%">
         <div class="card text-center" style="width: 26%; height:35%; margin-left: 36.5%">
             <div class="card-body">
-                <h4 class="card-title">Crear Autorizado</h4>
-
+                {% if opcion == 'Crear'%}
+                    <h4 class="card-title">Crear Autorizado</h4>
+                {% else %}
+                    <h4 class="card-title">Editar Autorizado</h4>
+                {% endif %}
                 <ul class="list-group list-group-flush">
 
                     <li class="list-group-item">
@@ -43,14 +47,14 @@
                             </div>
                             <div style="margin-left: -9%;">{{ autorizado.apellido }}</div>
                         </div>
-
+                        {% if opcion == 'Crear'%}
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
                                 <span style="margin-left: -4%;" class="input-group-text" id="inputGroup-sizing-sm">Numero de documento:</span>
                             </div>
                             <div style="margin-left: -2.4%; margin-top: 0%;">{{ autorizado.dni }}</div>
                         </div>
-
+                        {% endif %}
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
                                 <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
@@ -93,17 +97,19 @@
                             <br>
                             <div style="margin-left:-1%">{{ autorizado.email }}</div>
                         </div>
-
                     </li>
-
                 </ul>
             </div>
         </div>
         </div>
     </form>
 
-    <center><button onclick="crear_Autorizado()" class="btn btn-success" style="width:30%">Cargar</button></center>
-
+    {% if opcion == 'Crear'%}
+        <center><button onclick="crear_Autorizado()" class="btn btn-success" style="width:30%">Cargar</button></center>
+    {% else %}
+        <center><button onclick="editar_Autorizado()" class="btn btn-success" style="width:30%">Editar</button></center>
+    {% endif %}
+    
 <!-- The Modal -->
 <div class="modal fade" id="myModal">
     <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -122,16 +128,11 @@
 
             <div class="modal-footer" id="footer">
                 <button type="button" style="display: none;" class="btn btn-success" onclick="volver_index()" id="continuar">Continuar</button>
-                <button type="button" style="display: none;" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
+                <a class="btn btn-primary" href="{% url 'index' %}">Volver</a>
             </div>
         </div>
     </div>
 </div>
-
-<form id="pedidos" action="{% url 'index' %}" method="post">
-    {% csrf_token %}
-</form>
-
 
 <script>
 
@@ -161,11 +162,32 @@
             return;
         }
     }
-
-    function volver_index(){
-        var aux_form = document.getElementById("pedidos");
-        aux_form.submit();
-    }
     
+    function editar_Autorizado(){
+        if (confirm("¿Editar Autorizado ?")) {
+            var myForm = document.getElementById('form_autorizado');
+            formData = new FormData(myForm);
+            $('#myModal').modal('show');
+            $.ajax({
+                url: '{% url 'editar_autorizado' %}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    document.getElementById("resultado_crear_a").innerHTML = data.resultado;
+                    if (data.error){
+                        document.getElementById("continuar").style.display = "none";
+                        document.getElementById("volver").style.display = "block";
+                    }else{
+                       document.getElementById("continuar").style.display = "block";
+                        document.getElementById("volver").style.display = "none";
+                    }
+                }
+            });
+        } else {
+            return;
+        }
+    }    
 </script>
 {% endblock body %}

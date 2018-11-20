@@ -4,11 +4,22 @@
 {% endblock navbar %}
 {% block body %}
 
+<style>
+
+    .table-wrapper-scroll-y {
+      display: block;
+      max-height: 200px;
+      overflow-y: auto;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+
+</style>
+
 <br>
 <div id="contenido">
     {% if transportistas|length != 0 %}
 
-    <h3><center>Transportistas de {{alumno.apellido}} {{alumno.nombre}}.</center></h3>
+    <h3><center>Transportistas de {{alumno.apellido|title}} {{alumno.nombre|title}}.</center></h3>
     <br>
 
     <table style="width:50%" align="center">
@@ -23,13 +34,13 @@
         </tr>
         {% for a in transportistas %}
         <tr>
-            <td>{{a.transportista.nombre}}</td>
-            <td>{{a.transportista.apellido}}</td>
+            <td>{{a.transportista.nombre|title}}</td>
+            <td>{{a.transportista.apellido|title}}</td>
             <td>{{a.transportista.dni}}</td>
-            <td>{{a.transportista.nombre_transporte}}</td>
+            <td>{{a.transportista.nombre_transporte|title}}</td>
             <td>{{a.transportista.telefono_transportista}}</td>
             <td><a onclick="desvincular({{a.transportista.dni}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
-            <td><a onclick="#">Editar</a></td>
+            <td><a class="btn btn-info" href="{% url 'form_editar_transportista' a.transportista.dni %}"><i class="fa fa-edit"></i></a></td>
         </tr>
         {% endfor %}
 

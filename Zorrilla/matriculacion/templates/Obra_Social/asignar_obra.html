@@ -18,25 +18,29 @@
                     </select>
                     <br>
                     <br>
-                    <table class="table table-bordered" id="tabla_transportistas">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Opcion</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for a in obras_sociales %}
-                            <tr>
-                                <td>{{a.nombre}}</td>
-                                <td><input type="radio" id={{a.id}} name="obra_sociall" value={{a.id}}></td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+
+                    <div class="table-wrapper-scroll-y">
+                        <table class="table table-bordered table-striped" id="tabla_transportistas">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Opcion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for a in obras_sociales %}
+                                <tr>
+                                    <td>{{a.nombre|title}}</td>
+                                    <td><input type="radio" id={{a.id}} name="obra_sociall" value={{a.id}}></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <br>
+                    </div>
                 </div>
                 {% else %}
-                    <h3><center>No hay ninguna Obra Social.</center></h3>
+                <h3><center>No hay ninguna Obra Social.</center></h3>
                 {% endif %}
             </div>
 
@@ -48,10 +52,9 @@
             <div id="crear_o">
                 <form id="obra_s" method="post">
                     {% csrf_token %}
-                    <p>Nombre:</p>{{obra_social.nombre}}
+                    <p>Nombre:</p>{{obra_social.nombre|title}}
                 </form>
 
-                <br>
                 <a class="btn btn-success text-white" id="guardar_obra_btn" onclick="crear_obra()">Guardar Obra Social</a>
             </div>
             <br>
@@ -66,7 +69,6 @@
                     <p>Numero de Afiliado:</p><input value=0 name="num_afiliado" id="num_afiliado" type="number">
                     <input value=0 name="id_obra_social" id="id_obra_social2" type="hidden">
                 </form>
-                <br>
             </div>
             <span id="resultado_asginar"></span>
         </div>
@@ -129,15 +131,15 @@
                     contentType: false,
                     type: 'POST',
                     success: function(data){
-                        document.getElementById("hide_for_c").style.display = "none";
-                        document.getElementById("cerrar_btn").style.display = "none";
-                        document.getElementById("asignar_obra_btn").style.display = "none";
-                        document.getElementById("mostrar_form_btn").style.display = "none";
-                        document.getElementById("asignar_o").style.display = "none";
-                        document.getElementById("volver_btn").style.display = "block";
-                        document.getElementById("resultado_asginar").innerHTML = data.resultado
-                    }
-                });
+                    document.getElementById("hide_for_c").style.display = "none";
+                    document.getElementById("cerrar_btn").style.display = "none";
+                    document.getElementById("asignar_obra_btn").style.display = "none";
+                    document.getElementById("mostrar_form_btn").style.display = "none";
+                    document.getElementById("asignar_o").style.display = "none";
+                    document.getElementById("volver_btn").style.display = "block";
+                    document.getElementById("resultado_asginar").innerHTML = data.resultado
+                }
+                       });
             } else {
                 return;
             }
@@ -175,21 +177,21 @@
             contentType: false,
             type: 'POST',
             success: function(data){
-                if (data.error){
-                    document.getElementById("resultado_crear").innerHTML = data.resultado;
-                } else {
-                    document.getElementById("hide_for_c").style.display = "none";
-                    document.getElementById("cerrar_btn").style.display = "none";
-                    document.getElementById("asignar_obra_btn").style.display = "none";
-                    document.getElementById("mostrar_form_btn").style.display = "none";
-                    document.getElementById("guardar_obra_btn").style.display = "none";
-                    document.getElementById("asignar_o").style.display = "none";
-                    document.getElementById("crear_o").style.display = "none";
-                    document.getElementById("asig_obra_btn").style.display = "none";
-                    document.getElementById("volver_btn").style.display = "block";
-                    document.getElementById("resultado_crear").innerHTML = data.resultado;
-                }
-            }
-        });
+            if (data.error){
+            document.getElementById("resultado_crear").innerHTML = data.resultado;
+        } else {
+               document.getElementById("hide_for_c").style.display = "none";
+        document.getElementById("cerrar_btn").style.display = "none";
+        document.getElementById("asignar_obra_btn").style.display = "none";
+        document.getElementById("mostrar_form_btn").style.display = "none";
+        document.getElementById("guardar_obra_btn").style.display = "none";
+        document.getElementById("asignar_o").style.display = "none";
+        document.getElementById("crear_o").style.display = "none";
+        document.getElementById("asig_obra_btn").style.display = "none";
+        document.getElementById("volver_btn").style.display = "block";
+        document.getElementById("resultado_crear").innerHTML = data.resultado;
+    }
+    }
+    });
     }
 </script>

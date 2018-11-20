@@ -117,45 +117,39 @@ def profesor(request, id_profesor):
 
 @login_required
 def modificar_perfil(request, dni):
-    print (dni)
-    trabajador_elegido = Trabajador.objects.get(dni_t=dni)
-    trabajador = ModificarForm(initial={'nombre':trabajador_elegido.nombre_t,'apellido':trabajador_elegido.apellido_t,
-'dni':trabajador_elegido.dni_t,'lugar_nacimineto':trabajador_elegido.lugar_nacimiento_t,'fecha_nacimiento':trabajador_elegido.fecha_nacimiento_t,'domicilio':trabajador_elegido.domicilio_t,'email':trabajador_elegido.email_t,'sexo':trabajador_elegido.sexo_t,
-'telefono_particular':trabajador_elegido.telefono_particular, 'telefono_laboral':trabajador_elegido.telefono_laboral, 'telefono_familiar':trabajador_elegido.telefono_familiar, 'datos_familiares_cargo':trabajador_elegido.datos_familiares_cargo,
-'antecedentes_laborales':trabajador_elegido.antecedentes_laborales, 'estudios_cursados':trabajador_elegido.estudios_cursados})
-    return render(request, 'templates_docentes/modificarPerfil.html', {'trabajador':trabajador, 'trabajador_elegido':trabajador_elegido})
+    trabajador = Trabajador.objects.get(dni_t=dni)
+    trabajador_elegido = Modificar_Trabajador_Form(initial={'nombre_t':trabajador.nombre_t.title(),'apellido_t':trabajador.apellido_t.title(),'fecha_nacimiento_t':trabajador.fecha_nacimiento_t, 'lugar_nacimiento_t':trabajador.lugar_nacimiento_t.title(), 'domicilio_t':trabajador.domicilio_t.title(), 'email_t':trabajador.email_t,'sexo_t':trabajador.sexo_t,'telefono_particular':trabajador.telefono_particular, 'telefono_laboral':trabajador.telefono_laboral,'telefono_familiar':trabajador.telefono_familiar, 'datos_familiares_cargo':trabajador.datos_familiares_cargo.title(),'antecedentes_laborales':trabajador.antecedentes_laborales.title(), 'estudios_cursados':trabajador.estudios_cursados.title()})
+    return render(request, 'templates_docentes/modificarPerfil.html', {'trabajador':trabajador, 'form':trabajador_elegido})
 
 @login_required
 def modificar_datos_perfil(request):
     if request.method == "POST":
-        trabajador_form = ModificarForm(request.POST)
+        form = Modificar_Trabajador_Form(request.POST)
         dni_trabajador = request.POST['dni_user']
         trabajo = request.POST['trabajo']
         print (trabajo)
         user = User.objects.get(username=request.user)
-        if trabajador_form.is_valid():
+        if form.is_valid():
             trabajador = Trabajador.objects.get(dni_t=dni_trabajador)
             user_T = user_Trabajador.objects.get(trabajador=trabajador)
             if (user_T.user == user):
-                nombre = trabajador_form.cleaned_data['nombre']
-                apellido = trabajador_form.cleaned_data['apellido']
+                nombre = form.cleaned_data['nombre_t']
+                apellido = form.cleaned_data['apellido_t']
                 nuevo_nombre = nombre.lower()
                 nuevo_apellido = apellido.lower()
-                nuevo_lugar_nacimiento = trabajador_form.cleaned_data['lugar_nacimiento']
-                nueva_fecha_nacimiento = trabajador_form.cleaned_data['fecha_nacimiento']
-                nuevo_domicilio = trabajador_form.cleaned_data['domicilio']
-                nuevo_email = trabajador_form.cleaned_data['email']
-                nuevo_sexo = trabajador_form.cleaned_data['sexo']
-                nuevo_telefono_particular = trabajador_form.cleaned_data['telefono_particular']
-                nuevo_telefono_laboral = trabajador_form.cleaned_data['telefono_laboral']
-                nuevo_telefono_familiar = trabajador_form.cleaned_data['telefono_familiar']
-                nuevo_datos_familiares_cargo = trabajador_form.cleaned_data['datos_familiares_cargo']
-                nuevo_antecedentes_laborales = trabajador_form.cleaned_data['antecedentes_laborales']
-                nuevo_estudios_cursados = trabajador_form.cleaned_data['estudios_cursados']
-
+                nuevo_lugar_nacimiento = form.cleaned_data['lugar_nacimiento_t']
+                nueva_fecha_nacimiento = form.cleaned_data['fecha_nacimiento_t']
+                nuevo_domicilio = form.cleaned_data['domicilio_t']
+                nuevo_email = form.cleaned_data['email_t']
+                nuevo_sexo = form.cleaned_data['sexo_t']
+                nuevo_telefono_particular = form.cleaned_data['telefono_particular']
+                nuevo_telefono_laboral = form.cleaned_data['telefono_laboral']
+                nuevo_telefono_familiar = form.cleaned_data['telefono_familiar']
+                nuevo_datos_familiares_cargo = form.cleaned_data['datos_familiares_cargo']
+                nuevo_antecedentes_laborales = form.cleaned_data['antecedentes_laborales']
+                nuevo_estudios_cursados = form.cleaned_data['estudios_cursados']
                 trabajador.nombre_t, trabajador.apellido_t, trabajador.lugar_nacimiento_t, trabajador.fecha_nacimiento_t, trabajador.domicilio_t, trabajador.email_t, trabajador.sexo_t, trabajador.telefono_particular,trabajador.telefono_laboral, trabajador.telefono_familiar, trabajador.datos_familiares_cargo, trabajador.antecedentes_laborales, trabajador.estudios_cursados = nuevo_nombre, nuevo_apellido, nuevo_lugar_nacimiento, nueva_fecha_nacimiento, nuevo_domicilio, nuevo_email, nuevo_sexo, nuevo_telefono_particular, nuevo_telefono_laboral, nuevo_telefono_familiar, nuevo_datos_familiares_cargo, nuevo_antecedentes_laborales, nuevo_estudios_cursados
                 trabajador.save()
-
                 subject = "Perfil Modificado"
                 message = "Se le notifica que se han realizado cambios en su perfil de " + str(trabajo) + " dentro del Sistema."
                 email_from = settings.EMAIL_HOST_USER
@@ -174,14 +168,12 @@ def modificar_datos_perfil(request):
                     'resultado': "Error el Perfil no corresponde con el Usuario Actual."
                 }
                 return JsonResponse(data)
-
         else:
             data = {
                 'error':True,
-                'resultado': str(trabajador_form.errors)
+                'resultado': str(form.errors)
             }
             return JsonResponse(data)
-
     else:
         return HttpResponse("Solo podes entrar por post")
 

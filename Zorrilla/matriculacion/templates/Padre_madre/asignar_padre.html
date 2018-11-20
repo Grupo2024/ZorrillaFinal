@@ -7,6 +7,7 @@
         <!-- Modal body -->
         <div class="modal-body">
             <div id="padress">
+                <h4>Padres:</h4>
                 {% if todos_los_padres|length != 0 %}
                 <input type="text"placeholder="Padre que desea buscar" id="myInput" onkeyup="buscar_padre()" size="5">
                 <select id="filter_by">
@@ -16,70 +17,73 @@
                 </select>
                 <br>
                 <br>
-                <table class="table table-bordered" id="tabla_padres">
-                    <thead>
-                        <tr>
-                            <th>Apellido</th>
-                            <th>Nombre</th>
-                            <th>Dni</th>
-                            <th>Opcion</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for padre in todos_los_padres %}
-                        <tr>
-                            <td>{{padre.apellido|title}}</td>
-                            <td>{{padre.nombre|title}}</td>
-                            <td>{{padre.dni}}</td>
-                            <td><input type="radio" id={{padre.dni}} name="padre" value={{padre.dni}}></td>
-                        </tr>
+                <div class="table-wrapper-scroll-y">
+                    <table class="table table-bordered table-striped" id="tabla_padres">
+                        <thead>
+                            <tr>
+                                <th>Apellido</th>
+                                <th>Nombre</th>
+                                <th>Dni</th>
+                                <th>Opcion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for padre in todos_los_padres %}
+                            <tr>
+                                <td>{{padre.nombre|title}}</td>
+                                <td>{{padre.apellido|title}}</td>
+                                <td>{{padre.dni}}</td>
+                                <td><input type="radio" id={{padre.dni}} name="padre" value={{padre.dni}}></td>
+                            </tr>
+                        </tbody>
                         {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {% else %}
+                    </table>
+                    <br>
+                </div>
+                {% else %}
                 <h3><center>No hay ningun Padre.</center></h3>
-            {% endif %}
+                {% endif %}
+            </div>
             <span id="resultado_padres"></span>
         </div>
-        <!-- Modal footer -->
-        <div class="modal-footer">
-            <form id="select_padre" method="post">
-                {% csrf_token %}
-                <input name="dni_alumno" id="dni_alumno" value={{dni_alumno}} type="hidden">
-                <input name="dni_padre" id="dni_padre_2" value=0 type="hidden">
-            </form>
-            <a class="btn btn-primary centerB" href="{% url 'cargar_padre' dni_alumno %}" id="crear_padre_btn">Crear Padre</a>
-            <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar_btn">Cerrar</button>
-            <button type="button" class="btn btn-success" id="cont_padre" onclick="mandar_padre()">Asignar</button>
-            <button type="button" class="btn btn-success" id="cont_btn_p" onclick="refresh_p()">Continuar</button>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <form id="select_padre" method="post">
+                    {% csrf_token %}
+                    <input name="dni_alumno" id="dni_alumno" value={{dni_alumno}} type="hidden">
+                    <input name="dni_padre" id="dni_padre_2" value=0 type="hidden">
+                </form>
+                <a class="btn btn-primary centerB" href="{% url 'cargar_padre' dni_alumno %}" id="crear_padre_btn">Crear Padre</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar_btn">Cerrar</button>
+                <button type="button" class="btn btn-success" id="cont_padre" onclick="mandar_padre()">Asignar</button>
+                <button type="button" class="btn btn-success" id="cont_btn_p" onclick="refresh_p()">Continuar</button>
+
+            </div>
 
         </div>
-
     </div>
-</div>
 
-<script>
+    <script>
 
-    $('input[name=padre]').click(function() {
-        var select_dni = $('input[name=padre]:checked').val();
-        document.getElementById("dni_padre_2").value = select_dni;
-        document.getElementById("cont_padre").style.display = "block";
-    });
+        $('input[name=padre]').click(function() {
+            var select_dni = $('input[name=padre]:checked').val();
+            document.getElementById("dni_padre_2").value = select_dni;
+            document.getElementById("cont_padre").style.display = "block";
+        });
 
-    document.getElementById("cont_padre").style.display = "none";
-    document.getElementById("cont_btn_p").style.display = "none";
+        document.getElementById("cont_padre").style.display = "none";
+        document.getElementById("cont_btn_p").style.display = "none";
 
-    function mandar_padre(){
-        var myForm = document.getElementById('select_padre');
-        formData = new FormData(myForm);
-        $.ajax({
-            url: '{% url 'asignar_padre' %}',
-            data : formData,
-            processData: false,
-            contentType: false,
-            type: 'POST',
-            success: function(data){
+        function mandar_padre(){
+            var myForm = document.getElementById('select_padre');
+            formData = new FormData(myForm);
+            $.ajax({
+                url: '{% url 'asignar_padre' %}',
+                data : formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
                 document.getElementById("padress").style.display = "none";
                 document.getElementById("resultado_padres").innerHTML = data.resultado;
                 document.getElementById("cont_padre").style.display = "none";
@@ -87,28 +91,28 @@
                 document.getElementById("crear_padre_btn").style.display = "none";
                 document.getElementById("cont_btn_p").style.display = "block";
             }
-        });     
-    }
+                   });
+        }
 
-    function buscar_padre() {
-        var e = document.getElementById("filter_by");
-        var strUser = e.options[e.selectedIndex].value;
-        var input, filter, table, tr, td, i;
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("tabla_padres");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[strUser];
-            if (td) {
-                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
+        function buscar_padre() {
+            var e = document.getElementById("filter_by");
+            var strUser = e.options[e.selectedIndex].value;
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("tabla_padres");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[strUser];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
                 }
             }
         }
-    }
 
 
-</script>
+    </script>

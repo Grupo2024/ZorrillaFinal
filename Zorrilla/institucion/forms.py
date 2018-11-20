@@ -18,8 +18,7 @@ class ProfesorForm(forms.ModelForm):
             'fecha_nacimiento_t': DateInput()
         }
 
-class ModificarForm(forms.Form):
-
+class Modificar_Trabajador_Form(forms.Form):
     HO = 'Hombre'
     MU = 'Mujer'
 
@@ -28,13 +27,13 @@ class ModificarForm(forms.Form):
         (MU , 'Mujer'),
     )
 
-    nombre = forms.CharField(required=True)
-    apellido =forms.CharField(required=True)
-    lugar_nacimiento = forms.CharField(required=True)
-    fecha_nacimiento = forms.DateField(required=True)
-    domicilio = forms.CharField(required=True)
-    email = forms.EmailField(required=True)
-    sexo = forms.ChoiceField(choices=GENERO_CHOICES, required=True)
+    nombre_t = forms.CharField(required=True)
+    apellido_t =forms.CharField(required=True)
+    fecha_nacimiento_t = forms.DateField(required=True)
+    lugar_nacimiento_t = forms.CharField(required=True)
+    domicilio_t = forms.CharField(required=True)
+    email_t = forms.EmailField(required=True)
+    sexo_t = forms.ChoiceField(choices=GENERO_CHOICES, required=True)
     telefono_particular = forms.IntegerField(required=True)
     telefono_laboral = forms.IntegerField(required=True)
     telefono_familiar = forms.IntegerField(required=True)

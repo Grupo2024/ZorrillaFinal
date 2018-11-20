@@ -5,19 +5,6 @@
 {% block body %}
 
 <style type="text/css">
-    #myProgress {
-        width: 100%;
-        background-color: #ddd;
-    }
-    #myBar {
-        width: 10%;
-        height: 30px;
-        background-color: #4CAF50;
-        text-align: center;
-        line-height: 30px;
-        color: white;
-    }
-
     input{
         width: 140%;
     }
@@ -33,10 +20,14 @@
 <form id="form_padre" style="margin-left: 30%;" method="post" >
     {% csrf_token %}
     <input type="hidden" value={{dni_alumno}} name="dni_alumno">
+    <input type="hidden" value={{dni_padre}} name="dni_padre">
     <div class="card text-center" style="width: 45%; margin-left: 6%">
         <div class="card-body">
-            <h4 class="card-title">Datos personales</h4>
-
+            {% if objetivo == 'Cargar'%}
+                <h4 class="card-title">Cargar Padre</h4>
+            {% else %}
+                <h4 class="card-title">Editar Padre</h4>
+            {% endif %}
             <ul class="list-group list-group-flush">
 
                 <li class="list-group-item">
@@ -54,14 +45,14 @@
                         </div>
                         <div style="margin-left: -5%;">{{padre_form.apellido}}</div>
                     </div>
-
+                    {% if objetivo == 'Cargar'%}
                     <div class="input-group input-group-sm mb-3 form-group">
                         <div class="input-group-prepend"  style="margin-right: 800%;">
                             <span  class="input-group-text" id="inputGroup-sizing-sm">Numero de documento:</span>
                         </div>
                         <div style="margin-left: -0.5%;">{{padre_form.dni}}</div>
                     </div>
-
+                    {% endif %}
                     <div class="input-group input-group-sm mb-3 form-group">
                         <div class="input-group-prepend"  style=" margin-right: 800%;">
                             <span  class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
@@ -118,11 +109,11 @@
     </div>
 </form>
 
-<form id="pedidos" action="{% url 'index' %}" method="post">
-    {% csrf_token %}
-</form>
-
-<center><button class="btn btn-success" onclick="matricular_Padre()" id="btn_padre">Cargar</button></center>
+{% if objetivo == 'Cargar'%}
+    <center><button class="btn btn-success" onclick="matricular_Padre()" id="btn_padre">Cargar</button></center>
+{% else %}
+    <center><button class="btn btn-success" onclick="editar_Padre()" id="btn_padre">Editar</button></center>
+{% endif %}
 
 <!-- The Modal -->
 <div class="modal fade" id="myModal">
@@ -142,7 +133,7 @@
 
             <div class="modal-footer" id="footer">
                 <button type="button" style="display: none;" class="btn btn-success" onclick="volver_index()" id="continuar">Continuar</button>
-                <button type="button" style="display: none;" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
+                <a class="btn btn-primary" href="{% url 'index' %}">Volver</a>
             </div>
         </div>
     </div>
@@ -177,11 +168,32 @@
         } 
     }
     
-    function volver_index(){
-        var x = document.getElementById("pedidos")
-        x.submit();
+    function editar_Padre(){
+        if (confirm("¿Editar Padre?")) {
+            var myForm = document.getElementById('form_padre');
+            formData = new FormData(myForm);
+            $('#myModal').modal('show');
+            $.ajax({
+                url: '{% url 'editar_padre' %}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    document.getElementById("resultado_crear_p").innerHTML = data.resultado;
+                    if (data.error){
+                        document.getElementById("continuar").style.display = "none";
+                        document.getElementById("volver").style.display = "block";
+                    }else{
+                       document.getElementById("continuar").style.display = "block";
+                        document.getElementById("volver").style.display = "none";
+                    }
+                }
+            });
+        } else {
+            return;
+        }
     }
-
 </script>
 
 

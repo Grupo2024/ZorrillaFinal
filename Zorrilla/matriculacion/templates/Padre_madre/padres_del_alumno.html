@@ -4,15 +4,22 @@
 {% endblock navbar %}
 {% block body %}
 
+<style>
+
+    .table-wrapper-scroll-y {
+      display: block;
+      max-height: 200px;
+      overflow-y: auto;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+
+</style>
+
 <br>
 {% if familiares|length != 0%}
-    <h3><center>Padres de {{alumno.apellido}} {{alumno.nombre}}.</center></h3>
-  
+    <h3><center>Padres de {{alumno.apellido|title}} {{alumno.nombre|title}}.</center></h3>
     <br>
-
-
     <table class="table table-sm table-hover" id="tabla" align="center" style="width:50%">
-        
         <tr>
             <th>Nombre</th>
             <th>Apellido</th>
@@ -28,12 +35,12 @@
             <td>{{a.padre_madre.dni}}</td>
             <td>{{a.padre_madre.email}}</td>
             <td><button class="btn btn-warning" onclick="desvincular({{a.padre_madre.dni}})"><i class="fa fa-ban"></i></button></td>
-            <td><button class="btn btn-info" onclick="#"><i class="fa fa-edit"></i></button></td>
+            <td><a class="btn btn-info" href="{% url 'form_editar_padre' a.padre_madre.dni %}"><i class="fa fa-edit"></i></a></td>
         </tr>
         {% endfor %}
     </table>
 {% else %}
-    <h3><center>{{alumno.apellido}} {{alumno.nombre}} no tiene ningun Padre/Madre.</center></h3>
+    <h3><center>{{alumno.apellido|title}} {{alumno.nombre|title}} no tiene ningun Padre/Madre.</center></h3>
 {% endif %}
 <form id="desvincular_familiar" method="post" action="{% url 'desvincular_familiar' %}">
     {% csrf_token %}

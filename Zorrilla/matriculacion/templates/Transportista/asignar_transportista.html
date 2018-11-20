@@ -17,26 +17,29 @@
                     </select>
                     <br>
                     <br>
-                    <table class="table table-bordered" id="tabla_transportistas">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
+                    <div class="table-wrapper-scroll-y">
+                        <table class="table table-bordered" id="tabla_transportistas">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
                                 <th>Apellido</th>
                                 <th>Dni</th>
                                 <th>Opcion</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for t in transportistas %}
-                            <tr>
-                                <td>{{t.nombre}}</td>
-                                <td>{{t.apellido}}</td>
-                                <td>{{t.dni}}</td>
-                                <td><input type="radio" id={{t.dni}} name="transporte" value={{t.dni}}></td>
-                            </tr>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for t in transportistas %}
+                                <tr>
+                                    <td>{{t.nombre|title}}</td>
+                                    <td>{{t.apellido|title}}</td>
+                                    <td>{{t.dni}}</td>
+                                    <td><input type="radio" id={{t.dni}} name="transporte" value={{t.dni}}></td>
+                                </tr>
+                            </tbody>
                             {% endfor %}
-                        </tbody>
-                    </table>
+                        </table>
+                        <br>
+                    </div>
                 </div>
             {% else %}
                 <h3><center>No hay ningun Transportista.</center></h3>
