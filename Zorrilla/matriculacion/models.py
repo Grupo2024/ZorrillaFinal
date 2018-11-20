@@ -156,3 +156,14 @@ class alumno_Autorizado(models.Model):
     
     def __str__(self):
         return '{} {} - {} {}'.format(self.alumno.apellido, self.alumno.nombre, self.autorizado.nombre, self.autorizado.apellido)
+
+class datos_Index(models.Model):
+    telefono = models.IntegerField(null=False)
+    telefono2 = models.IntegerField(null=False)
+    email = models.EmailField(null=False)
+    email2 = models.EmailField(null=False)
+    latitud = models.IntegerField(null=False)
+    longitud = models.IntegerField(null=False)
+
+    def __str__(self):
+        return '{} {} {} {} {} {}'.format(self.telefono, self.telefono2, self.email,self.email2, self.latitud, self.longitud)

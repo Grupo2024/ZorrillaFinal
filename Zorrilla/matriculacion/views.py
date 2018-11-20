@@ -71,7 +71,8 @@ def logIn(request):
 
 def index(request):
     daddy()
-    return render(request, 'index.html')
+    datos = datos_Index.objects.get(pk=1)
+    return render(request, 'index.html', {'datos':datos})
 
 @login_required
 def logout_me_out(request):
@@ -157,6 +158,11 @@ def form_editar_autorizado(request, dni_autorizado):
     autorizado = EditarAutorizadoForm(initial={'nombre':autorizado_elegido.nombre.title(),'apellido':autorizado_elegido.apellido.title(),'lugar_nacimiento':autorizado_elegido.lugar_nacimiento.title(),'fecha_nacimiento':autorizado_elegido.fecha_nacimiento,'domicilio':autorizado_elegido.domicilio.title(),'email':autorizado_elegido.email,'sexo':autorizado_elegido.sexo,'telefono_autorizado':autorizado_elegido.telefono_autorizado})
     return render(request, 'Autorizado/crear_autorizado.html', {'autorizado':autorizado, 'opcion':opcion, 'dni':autorizado_elegido.dni})
     
+@user_passes_test(check_Admin_s)
+def form_editar_datos(request):
+    editar_f = datos_Index.objects.get(pk=1)
+    form = EditarIndexForm(initial={'telefono':editar_f.telefono,'telefono2':editar_f.telefono2,'email':editar_f.email,'email2':editar_f.email2,'latitud':editar_f.latitud,'longitud':editar_f.longitud})
+    return render(request, 'Admin_Secretaria/form_datos_index.html', {'form':form})
     
 """
 =========
@@ -647,7 +653,6 @@ def usuarios_transportista(request, dni_transportista):
 def datus_usuario_t(request, dni_trabajador):
     trabajador = Trabajador.objects.get(dni_t=dni_trabajador)
     user_T = user_Trabajador.objects.get(trabajador=trabajador)
-    
     return render(request, 'Admin_Secretaria/user_trabajador.html', {'trabajador':user_T})
     
 #Funcion que Trae los datos del Padre elegido previamente
@@ -753,7 +758,25 @@ def pedido_egreso(request):
         return JsonResponse(data)
     return HttpResponse("Solo podes entrar por POST")
 
-@user_passes_test(check_Secretaria)
+@user_passes_test(check_Admin_s)
+def cambiar_datos(request):
+    if request.method == 'POST':
+        datos_form = EditarIndexForm(request.POST)
+        if datos_form.is_valid():
+            telefono = datos_form.cleaned_data['telefono']
+            telefono2 = datos_form.cleaned_data['telefono2']
+            email = datos_form.cleaned_data['email']
+            email2 = datos_form.cleaned_data['email2']
+            latitud = datos_form.cleaned_data['latitud']
+            longitud = datos_form.cleaned_data['longitud']
+            editar_f = datos_Index.objects.get(pk=1)
+            editar_f.telefono, editar_f.telefono2, editar_f.email, editar_f.email2, editar_f.latitud, editar_f.longitud = telefono, telefono2, email, email2, latitud, longitud
+            editar_f.save()
+            return redirect ('form_editar_datos')
+        return redirect ('form_editar_datos')
+    else:
+        return HttpResponse("Solo podes entrar por POST")
+
 def editar_padre(request):
     if request.method == 'POST':
         padre_form = EditarPadreForm(request.POST)

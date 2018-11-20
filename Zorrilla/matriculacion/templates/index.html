@@ -218,6 +218,18 @@
                     </div>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseIndex" aria-expanded="false" aria-controls="collapseSec" id="headingIndex">
+                    <h5 class="mb-0">
+                        <a>Index</a>
+                    </h5>
+                </div>
+                <div id="collapseIndex" class="collapse" aria-labelledby="headingIndex" data-parent="#accordion">
+                    <div class="card-body">
+                        <a href="{% url 'form_editar_datos' %}" class="btn btn-success asd">Editar Datos</a>
+                    </div>
+                </div>
+            </div>
             {% endif %}
             {% if request.user|has_group:"Secretaria" %}
             <div class="card">
@@ -295,12 +307,12 @@
                     <div class="card-header">INFORMACION</div>
                     <div class="card-body">
                         <h5 class="card-title">Telefonos</h5>
-                        <h6>Cecilia: 73456321</h6>
-                        <h6>Roberto: 54623245</h6>
+                        <h6>{{datos.telefono}}</h6>
+                        <h6>{{datos.telefono2}}</h6>
                         <br>
                         <h5 class="card-title">Mails</h5>
-                        <h6>nose@gmail.com</h6>
-                        <h6>nose2@gmail.com</h6>
+                        <h6>{{datos.email}}</h6>
+                        <h6>{{datos.email2}}</h6>
                         <br>
                         <h5>Ubicacion</h5>
                         <div id="map"></div>
