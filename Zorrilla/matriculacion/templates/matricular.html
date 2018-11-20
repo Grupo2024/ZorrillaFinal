@@ -1,4 +1,4 @@
-<div class="modal-dialog">
+<div style="width:2500%; margin-left: -30%" class="modal-dialog">
     <div class="modal-content">
 
         <!-- Modal Header -->
@@ -13,7 +13,9 @@
             <div class="modal-body">
 
                 <!-- Select Curso -->
-
+        <div class='row'>
+            <div class="card text-center" style="width: 45%; margin-left: 4%">
+                <div class="card-body">
                 <h4>Curso</h4>
                 <select class="btn btn-outline-dark" id="curso" onchange="selectCurso(event)">
                     <option value=0>Opciones</option>
@@ -21,7 +23,10 @@
                     <option value={{curso.id}}>{{curso}}</option>
                     {% endfor %}
                 </select>
-
+            </div>
+        </div>
+        <div class="card text-center" style="width: 45%; margin-left: 2%">
+            <div class="card-body">
                 <!-- Select Familiar -->
 
                 <br>
@@ -50,7 +55,10 @@
                     <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_padres_asignar' alumno.dni %}')">Asignar</a>
                 </div>
                 {% endif %}
-
+                </div>  
+            </div>
+            <div class="card text-center" style="width: 45%; margin-left: 4%">
+                <div class="card-body">
                 <!-- Select Autorizado -->
 
                 <h4>Autorizados</h4>
@@ -75,7 +83,10 @@
                 <a class="btn btn-danger" href="{% url 'autorizados_del_alumno' alumno.dni %}">Desvincular</a>
                 <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Asignar</a>
                 {% endif %}
-
+            </div>
+                </div>
+                <div class="card text-center" style="width: 45%; margin-left: 2%">
+            <div class="card-body">
                 <!-- Select Transporte -->
 
                 <h4>Transporte</h4>
@@ -100,7 +111,10 @@
                 <a class="btn btn-danger" href="{% url 'transportistas_del_alumno' alumno.dni %}">Desvincular</a>
                 <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_transportistas_asignar' alumno.dni %}')">Asignar</a>
                 {% endif %}
-
+                </div>
+            </div>
+            <div class="card text-center" style="width: 45%; margin-left: 4%">
+                <div class="card-body">
                 <!-- Select Obra Social -->
 
                 <h4>Obra Social</h4>
@@ -123,20 +137,20 @@
                 {% endfor %}
                 <br>
                 <div id="new_obra">
-                    <a class="btn btn-danger" href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Desvincularg</a></li>
+                    <a class="btn btn-danger" href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Desvincular</a></li>
                 <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Asignar</a>
-            </div>
+                </div>
             {% endif %}
-
+            </div>
 
 
             <input name="select_curso" id="select_curso" value=0  type="hidden">
             <input name="dni_alumno" id="dni_alumno" type="hidden" value="{{alumno.dni}}">
+        </div>
         </form>
-    </div>
     <!-- Modal footer -->
-    <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-success" onclick="matricular()">Matricular</button>
-    </div>
+    <div style="margin-left:9.5%" class="modal-footer">
+            <button type="button" class="btn btn-success" onclick="re_matricular()">Re Matricular</button>
+        </div>
+        </div>  
 </div>
