@@ -3,7 +3,7 @@
 
         <!-- Modal Header -->
         <div class="modal-header">
-            <h4 class="modal-title">{{alumno.nombre}} {{alumno.apellido}}</h4>
+            <h4 class="modal-title">{{alumno.nombre|title}} {{alumno.apellido|title}}</h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
@@ -41,13 +41,13 @@
                 </div>
                 {% else %}
                 {% for familiar in familiares %}
-                <a class="btn btn-info" style="margin-top: 1%;" href="{% url 'datos_padre' familiar.padre_madre.dni %}">{{familiar.padre_madre.nombre}} {{familiar.padre_madre.apellido}}</a>
+                <a class="btn btn-info" style="margin-top: 1%;" href="{% url 'datos_padre' familiar.padre_madre.dni %}">{{familiar.padre_madre.nombre|title}} {{familiar.padre_madre.apellido|title}}</a>
                 <br>
                 {% endfor %}
                 <br>
                 <div id="new_padre">
-                    <a class="btn btn-danger" href="{% url 'padres_del_alumno' alumno.dni %}">Desvincular un Familiar</a>
-                    <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_padres_asignar' alumno.dni %}')">Asignar Otro Padre</a>
+                    <a class="btn btn-danger" href="{% url 'padres_del_alumno' alumno.dni %}">Desvincular</a>
+                    <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_padres_asignar' alumno.dni %}')">Asignar</a>
                 </div>
                 {% endif %}
 
@@ -68,12 +68,12 @@
                 </div>
                 {% else %}
                 {% for autorizado in autorizados %}
-                <a class="btn btn-info" style="margin-top: 1%;" href="{% url 'datos_autorizado' autorizado.autorizado.dni %}">{{autorizado.autorizado.apellido}} {{autorizado.autorizado.nombre}}</a>
+                <a class="btn btn-info" style="margin-top: 1%;" href="{% url 'datos_autorizado' autorizado.autorizado.dni %}">{{autorizado.autorizado.apellido|title}} {{autorizado.autorizado.nombre|title}}</a>
                 <br>
                 {% endfor %}
                 <br>
-                <a class="btn btn-danger" href="{% url 'autorizados_del_alumno' alumno.dni %}">Desvincular un Autorizado</a>
-                <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Asignar otro Autorizado</a>
+                <a class="btn btn-danger" href="{% url 'autorizados_del_alumno' alumno.dni %}">Desvincular</a>
+                <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Asignar</a>
                 {% endif %}
 
                 <!-- Select Transporte -->
@@ -93,12 +93,12 @@
                 </div>
                 {% else %}
                 {% for transportista in transportistas %}
-                <a class="btn btn-info" style="margin-top: 1%;" href="{% url 'datos_transportista' transportista.transportista.dni %}">{{transportista.transportista.apellido}} {{transportista.transportista.nombre}}</a>
+                <a class="btn btn-info" style="margin-top: 1%;" href="{% url 'datos_transportista' transportista.transportista.dni %}">{{transportista.transportista.apellido|title}} {{transportista.transportista.nombre|title}}</a>
                 <br>
                 {% endfor %}
                 <br>
-                <a class="btn btn-danger" href="{% url 'transportistas_del_alumno' alumno.dni %}">Desvincular un Transportista</a>
-                <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_transportistas_asignar' alumno.dni %}')">Asignar otro Transportista</a>
+                <a class="btn btn-danger" href="{% url 'transportistas_del_alumno' alumno.dni %}">Desvincular</a>
+                <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_transportistas_asignar' alumno.dni %}')">Asignar</a>
                 {% endif %}
 
                 <!-- Select Obra Social -->
@@ -118,13 +118,13 @@
                 </div>
                 {% else %}
                 {% for obra_social in obras_sociales %}
-                <a class="btn btn-info" style="margin-top: 1%;" href="{% url 'datos_padre' obra_social.obra_social.id %}">{{obra_social.obra_social.nombre}}</a>
+                <a class="btn btn-info" style="margin-top: 1%;" href="{% url 'datos_padre' obra_social.obra_social.id %}">{{obra_social.obra_social.nombre|title}}</a>
                 <br>
                 {% endfor %}
                 <br>
                 <div id="new_obra">
-                    <a class="btn btn-danger" href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Desvincular una Obra Social</a></li>
-                <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Asignar Otra Obra Social</a>
+                    <a class="btn btn-danger" href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Desvincularg</a></li>
+                <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Asignar</a>
             </div>
             {% endif %}
 

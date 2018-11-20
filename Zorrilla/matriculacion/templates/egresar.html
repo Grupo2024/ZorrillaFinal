@@ -3,13 +3,13 @@
 
         <!-- Modal Header -->
         <div class="modal-header">
-            <h4 class="modal-title"><strong>Pedido de Egreso de {{alumno.nombre}}</strong></h4>
+            <h4 class="modal-title"><strong>Pedido de Egreso de {{alumno.nombre|title}}</strong></h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <!-- Modal body -->
         <div class="modal-body">
 
-            <span style="color:red" id="msg_advertencia_egreso">Advertencia: Si el Alumno pasa a estar como Egresado, el mismo ya no pertenecera a ningun Curso y no podra volver a pertenecer a ninguno. Ademas los padres del mismo seran notificados.</span>
+            <span id="msg_advertencia_egreso">Esta seguro de que desea egresar al alumno {{alumno.nombre|title}} {{alumno.apellido|title}}?</span>
             <form id="form_for_egreso" method="post">
                 {% csrf_token %}
                 <input name="dni_alumno" id="dni_alumno" type="hidden" value="{{alumno.dni}}">

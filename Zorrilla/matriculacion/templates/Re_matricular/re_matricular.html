@@ -3,7 +3,7 @@
 
         <!-- Modal Header -->
         <div class="modal-header">
-            <h4 class="modal-title">{{alumno.nombre}} {{alumno.apellido}}</h4>
+            <h4 class="modal-title">{{alumno.nombre|title}} {{alumno.apellido|title}}</h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
@@ -48,7 +48,7 @@
                 </div>
                 {% else %}
                     {% for familiar in familiares %}
-                    <a class="btn btn-info" style="margin-top: 1%;" href="{% url 'datos_padre' familiar.padre_madre.dni %}">{{familiar.padre_madre.nombre}} {{familiar.padre_madre.apellido}}</a>
+                    <a class="btn btn-info" style="margin-top: 1%;" href="{% url 'datos_padre' familiar.padre_madre.dni %}">{{familiar.padre_madre.nombre|title}} {{familiar.padre_madre.apellido|title}}</a>
                     <br>
                     {% endfor %}
                     <div id="new_padre2">
@@ -77,7 +77,7 @@
                 </div>
                 {% else %}
                     {% for autorizado in autorizados %}
-                    <a style="margin-top: 1%;" class="btn btn-info" href="{% url 'datos_autorizado' autorizado.autorizado.dni %}">{{autorizado.autorizado.apellido}} {{autorizado.autorizado.nombre}}</a>
+                    <a style="margin-top: 1%;" class="btn btn-info" href="{% url 'datos_autorizado' autorizado.autorizado.dni %}">{{autorizado.autorizado.apellido|title}} {{autorizado.autorizado.nombre|title}}</a>
                     <br>
                     {% endfor %}
                     <br>
@@ -106,7 +106,7 @@
                 </div>
                 {% else %}
                     {% for transportista in transportistas %}
-                    <a style="margin-top: 1%;" class="btn btn-info" href="{% url 'datos_transportista' transportista.transportista.dni %}">{{transportista.transportista.apellido}} {{transportista.transportista.nombre}}</a>
+                    <a style="margin-top: 1%;" class="btn btn-info" href="{% url 'datos_transportista' transportista.transportista.dni %}">{{transportista.transportista.apellido|title}} {{transportista.transportista.nombre|title}}</a>
                     <br>
                     {% endfor %}
                     <br>
@@ -134,7 +134,7 @@
                 </div>
                 {% else %}
                     {% for obra_social in obras_sociales %}
-                    <a style="margin-top: 1%;" class="btn btn-info" href="{% url 'datos_padre' obra_social.obra_social.id %}">{{obra_social.obra_social.nombre}}</a>
+                    <a style="margin-top: 1%;" class="btn btn-info" href="{% url 'datos_padre' obra_social.obra_social.id %}">{{obra_social.obra_social.nombre|title}}</a>
                     <br>
                     {% endfor %}
                     <div id="new_obra2">
