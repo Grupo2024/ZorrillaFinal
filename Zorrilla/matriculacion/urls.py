@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^logout_me_out', logout_me_out, name="logout_me_out"),
     url(r'^pedidos', traer_pedidos, name="traer_pedidos"),
     url(r'^form_autorizado', form_autorizado, name="form_autorizado"),
+    url(r'^asdf', asdf, name="asdf"),
 
     url(r'^aceptar_re_matriculacion', aceptar_re_matriculacion, name="aceptar_re_matriculacion"),
     url(r'^pedido_re_matricular', pedido_re_matricular, name="pedido_re_matricular"),
