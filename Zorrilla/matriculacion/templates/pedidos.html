@@ -39,7 +39,7 @@
 
     <div class="card text-center" style="width:20%; margin-left: 3%;">
         <div class="card-body">
-            <h4 class="card-title">{{m.alumno.nombre}} {{m.alumno.apellido}}</h4>
+            <h4 class="card-title">{{m.alumno.nombre|title}} {{m.alumno.apellido|title}}</h4>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">DNI: {{m.alumno.dni}}</li>
                 <li class="list-group-item">Fecha de nacimiento: {{m.alumno.fecha_nacimiento}}</li>
@@ -59,7 +59,7 @@
 
     <div class="card text-center " style="width:20%; margin-left: 3%">
         <div class="card-body">
-            <h4 class="card-title">{{m.alumno.nombre}} {{m.alumno.apellido}}</h4>
+            <h4 class="card-title">{{m.alumno.nombre|title}} {{m.alumno.apellido|title}}</h4>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">DNI: {{m.alumno.dni}}</li>
                 <li class="list-group-item">Fecha de nacimiento: {{m.alumno.fecha_nacimiento}}</li>
@@ -79,7 +79,7 @@
 
     <div class="card text-center " style="width:20%; margin-left: 3%">
         <div class="card-body">
-            <h4 class="card-title">{{m.alumno.nombre}} {{m.alumno.apellido}}</h4>
+            <h4 class="card-title">{{m.alumno.nombre|title}} {{m.alumno.apellido|title}}</h4>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">DNI: {{m.alumno.dni}}</li>
                 <li class="list-group-item">Fecha de nacimiento: {{m.alumno.fecha_nacimiento}}</li>
@@ -250,26 +250,22 @@
         }
     }
 
-    function egresar(){
-        var r = confirm("¿Egresar al Alumno ?");
-        if (r == true) {
-            var myForm = document.getElementById('form_for_egreso');
-            formData = new FormData(myForm);
-            $.ajax({
-                url: '{% url 'egresar_alumno' %}',
-                data : formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    $('#modal_cursos').modal('hide');
-                    alert(data.resultado);
-                    refresh_p();
-                }
-           });
-        } else {
-            return;
-        }
+    function egresar(){    
+        var myForm = document.getElementById('form_for_egreso');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: '{% url 'egresar_alumno' %}',
+            data : formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $('#modal_cursos').modal('hide');
+                alert(data.resultado);
+                refresh_p();
+            }
+        });
+        
     }
 
     function traer(url){

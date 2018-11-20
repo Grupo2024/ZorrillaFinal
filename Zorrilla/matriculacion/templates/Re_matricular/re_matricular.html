@@ -1,9 +1,9 @@
-<div class="modal-dialog">
+<div style="width:2500%; margin-left: -30%" class="modal-dialog">
     <div class="modal-content">
 
         <!-- Modal Header -->
         <div class="modal-header">
-            <h4 class="modal-title">{{alumno.nombre}} {{alumno.apellido}}</h4>
+            <h4 class="modal-title">{{alumno.nombre|title}} {{alumno.apellido|title}}</h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
@@ -11,27 +11,21 @@
         <form id="form_for_re_matricular" method="post">
             {% csrf_token %}
             <div style="width:100%" class="modal-body">
-
                 <!-- Select Curso -->
 <div class='row'>
-    <div class="card text-center" style="width: auto; margin-left: 3%">
+    <div class="card text-center" style="width: 45%; margin-left: 4%">
         <div class="card-body">
-            <h4 class="card-title">Datos personales</h4>
                 <h4>Curso: {{curso}}</h4>
-
-                <small>Recomendacion: {{recomendacion}}</small>
-                <br>
                 <select class="btn btn-outline-dark" id="curso2" onchange="selectCurso2(event)">
                     <option value=0>Cursos</option>
                     {% for curso in cursos %}
                     <option value={{curso.id}}>{{curso}}</option>
                     {% endfor %}
                 </select>
-
-                <!-- Select Familiar -->
         </div>
     </div>
-    <div class="card text-center" style="margin-left: 2%">
+                <!-- Select Familiar -->
+    <div class="card text-center" style="width: 45%; margin-left: 2%">
         <div class="card-body">
                 <h4>Familiares</h4>
                 {% if familiares|length == 0 %}
@@ -48,19 +42,19 @@
                 </div>
                 {% else %}
                     {% for familiar in familiares %}
-                    <a class="btn btn-info" style="margin-top: 1%;" href="{% url 'datos_padre' familiar.padre_madre.dni %}">{{familiar.padre_madre.nombre}} {{familiar.padre_madre.apellido}}</a>
+                    <a class="btn btn-info" style="margin-top: 1%;" href="{% url 'datos_padre' familiar.padre_madre.dni %}">{{familiar.padre_madre.nombre|title}} {{familiar.padre_madre.apellido|title}}</a>
                     <br>
                     {% endfor %}
                     <div id="new_padre2">
                         <br>
-                        <a class="btn btn-danger" href="{% url 'padres_del_alumno' alumno.dni %}">Desvincular un Familiar</a>
-                        <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_padres_asignar' alumno.dni %}')">Asignar Otro Padre</a>
+                        <a class="btn btn-danger" href="{% url 'padres_del_alumno' alumno.dni %}">Desvincular</a>
+                        <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_padres_asignar' alumno.dni %}')">Asignar</a>
                     </div>
                 {% endif %}
         </div>
     </div>
                 <!-- Select Autorizado -->
-    <div class="card text-center" style="margin-left: 2%">
+    <div class="card text-center" style="width: 45%; margin-left: 4%">
         <div class="card-body">
                 <h4>Autorizados</h4>
                 {% if autorizados|length == 0 %}
@@ -77,18 +71,18 @@
                 </div>
                 {% else %}
                     {% for autorizado in autorizados %}
-                    <a style="margin-top: 1%;" class="btn btn-info" href="{% url 'datos_autorizado' autorizado.autorizado.dni %}">{{autorizado.autorizado.apellido}} {{autorizado.autorizado.nombre}}</a>
+                    <a style="margin-top: 1%;" class="btn btn-info" href="{% url 'datos_autorizado' autorizado.autorizado.dni %}">{{autorizado.autorizado.apellido|title}} {{autorizado.autorizado.nombre|title}}</a>
                     <br>
                     {% endfor %}
                     <br>
-                    <a class="btn btn-danger" href="{% url 'autorizados_del_alumno' alumno.dni %}">Desvincular un Autorizado</a></li>
-                    <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Asignar otro Autorizado</a>
+                    <a class="btn btn-danger" href="{% url 'autorizados_del_alumno' alumno.dni %}">Desvincular</a></li>
+                    <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Asignar</a>
                 {% endif %}
 
         </div>
     </div>
                 <!-- Select Transporte -->
-    <div class="card text-center" style="margin-left: 2%">
+    <div class="card text-center" style="width: 45%; margin-left: 2%">
         <div class="card-body">            
 
                 <h4>Transporte</h4>
@@ -106,17 +100,17 @@
                 </div>
                 {% else %}
                     {% for transportista in transportistas %}
-                    <a style="margin-top: 1%;" class="btn btn-info" href="{% url 'datos_transportista' transportista.transportista.dni %}">{{transportista.transportista.apellido}} {{transportista.transportista.nombre}}</a>
+                    <a style="margin-top: 1%;" class="btn btn-info" href="{% url 'datos_transportista' transportista.transportista.dni %}">{{transportista.transportista.apellido|title}} {{transportista.transportista.nombre|title}}</a>
                     <br>
                     {% endfor %}
                     <br>
-                    <a class="btn btn-danger" href="{% url 'transportistas_del_alumno' alumno.dni %}">Desvincular un Transportista</a></li>
-                    <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_transportistas_asignar' alumno.dni %}')">Asignar otro Transportista</a>
+                    <a class="btn btn-danger" href="{% url 'transportistas_del_alumno' alumno.dni %}">Desvincular</a></li>
+                    <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todos_los_transportistas_asignar' alumno.dni %}')">Asignar</a>
                 {% endif %}
         </div>
     </div>
                 <!-- Select Obra Social -->
-    <div class="card text-center" style="margin-left: 2%">
+    <div class="card text-center" style="width: 45%;  margin-left: 4%">
         <div class="card-body">
 
                 <h4>Obra Social</h4>
@@ -134,13 +128,13 @@
                 </div>
                 {% else %}
                     {% for obra_social in obras_sociales %}
-                    <a style="margin-top: 1%;" class="btn btn-info" href="{% url 'datos_padre' obra_social.obra_social.id %}">{{obra_social.obra_social.nombre}}</a>
+                    <a style="margin-top: 1%;" class="btn btn-info" href="{% url 'datos_padre' obra_social.obra_social.id %}">{{obra_social.obra_social.nombre|title}}</a>
                     <br>
                     {% endfor %}
                     <div id="new_obra2">
                         <br>
-                        <a class="btn btn-danger" href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Desvincular una Obra Social</a>
-                        <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Asignar Otra Obra Social</a>
+                        <a class="btn btn-danger" href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Desvincular</a>
+                        <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Asignar</a>
                     </div>
                 {% endif %}
 
@@ -153,9 +147,11 @@
         </div>
         </form>
         <!-- Modal footer -->
-        <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        <div class="modal-footer" style="margin-left: 9.5%">
             <button type="button" class="btn btn-success" onclick="re_matricular()">Re Matricular</button>
         </div>
     </div>
 </div>
+    <div class="card-footer">
+            <small class="text-muted">Recomendacion: {{recomendacion}}</small>
+    </div>

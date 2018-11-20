@@ -66,6 +66,9 @@ Levantar Templates.
 ===================
 """
 
+def asdf(request):
+    return render(request, 'responsive.html')
+
 def logIn(request):
     return render(request, 'docentes_login.html')
 

@@ -36,14 +36,14 @@
                         <div class="input-group-prepend" style=" margin-right: 800%;">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
                         </div>
-                        <div style="margin-left: -5%">{{padre_form.nombre}}</div>
+                        <div style="margin-left: -4.5%">{{padre_form.nombre}}</div>
                     </div>
 
                     <div class="input-group input-group-sm mb-3 form-group">
                         <div class="input-group-prepend"  style="margin-right: 800%;">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
                         </div>
-                        <div style="margin-left: -5%;">{{padre_form.apellido}}</div>
+                        <div style="margin-left: -4.5%;">{{padre_form.apellido}}</div>
                     </div>
                     {% if objetivo == 'Cargar'%}
                     <div class="input-group input-group-sm mb-3 form-group">
@@ -57,15 +57,15 @@
                         <div class="input-group-prepend"  style=" margin-right: 800%;">
                             <span  class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
                         </div>
-                        <div style="margin-left: -5%">{{padre_form.lugar_nacimiento}}</div>
+                        <div style="margin-left: -4.5%">{{padre_form.lugar_nacimiento}}</div>
                     </div>
 
                     <div class="input-group input-group-sm mb-3 form-group">
                         <div class="input-group-prepend"  style="margin-right: 800%;">
-                            <span  class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
                         </div>
                         <br>
-                        <div id="a"  style="margin-left: -0.5%">{{padre_form.fecha_nacimiento}}</div>
+                        <div id="a"  style="margin-left: -4.5%">{{padre_form.fecha_nacimiento}}</div>
                     </div>
 
                     <div class="input-group input-group-sm mb-3 form-group">
@@ -73,14 +73,14 @@
                             <span class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
                         </div>
                         <br>
-                        <div style="margin-left:-5%">{{padre_form.domicilio}}</div>
+                        <div style="margin-left:-4.5%">{{padre_form.domicilio}}</div>
                     </div>
 
                     <div class="input-group input-group-sm mb-3 form-group">
                         <div class="input-group-prepend"  style=" margin-right: 800%;">
                             <span  class="input-group-text" id="inputGroup-sizing-sm">Email:  </span>
                         </div>
-                        <div style="margin-left: -0.5%;">{{padre_form.email}}</div>
+                        <div style="margin-left: 0%;">{{padre_form.email}}</div>
                     </div>
 
                     <div class="input-group input-group-sm mb-3 form-group">
@@ -94,7 +94,7 @@
                         <div class="input-group-prepend"  style="margin-right: 800%;">
                             <span  class="input-group-text" id="inputGroup-sizing-sm">Profesion:</span>
                         </div>
-                        <div style="margin-left: -5%;">{{padre_form.profesion}}</div>
+                        <div style="margin-left: -4.5%;">{{padre_form.profesion}}</div>
                     </div>
 
                     <div class="input-group input-group-sm mb-3 form-group">
@@ -108,12 +108,13 @@
         </div>
     </div>
 </form>
-
 {% if objetivo == 'Cargar'%}
     <center><button class="btn btn-success" onclick="matricular_Padre()" id="btn_padre">Cargar</button></center>
 {% else %}
     <center><button class="btn btn-success" onclick="editar_Padre()" id="btn_padre">Editar</button></center>
 {% endif %}
+
+
 
 <!-- The Modal -->
 <div class="modal fade" id="myModal">
@@ -132,8 +133,8 @@
             </div>
 
             <div class="modal-footer" id="footer">
-                <button type="button" style="display: none;" class="btn btn-success" onclick="volver_index()" id="continuar">Continuar</button>
-                <a class="btn btn-primary" href="{% url 'index' %}">Volver</a>
+                <button type="button" style="display: none;" class="btn btn-success" data-dismiss="modal" id="continuar">Continuar</button>
+                <a class="btn btn-primary" style="display: none;" href="{% url 'index' %}" id="volver">Volver</a>
             </div>
         </div>
     </div>
@@ -158,7 +159,7 @@
                         document.getElementById("continuar").style.display = "none";
                         document.getElementById("volver").style.display = "block";
                     }else{
-                       document.getElementById("continuar").style.display = "block";
+                        document.getElementById("continuar").style.display = "block";
                         document.getElementById("volver").style.display = "none";
                     }
                 }
@@ -182,11 +183,11 @@
                 success: function(data){
                     document.getElementById("resultado_crear_p").innerHTML = data.resultado;
                     if (data.error){
-                        document.getElementById("continuar").style.display = "none";
-                        document.getElementById("volver").style.display = "block";
-                    }else{
-                       document.getElementById("continuar").style.display = "block";
                         document.getElementById("volver").style.display = "none";
+                        document.getElementById("continuar").style.display = "block";
+                    }else{
+                       document.getElementById("volver").style.display = "block";
+                        document.getElementById("continuar").style.display = "none";
                     }
                 }
             });

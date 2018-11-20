@@ -215,7 +215,7 @@
                 </div>
                 <div id="collapseSec" class="collapse" aria-labelledby="headingSec" data-parent="#accordion">
                     <div class="card-body">
-                        <a href="{% url 'trabajador_sd' 'Secretarias' %}" class="btn btn-danger asd">Ver Secretaruas</a>
+                        <a href="{% url 'trabajador_sd' 'Secretarias' %}" class="btn btn-danger asd">Ver Secretarias</a>
                         <br>
                         <br>
                         <a href="{% url 'form_secretaria_director' 'SE' %}" class="btn btn-success asd">Agregar Secretaria</a>
@@ -270,7 +270,7 @@
 
         </div>
 
-        <div class="parallax_blur">
+        <div style="height: 110%" class="parallax_blur">
             <br>
             <br>
             <br>
@@ -279,13 +279,13 @@
                     <div class="flipper">
                         <div class="front" >
                             <!-- front content -->
-                            <div style="width: 150%;">
+                            <div style="width: 130%;">
                                 <img class="card-img-top" src="{% static "img/3zorrilla.jpeg" %}" alt="card image">
                             </div>
                         </div>
                         <div class="back" >
                             <!-- back content -->
-                            <div style="background-color: white">
+                            <div style="background-color: white; width: 130%">
                                 <p class="card-text" style="text-align: justify">Juan Zorrilla de San Martín (Montevideo, 28 de diciembre de 1855 - 3 de noviembre de 1931) fue un escritor, periodista, docente y diplomático uruguayo.
                                     Junto a su hermano Alejandro, en 1865 fue llevado por su padre a cursar sus estudios en el Colegio de la Inmaculada Concepción de Santa Fe, República Argentina. Entre 1867 y 1872 estudió en el Colegio de los Padres Bayoneses, en Montevideo, lugar en el que comenzó sus estudios universitarios. Se recibió de bachiller en Santa Fe, en 1872. Entre 1874 y 1877 estudió en el Colegio de los Padres Jesuitas de Santiago de Chile hasta completar sus estudios como Licenciado en Letras y Ciencias Políticas. En ese período colaboró en la redacción de “La estrella de Chile” y publicó “Notas de un Himno”. En Chile recibió la influencia de las lecturas románticas de José Zorrilla, José de Espronceda y sobre todo, Gustavo Adolfo Bécquer.
                                 </p>
@@ -297,22 +297,23 @@
 
                 <div class="card text-white bg-primary  text-center p-2" style="width: 35%;">
                     <div class="card-header">INFORMACION</div>
-                    <div class="card-body">
-                        <h5 class="card-title">Telefonos</h5>
-                        <h6>Cecilia: 73456321</h6>
-                        <h6>Roberto: 54623245</h6>
+                        <div class="card-body">
+                            <h5 class="card-title">Telefonos</h5>
+                            <h6>Cecilia: 73456321</h6>
+                            <h6>Roberto: 54623245</h6>
+                            <br>
+                            <h5 class="card-title">Mails</h5>
+                            <h6>nose@gmail.com</h6>
+                            <h6>nose2@gmail.com</h6>
+                            <br>
+                            <h5>Ubicacion</h5>
+                            <br>
+                            <a class="btn btn-dark" href="https://www.google.com/maps/place/31%C2%B022'22.5%22S+64%C2%B014'06.2%22W/@-31.3729118,-64.2372339,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0x0!8m2!3d-31.3729118!4d-64.2350452" target="blank">Ver Ubicacion</a>
+                        </div>
                         <br>
-                        <h5 class="card-title">Mails</h5>
-                        <h6>nose@gmail.com</h6>
-                        <h6>nose2@gmail.com</h6>
-                        <br>
-                        <h5>Ubicacion</h5>
-                        <div id="map"></div>
                     </div>
                 </div>
             </div>
-            <br>
-            <br>
         </div>
         {% endif %}
 
@@ -321,17 +322,6 @@
                 window.scrollBy(0, 730)
             }
 
-            function initMap() {
-                var uluru = {lat: -31.3729118, lng: -64.2350452};
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 16,
-                    center: uluru
-                });
-                var marker = new google.maps.Marker({
-                    position: uluru,
-                    map: map
-                });
-            }
             var myVar;
 
             function myFunction() {
