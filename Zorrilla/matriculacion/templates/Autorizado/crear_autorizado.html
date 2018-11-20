@@ -127,8 +127,8 @@
             </div>
 
             <div class="modal-footer" id="footer">
-                <button type="button" style="display: none;" class="btn btn-success" onclick="volver_index()" id="continuar">Continuar</button>
-                <a class="btn btn-primary" href="{% url 'index' %}">Volver</a>
+                <button type="button" style="display: none;" data-dismiss="modal" id="continuar">Continuar</button>
+                <a class="btn btn-primary" href="{% url 'index' %}" id="volver">Volver</a>
             </div>
         </div>
     </div>
@@ -177,11 +177,11 @@
                 success: function(data){
                     document.getElementById("resultado_crear_a").innerHTML = data.resultado;
                     if (data.error){
-                        document.getElementById("continuar").style.display = "none";
-                        document.getElementById("volver").style.display = "block";
-                    }else{
-                       document.getElementById("continuar").style.display = "block";
                         document.getElementById("volver").style.display = "none";
+                        document.getElementById("continuar").style.display = "block";
+                    }else{
+                       document.getElementById("volver").style.display = "block";
+                        document.getElementById("continuar").style.display = "none";
                     }
                 }
             });
