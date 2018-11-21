@@ -16,10 +16,14 @@
 <br>
 <form id="form_transportista" style="margin-left: 30%;" method="post">
     {% csrf_token %}
+    <input type="hidden" name="dni_transportista" id="dni_transportista" value={{dni_transportista}}>
     <div class="card text-center" style="width: 55%;">
         <div class="card-body">
-            <h4 class="card-title">Crear Transportista</h4>
-
+            {% if objetivo == 'Crear' %}
+                <h4 class="card-title">Crear Transportista</h4>
+            {% else %}
+                <h4 class="card-title">Editar Transportista</h4>
+            {% endif %}
             <ul class="list-group list-group-flush">
 
                 <li class="list-group-item">
@@ -37,14 +41,14 @@
                         </div>
                         <div style="margin-left: -3.5%; margin-right: 17%;">{{form_transportista.apellido}}</div>
                     </div>
-
+                    {% if objetivo == 'Crear' %}
                     <div class="input-group input-group-sm mb-3 form-group">
                         <div style="margin-right: 300%;" class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-sizing-sm">DNI:</span>
                         </div>
                         <div id="b" style="margin-left: 0%; margin-right: 45%;">{{form_transportista.dni}}</div>
                     </div>
-
+                    {% endif %}
                     <div class="input-group input-group-sm mb-3 form-group">
                         <div style="margin-right: 300%;" class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
@@ -110,7 +114,12 @@
         </div>
     </div>
 </form>
-<center><button class="btn btn-success" onclick="matricular_Transportista()" id="btn_padre">Cargar</button></center>
+    {% if objetivo == 'Crear' %}
+        <center><button class="btn btn-success" onclick="matricular_Transportista()" id="btn_padre">Cargar</button></center>
+    {% else %}
+        <center><button class="btn btn-success" onclick="editar_Transportista()" id="btn_padre">Editar</button></center>
+    {% endif %}
+
 
 
 
@@ -174,6 +183,33 @@
         } else {
             return;
         } 
+    }
+
+    function editar_Transportista(){
+        if (confirm("¿Editar Transportista ?")) {
+            var myForm = document.getElementById('form_transportista');
+            formData = new FormData(myForm);
+            $('#myModal').modal('show');
+            $.ajax({
+                url: '{% url 'editar_transportista' %}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    document.getElementById("resultado_crear_t").innerHTML = data.resultado;
+                    if (data.error){
+                        document.getElementById("continuar").style.display = "none";
+                        document.getElementById("volver").style.display = "block";
+                    }else{
+                       document.getElementById("continuar").style.display = "block";
+                        document.getElementById("volver").style.display = "none";
+                    }
+                }
+            });
+        } else {
+            return;
+        }
     }
 
 </script>

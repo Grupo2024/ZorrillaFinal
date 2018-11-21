@@ -40,7 +40,7 @@
             <td>{{a.transportista.nombre_transporte|title}}</td>
             <td>{{a.transportista.telefono_transportista}}</td>
             <td><a onclick="desvincular({{a.transportista.dni}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
-            <td><a onclick="#">Editar</a></td>
+            <td><a class="btn btn-info" href="{% url 'form_editar_transportista' a.transportista.dni %}"><i class="fa fa-edit"></i></a></td>
         </tr>
         {% endfor %}
 

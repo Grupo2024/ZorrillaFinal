@@ -30,8 +30,8 @@
                     <tbody>
                         {% for alumno in todos_los_alumnos %}
                         <tr>
-                            <td>{{alumno.alumno.nombre}}</td>
-                            <td>{{alumno.alumno.apellido}}</td>
+                            <td>{{alumno.alumno.nombre|title}}</td>
+                            <td>{{alumno.alumno.apellido|title}}</td>
                             <td>{{alumno.alumno.dni}}</td>
                         </tr>
                         {% endfor %}

@@ -97,7 +97,8 @@ def formReMatricular(request):
 #Levantar Template para cargar Transportista.
 def form_transportista(request):
     form_transportista = TransportistaForm()
-    return render (request, 'Transportista/crear_transportista.html', {'form_transportista':form_transportista})
+    objetivo = "Crear"
+    return render (request, 'Transportista/crear_transportista.html', {'form_transportista':form_transportista, 'objetivo':objetivo})
 
 #Levantar el Form para cambiar la password.
 def template_get_pass(request):
@@ -141,7 +142,11 @@ def form_editar_padre(request, dni_padre):
     padre_form =EditarPadreForm(initial={'nombre':padre.nombre.title(), 'apellido':padre.apellido.title(),'lugar_nacimiento':padre.lugar_nacimiento,'fecha_nacimiento':padre.fecha_nacimiento,'domicilio':padre.domicilio.title(),'email':padre.email, 'sexo':padre.sexo, 'profesion':padre.profesion.title(), 'telefono_trabajo':padre.telefono_trabajo})
     return render(request, 'Padre_madre/crear_padre_madre.html', {'padre_form':padre_form, 'objetivo':objetivo, 'dni_padre':padre.dni})
 
-
+def form_editar_transportista(request, dni_transportista):
+    transportista = Transportista.objects.get(dni=dni_transportista)
+    opcion = "Editar"
+    form_transportista = EditarTransportistaForm(initial={'nombre':transportista.nombre.title(),'apellido':transportista.apellido.title(), 'lugar_nacimiento':transportista.lugar_nacimiento.title(),'fecha_nacimiento':transportista.fecha_nacimiento,'domicilio':transportista.domicilio.title(),'email':transportista.email,'sexo':transportista.sexo,'nombre_transporte':transportista.nombre_transporte.title(),'telefono_transportista':transportista.telefono_transportista,'detalles_transportista':transportista.detalles_transportista})
+    return render(request, 'Transportista/crear_transportista.html', {'form_transportista':form_transportista, 'opcion':opcion, 'dni_transportista':transportista.dni})
 """
 =========
 Creacion.
@@ -392,7 +397,7 @@ def crear_transportista(request):
             new_apellido = apellido.lower()
             data = {
                 'error':False,
-                'resultado': 'El transportista ' + str(transportista.nombre) + ' ' + str(transportista.apellido) + ' ha sido cargado con exito.'
+                'resultado': 'El transportista ' + str(transportista.nombre.title()) + ' ' + str(transportista.apellido.title()) + ' ha sido cargado con exito.'
             }
             transportista.nombre, transportista.apellido = new_nombre, new_apellido
             transportista.save()
@@ -753,6 +758,41 @@ def editar_padre(request):
             data = {
                 'error':True,
                 'resultado':str(padre_form.errors)
+            }
+            return JsonResponse(data)
+    else:
+        return HttpResponse("Solo podes entrar por POST")
+
+@user_passes_test(check_Secretaria)
+def editar_transportista(request):
+    if request.method == 'POST':
+        form_transportista = EditarTransportistaForm(request.POST)
+        if form_transportista.is_valid():
+            dni_t = request.POST['dni_transportista']
+            transportista = Transportista.objects.get(dni=dni_t)
+            nombre = form_transportista.cleaned_data['nombre']
+            apellido = form_transportista.cleaned_data['apellido']
+            nuevo_lugar_nacimiento = form_transportista.cleaned_data['lugar_nacimiento']
+            nueva_fecha_nacimiento = form_transportista.cleaned_data['fecha_nacimiento']
+            nuevo_domicilio = form_transportista.cleaned_data['domicilio']
+            nuevo_email = form_transportista.cleaned_data['email']
+            nuevo_sexo = form_transportista.cleaned_data['sexo']
+            nuevo_nombre_transporte = form_transportista.cleaned_data['nombre_transporte']
+            nuevo_telefono_transportista = form_transportista.cleaned_data['telefono_transportista']
+            nuevo_detalles_transportista = form_transportista.cleaned_data['detalles_transportista']
+            nuevo_nombre = nombre.lower()
+            nuevo_apellido = apellido.lower()
+            transportista.nombre, transportista.apellido, transportista.lugar_nacimiento, transportista.fecha_nacimiento, transportista.domicilio, transportista.email, transportista.sexo,transportista.nombre_transporte, transportista.telefono_transportista, transportista.detalles_transportista = nuevo_nombre, nuevo_apellido, nuevo_lugar_nacimiento, nueva_fecha_nacimiento, nuevo_domicilio, nuevo_email, nuevo_sexo,nuevo_nombre_transporte,nuevo_telefono_transportista,nuevo_detalles_transportista
+            transportista.save()
+            data = {
+                'error':False,
+                'resultado': "Los Datos de " + transportista.nombre.title() + " " + transportista.apellido.title() + " han sido modificados con exito."
+            }
+            return JsonResponse(data)
+        else:
+            data = {
+                'error':True,
+                'resultado':str(form_transportista.errors)
             }
             return JsonResponse(data)
     else:

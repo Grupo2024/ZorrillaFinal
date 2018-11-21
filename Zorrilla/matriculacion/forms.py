@@ -58,6 +58,12 @@ class EditarPadreForm(forms.ModelForm):
         model = Padre_madre
         fields = ['nombre', 'apellido','lugar_nacimiento','fecha_nacimiento','domicilio','email','sexo','profesion','telefono_trabajo']
 
+class EditarTransportistaForm(forms.ModelForm):
+    class Meta:
+        model = Transportista
+        fields = ['nombre', 'apellido', 'lugar_nacimiento','fecha_nacimiento','domicilio','email','sexo','nombre_transporte',
+'telefono_transportista','detalles_transportista']
+
 
 class TransportistaForm(forms.ModelForm):
     class Meta:
