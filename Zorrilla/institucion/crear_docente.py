@@ -45,11 +45,6 @@ def crear_profesor(request):
                     send_mail(subject, message, email_from, recipient_list)
                     data = {
                         'resultado': "El docente " + str(profesor.apellido_t) + "" + str(profesor.nombre_t) + " ha sido cargado con exito.",
-                        'nombre': profesor.nombre_t,
-                        'apellido': profesor.apellido_t,
-                        'dni': profesor.dni_t,
-                        'username': profesor.create_username(),
-                        'password': password,
                         'error': False
                     }
                     print ("No hay error")
