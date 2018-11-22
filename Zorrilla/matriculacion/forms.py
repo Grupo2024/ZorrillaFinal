@@ -63,6 +63,11 @@ class EditarPadreForm(forms.ModelForm):
         model = Padre_madre
         fields = ['nombre', 'apellido','lugar_nacimiento','fecha_nacimiento','domicilio','email','sexo','profesion','telefono_trabajo']
 
+class EditarIndexForm(forms.ModelForm):
+    class Meta:
+        model = datos_Index
+        fields = '__all__'
+
 class EditarTransportistaForm(forms.ModelForm):
     class Meta:
         model = Transportista

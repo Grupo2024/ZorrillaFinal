@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^cambiar_curso', cambiar_curso, name="cambiar_curso"),
     url(r'^form_transportista', form_transportista, name="form_transportista"),
     url(r'^form_curso', form_curso, name="form_curso"),
+    url(r'^cambiar_datos', cambiar_datos, name="cambiar_datos"),
 
     url(r'^form_secretaria_director/(?P<opcion>[\w\-]+)/$', form_secretaria_director, name="form_secretaria_director"),
     url(r'^trabajador_sd/(?P<cargo>[\w\-]+)/$', trabajador_sd, name="trabajador_sd"),
@@ -56,6 +57,7 @@ urlpatterns = [
     url(r'^editar_transportista', editar_transportista, name="editar_transportista"),
     url(r'^todas_las_obras_sociales', todas_las_obras_sociales, name="todas_las_obras_sociales"),
     url(r'^crear_transportista', crear_transportista, name="crear_transportista"),
+    url(r'^form_editar_datos', form_editar_datos, name="form_editar_datos"),
     url(r'^editar_padre', editar_padre, name="editar_padre"),
     url(r'^asignar_transportista', asignar_transportista, name="asignar_transportista"),
     url(r'^datos_transportista/(\d+)/', datos_transportista, name="datos_transportista"),

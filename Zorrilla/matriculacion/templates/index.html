@@ -222,6 +222,18 @@
                     </div>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseIndex" aria-expanded="false" aria-controls="collapseSec" id="headingIndex">
+                    <h5 class="mb-0">
+                        <a>Index</a>
+                    </h5>
+                </div>
+                <div id="collapseIndex" class="collapse" aria-labelledby="headingIndex" data-parent="#accordion">
+                    <div class="card-body">
+                        <a href="{% url 'form_editar_datos' %}" class="btn btn-success asd">Editar Datos</a>
+                    </div>
+                </div>
+            </div>
             {% endif %}
             {% if request.user|has_group:"Secretaria" %}
             <div class="card">
@@ -297,6 +309,7 @@
 
                 <div class="card text-white bg-primary  text-center p-2" style="width: 35%;">
                     <div class="card-header">INFORMACION</div>
+<<<<<<< HEAD
                         <div class="card-body">
                             <h5 class="card-title">Telefonos</h5>
                             <h6>Cecilia: 73456321</h6>
@@ -310,6 +323,14 @@
                             <br>
                             <a class="btn btn-dark" href="https://www.google.com/maps/place/31%C2%B022'22.5%22S+64%C2%B014'06.2%22W/@-31.3729118,-64.2372339,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0x0!8m2!3d-31.3729118!4d-64.2350452" target="blank">Ver Ubicacion</a>
                         </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Telefonos</h5>
+                        <h6>{{datos.telefono}}</h6>
+                        <h6>{{datos.telefono2}}</h6>
+                        <br>
+                        <h5 class="card-title">Mails</h5>
+                        <h6>{{datos.email}}</h6>
+                        <h6>{{datos.email2}}</h6>
                         <br>
                     </div>
                 </div>
