@@ -123,7 +123,10 @@ def form_autorizado(request):
 
 def form_secretaria_director(request, opcion):
     form = ProfesorForm()
-    return render (request, 'Admin_Secretaria/form_secretaria_director.html', {'form':form, 'cargo':opcion})
+    cargo_titulo = "Secretaria"
+    if (opcion=="DI"):
+        cargo_titulo = "Director"
+    return render (request, 'Admin_Secretaria/form_secretaria_director.html', {'form':form, 'cargo':opcion, 'cargo_titulo':cargo_titulo})
 
 #Levantar el Form para cargar una Obra Social.
 def form_obra_social(request):
@@ -202,14 +205,14 @@ def crear_alumno(request):
 def crear_trabajador(request):
     trabajador = ProfesorForm(request.POST)
     if trabajador.is_valid():
-        new_nombre = trabajador.cleaned_data['nombre']
-        new_apellido = trabajador.cleaned_data['apellido']
-        dni = trabajador.cleaned_data['dni']
-        lugar_nacimiento = trabajador.cleaned_data['lugar_nacimiento']
-        fecha_nacimiento = trabajador.cleaned_data['fecha_nacimiento']
-        domicilio = trabajador.cleaned_data['domicilio']
-        email = trabajador.cleaned_data['email']
-        sexo = trabajador.cleaned_data['sexo']
+        new_nombre = trabajador.cleaned_data['nombre_t']
+        new_apellido = trabajador.cleaned_data['apellido_t']
+        dni = trabajador.cleaned_data['dni_t']
+        lugar_nacimiento = trabajador.cleaned_data['lugar_nacimiento_t']
+        fecha_nacimiento = trabajador.cleaned_data['fecha_nacimiento_t']
+        domicilio = trabajador.cleaned_data['domicilio_t']
+        email = trabajador.cleaned_data['email_t']
+        sexo = trabajador.cleaned_data['sexo_t']
         telefono_particular = trabajador.cleaned_data['telefono_particular']
         telefono_laboral = trabajador.cleaned_data['telefono_laboral']
         telefono_familiar = trabajador.cleaned_data['telefono_familiar']
@@ -252,13 +255,13 @@ def crear_trabajador(request):
                 user_S.save()
 
                 subject = "Usuario Creado"
-                message = "Los datos de " + str(trabajadorr.apellido_t) + "" + str(trabajadorr.nombre_t) + " ha sido ingresado al sistema, en el cual utilizara como nombre de usuario: " + str(username) + " y la password " + str(password) + "."
+                message = "Los datos de " + str(trabajadorr.apellido_t.title()) + " " + str(trabajadorr.nombre_t.title()) + " han sido ingresados al sistema, en el cual utilizara como nombre de usuario: " + str(username) + " y la password " + str(password) + "."
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [trabajadorr.email_t]
-                #send_mail(subject, message, email_from, recipient_list)
+                send_mail(subject, message, email_from, recipient_list)
                 data = {
                     'error':False,
-                    'resultado': "Datos cargados con exito."
+                    'resultado': " Datos cargados con exito."
                 }
                 return JsonResponse(data)
     else:
@@ -319,10 +322,10 @@ def crear_autorizado(request):
         message = "En el dia de la fecha se le notifica que sus datos han sido cargados en nuestra pagina."
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [autorizado.email]
-        #send_mail( subject, message, email_from, recipient_list)
+        send_mail( subject, message, email_from, recipient_list)
         data = {
             'error':False,
-            'resultado': "Los datos de " + nombre + " " + apellido + " han sido cargados con exito."
+            'resultado': "Los datos de " + nombre.title() + " " + apellido.title() + " han sido cargados con exito."
         }
         new_nombre = nombre.lower()
         new_apellido = apellido.lower()
@@ -754,7 +757,7 @@ def pedido_egreso(request):
         email_from = settings.EMAIL_HOST_USER
         for familiar in familiares:
             recipient_list = [familiar.padre_madre.email]
-            #send_mail( subject, message, email_from, recipient_list)
+            send_mail( subject, message, email_from, recipient_list)
         data = {
             'resultado': "El pedido de Egreso de " + alumno.nombre + " ha sido un exito."
         }
@@ -1024,7 +1027,7 @@ def cambiar_curso(request):
 
         alumno_C.save()
         data = {
-            'resultado': "El Alumno " + alumno.nombre + " " + alumno.apellido + " ahora asiste a " + str(alumno_C.curso)
+            'resultado': "El Alumno " + alumno.nombre.title() + " " + alumno.apellido.title() + " ahora asiste a " + str(alumno_C.curso)
         }
         return JsonResponse(data)
 

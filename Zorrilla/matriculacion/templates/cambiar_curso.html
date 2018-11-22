@@ -17,32 +17,14 @@
                 <div id="contenido_cambiar_curso">
                     <br>
                     {% if todos_los_cursos|length != 0 %}
-                    <div class="table-wrapper-scroll-y">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Año</th>
-                                    <th scope="col">Division</th>
-                                    <th scope="col">Turno</th>
-                                    <th scope="col">Opcion</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table table-hover">
-                                {% for curso in todos_los_cursos %}
-                                <tr>
-                                    <td>{{curso.aNo}}</td>
-                                    <td>{{curso.que_seccion}}</td>
-                                    <td>{{curso.que_turno}}</td>
-                                    <td><input type="radio" id={{curso.id}} name="cursoss" value={{curso.id}}></td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <span style="color:red" id="msg_advertencia">Advertencia: Los Padres del Alumno seran notificados en caso de realizar una modificacion.</span>
-
+                        <label for="new_curso">Elegir Curso: </label>
+                        <select class="btn btn-outline-dark" id="new_curso" onchange="select_curso(event)">
+                            {% for curso in todos_los_cursos %}
+                                <option value="{{curso.id}}">{{curso}}</option>
+                            {% endfor %}
+                        </select>
                     {% else %}
-                    <h3><center>No Hay Ningun Curso.</center></h3>
+                        <h3><center>No Hay Ningun Curso.</center></h3>
                     {% endif %}
                     <form id="form_cambiar_curso" method="post">
                         {% csrf_token %}
@@ -96,12 +78,11 @@
 
     document.getElementById("msg_advertencia_egreso").style.display = "none";
 
-    $('input[name=cursoss]').click(function() {
-        var aux = $('input[name=cursoss]:checked').val();
-        document.getElementById("id_curso").value = aux;
+    function select_curso(e) {
+        document.getElementById("id_curso").value = e.target.value;
         document.getElementById("cambiar_curso_btn").style.display = "block";
         document.getElementById("msg_advertencia").style.display = "block";
-    });
+    }
 
     function uncheck_table(){
         var aux = $('input[name=cursoss]:checked').val();

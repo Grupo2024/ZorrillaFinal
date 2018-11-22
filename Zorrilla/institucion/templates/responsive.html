@@ -1,38 +1,47 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-.loader {
-  border: 6px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 6px solid #3498db;
-  width: 15px;
-  height: 15px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 2s linear infinite;
-}
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+    <body>
 
-/* Safari */
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
-}
+        <div class="modal fade" id="cargar_alumno" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Matriculacion de Alumno.</h5>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="modal-body row">
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-</style>
-</head>
-<body>
+                            <div>
+                                <span style="margin-left:5%">Resultado:</span><span id="resultado">Pedido enviado con Exito.</span>
+                                <div style="margin-top:5%"  id="loader" class="loader"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<h2>Lolo hice lo que pude xd</h2>
-<div>
-<div style="margin-top:5%" class="loader"></div>
-<span style="margin-left:5%">Resultado</span>
-</div>
+        <button onclick="mostrar_modal()">Pop Up</button>
+
+    </body>
+
+    <script>
+
+        document.getElementById("resultado").style.display = "none";
+
+        function mostrar_modal(){
+            $('#cargar_alumno').modal('show');
+            myVar = setTimeout(showPage, 3000);
+        }
+
+        function showPage() {
+          document.getElementById("loader").style.display = "none";
+          document.getElementById("resultado").style.display = "block";
+        }
 
 
-</body>
-</html>
+    </script>
+{% endblock body %}
