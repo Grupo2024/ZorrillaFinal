@@ -16,9 +16,9 @@
     <div class="">
         <input type="text"placeholder="Nombre del Alumno que desee buscar" id="myInput" onkeyup="myFunction()">
         <select id="filter_by">
-            <option value=0>Dni</option>
+            <option value=0>Nombre</option>
             <option value=1>Apellido</option>
-            <option value=2>Nombre</option>
+            <option value=2>Dni</option>
         </select>
     </div>
     <div class="">
@@ -29,9 +29,9 @@
 <table class="table" id="myTable">
     <thead class="thead-dark">
         <tr>
-            <th onclick="sortTable(0)">Dni</th>
+            <th onclick="sortTable(0)">Nombre</th>
             <th onclick="sortTable(1)">Apellido</th>
-            <th onclick="sortTable(2)">Nombre</th>
+            <th onclick="sortTable(2)">Dni</th>
             <th onclick="sortTable(3)">Fecha de Nacimiento</th>
             <th>Telefonos</th>
             <th>Datos Personales</th>
@@ -40,9 +40,9 @@
     <tbody>
         {% for alumno in matriculaciones %}
         <tr>
-            <td>{{alumno.alumno.dni}}</td>
-            <td>{{alumno.alumno.apellido|title}}</td>
             <td>{{alumno.alumno.nombre|title}}</td>
+            <td>{{alumno.alumno.apellido|title}}</td>
+            <td>{{alumno.alumno.dni}}</td>
             <td>{{alumno.alumno.fecha_nacimiento}}</td>
             <td><button class="btn btn-primary" onclick="get_alumno('{% url 'get_alumno' 'telefonos' alumno.alumno.dni %}')" id="info_book"><i style="font-size:15px" class="fa fa-phone-square"></i></button></td>
             <td><button class="btn btn-primary" onclick="get_alumno('{% url 'get_alumno' 'otros' alumno.alumno.dni %}')" id="info_book"><i style="font-size:15px" class="fa fa-child"></i></button></td>

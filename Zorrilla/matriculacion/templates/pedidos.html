@@ -122,20 +122,16 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Matriculando Alumno:</h5>
+                <h5 class="modal-title" id="titulo">Matriculando Alumno:</h5>
             </div>
             <div class="container-fluid">
                 <div class="modal-body row">
-                    <p class="col-sm-2">Resultado: </p><span style='visibility:hidden;'>..</span>
-                    <div class="col-sm-9">
-                        <div id="myProgress">
-                            <p id="myBar" value="10%"></p>
-                        </div>
-                    </div>
-                    <span id="resultado"></span>
+                    <span style="margin-left:5%">Resultado:</span><span id="resultado"></span>
+                    <div style="margin-top:5%" id="loader_resultado" class="loader"></div>
                 </div>
                 <div class="modal-footer" id="footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="close_modal()" id="volver">Continuar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
+                    <a type="button" class="btn btn-primary" id="continuar" href="{% url 'traer_pedidos' %}">Continuar</a>
                 </div>
             </div>
         </div>
@@ -147,10 +143,8 @@
 
 <script>
 
-    function refresh_p(){
-        var des = document.getElementById("reload");
-        des.submit();
-    }
+    document.getElementById("continuar").style.display = "none";
+    document.getElementById("cerrar").style.display = "none";
 
     function traer_secciones(url, alum){
         $.ajax({
@@ -166,41 +160,17 @@
         });
     }
 
-    function sleep() {
-        return new Promise(resolve => setTimeout(resolve, 1000));
-    }
-
-    async function footer(a){
-        var elem = document.getElementById("myBar");
-        var width = 10;
-        var id = setInterval(frame, 10);
-        function frame() {
-            if (width >= 100) {
-                clearInterval(id);
-            } else {
-                width++;
-                elem.style.width = width + '%';
-                elem.innerHTML = width * 1  + '%';
-            }
-        }
-        await sleep();
-        elem.style.display = "none";
-        var resultado = document.getElementById("resultado");
-        resultado.innerHTML = a;
-        return a
-
-    }
-
     function matricular(){
         var curso_elegido = document.getElementById('select_curso');
         if (curso_elegido.value == 0){
             alert("Selecciona un Curso");
         } else {
             if (confirm("¿ Matricular al Alumno ?")) {
+                $('#modal_cursos').modal('hide');
+                var element = document.getElementById("titulo");
+                element.innerHTML = "Solicitudad de matriculacion.";
                 var myForm = document.getElementById('form_for_curso');
                 formData = new FormData(myForm);
-                var elem = document.getElementById("myBar");
-                elem.style.display = "block";
                 var resultado = document.getElementById("resultado");
                 resultado.innerHTML = "";
                 var y = document.getElementById("volver");
@@ -213,9 +183,7 @@
                     contentType: false,
                     type: 'POST',
                     success: function(data){
-                        $('#modal_cursos').modal('hide');
-                        footer(data.resultado);
-                        y.style.display = "block";
+
                     }
                 });
             } else {
@@ -230,7 +198,15 @@
             alert("Selecciona un Curso");
         } else {
             if (confirm("¿ Re Matricular al Alumno ?")) {
+                $('#modal_cursos').modal('hide');
+                var element = document.getElementById("titulo");
+                element.innerHTML = "Solicitud de re matriculacion..";
+                document.getElementById("resultado").innerHTML = "";
+                document.getElementById("continuar").style.display = "none";
+                document.getElementById("volver").style.display = "none";
+                document.getElementById("loader_resultado").style.display = "block";
                 var myForm = document.getElementById('form_for_re_matricular');
+                $('#Modal_resultado').modal('show');
                 formData = new FormData(myForm);
                 $.ajax({
                     url: '{% url 'aceptar_re_matriculacion' %}',
@@ -239,9 +215,18 @@
                     contentType: false,
                     type: 'POST',
                     success: function(data){
-                        $('#modal_cursos').modal('hide');
-                        alert(data.resultado);
-                        refresh_p();
+                        document.getElementById("loader_resultado").style.display = "none";
+                        document.getElementById("resultado").innerHTML = data.resultado;
+                        console.log(data.resultado);
+                        if (data.error){
+                            document.getElementById("resultado").innerHTML = data.resultado;
+                            document.getElementById("continuar").style.display = "none";
+                            document.getElementById("cerrar").style.display = "block";
+                        } else {
+                           document.getElementById("resultado").innerHTML = data.resultado;
+                            document.getElementById("continuar").style.display = "block";
+                            document.getElementById("cerrar").style.display = "none";
+                        }
                     }
                 });
             } else {
@@ -250,19 +235,36 @@
         }
     }
 
-    function egresar(){    
+    function egresar(){
+        $('#modal_cursos').modal('hide');
+        var element = document.getElementById("titulo");
+        element.innerHTML = "Solicitud de Egreso.";
+        document.getElementById("resultado").innerHTML = "";
+        document.getElementById("continuar").style.display = "none";
+        document.getElementById("volver").style.display = "none";
+        document.getElementById("loader_resultado").style.display = "block";
+        $('#Modal_resultado').modal('show');
         var myForm = document.getElementById('form_for_egreso');
         formData = new FormData(myForm);
         $.ajax({
             url: '{% url 'egresar_alumno' %}',
-            data : formData,
+            data: formData,
             processData: false,
             contentType: false,
             type: 'POST',
             success: function(data){
-                $('#modal_cursos').modal('hide');
-                alert(data.resultado);
-                refresh_p();
+                document.getElementById("loader_resultado").style.display = "none";
+                document.getElementById("resultado").innerHTML = data.resultado;
+                console.log(data.resultado);
+                if (data.error){
+                    document.getElementById("resultado").innerHTML = data.resultado;
+                    document.getElementById("continuar").style.display = "none";
+                    document.getElementById("cerrar").style.display = "block";
+                } else {
+                   document.getElementById("resultado").innerHTML = data.resultado;
+                    document.getElementById("continuar").style.display = "block";
+                    document.getElementById("cerrar").style.display = "none";
+                }
             }
         });
         

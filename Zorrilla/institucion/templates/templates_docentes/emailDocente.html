@@ -37,24 +37,25 @@
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Resultado</h4>
+                <h4 class="modal-title">Envio de Clave.</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
             <!-- Modal body -->
             <div class="modal-body">
-                <span id="resultado_clave"></span>
+                <span style="margin-left:5%">Resultado:</span><span id="resultado"></span>
+                <div style="margin-top:5%" id="loader_resultado" class="loader"></div>
             </div>
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal">Continuar</button>
+                <a type="button" class="btn btn-primary" id="continuar" href="{% url 'index' %}">Continuar</a>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar">Cerrar</button>
             </div>
         </div>
     </div>
 </div>
 
-<form id="index" action="{% url 'index' %}"></form>
 
 <script>
 
@@ -67,28 +68,33 @@
     });
 
 
-    function close_modal(){
-        $('#myModal').modal('hide');
-    }
-
-    function index(){
-        $('#index').submit()
-    }
-
     function send_key(){
         if (confirm("¿Mandar clave ?")) {
             var myForm = document.getElementById('login_form');
             formData = new FormData(myForm);
             $('#myModal').modal('show');
+            document.getElementById("resultado").innerHTML = "";
+            document.getElementById("continuar").style.display = "none";
+            document.getElementById("cerrar").style.display = "none";
+            document.getElementById("loader_resultado").style.display = "block";
             $.ajax({
-                url: '/email_for_logIn/',
+                url: '{% url 'email_for_logIn' %}',
                 data: formData,
                 processData: false,
                 contentType: false,
                 type: 'POST',
                 success: function(data){
-                    $("#myModal").modal()
-                    document.getElementById("resultado_clave").innerHTML = data.resultado;
+                    document.getElementById("loader_resultado").style.display = "none";
+                    document.getElementById("resultado").innerHTML = data.resultado;
+                    console.log(data.error);
+                    if (data.error){
+                        document.getElementById("continuar").style.display = "none";
+                        document.getElementById("cerrar").style.display = "block";
+                    } else {
+                       document.getElementById("resultado").innerHTML = data.resultado;
+                        document.getElementById("continuar").style.display = "block";
+                        document.getElementById("cerrar").style.display = "none";
+                    }
                 }
             });
         } else {

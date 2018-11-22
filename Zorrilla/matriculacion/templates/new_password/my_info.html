@@ -47,8 +47,6 @@
     </article>
     <button class="btn btn-success" align="center"  onclick="new_pass()">Buscar</button>
 
-    <form id="logIn" action="{% url 'logIn' %}">
-    </form>
 </div>
 
 <div class="modal fade" id="myModal">
@@ -63,11 +61,13 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                <span id="resultado_p"></span>
+                <span style="margin-left:5%">Resultado:</span><span id="resultado_p"></span>
+                <div style="margin-top:5%" id="loader_resultado" class="loader"></div>
+
             </div>
 
             <div class="modal-footer" id="footer">
-                <button type="button" style="display: none;" class="btn btn-success" onclick="volver_pedidos()" id="continuar">Continuar</button>
+                <a type="button" style="display: none;" class="btn btn-success" href="{% url 'logIn' %}" id="continuar">Continuar</a>
                 <button type="button" style="display: none;" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
             </div>
         </div>
@@ -89,6 +89,10 @@
         if (confirm("¿Generar Pedido ?")) {
             var myForm = document.getElementById('GetDataForPassword');
             formData = new FormData(myForm);
+            document.getElementById("resultado_p").innerHTML = "";
+            document.getElementById("continuar").style.display = "none";
+            document.getElementById("volver").style.display = "none";
+            document.getElementById("loader_resultado").style.display = "block";
             $('#myModal').modal('show');
             $.ajax({
                 url: '{% url 'cambiar_password' %}',
@@ -97,19 +101,24 @@
                 contentType: false,
                 type: 'POST',
                 success: function(data){
-                document.getElementById("resultado_crear_t").innerHTML = data.resultado;
-                if (data.error){
-                document.getElementById("continuar").style.display = "none";
-                document.getElementById("volver").style.display = "block";
-            }else{
-                   document.getElementById("continuar").style.display = "block";
-            document.getElementById("volver").style.display = "none";
+                    document.getElementById("loader_resultado").style.display = "none";
+                    document.getElementById("resultado_p").innerHTML = data.resultado;
+                    console.log(data.resultado);
+                    if (data.error){
+                        document.getElementById("resultado_p").innerHTML = data.resultado;
+                        document.getElementById("continuar").style.display = "none";
+                        document.getElementById("volver").style.display = "block";
+                    } else {
+                       document.getElementById("resultado_p").innerHTML = data.resultado;
+                        document.getElementById("continuar").style.display = "block";
+                        document.getElementById("volver").style.display = "none";
+                    }
+                }
+
+            });
+        } else {
+            return;
         }
-    }
-    });
-    } else {
-        return;
-    }
     }
 
     function login(){

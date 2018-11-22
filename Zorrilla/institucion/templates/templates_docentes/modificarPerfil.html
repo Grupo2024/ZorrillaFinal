@@ -20,7 +20,7 @@
 <center><h3>Editar Perfil</h3></center>
 <form method="post" enctype="multipart/form-data" id="form_trabajador">
     {% csrf_token %}
-     <div class='row' style="margin-top:2%">
+    <div class='row' style="margin-top:2%">
         <div class="card text-center" style="width: 26%; height:35%; margin-left: 6%">
             <div class="card-body">
                 <h4 class="card-title">Datos personales</h4>
@@ -155,51 +155,50 @@
     <input name="trabajo" id="trabajdo" value={{trabajador.cargo_t}} type="hidden">
 
 </form>
-    <center><button onclick="modificar_perfil()" class="btn btn-success" style="width:30%">Cargar</button></center>
+
+<center><button onclick="modificar_perfil()" class="btn btn-success" style="width:30%">Editar Datos</button></center>
 
 
 <!-- The Modal -->
 <div class="modal fade" id="myModal">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
 
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Resultado</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Modificar Perfil.</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
 
-      <!-- Modal body -->
-      <div class="modal-body">
-        <span id="resultado_crear_tr"></span>
-      </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <span style="margin-left:5%">Resultado:</span><span id="resultado"></span>
+                <div style="margin-top:5%" id="loader_resultado" class="loader"></div>
+            </div>
 
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button" style="display: none;" class="btn btn-success" onclick="volver_i()" id="continuar">Continuar</button>
-        <button type="button" style="display: none;" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
-      </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <a type="button" style="display: none;" class="btn btn-success" href="{% url 'mi_perfil' %}" id="continuar">Continuar</a>
+                <button type="button" style="display: none;" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
-<form id="volver_form" action="{% url 'mi_perfil' %}" method="post">
-    {% csrf_token %}
-</form>
 
 <script>
 
-    function volver_i(){
-        var aux_form = document.getElementById("volver_form");
-        aux_form.submit();
-    }
 
     function modificar_perfil(){
         if (confirm("¿Modificar Datos ?")) {
             var myForm = document.getElementById('form_trabajador');
             formData = new FormData(myForm);
             console.log(formData);
-            $("#myModal").modal()
+            $('#myModal').modal('show');
+            document.getElementById("resultado").innerHTML = "";
+            document.getElementById("continuar").style.display = "none";
+            document.getElementById("volver").style.display = "none";
+            document.getElementById("loader_resultado").style.display = "block";
             $.ajax({
                 url: '{% url 'modificar_datos_perfil' %}',
                 data : formData,
@@ -207,12 +206,14 @@
                 contentType: false,
                 type: 'POST',
                 success: function(data){
-                    document.getElementById("resultado_crear_tr").innerHTML = data.resultado;
+                    document.getElementById("loader_resultado").style.display = "none";
+                    document.getElementById("resultado").innerHTML = data.resultado;
+                    console.log(data.error);
                     if (data.error){
                         document.getElementById("continuar").style.display = "none";
                         document.getElementById("volver").style.display = "block";
-                    }else{
-                       document.getElementById("continuar").style.display = "block";
+                    } else {
+                        document.getElementById("continuar").style.display = "block";
                         document.getElementById("volver").style.display = "none";
                     }
                 }

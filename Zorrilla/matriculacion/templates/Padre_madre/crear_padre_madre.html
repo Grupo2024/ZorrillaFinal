@@ -108,6 +108,7 @@
         </div>
     </div>
 </form>
+
 {% if objetivo == 'Cargar'%}
     <center><button class="btn btn-success" onclick="matricular_Padre()" id="btn_padre">Cargar</button></center>
 {% else %}
@@ -123,18 +124,20 @@
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Resultado</h4>
+                <h3 class="modal-title" id="titulo">Resultado</h3>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
             <!-- Modal body -->
             <div class="modal-body">
-                <span id="resultado_crear_p"></span>
+                <span style="margin-left:5%">Resultado:</span><span id="resultado_crear_p"></span>
+                <div style="margin-top:5%" id="loader_resultado" class="loader"></div>
+
             </div>
 
             <div class="modal-footer" id="footer">
-                <button type="button" style="display: none;" class="btn btn-success" data-dismiss="modal" id="continuar">Continuar</button>
-                <a class="btn btn-primary" style="display: none;" href="{% url 'index' %}" id="volver">Volver</a>
+                <button type="button" style="display: none;" class="btn btn-success" data-dismiss="modal" id="continuar">Volver</button>
+                <a class="btn btn-primary" style="display: none;" href="{% url 'index' %}" id="volver">Continuar</a>
             </div>
         </div>
     </div>
@@ -147,6 +150,12 @@
             var myForm = document.getElementById('form_padre');
             formData = new FormData(myForm);
             $('#myModal').modal('show');
+            document.getElementById("resultado_crear_p").innerHTML = "";
+            document.getElementById("loader_resultado").style.display = "block";
+            document.getElementById("continuar").style.display = "none";
+            document.getElementById("volver").style.display = "none";
+            var element = document.getElementById("titulo");
+            element.innerHTML = "Creacion de Padre.";
             $.ajax({
                 url: '{% url 'crear_padre_madre' %}',
                 data: formData,
@@ -154,13 +163,14 @@
                 contentType: false,
                 type: 'POST',
                 success: function(data){
+                    document.getElementById("loader_resultado").style.display = "none";
                     document.getElementById("resultado_crear_p").innerHTML = data.resultado;
                     if (data.error){
-                        document.getElementById("continuar").style.display = "none";
-                        document.getElementById("volver").style.display = "block";
-                    }else{
-                        document.getElementById("continuar").style.display = "block";
                         document.getElementById("volver").style.display = "none";
+                        document.getElementById("continuar").style.display = "block";
+                    }else{
+                        document.getElementById("volver").style.display = "block";
+                        document.getElementById("continuar").style.display = "none";
                     }
                 }
             });
@@ -174,6 +184,12 @@
             var myForm = document.getElementById('form_padre');
             formData = new FormData(myForm);
             $('#myModal').modal('show');
+            var element = document.getElementById("titulo");
+            element.innerHTML = "Edicion de Padre.";
+            document.getElementById("resultado_crear_p").innerHTML = "";
+            document.getElementById("loader_resultado").style.display = "block";
+            document.getElementById("continuar").style.display = "none";
+            document.getElementById("volver").style.display = "none";
             $.ajax({
                 url: '{% url 'editar_padre' %}',
                 data: formData,
@@ -181,6 +197,7 @@
                 contentType: false,
                 type: 'POST',
                 success: function(data){
+                    document.getElementById("loader_resultado").style.display = "none";
                     document.getElementById("resultado_crear_p").innerHTML = data.resultado;
                     if (data.error){
                         document.getElementById("volver").style.display = "none";

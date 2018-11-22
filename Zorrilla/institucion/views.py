@@ -31,7 +31,8 @@ def email_for_logIn(request):
             recipient_list = [docente_email]
             send_mail( subject, message, email_from, recipient_list )
             data = {
-                'resultado': "Pedido enviado"
+                'error':False,
+                'resultado': " Pedido enviado."
             }
             print ("es valido")
             return JsonResponse(data)
@@ -39,6 +40,7 @@ def email_for_logIn(request):
             print ("No es valido")
             print (form.errors)
             data = {
+                'error':True,
                 'resultado': str(form.errors)
             }
             return JsonResponse(data)
@@ -70,7 +72,6 @@ def cursos2(request, turno):
     curso = Curso.objects.filter(hora=aux).order_by('aNo', 'hora','seccion')
     for a in curso:
         a.new_turno()
-
     data_curso = {
         'turno':turno
     }
@@ -154,10 +155,10 @@ def modificar_datos_perfil(request):
                 message = "Se le notifica que se han realizado cambios en su perfil de " + str(trabajo) + " dentro del Sistema."
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [nuevo_email]
-                #send_mail( subject, message, email_from, recipient_list )
+                send_mail( subject, message, email_from, recipient_list )
                 data = {
                     'error':False,
-                    'resultado': "Perfil Modificado con Exito."
+                    'resultado': " Perfil Modificado con Exito."
                 }
                 print ("es valido")
                 return JsonResponse(data)

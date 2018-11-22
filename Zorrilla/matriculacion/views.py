@@ -140,7 +140,7 @@ def form_curso(request):
 @user_passes_test(check_Secretaria)
 def form_modificar_alumno(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
-    alumno_form = Modificar_Alumno_Form(initial={'nombre':alumno.nombre, 'apellido':alumno.apellido,'lugar_nacimiento':alumno.lugar_nacimiento, 'fecha_nacimiento':alumno.fecha_nacimiento, 'domicilio':alumno.domicilio, 'email':alumno.email, 'sexo':alumno.sexo, 'telefono_casa':alumno.telefono_casa, 'telefono_padre':alumno.telefono_padre, 'telefono_madre':alumno.telefono_madre, 'telefono_familiar':alumno.telefono_familiar, 'telefono_vecino':alumno.telefono_vecino, 'enfermedad_relevante':alumno.enfermedad_relevante, 'con_quien_vive':alumno.con_quien_vive, 'quien_lo_trae':alumno.quien_lo_trae, 'telefono_que_lo_trae':alumno.telefono_que_lo_trae})
+    alumno_form = Modificar_Alumno_Form(initial={'nombre':alumno.nombre.title(), 'apellido':alumno.apellido.title(),'lugar_nacimiento':alumno.lugar_nacimiento.title(), 'fecha_nacimiento':alumno.fecha_nacimiento, 'domicilio':alumno.domicilio.title(), 'email':alumno.email, 'sexo':alumno.sexo, 'telefono_casa':alumno.telefono_casa, 'telefono_padre':alumno.telefono_padre, 'telefono_madre':alumno.telefono_madre, 'telefono_familiar':alumno.telefono_familiar, 'telefono_vecino':alumno.telefono_vecino, 'enfermedad_relevante':alumno.enfermedad_relevante.title(), 'con_quien_vive':alumno.con_quien_vive.title(), 'quien_lo_trae':alumno.quien_lo_trae.title(), 'telefono_que_lo_trae':alumno.telefono_que_lo_trae})
     return render(request, 'modificar_alumno.html', {'alumno_form':alumno_form, 'dni_alumno':dni_alumno})
 
 @user_passes_test(check_Secretaria)
@@ -805,11 +805,12 @@ def editar_padre(request):
             secretaria = user_Trabajador.objects.get(user=request.user)
             message = "Se le notifica que la Secretaria " + secretaria.trabajador.apellido_t.title() + " " + secretaria.trabajador.nombre_t.title() + " ha realizado cambios en su perfil."
             email_from = settings.EMAIL_HOST_USER
-            #send_mail( subject, message, email_from, recipient_list)
+            recipient_list = [padre.email]
+            send_mail( subject, message, email_from, recipient_list)
             padre.save()
             data = {
                 'error':False,
-                'resultado': "Los Datos de " + padre.nombre.title() + " " + padre.apellido.title() + " han sido modificados con exito."
+                'resultado': " Los Datos de " + padre.nombre.title() + " " + padre.apellido.title() + " han sido modificados con exito."
             }
             return JsonResponse(data)
         else:
@@ -903,16 +904,16 @@ def aceptar_re_matriculacion(request):
         matriculacion.matriculado = "Si"
         matriculacion.save()
         familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
-        subject = "Pedido de Re Matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
+        subject = "Pedido de Re Matriculacion de " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + "."
         secretaria = user_Trabajador.objects.get(user=request.user)
-        message = "Se le notifica que la Secretaria " + secretaria.trabajador.apellido_t + " " + secretaria.trabajador.nombre_t + " ha aceptado el pedido de Re Matriculacion de su hijo/a " + alumno.apellido + " " + alumno.nombre + ", el cual ahora asistira a " + str(matriculacion.curso) + "."
+        message = "Se le notifica que la Secretaria " + secretaria.trabajador.apellido_t.title() + " " + secretaria.trabajador.nombre_t.title() + " ha aceptado el pedido de Re Matriculacion de su hijo/a " + alumno.apellido.title() + " " + alumno.nombre + ", el cual ahora asistira a " + str(matriculacion.curso) + "."
         email_from = settings.EMAIL_HOST_USER
         for familiar in familiares:
             recipient_list = [familiar.padre_madre.email]
-            #send_mail( subject, message, email_from, recipient_list)
+            send_mail( subject, message, email_from, recipient_list)
         data = {
             'error':False,
-            'resultado': "El pedido de Re Matriculacion de " + alumno.nombre + " ha sido un exito, ahora " + alumno.nombre + " asiste a " + str(matriculacion.curso)
+            'resultado': "El pedido de Re Matriculacion de " + alumno.nombre.title() + " ha sido un exito, ahora " + alumno.nombre.title() + " asiste a " + str(matriculacion.curso) + "."
         }
         return JsonResponse(data)
     return HttpResponse("Solo podes entrar por POST")
@@ -925,16 +926,16 @@ def egresar_alumno(request):
         matriculacion.matriculado = "Eg"
         matriculacion.save()
         familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
-        subject = "Pedido de Egreso de " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
+        subject = "Pedido de Egreso de " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + "."
         secretaria = user_Trabajador.objects.get(user=request.user)
-        message = "Se le notifica que la Secretaria " + secretaria.trabajador.apellido_t + " " + secretaria.trabajador.nombre_t + " ha aceptado el pedido de Egreso de su hijo/a " + alumno.apellido + " " + alumno.nombre + "."
+        message = "Se le notifica que la Secretaria " + secretaria.trabajador.apellido_t.title() + " " + secretaria.trabajador.nombre_t.title() + " ha aceptado el pedido de Egreso de su hijo/a " + alumno.apellido.title() + " " + alumno.nombre.title() + "."
         email_from = settings.EMAIL_HOST_USER
         for familiar in familiares:
             recipient_list = [familiar.padre_madre.email]
-            #send_mail( subject, message, email_from, recipient_list)
+            send_mail( subject, message, email_from, recipient_list)
         data = {
             'error':False,
-            'resultado': "El pedido de Egreso de " + alumno.nombre + " ha sido un exito."
+            'resultado': " El pedido de Egreso de " + alumno.nombre.title() + " ha sido un exito."
         }
         return JsonResponse(data)
 
@@ -966,18 +967,18 @@ def pedido_re_matricular(request):
                         padre = Padre_madre.objects.get(dni=dni_padre)
                         if (padre.email == email_padre):
                             familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
-                            subject = "Pedido de Re Matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
-                            message = "En el dia de la fecha " + str(padre.apellido) + " " + str(padre.nombre) + " ha solicitado un pedido de re matriculacion para " + str(alumno.apellido) + " " + str(alumno.nombre) + "."
+                            subject = "Pedido de Re Matriculacion de " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + "."
+                            message = "En el dia de la fecha " + str(padre.apellido.title()) + " " + str(padre.nombre.title()) + " ha solicitado un pedido de re matriculacion para " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + "."
                             email_from = settings.EMAIL_HOST_USER
                             for familiar in familiares:
                                 recipient_list = [familiar.padre_madre.email]
-                                #send_mail( subject, message, email_from, recipient_list)
+                                send_mail( subject, message, email_from, recipient_list)
                             matriculacion = Matriculacion.objects.get(alumno=alumno)
                             matriculacion.matriculado = "Re"
                             matriculacion.save()
                             data = {
                                 'error':False,
-                                'resultado': "El pedido de re matriculacion de " + str(alumno.apellido) + " " + str(alumno.nombre) + " ha sido creado con exito."
+                                'resultado': "El pedido de re matriculacion de " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + " ha sido creado con exito."
                             }
                             return JsonResponse(data)
                         else:
@@ -1014,7 +1015,7 @@ def cambiar_curso(request):
         curso = Curso.objects.get(id=id_curso)
         alumno_C = Matriculacion.objects.get(alumno=alumno)
         alumno_C.curso = curso
-        subject = "Curso de " + str(alumno.nombre) + " modificado."
+        subject = "Curso de " + str(alumno.nombre.title()) + " modificado."
         secretaria = user_Trabajador.objects.get(user=request.user)
         message = "En el dia de la fecha la secretaria " + str(secretaria.trabajador.apellido_t) + " " + str(secretaria.trabajador.nombre_t) + " ha cambiado el curso al que asiste su hijo/a " + str(alumno.nombre) + " por " + str(alumno_C.curso) + "."
         email_from = settings.EMAIL_HOST_USER
@@ -1023,7 +1024,7 @@ def cambiar_curso(request):
 
         for familiar in familiares:
             recipient_list = [familiar.padre_madre.email]
-            #send_mail(subject, message, email_from, recipient_list)
+            send_mail(subject, message, email_from, recipient_list)
 
         alumno_C.save()
         data = {
@@ -1085,9 +1086,7 @@ def aplicar_cambios_alumno(request):
         alumno_form = Modificar_Alumno_Form(request.POST)
         dni_alumno = request.POST['dni']
         if alumno_form.is_valid():
-            print ("Es valido")
             alumno = Alumno.objects.get(dni=dni_alumno)
-
             nombre = alumno_form.cleaned_data['nombre']
             apellido = alumno_form.cleaned_data['apellido']
             nuevo_lugar_nacimiento = alumno_form.cleaned_data['lugar_nacimiento']
@@ -1108,24 +1107,24 @@ def aplicar_cambios_alumno(request):
             nuevo_nombre = nombre.lower()
             nuevo_apellido = apellido.lower()
 
-            subject = "Informacion de " + str(alumno.nombre) + " modificada."
+            subject = "Informacion de " + str(alumno.nombre.title()) + " modificada."
 
             secretaria = user_Trabajador.objects.get(user=request.user)
 
-            message = "En el dia de la fecha la secretaria " + str(secretaria.trabajador.apellido_t) + " " + str(secretaria.trabajador.nombre_t) + " ha realizado cambios en el perfil de " + str(alumno.nombre) + "."
+            message = "En el dia de la fecha la secretaria " + str(secretaria.trabajador.apellido_t.title()) + " " + str(secretaria.trabajador.nombre_t.title()) + " ha realizado cambios en el perfil de " + str(alumno.nombre.title()) + "."
             email_from = settings.EMAIL_HOST_USER
 
             familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
 
             for familiar in familiares:
                 recipient_list = [familiar.padre_madre.email]
-                #send_mail(subject, message, email_from, recipient_list)
+                send_mail(subject, message, email_from, recipient_list)
 
             alumno.nombre, alumno.apellido, alumno.lugar_nacimiento, alumno.fecha_nacimiento, alumno.domicilio, alumno.email, alumno.sexo, alumno.telefono_casa, alumno.telefono_padre, alumno.telefono_madre, alumno.telefono_familiar, alumno.telefono_vecino, alumno.enfermedad_relevante, alumno.con_quien_vive, alumno.quien_lo_trae, alumno.telefono_que_lo_trae  = nuevo_nombre, nuevo_apellido, nuevo_lugar_nacimiento, nueva_fecha_nacimiento, nuevo_domicilio, nuevo_email, nuevo_sexo, nuevo_telefono_casa, nuevo_telefono_padre, nuevo_telefono_madre, nuevo_telefono_familiar, nuevo_telefono_vecino, nueva_enfermedad_relevante, nuevo_con_quien_vive, nuevo_quien_lo_trae, nuevo_telefono_que_lo_trae
 
             alumno.save()
             data = {
-                'resultado': "Los datos de " + alumno.nombre + " han sido modificados."
+                'resultado': "Los datos de " + alumno.nombre.title() + " han sido modificados."
             }
             return JsonResponse(data)
         else:

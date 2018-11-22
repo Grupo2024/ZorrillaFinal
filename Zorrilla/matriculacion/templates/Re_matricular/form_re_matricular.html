@@ -8,43 +8,41 @@
     {% csrf_token %}
     <div align="center" style="margin-top:2%">
         <div class="card text-center" style="width: 25%" >
-        <div class="card-body">
-            <h4 class="card-title">Datos personales</h4>
+            <div class="card-body">
+                <h4 class="card-title">Datos personales</h4>
 
-            <ul class="list-group list-group-flush">
+                <ul class="list-group list-group-flush">
 
-                <li class="list-group-item">
+                    <li class="list-group-item">
 
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div class="input-group-prepend" style="margin-right: 200%;">
-                            <span  class="input-group-text" id="inputGroup-sizing-sm">Dni del Alumno:</span>
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend" style="margin-right: 200%;">
+                                <span  class="input-group-text" id="inputGroup-sizing-sm">Dni del Alumno:</span>
+                            </div>
+                            <div style="margin-left: -0.5%;">{{re_matricular_form.dni_alumno}}</div>
                         </div>
-                        <div style="margin-left: -0.5%;">{{re_matricular_form.dni_alumno}}</div>
-                    </div>
 
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div class="input-group-prepend" style="margin-right: 200%;">
-                            <span  class="input-group-text" id="inputGroup-sizing-sm">Dni del Padre:</span>
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend" style="margin-right: 200%;">
+                                <span  class="input-group-text" id="inputGroup-sizing-sm">Dni del Padre:</span>
+                            </div>
+                            <div style="margin-left: -0.5%;">{{re_matricular_form.dni_padre}}</div>
                         </div>
-                        <div style="margin-left: -0.5%;">{{re_matricular_form.dni_padre}}</div>
-                    </div>
 
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div class="input-group-prepend" style="margin-right: 200%;">
-                            <span  class="input-group-text" id="inputGroup-sizing-sm">Email del Padre:</span>
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend" style="margin-right: 200%;">
+                                <span  class="input-group-text" id="inputGroup-sizing-sm">Email del Padre:</span>
+                            </div>
+                            <div style="margin-left: -0.5%; margin-top: 0%;">{{re_matricular_form.email_padre}}</div>
                         </div>
-                        <div style="margin-left: -0.5%; margin-top: 0%;">{{re_matricular_form.email_padre}}</div>
-                    </div>
-                    
-
-                    <button class="btn btn-success" onclick="re_matricular()">Enviar</button>
-                </li>
-
-            </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
-        </div>
-        </div>
+    </div>
 </form>
+
+<center><button class="btn btn-success" onclick="re_matricular()">Enviar</button></center>
 
 <div class="modal fade" id="re_mat_alumno" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -54,21 +52,17 @@
             </div>
             <div class="container-fluid">
                 <div class="modal-body row">
-                    <p class="col-sm-2">Resultado: </p>
-                    <span id="resultado"></span>
+                    <span style="margin-left:5%">Resultado:</span><span id="resultado"></span>
+                    <div style="margin-top:5%" id="loader_resultado" class="loader"></div>
                 </div>
                 <div class="modal-footer" id="footer">
-                    <button type="button" class="btn btn-primary" id="continuar" onclick="refresh()">Continuar</button>
+                    <a type="button" class="btn btn-primary" id="continuar" href="{% url 'formReMatricular' %}">Continuar</a>
                     <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<form id="form_f5" href="{% url 'formReMatricular' %}" method="post">
-    {% csrf_token %}
-</form>
 
 <script>
 
@@ -79,6 +73,11 @@
         if (confirm("¿Solicitar pedido de Re Matriculacion ?")) {
             var myForm = document.getElementById('form_re_matricular');
             formData = new FormData(myForm);
+            $('#re_mat_alumno').modal('show');
+            document.getElementById("resultado").innerHTML = "";
+            document.getElementById("continuar").style.display = "none";
+            document.getElementById("cerrar").style.display = "none";
+            document.getElementById("loader_resultado").style.display = "block";
             $.ajax({
                 url: '{% url 'pedido_re_matricular' %}',
                 data: formData,
@@ -86,27 +85,23 @@
                 contentType: false,
                 type: 'POST',
                 success: function(data){
-                    $('#re_mat_alumno').modal('show');
+                    document.getElementById("loader_resultado").style.display = "none";
+                    document.getElementById("resultado").innerHTML = data.resultado;
                     console.log(data.resultado);
                     if (data.error){
                         document.getElementById("resultado").innerHTML = data.resultado;
                         document.getElementById("continuar").style.display = "none";
                         document.getElementById("cerrar").style.display = "block";
                     } else {
-                        document.getElementById("resultado").innerHTML = data.resultado;
+                       document.getElementById("resultado").innerHTML = data.resultado;
                         document.getElementById("continuar").style.display = "block";
                         document.getElementById("cerrar").style.display = "none";
-                   }
+                    }
                 }
-            });
-        } else {
-            return;
-        }
+        });
+    } else {
+        return;
     }
-
-    function refresh(){
-        var refr = document.getElementById("form_f5");
-        refr.submit();
     }
 
 </script>

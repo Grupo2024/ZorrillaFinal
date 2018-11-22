@@ -166,6 +166,25 @@
 
 <center><button class="btn btn-success" onclick="modificar()" style="width:30%;">Cargar</button></center>
 
+<div class="modal fade" id="modAlumno" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Re Matricular Alumno:</h5>
+            </div>
+            <div class="container-fluid">
+                <div class="modal-body row">
+                    <span style="margin-left:5%">Resultado:</span><span id="resultado"></span>
+                    <div style="margin-top:5%" id="loader_resultado" class="loader"></div>
+                </div>
+                <div class="modal-footer" id="footer">
+                    <a type="button" class="btn btn-primary" id="continuar" href="{% url 'datos_alumno' 'curso' dni_alumno %}">Continuar</a>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 
@@ -173,6 +192,11 @@
         if (confirm("¿Editar los Datos del Alumno ?")) {
             var myForm = document.getElementById('form_editar_alumno');
             formData = new FormData(myForm);
+            document.getElementById("resultado").innerHTML = "";
+            document.getElementById("continuar").style.display = "none";
+            document.getElementById("cerrar").style.display = "none";
+            document.getElementById("loader_resultado").style.display = "block";
+            $('#modAlumno').modal('show');
             $.ajax({
                 url: '{% url 'aplicar_cambios_alumno' %}',
                 data: formData,
@@ -180,7 +204,18 @@
                 contentType: false,
                 type: 'POST',
                 success: function(data){
-                    alert(data.resultado)
+                    document.getElementById("loader_resultado").style.display = "none";
+                    document.getElementById("resultado").innerHTML = data.resultado;
+                    console.log(data.resultado);
+                    if (data.error){
+                        document.getElementById("resultado").innerHTML = data.resultado;
+                        document.getElementById("continuar").style.display = "block";
+                        document.getElementById("cerrar").style.display = "none";
+                    } else {
+                       document.getElementById("resultado").innerHTML = data.resultado;
+                        document.getElementById("continuar").style.display = "none";
+                        document.getElementById("cerrar").style.display = "block";
+                    }
                 }
             });
         } else {
