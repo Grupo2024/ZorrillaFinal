@@ -108,12 +108,12 @@ def datos_alumno(request, dni_alumno):
 
 @user_passes_test(check_Secretaria)
 def docentes(request):
-    profesores = Profesor.objects.all()
+    profesores = Trabajador.objects.all().filter(cargo_t="PR")
     return render(request, 'templates_docentes/docentes.html', {'profesores':profesores})
 
 @user_passes_test(check_Secretaria)
 def profesor(request, id_profesor):
-    profesor = Profesor.objects.get(dni_t=id_profesor)
+    profesor = Trabajador.objects.get(dni_t=id_profesor)
     return render(request, 'templates_docentes/perfilDocente.html', {'trabajador':profesor})
 
 @login_required
