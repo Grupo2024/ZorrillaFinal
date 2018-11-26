@@ -33,11 +33,11 @@
                     <i class="fa fa-filter" aria-hidden="true"></i> Filtrar</button>
                 <!-- Añadir button -->
                 {% if user.is_authenticated %}
-                <button style="margin-left: 60%; margin-top: -3.4%" class="btn btn-success" data-toggle="modal" data-target="#myModal">Añadir libro</button>
+                <button  class="btn btn-success" data-toggle="modal" data-target="#myModal">Añadir libro</button>
                 {% endif %}
                     
                 {% if request.user|has_group:"Director" %}
-                <button style="margin-left: 70.5%; margin-top: -3.4%" class="btn btn-dark" onclick="informe('{% url 'informe' %}')">Informe</button>
+                <button  class="btn btn-dark" onclick="informe('{% url 'informe' %}')">Informe</button>
                 {% endif %}
             </div>
         </div>
