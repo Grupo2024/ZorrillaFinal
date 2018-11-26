@@ -56,6 +56,9 @@ def daddy():
         secretaria_aux.save()
         profesor_aux.save()
         director_aux.save()
+        datos_index = datos_Index(telefono=1234567, telefono2=1234567, email="robert@gmail.com", email2="pipo@gmail.com",
+        latitud=123123, longitud=789456)
+        datos_index.save()
         return "Creados"
     else:
         return "Ya estan creados"
