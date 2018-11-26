@@ -6,59 +6,64 @@
 <br>
 <form id="form_data" method="post" action="{% url 'cambiar_datos' %}">
     {% csrf_token %}
-    <div class="card text-center" style="width: 30%;">
-        <div class="card-body">
-            <h4 class="card-title">Editar Datos</h4>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
+    <center>
+        <div class="card text-center" style="width: 30%;">
+            <div class="card-body">
+                <h4 class="card-title">Editar Datos</h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
 
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div style="margin-right: 300%;" class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Email de Contacto:</span>
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div style="margin-right: 300%;" class="input-group-prepend">
+                                <span class="input-group-text" style="margin-left: -4%;" id="inputGroup-sizing-sm">Email de Contacto:</span>
+                            </div>
+                            <div style="margin-left: -2%; margin-right: 17%;">{{form.email}}</div>
                         </div>
-                        <div style="margin-left: -3.5%; margin-right: 17%;">{{form.email}}</div>
-                    </div>
 
-                    <div class="input-group input-group-sm mb-4 form-group">
-                        <div style="margin-right: 300%;" class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Email de Contacto 2: </span>
+                        <div class="input-group input-group-sm mb-4 form-group">
+                            <div style="margin-right: 300%;" class="input-group-prepend">
+                                <span class="input-group-text" style="margin-left: -4%;" id="inputGroup-sizing-sm">Email de Contacto 2: </span>
+                            </div>
+                            <div style="margin-left: -2%; margin-right: 17%;">{{form.email2}}</div>
                         </div>
-                        <div style="margin-left: -3.5%; margin-right: 17%;">{{form.email2}}</div>
-                    </div>
 
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div style="margin-right: 300%;" class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Telefono de Contacto:</span>
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div style="margin-right: 300%;" class="input-group-prepend">
+                                <span class="input-group-text" style="margin-left: -4%;" id="inputGroup-sizing-sm">Telefono de Contacto:</span>
+                            </div>
+                            <div id="b" style="margin-left: -2%; margin-right: 45%;">{{form.telefono}}</div>
                         </div>
-                        <div id="b" style="margin-left: 0%; margin-right: 45%;">{{form.telefono}}</div>
-                    </div>
 
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div style="margin-right: 300%;" class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Telefono de Contacto 2:</span>
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div style="margin-right: 300%;" class="input-group-prepend">
+                                <span class="input-group-text" style="margin-left: -4%;" id="inputGroup-sizing-sm">Telefono de Contacto 2:</span>
+                            </div>
+                            <div id="a" style="margin-left: -2%; margin-right: 40%;">{{form.telefono2}}</div>
                         </div>
-                        <div id="a" style="margin-left: -3.5%; margin-right: 40%;">{{form.telefono2}}</div>
-                    </div>
 
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div style="margin-right: 300%;" class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Latitud mapa del Colegio:</span>
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div style="margin-right: 300%;" class="input-group-prepend">
+                                <span class="input-group-text" style="margin-left: -4%;" id="inputGroup-sizing-sm">Latitud mapa del Colegio:</span>
+                            </div>
+                            <br>
+                            <div id="a"  style="margin-left: -2%; margin-right: 50%;">{{form.latitud}}</div>
                         </div>
-                        <br>
-                        <div id="a"  style="margin-left: -3.5%; margin-right: 50%;">{{form.latitud}}</div>
-                    </div>
 
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div style="margin-right: 300%;" class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Longitud mapa del Colegio:</span>
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div style="margin-right: 300%;" class="input-group-prepend">
+                                <span class="input-group-text" style="margin-left: -4%;" id="inputGroup-sizing-sm">Longitud mapa del Colegio:</span>
+                            </div>
+                            <br>
+                            <div id="a"  style="margin-left: -2%; margin-right: 50%;">{{form.longitud}}</div>
                         </div>
-                        <br>
-                        <div id="a"  style="margin-left: -3.5%; margin-right: 50%;">{{form.longitud}}</div>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <button type="submit">Cambiar Datos</button>
+        <br>
+    </center>
+    <center>
+        <button class="btn btn-success" type="submit">Cambiar Datos</button>
+    </center>
 </form>
 {% endblock body %}
