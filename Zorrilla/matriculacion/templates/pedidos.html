@@ -143,9 +143,6 @@
 
 <script>
 
-    document.getElementById("continuar").style.display = "none";
-
-
     function traer_secciones(url, alum){
         $.ajax({
             method: "POST",
@@ -191,9 +188,8 @@
                             document.getElementById("continuar").style.display = "none";
                             document.getElementById("cerrar").style.display = "block";
                         } else {
-                           document.getElementById("resultado").innerHTML = data.resultado;
+                            document.getElementById("resultado").innerHTML = data.resultado;
                             document.getElementById("continuar").style.display = "block";
-                            document.getElementById("cerrar").style.display = "none";
                         }
                     }
                 });
@@ -234,7 +230,7 @@
                             document.getElementById("continuar").style.display = "none";
                             document.getElementById("cerrar").style.display = "block";
                         } else {
-                           document.getElementById("resultado").innerHTML = data.resultado;
+                            document.getElementById("resultado").innerHTML = data.resultado;
                             document.getElementById("continuar").style.display = "block";
                             document.getElementById("cerrar").style.display = "none";
                         }

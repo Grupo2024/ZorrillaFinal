@@ -194,6 +194,7 @@
         if (confirm("¿Editar Autorizado ?")) {
             var myForm = document.getElementById('form_autorizado');
             formData = new FormData(myForm);
+            document.getElementById("loader_resultado").style.display = "none";
             $('#myModal').modal('show');
             $.ajax({
                 url: '{% url 'editar_autorizado' %}',
@@ -204,11 +205,11 @@
                 success: function(data){
                     document.getElementById("resultado_crear_a").innerHTML = data.resultado;
                     if (data.error){
-                        document.getElementById("volver").style.display = "none";
-                        document.getElementById("continuar").style.display = "block";
-                    }else{
-                       document.getElementById("volver").style.display = "block";
                         document.getElementById("continuar").style.display = "none";
+                        document.getElementById("volver").style.display = "block";
+                    }else{
+                        document.getElementById("continuar").style.display = "block";
+                        document.getElementById("volver").style.display = "none";
                     }
                 }
             });
