@@ -6,22 +6,22 @@
 
 <style type="text/css">
     input{
-        width: 128%
+        width: 250px;
     }
     #a{
-        width:81%
+        widows: 250px;
     }
     textarea {
-        width: 100%;
-        height: 30%;
+        width: 250px;
+        height: 30px;
     }
 </style>
 
 <form method="post" enctype="multipart/form-data" id="form_docente">
     {% csrf_token %}
     <div class='row' style="margin-top:2%">
-        <div class="card text-center" style="width: 26%; height:35%; margin-left: 6%">
-            <div class="card-body">
+        <div class="card text-center" style="width: 370px; margin-left: 40px">
+            <div class="card-body" >
                 <h4 class="card-title">Datos personales</h4>
 
                 <ul class="list-group list-group-flush">
@@ -30,52 +30,52 @@
 
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
-                                <span style="margin-left: -16%;" class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
+                                <span style="margin-right: 300%;" class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
                             </div>
-                            <div style="margin-left: -9%;">{{ form.nombre_t }}</div>
+                            <div style="margin-left: -13px">{{ form.nombre_t }}</div>
                         </div>
 
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
-                                <span style="margin-left: -15%;" class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
+                                <span style="margin-right: 300%;" class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
                             </div>
-                            <div style="margin-left: -9%;">{{ form.apellido_t }}</div>
+                            <div style="margin-left: -13px;">{{ form.apellido_t }}</div>
                         </div>
 
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
-                                <span style="margin-left: -4%;" class="input-group-text" id="inputGroup-sizing-sm">Numero de documento:</span>
+                                <span style="margin-right: 300%;" class="input-group-text" id="inputGroup-sizing-sm">Numero de documento:</span>
                             </div>
-                            <div style="margin-left: -2.4%; margin-top: 0%;">{{ form.dni_t }}</div>
+                            <div style="margin-left: -2px; margin-top: 0%;">{{ form.dni_t }}</div>
                         </div>
 
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
-                                <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
+                                <span style="margin-right: 300%;" class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
                             </div>
-                            <div style="margin-left: -3%" id="a">{{ form.fecha_nacimiento_t }}</div>
+                            <div style="margin-left: 3px" id="a">{{ form.fecha_nacimiento_t }}</div>
                         </div>
 
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
-                                <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
+                                <span style="margin-right: 300%;" class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
                             </div>
-                            <div style="margin-left: -8%">{{ form.lugar_nacimiento_t }}</div>
+                            <div style="margin-left: -13px">{{ form.lugar_nacimiento_t }}</div>
                         </div>
 
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
-                                <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
+                                <span style="margin-right: 300%;" class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
                             </div>
                             <br>
-                            <div id="a"  style="margin-left:-6.5%">{{ form.domicilio_t }}</div>
+                            <div id="a"  style="margin-left:-12px">{{ form.domicilio_t }}</div>
                         </div>
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
-                                <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
+                                <span style="margin-right: 300%;" class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
                             </div>  
                             <br>
-                            <div style="margin-left:-1%">{{ form.sexo_t }}</div>
+                            <div style="margin-left:-1px">{{ form.sexo_t }}</div>
                         </div>
                     </li>
 
@@ -84,7 +84,7 @@
 
         </div>
 
-        <div class="card text-center" style="width: 26%; height:67% ;margin-left: 5%">
+        <div class="card text-center" style="width: 370px; height:67%; margin-left: 40px">
             <div class="card-body" >
                 <h4 class="card-title">Datos de Contacto</h4>
 
@@ -129,7 +129,7 @@
                         </div>
                     </div>
             </div>
-            <div class="card text-center" style="width: 26%; margin-left: 5%">
+            <div class="card text-center" style="width: 370px; margin-left: 40px">
                 <div class="card-body">
                     <h4 class="card-title">Datos Laborales</h4>
 
