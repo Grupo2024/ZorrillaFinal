@@ -6,13 +6,13 @@
 
 <style type="text/css">
     input{
-        width: 128%
+        width: 280px
     }
     #a{
         width:81%
     }
     textarea {
-        width: 100%;
+        width: 100px;
         height: 30%;
     }
 
@@ -44,7 +44,7 @@
     {% csrf_token %}
     <input name="dni" id="dni" type="hidden" value={{dni}} >
     <div class='row' style="margin-top:2%">
-        <div class="card text-center" style="width: 26%; height:35%; margin-left: 36.5%">
+        <div class="card text-center" style="width: 360px; height:auto; margin-left: 36.5%">
             <div class="card-body">
                 {% if opcion == 'Crear'%}
                     <h4 class="card-title">Crear Autorizado</h4>
@@ -106,17 +106,17 @@
                         </div>
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
-                                <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono:</span>
+                                <span style="margin-left: -4%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono:</span>
                             </div>  
                             <br>
-                            <div style="margin-left:-1%">{{ autorizado.telefono_autorizado }}</div>
+                            <div style="margin-left: -0.6%">{{ autorizado.telefono_autorizado }}</div>
                         </div>
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
                                 <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
                             </div>
                             <br>
-                            <div style="margin-left:-1%">{{ autorizado.email }}</div>
+                            <div style="margin-left: -1%">{{ autorizado.email }}</div>
                         </div>
                     </li>
                 </ul>
@@ -126,7 +126,7 @@
     </form>
 
     {% if opcion == 'Crear'%}
-        <center><button onclick="crear_Autorizado()" class="btn btn-success" style="width:30%">Cargar</button></center>
+        <center><button onclick="crear_Autorizado()" class="btn btn-success" style="width:350px">Cargar</button></center>
     {% else %}
         <center><button onclick="editar_Autorizado()" class="btn btn-success" style="width:30%">Editar</button></center>
     {% endif %}

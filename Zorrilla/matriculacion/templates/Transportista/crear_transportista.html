@@ -14,10 +14,10 @@
 </style>
 
 <br>
-<form id="form_transportista" style="margin-left: 30%;" method="post">
+<form id="form_transportista" style="margin-left: 33%;" method="post">
     {% csrf_token %}
     <input type="hidden" name="dni_transportista" id="dni_transportista" value={{dni_transportista}}>
-    <div class="card text-center" style="width: 55%;">
+    <div class="card text-center" style="width: 450px;">
         <div class="card-body">
             {% if objetivo == 'Crear' %}
                 <h4 class="card-title">Crear Transportista</h4>
@@ -60,7 +60,7 @@
                             <span class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
                         </div>
                         <br>
-                        <div id="a"  style="margin-left: -3.5%; margin-right: 50%;">{{form_transportista.fecha_nacimiento}}</div>
+                        <div id="a"  style="margin-left: 0%; margin-right: 50%;">{{form_transportista.fecha_nacimiento}}</div>
                     </div>
 
                     <div class="input-group input-group-sm mb-3 form-group">
@@ -114,7 +114,7 @@
     </div>
 </form>
     {% if objetivo == 'Crear' %}
-        <center><button class="btn btn-success" onclick="matricular_Transportista()" id="btn_padre">Cargar</button></center>
+        <center><button class="btn btn-success" style="width:300px" onclick="matricular_Transportista()" id="btn_padre">Cargar</button></center>
     {% else %}
         <center><button class="btn btn-success" onclick="editar_Transportista()" id="btn_padre">Editar</button></center>
     {% endif %}

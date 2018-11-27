@@ -21,7 +21,7 @@
     {% csrf_token %}
     <input type="hidden" value={{dni_alumno}} name="dni_alumno">
     <input type="hidden" value={{dni_padre}} name="dni_padre">
-    <div class="card text-center" style="width: 45%; margin-left: 6%">
+    <div class="card text-center" style="width: 380px; margin-left: 6%">
         <div class="card-body">
             {% if objetivo == 'Cargar'%}
                 <h4 class="card-title">Cargar Padre</h4>
@@ -65,7 +65,7 @@
                             <span class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
                         </div>
                         <br>
-                        <div id="a"  style="margin-left: -4.5%">{{padre_form.fecha_nacimiento}}</div>
+                        <div id="a"  style="margin-left: -0.5%">{{padre_form.fecha_nacimiento}}</div>
                     </div>
 
                     <div class="input-group input-group-sm mb-3 form-group">
@@ -110,7 +110,7 @@
 </form>
 
 {% if objetivo == 'Cargar'%}
-    <center><button class="btn btn-success" onclick="matricular_Padre()" id="btn_padre">Cargar</button></center>
+    <center><button class="btn btn-success" style="width: 380px; margin-left: -42px" onclick="matricular_Padre()" id="btn_padre">Cargar</button></center>
 {% else %}
     <center><button class="btn btn-success" onclick="editar_Padre()" id="btn_padre">Editar</button></center>
 {% endif %}
