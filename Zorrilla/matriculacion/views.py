@@ -841,13 +841,20 @@ def editar_autorizado(request):
             
             nuevo_nombre = nombre.lower()
             nuevo_apellido = apellido.lower()
-            
-            autorizado.nombre, autorizado.apellido, autorizado.lugar_nacimiento, autorizado.fecha_nacimiento, autorizado.domicilio, autorizado.email, autorizado.sexo,autorizado.telefono_autorizado = nuevo_nombre, nuevo_apellido, nuevo_lugar_nacimiento, nueva_fecha_nacimiento, nuevo_domicilio, nuevo_email, nuevo_sexo,nuevo_telefono_autorizado
-            autorizado.save()
-            
+        
+            autorizado_elegido.nombre = nuevo_nombre
+            autorizado_elegido.apellido = nuevo_apellido
+            autorizado_elegido.lugar_nacimiento = nuevo_lugar_nacimiento
+            autorizado_elegido.fecha_nacimiento = nueva_fecha_nacimiento
+            autorizado_elegido.domicilio = nuevo_domicilio
+            autorizado_elegido.email = nuevo_email
+            autorizado_elegido.sexo = nuevo_sexo
+            autorizado_elegido.telefono_autorizado = nuevo_telefono_autorizado 
+        
+            autorizado_elegido.save()
             data = {
-                'error':False,
-                'resultado': " Los Datos de " + autorizado.nombre.title() + " " + autorizado.apellido.title() + " han sido modificados con exito."
+                'error': False,
+                'resultado': " Los Datos de " + autorizado_elegido.nombre.title() + " " + autorizado_elegido.apellido.title() + " han sido modificados con exito."
             }
             return JsonResponse(data)
         else:
