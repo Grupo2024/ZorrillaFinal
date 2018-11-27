@@ -121,7 +121,7 @@ class Matriculacion(models.Model):
         elif (self.matriculado == "Eg"):
             estado = "Egresado"
             return estado
-        else:
+        elif (self.matriculado == "Pe"):
             estado = "En proceso de Egreso"
             return estado
 

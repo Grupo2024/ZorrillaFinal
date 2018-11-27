@@ -759,7 +759,7 @@ def pedido_egreso(request):
             recipient_list = [familiar.padre_madre.email]
             send_mail( subject, message, email_from, recipient_list)
         data = {
-            'resultado': "El pedido de Egreso de " + alumno.nombre + " ha sido un exito."
+            'resultado': " El pedido de egreso de " + alumno.nombre.title() + " ha sido un exito."
         }
         return JsonResponse(data)
     return HttpResponse("Solo podes entrar por POST")
@@ -1163,7 +1163,7 @@ def aceptar_matriculacion(request):
         matriculacion.curso = curso
         matriculacion.save()
         data = {
-            'resultado': "El alumno " + str(alumno.apellido) + " " + str(alumno.nombre) + " asiste al curso " + str(matriculacion.curso),
+            'resultado': "El alumno " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + " asiste al curso " + str(matriculacion.curso),
             'error': False
         }
         return JsonResponse(data, safe=True)
