@@ -154,8 +154,6 @@
                         </div>
                         <br>
                         <br>
-                        
-                    
                     </li>
                 </ul>
             </div>
@@ -164,17 +162,17 @@
     <input type="hidden" name="dni" id="dni" value={{dni_alumno}}>
 </form>
 
-<center><button class="btn btn-success" onclick="modificar()" style="width:30%;">Cargar</button></center>
+<center><button class="btn btn-success" onclick="modificar()" style="width:30%;">Editar</button></center>
 
 <div class="modal fade" id="modAlumno" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Re Matricular Alumno:</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Editar Alumno:</h5>
             </div>
             <div class="container-fluid">
                 <div class="modal-body row">
-                    <span style="margin-left:5%">Resultado:</span><span id="resultado"></span>
+                    <span style="margin-left:5%">Resultado: </span><span id="resultado"></span>
                     <div style="margin-top:5%" id="loader_resultado" class="loader"></div>
                 </div>
                 <div class="modal-footer" id="footer">
@@ -208,13 +206,11 @@
                     document.getElementById("resultado").innerHTML = data.resultado;
                     console.log(data.resultado);
                     if (data.error){
-                        document.getElementById("resultado").innerHTML = data.resultado;
-                        document.getElementById("continuar").style.display = "block";
-                        document.getElementById("cerrar").style.display = "none";
-                    } else {
-                       document.getElementById("resultado").innerHTML = data.resultado;
-                        document.getElementById("continuar").style.display = "none";
                         document.getElementById("cerrar").style.display = "block";
+                        document.getElementById("continuar").style.display = "none";
+                    } else {
+                        document.getElementById("cerrar").style.display = "none";
+                        document.getElementById("continuar").style.display = "block";
                     }
                 }
             });

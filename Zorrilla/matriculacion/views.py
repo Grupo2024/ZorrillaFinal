@@ -555,7 +555,7 @@ def todos_los_transportistas_asignar(request, dni_alumno):
     lista = []
     for a in transportistas_ya_asignados:
         lista.append(a.transportista.dni)
-    transportistas = Transportista.objects.exclude(dni__in=lista).order_by("apellido","nombre","dni")
+    transportistas = Transportista.objects.exclude(dni__in=lista).order_by("nombre","apellido","dni")
     return render(request, 'Transportista/asignar_transportista.html',{'transportistas':transportistas, 'dni_alumno':dni_alumno})
 
 #Traer Todos los Padres/Madre.
@@ -565,7 +565,7 @@ def todos_los_padres_asignar(request, dni_alumno):
     lista = []
     for a in padres_ya_asignados:
         lista.append(a.padre_madre.dni)
-    padre = Padre_madre.objects.exclude(dni__in=lista).order_by("apellido","nombre","dni")
+    padre = Padre_madre.objects.exclude(dni__in=lista).order_by("nombre","apellido","dni")
     return render(request,'Padre_madre/asignar_padre.html', {'todos_los_padres':padre, 'dni_alumno':dni_alumno})
 
 def todas_las_obras_sociales_asignar(request, dni_alumno):
@@ -576,7 +576,8 @@ def todas_las_obras_sociales_asignar(request, dni_alumno):
         lista.append(a.obra_social.id)
     obra_social = Obra_Social.objects.exclude(id__in=lista).order_by("nombre")
     obra_social2 = Obra_SocialForm()
-    return render(request,'Obra_Social/asignar_obra.html', {'obras_sociales':obra_social, 'dni_alumno':dni_alumno, 'obra_social':obra_social2})
+    return HttpResponse("Esto deberia devolver otra cosa.")
+    #return render(request,'Obra_Social/asignar_obra.html', {'obras_sociales':obra_social, 'dni_alumno':dni_alumno, 'obra_social':obra_social2})
 
 def todos_los_autorizados_asignar(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
@@ -585,7 +586,7 @@ def todos_los_autorizados_asignar(request, dni_alumno):
     lista = []
     for a in autorizados_ya_asignadas:
         lista.append(a.autorizado.dni)
-    autorizados = Autorizado.objects.exclude(dni__in=lista).order_by("apellido","nombre","dni")
+    autorizados = Autorizado.objects.exclude(dni__in=lista).order_by("nombre","apellido","dni")
     relacion_con_alumno = RelacionForm()
     print(autorizados)
     return render(request,'Autorizado/asignar_autorizado.html', {'autorizados':autorizados, 'alumno':alumno, 'relacion_con_alumno':relacion_con_alumno})
@@ -597,7 +598,7 @@ def todas_las_obras_sociales(request):
 
 @user_passes_test(check_Secretaria)
 def todas_los_transportistas(request):
-    transportistas = Transportista.objects.all().order_by('apellido', 'nombre', 'dni')
+    transportistas = Transportista.objects.all().order_by("nombre","apellido","dni")
     return render(request, 'Transportista/todos_los_transportistas.html', {'transportistas':transportistas})
 
 #Traer Todos las Matriculaciones con estado 'No' y 'Re'.
@@ -846,7 +847,7 @@ def editar_autorizado(request):
             
             data = {
                 'error':False,
-                'resultado': "Los Datos de " + autorizado.nombre.title() + " " + autorizado.apellido.title() + " han sido modificados con exito."
+                'resultado': " Los Datos de " + autorizado.nombre.title() + " " + autorizado.apellido.title() + " han sido modificados con exito."
             }
             return JsonResponse(data)
         else:
@@ -881,7 +882,7 @@ def editar_transportista(request):
             transportista.save()
             data = {
                 'error':False,
-                'resultado': "Los Datos de " + transportista.nombre.title() + " " + transportista.apellido.title() + " han sido modificados con exito."
+                'resultado': " Los Datos de " + transportista.nombre.title() + " " + transportista.apellido.title() + " han sido modificados con exito."
             }
             return JsonResponse(data)
         else:
@@ -913,7 +914,7 @@ def aceptar_re_matriculacion(request):
             send_mail( subject, message, email_from, recipient_list)
         data = {
             'error':False,
-            'resultado': "El pedido de Re Matriculacion de " + alumno.nombre.title() + " ha sido un exito, ahora " + alumno.nombre.title() + " asiste a " + str(matriculacion.curso) + "."
+            'resultado': " El pedido de Re Matriculacion de " + alumno.nombre.title() + " ha sido un exito, ahora " + alumno.nombre.title() + " asiste a " + str(matriculacion.curso) + "."
         }
         return JsonResponse(data)
     return HttpResponse("Solo podes entrar por POST")
@@ -953,13 +954,13 @@ def pedido_re_matricular(request):
                 if matriculacion.matriculado == "No":
                     data = {
                         'error':True,
-                        'resultado': "Ya hay un pedido de Matriculacion para este alumno."
+                        'resultado': " Ya hay un pedido de Matriculacion para este alumno."
                     }
                     return JsonResponse(data)
                 elif matriculacion.matriculado == "Re":
                     data = {
                         'error':True,
-                        'resultado': "Ya hay un pedido de Re Matriculacion para este alumno."
+                        'resultado': " Ya hay un pedido de Re Matriculacion para este alumno."
                     }
                     return JsonResponse(data)
                 else:
@@ -978,25 +979,25 @@ def pedido_re_matricular(request):
                             matriculacion.save()
                             data = {
                                 'error':False,
-                                'resultado': "El pedido de re matriculacion de " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + " ha sido creado con exito."
+                                'resultado': " El pedido de re matriculacion de " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + " ha sido creado con exito."
                             }
                             return JsonResponse(data)
                         else:
                             data = {
                                 'error':True,
-                                'resultado': "El email " + str(email_padre) + " no con corresponde con el dni del padre."
+                                'resultado': " El email " + str(email_padre) + " no con corresponde con el dni del padre."
                             }
                             return JsonResponse(data)
                     except Padre_madre.DoesNotExist:
                         data = {
                             'error':True,
-                            'resultado': "No existe un padre con ese dni."
+                            'resultado': " No existe un padre con ese dni."
                         }
                         return JsonResponse(data)
             except Alumno.DoesNotExist:
                 data = {
                     'error':True,
-                    'resultado': "No existe un alumno con ese dni."
+                    'resultado': " No existe un alumno con ese dni."
                 }
                 return JsonResponse(data)
         else:
@@ -1055,19 +1056,19 @@ def cambiar_password(request):
                     userd.set_password(new_pass)
                     userd.save()
                     data = {
-                        'resultado': "Clave cambiada con exito.",
+                        'resultado': " Clave cambiada con exito.",
                         'error':False
                     }
                     return JsonResponse(data)
                 except Trabajador.DoesNotExist:
                     data = {
-                        'resultado': "No existe un Trabajador con esta direccion de Email.",
+                        'resultado': " No existe un Trabajador con esta direccion de Email.",
                         'error':True
                     }
                     return JsonResponse(data)
             except Trabajador.DoesNotExist:
                     data = {
-                        'resultado': "No existe un Trabajador con ese Dni.",
+                        'resultado': " No existe un Trabajador con ese Dni.",
                         'error':True
                     }
                     return JsonResponse(data)
@@ -1124,7 +1125,7 @@ def aplicar_cambios_alumno(request):
 
             alumno.save()
             data = {
-                'resultado': "Los datos de " + alumno.nombre.title() + " han sido modificados."
+                'resultado': " Los datos de " + alumno.nombre.title() + " han sido modificados."
             }
             return JsonResponse(data)
         else:
@@ -1189,7 +1190,7 @@ def login(request):
             }
         else:
             data = {
-            'estado': "Nombre de usuario o contraseña no son correctos",
+            'estado': " Nombre de usuario o contraseña no son correctos",
             'error': True
             }
     return JsonResponse(data, safe=True)

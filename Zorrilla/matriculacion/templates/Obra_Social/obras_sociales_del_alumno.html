@@ -79,15 +79,15 @@
 
     function traer_obras_sociales(url){
         $.ajax({
-            method: "POST",
+            method: "GET",
             url: url,
             data: {
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             }
         })
             .done(function (data) {
-            $("#datos_obrass").html(data);
-            $('#todos_las_obrass').modal('show');
+                $("#datos_obrass").html(data);
+                $('#todos_las_obrass').modal('show');
         });
     }
 
