@@ -110,6 +110,22 @@ class Matriculacion(models.Model):
     matriculado = models.CharField('Estado', max_length=2, choices=MATRICULACION_CHOICES)
     curso = models.ForeignKey(Curso, null=True)
 
+    def get_Estado(self):
+        estado = "En proceso de Re Matriculacion"
+        if (self.matriculado == "Si"):
+            return self.matriculado
+        elif (self.matriculado == "No"):
+            return self.matriculado
+        elif (self.matriculado == "Re"):
+            return estado
+        elif (self.matriculado == "Eg"):
+            estado = "Egresado"
+            return estado
+        else:
+            estado = "En proceso de Egreso"
+            return estado
+
+
     def __str__(self):
         return 'El alumno: {} tiene un estado de matriculacion {}'.format(self.alumno.nombre, self.matriculado)
 

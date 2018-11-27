@@ -684,12 +684,9 @@ def datos_alumno(request, opcion, dni_alumno):
         alumno.transporte = "No"
     else:
         alumno.transporte = "Si"
-    try:
-        matriculado = Matriculacion.objects.get(alumno=alumno, matriculado="Si")
-        alumno.matriculado = "Si"
-    except Matriculacion.DoesNotExist:
-        alumno.matriculado = "No"
-    print (alumno.matriculado)
+
+    matriculacion = Matriculacion.objects.get(alumno=alumno)
+    alumno.matriculado = matriculacion.get_Estado()
     obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     if not obras_sociales:
         alumno.obra_social = "No"
