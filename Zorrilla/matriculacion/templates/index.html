@@ -127,14 +127,14 @@
                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
                         {% if request.user|has_group:"Secretaria" %}
-                        <a href="{% url 'form' %}" class="btn btn-success asd">Agregar alumnos</a>
+                        <a href="{% url 'form' %}" style="width:180px" class="btn btn-success asd">Agregar alumnos</a>
                         <br>
                         <br>
-                        <a href="{% url 'traer_pedidos' %}" class="btn btn-primary asd">Matricular alumnos</a>
+                        <a href="{% url 'traer_pedidos' %}" style="width:180px" class="btn btn-primary asd">Matricular alumnos</a>
                         <br>
                         <br>
                         {% endif %}
-                        <a href="{% url 'cursos1' %}" class="btn btn-danger asd">Ver alumnos</a>
+                        <a href="{% url 'cursos1' %}" style="width:180px" class="btn btn-danger asd">Ver alumnos</a>
                     </div>
                 </div>
             </div>
@@ -147,18 +147,18 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                     <div class="card-body">
                         {% if request.user|has_group:"Secretaria" or  request.user|has_group:"Admin_Secretaria"%}
-                        <a href="{% url 'formProfesor' %}" class="btn btn-success asd">Agregar docente</a>
+                        <a href="{% url 'formProfesor' %}" style="width:180px" class="btn btn-success asd">Agregar docente</a>
                         <br>
                         <br>
-                        <a href="{% url 'template_email_docente' %}" class="btn btn-primary asd">Matricular docente</a>
+                        <a href="{% url 'template_email_docente' %}" style="width:180px" class="btn btn-primary asd">Matricular docente</a>
                         <br>
                         <br>
                         {% endif %}
                         {% if request.user|has_group:"Secretaria" or request.user|has_group:"Director" or  request.user|has_group:"Admin_Secretaria"%}
-                        <a href="{% url 'docentes' %}" class="btn btn-danger asd">Ver docentes</a>
+                        <a href="{% url 'docentes' %}" style="width:180px" class="btn btn-danger asd">Ver docentes</a>
                         {% endif %}                        
                         {% if request.user|has_group:"Profesor" %}
-                        <a href="{% url 'mi_perfil' %}" class="btn btn-success asd">Modificar Datos</a>
+                        <a href="{% url 'mi_perfil' %}" style="width:180px" class="btn btn-success asd">Modificar Datos</a>
                         {% endif %}
                     </div>
                 </div>
@@ -172,11 +172,11 @@
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                     <div class="card-body">
                         {% if request.user|has_group:"Secretaria" or request.user|has_group:"Director"%}
-                        <a href="{% url 'estadisticas' %}" class="btn btn-primary asd">Estadisticas</a>
+                        <a href="{% url 'estadisticas' %}" style="width:180px" class="btn btn-primary asd">Estadisticas</a>
                         <br>
                         <br>
                         {% endif %}
-                        <a href="{% url 'biblioteca' %}" class="btn btn-danger asd">Ver Biblioteca</a>
+                        <a href="{% url 'biblioteca' %}" style="width:180px" class="btn btn-danger asd">Ver Biblioteca</a>
                     </div>
                 </div>
             </div>
@@ -190,10 +190,10 @@
                 </div>
                 <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                     <div class="card-body">
-                        <a href="{% url 'todas_los_transportistas' %}" class="btn btn-danger asd">Ver Transportistas</a>
+                        <a href="{% url 'todas_los_transportistas' %}" style="width:180px" class="btn btn-danger asd">Ver Transportistas</a>
                         <br>
                         <br>
-                        <a href="{% url 'form_transportista' %}" class="btn btn-success asd">Agregar Transportista</a>
+                        <a href="{% url 'form_transportista' %}" style="width:180px" class="btn btn-success asd">Agregar Transportista</a>
                     </div>
                 </div>
             </div>
@@ -207,10 +207,10 @@
                 </div>
                 <div id="collapseDir" class="collapse" aria-labelledby="headingDir" data-parent="#accordion">
                     <div class="card-body">
-                        <a href="{% url 'trabajador_sd' 'Directores' %}" class="btn btn-danger asd">Ver Directores</a>
+                        <a href="{% url 'trabajador_sd' 'Directores' %}" style="width:180px" class="btn btn-danger asd">Ver Directores</a>
                         <br>
                         <br>
-                        <a href="{% url 'form_secretaria_director' 'DI' %}" class="btn btn-success asd">Agregar Director</a>
+                        <a href="{% url 'form_secretaria_director' 'DI' %}" style="width:180px" class="btn btn-success asd">Agregar Director</a>
                     </div>
                 </div>
             </div>
@@ -222,10 +222,10 @@
                 </div>
                 <div id="collapseSec" class="collapse" aria-labelledby="headingSec" data-parent="#accordion">
                     <div class="card-body">
-                        <a href="{% url 'trabajador_sd' 'Secretarias' %}" class="btn btn-danger asd">Ver Secretarias</a>
+                        <a href="{% url 'trabajador_sd' 'Secretarias' %}" style="width:180px" class="btn btn-danger asd">Ver Secretarias</a>
                         <br>
                         <br>
-                        <a href="{% url 'form_secretaria_director' 'SE' %}" class="btn btn-success asd">Agregar Secretaria</a>
+                        <a href="{% url 'form_secretaria_director' 'SE' %}" style="width:180px" class="btn btn-success asd">Agregar Secretaria</a>
                     </div>
                 </div>
             </div>
@@ -237,7 +237,7 @@
                 </div>
                 <div id="collapseIndex" class="collapse" aria-labelledby="headingIndex" data-parent="#accordion">
                     <div class="card-body">
-                        <a href="{% url 'form_editar_datos' %}" class="btn btn-success asd">Editar Datos</a>
+                        <a href="{% url 'form_editar_datos' %}" style="width:180px" class="btn btn-success asd">Editar Datos</a>
                     </div>
                 </div>
             </div>
@@ -251,10 +251,10 @@
                 </div>
                 <div id="collapseFive" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                     <div class="card-body">
-                        <a href="{% url 'todas_las_obras_sociales' %}" class="btn btn-danger asd">Ver Obras Sociales</a>
+                        <a href="{% url 'todas_las_obras_sociales' %}" style="width:170px" class="btn btn-danger asd">Ver Obras Sociales</a>
                         <br>
                         <br>
-                        <a href="{% url 'form_obra_social' %}" class="btn btn-success asd">Agregar Obra Social</a>
+                        <a href="{% url 'form_obra_social' %}" style="width:170px" class="btn btn-success asd">Agregar Obra Social</a>
                     </div>
                 </div>
             </div>
@@ -266,10 +266,10 @@
                 </div>
                 <div id="collapseSix" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                     <div class="card-body">
-                        <a href="{% url 'cursos1' %}" class="btn btn-danger asd">Ver Cursos</a>
+                        <a href="{% url 'cursos1' %}" style="width:180px" class="btn btn-danger asd">Ver Cursos</a>
                         <br>
                         <br>
-                        <a href="{% url 'form_curso' %}" class="btn btn-success asd">Agregar Curso</a>
+                        <a href="{% url 'form_curso' %}" style="width:180px" class="btn btn-success asd">Agregar Curso</a>
                     </div>
                 </div>
             </div>
@@ -307,10 +307,11 @@
                         <div class="back" >
                             <!-- back content -->
                             <div style="background-color: white; width: 130%">
-                                <p class="card-text" style="text-align: justify">Juan Zorrilla de San Martín (Montevideo, 28 de diciembre de 1855 - 3 de noviembre de 1931) fue un escritor, periodista, docente y diplomático uruguayo.
+                                <br>
+                                <p class="card-text" style="text-align: justify; width: 90%; height: auto; margin-left: 4.5%; margin-bottom: 5%">Juan Zorrilla de San Martín (Montevideo, 28 de diciembre de 1855 - 3 de noviembre de 1931) fue un escritor, periodista, docente y diplomático uruguayo.
                                     Junto a su hermano Alejandro, en 1865 fue llevado por su padre a cursar sus estudios en el Colegio de la Inmaculada Concepción de Santa Fe, República Argentina. Entre 1867 y 1872 estudió en el Colegio de los Padres Bayoneses, en Montevideo, lugar en el que comenzó sus estudios universitarios. Se recibió de bachiller en Santa Fe, en 1872. Entre 1874 y 1877 estudió en el Colegio de los Padres Jesuitas de Santiago de Chile hasta completar sus estudios como Licenciado en Letras y Ciencias Políticas. En ese período colaboró en la redacción de “La estrella de Chile” y publicó “Notas de un Himno”. En Chile recibió la influencia de las lecturas románticas de José Zorrilla, José de Espronceda y sobre todo, Gustavo Adolfo Bécquer.
                                 </p>
-                                <a href="https://es.wikipedia.org/wiki/Juan_Zorrilla_de_San_Mart%C3%ADn" class="btn btn-info " style=" align-self: center">Info Button</a>
+                                <a href="https://es.wikipedia.org/wiki/Juan_Zorrilla_de_San_Mart%C3%ADn" class="btn btn-info " style="margin-bottom: 5%; align-self: center">Ver mas</a>
                             </div>
                         </div>
                     </div>
