@@ -47,23 +47,21 @@
                     <h3><center>No hay ningun Autorizado.</center></h3>
                     {% endif %}
                 </div>
-
-
-                <span id="resultado_asignar_autorizado"></span>
-
-
                 <!-- Div Asignar Autorizado -->
                 <br>
-                <br>
-                <div id="asignar_o">
-                    <form id="asign_a" method="post">
-                        {% csrf_token %}
-                        <p>Relacion con {{alumno.nombre|title}}:</p>{{relacion_con_alumno.relacion_con_alumno}}
-                        <input value={{alumno.dni}} id="dni_alumno" name="dni_alumno" type="hidden">
-                        <input value=0 id="dni_autorizado" name="dni_autorizado" type="hidden">
-                    </form>
-                    <br>
-                </div>
+                <center>
+                    <div id="asignar_o">
+                        <form id="asign_a" method="post">
+                            {% csrf_token %}
+                            <p>Relacion con {{alumno.nombre|title}}:</p>{{relacion_con_alumno.relacion_con_alumno}}
+                            <input value={{alumno.dni}} id="dni_alumno" name="dni_alumno" type="hidden">
+                            <input value=0 id="dni_autorizado" name="dni_autorizado" type="hidden">
+                        </form>
+                        <br>
+                    </div>
+                </center>  
+            </div>
+                <span id="resultado_asignar_autorizado"></span>
 
             </div>
             <!-- Modal footer -->
@@ -111,7 +109,7 @@
                     document.getElementById("resultado_asignar_autorizado").innerHTML = data.resultado
                     document.getElementById("volver_btn").style.display = "block";
                 }
-                       });
+                    });
             } else {
                 return;
             }
