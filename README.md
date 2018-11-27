@@ -1,5 +1,4 @@
 # ZorrillaFinal
-KLLARMS
 # Integrantes
 ### Nombres y roles de los participantes
 ##### Arquitecto de Sistemas 
