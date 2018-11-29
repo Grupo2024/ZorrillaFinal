@@ -11,18 +11,18 @@ import xlwt
 
 @user_passes_test(check_Director_or_Secretaria)
 def estadisticas(request):
-    libros_habilitados = Document.objects.filter(habilitado="Habilitado").count()
-    libros_deshabilitados = Document.objects.filter(habilitado="Deshabilitado").count()
-    cant_drama = Document.objects.filter(genero="Drama").count()
-    cant_romance = Document.objects.filter(genero="Romance").count()
-    cant_accion = Document.objects.filter(genero="Accion").count()
-    cant_cf = Document.objects.filter(genero="Ciencia Ficcion").count()
-    cant_terror = Document.objects.filter(genero="Terror").count()
-    cant_aventura = Document.objects.filter(genero="Aventura").count()
-    cant_policial = Document.objects.filter(genero="Policial").count()
-    cant_politica = Document.objects.filter(genero="Politica").count()
-    cant_fantasia = Document.objects.filter(genero="Fantasia").count()
-    cant_otros = Document.objects.filter(genero="Otros").count()
+    libros_habilitados = Documento.objects.filter(habilitado="Habilitado").count()
+    libros_deshabilitados = Documento.objects.filter(habilitado="Deshabilitado").count()
+    cant_drama = Documento.objects.filter(genero="Drama").count()
+    cant_romance = Documento.objects.filter(genero="Romance").count()
+    cant_accion = Documento.objects.filter(genero="Accion").count()
+    cant_cf = Documento.objects.filter(genero="Ciencia Ficcion").count()
+    cant_terror = Documento.objects.filter(genero="Terror").count()
+    cant_aventura = Documento.objects.filter(genero="Aventura").count()
+    cant_policial = Documento.objects.filter(genero="Policial").count()
+    cant_politica = Documento.objects.filter(genero="Politica").count()
+    cant_fantasia = Documento.objects.filter(genero="Fantasia").count()
+    cant_otros = Documento.objects.filter(genero="Otros").count()
     data = {
         'libros_habilitados': libros_habilitados,
         'libros_deshabilitados': libros_deshabilitados,
@@ -39,7 +39,7 @@ def estadisticas(request):
     }
     return render (request, 'estadisticas.html', {'datos_libros':data})
 
-@user_passes_test(check_Director)
+@user_passes_test(check_Secretaria)
 def export_books(request):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="reporte_biblioteca.xls"'
@@ -53,17 +53,17 @@ def export_books(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
 
-    columns = ['Id','Titulo', 'Autor', 'Genero','Habilitado']
+    columns = ['Titulo', 'Autor', 'Genero','Habilitado']
 
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
 
-    # Sheet body, remaining rows
+    # Sheet body, remaining filas
     font_style = xlwt.XFStyle()
 
-    rows = Document.objects.all().order_by('titulo','estado').values_list('id','titulo', 'autor', 'genero','habilitado')
-    print (rows)
-    for row in rows:
+    filas = Documento.objects.all().order_by('titulo').values_list('titulo', 'autor', 'genero','habilitado').distinct()
+    print (filas)
+    for row in filas:
         row_num += 1
         for col_num in range(len(row)):
             ws.write(row_num, col_num, row[col_num], font_style)
@@ -72,7 +72,7 @@ def export_books(request):
     return response
 
 def biblioteca(request):
-    documents = Document.objects.filter(habilitado="Habilitado").order_by('-fecha')[:5]
+    documents = Documento.objects.filter(habilitado="Habilitado").order_by('-fecha', 'titulo')[:5]
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
@@ -83,11 +83,11 @@ def biblioteca(request):
         form = DocumentForm()
     return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
 
-@user_passes_test(check_Director)
+@user_passes_test(check_Secretaria)
 def informe(request):
-    documents = Document.objects.all()
-    documents_habiltiados = Document.objects.filter(habilitado="Habilitado").count()
-    documents_deshabiltiados = Document.objects.filter(habilitado="Deshabilitado").count()
+    documents = Documento.objects.all()
+    documents_habiltiados = Documento.objects.filter(habilitado="Habilitado").count()
+    documents_deshabiltiados = Documento.objects.filter(habilitado="Deshabilitado").count()
     print (documents_habiltiados)
     documentos = {
         'cantidad':documents.count(),
@@ -96,15 +96,15 @@ def informe(request):
     }
     return render(request, 'informe.html', {'documentos':documentos})
     
-@user_passes_test(check_Director)
+@user_passes_test(check_Secretaria)
 def historia_libro(request, id_documento):
     if request.method == 'POST':
         estados = Estado.objects.filter(document__id=id_documento).order_by('id')
         return render(request, 'estados.html', {'estados':estados})
 
-@user_passes_test(check_Director)
+@user_passes_test(check_Secretaria)
 def libros_deshabilitados(request, cantidad):
-    documents = Document.objects.filter(habilitado="Deshabilitado").order_by('-titulo')[:cantidad]
+    documents = Documento.objects.filter(habilitado="Deshabilitado").order_by('-titulo')[:cantidad]
     form = DocumentForm()
     return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
     
@@ -116,7 +116,7 @@ def cargado(request):
         if form.is_valid():
             form.save()
             title = form.cleaned_data['titulo']
-            document = Document.objects.get(titulo=title)
+            document = Documento.objects.get(titulo=title)
             estado = Estado(document = document, user=request.user, modificacion="Crear")
             estado.save()
             data = {
@@ -131,21 +131,21 @@ def cargado(request):
             }
     return JsonResponse(data)
 
-@user_passes_test(check_Director_or_Profesor)
+@user_passes_test(check_Profesor_or_Secretaria)
 def eliminar_libro(request, id_documento):
-    document = Document.objects.get(id=id_documento)
+    document = Documento.objects.get(id=id_documento)
     estado = Estado(document=document, user=request.user, modificacion="Deshabilitar")
     document.habilitado = "Deshabilitado"
     document.save()
     estado.save()
     data = {
-        'estado':"El libro " + str(document.titulo) + " ha sido Deshabilitado."
+        'estado':" El libro " + str(document.titulo) + " ha sido Deshabilitado."
     }
     return JsonResponse(data, safe=True)
 
-@user_passes_test(check_Director)
+@user_passes_test(check_Secretaria)
 def cambiar_estado_libro(request, id_documento):
-    new_document = Document.objects.get(id=id_documento)
+    new_document = Documento.objects.get(id=id_documento)
     print (new_document.habilitado)
     aux = "Deshabilitado"
     if new_document.habilitado == "Habilitado":
@@ -164,27 +164,25 @@ def cambiar_estado_libro(request, id_documento):
 
 
 def info_libro(request, id_documento):
-    if request.method == 'POST':
-        document = Document.objects.get(id=id_documento)
-        return render(request, 'book_info.html', {'doc':document})
+    document = Documento.objects.get(id=id_documento)
+    return render(request, 'book_info.html', {'doc':document})
 
 def all_the_books(request):
-    documents = Document.objects.filter(habilitado="Habilitado")
+    documents = Documento.objects.filter(habilitado="Habilitado")
     form = DocumentForm()
     return render (request, 'biblioteca.html', {'documentos':documents, 'form':form})
 
 def filtered_books(request):
-    if request.method == "POST":
-        cantidad = request.POST['cantidad']
-        print (cantidad)
-        genero = request.POST['ordenar_por']
-        print (genero)
-        sentido = request.POST['sentido']
-        print (sentido)
-        if (sentido == "+"):
-            sentido = ""
-        documents = Document.objects.filter(habilitado="Habilitado").order_by(str(sentido) + str(genero))[:cantidad]
-        form = DocumentForm()
-        return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})
-    else:
-        return HttpResponse("Solo podes acceder por Post.")
+    cantidad = request.POST['cantidad']
+    print (cantidad)
+    genero = request.POST['ordenar_por']
+    print (genero)
+    sentido = request.POST['sentido']
+    print (sentido)
+    habilitado = request.POST['habilitado_libros']
+    print (habilitado)
+    if (sentido == "+"):
+        sentido = ""
+    documents = Documento.objects.filter(habilitado=habilitado).order_by(str(sentido) + str(genero))[:cantidad]
+    form = DocumentForm()
+    return render(request, 'biblioteca.html', {'documentos':documents, 'form':form})

@@ -385,8 +385,8 @@ table.table .avatar {
 #snackbar {
     visibility: hidden;
     min-width: 250px;
-    margin-left: -110px;
-    background-color: #0099cc;
+    margin-left: -125px;
+    background-color: #333;
     color: #fff;
     text-align: center;
     border-radius: 2px;
@@ -397,6 +397,7 @@ table.table .avatar {
     bottom: 30px;
     font-size: 17px;
 }
+
 
 #snackbar.show {
     visibility: visible;
