@@ -33,7 +33,7 @@
                 <td>{{a.nombre_t|title}}</td>
                 <td>{{a.apellido_t|title}}</td>
                 <td>{{a.dni_t|title}}</td>
-                <td>{{a.email_t|title}}</td>
+                <td>{{a.email_t}}</td>
                 <td ><button class="btn btn-primary" onclick="info_trabajador('{% url 'datus_usuario_t' a.dni_t %}')"><i style="font-size:15px" class="fa">&#xf129;</i></button></td>
             </tr>
             {% endfor %}
