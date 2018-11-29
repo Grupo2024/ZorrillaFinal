@@ -230,6 +230,11 @@
         $( "#cont_tabla" ).load(window.location.href + " #cont_tabla" );
     }
 
+    function volver(){
+        var y = document.getElementById("reload");
+        y.submit();
+    }
+
     function filtrar(){
         var x = document.getElementById("form_filtered_books");
         x.submit();
@@ -327,7 +332,7 @@
                 y.className = "show";
                 document.getElementById("span_result").innerHTML = data.estado;
                 setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
-                updateDiv();
+                setTimeout(volver(), 200000);
             });
         } else {
             return;
@@ -349,7 +354,7 @@
                 y.className = "show";
                 document.getElementById("span_result").innerHTML = data.estado;
                 setTimeout(function(){ y.className = y.className.replace("show", ""); }, 2000);
-                updateDiv();
+                setTimeout(volver(), 40000);
             });
         } else {
             return;
