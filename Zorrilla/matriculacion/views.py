@@ -532,7 +532,7 @@ def asignar_autorizado(request):
                 alumno_autorizado.relacion_con_alumno = relacion_con_alumno
                 alumno_autorizado.save()
             data = {
-                'resultado':"Autorizado Asignado con exito."
+                'resultado':"Resultado: Autorizado Asignado con exito."
             }
             return JsonResponse(data)
         else:

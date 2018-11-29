@@ -31,8 +31,8 @@
         <tr>
             <td>{{a.obra_social.nombre|title}}</td>
             <td>{{a.numero_afiliado}}</td>
-            <td><a onclick="desvincular({{a.obra_social.id}})"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
-            <td><a onclick="#">Editar</a></td>
+            <td><button class="btn btn-warning" onclick="desvincular({{a.obra_social.id}})"><i class="fa fa-ban"></i></button></td>
+            <td><a class="btn btn-info" href="#"><i class="fa fa-edit"></i></a></td>
         </tr>
         {% endfor %}
     </table>
@@ -42,7 +42,7 @@
 <br>
 
 <center>
-    <button class="btn btn-success text-white centerB" id="btn_os" onclick="traer_obras_sociales('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Cargar Obra Social</button>
+    <button class="btn btn-success text-white centerB" id="btn_os" onclick="traer_obras_sociales('{% url 'asignar_obra' alumno.dni %}')">Cargar Obra Social</button>
     <a class="btn btn-primary centerB" href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
     <a class="btn btn-primary centerB" href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
 </center>

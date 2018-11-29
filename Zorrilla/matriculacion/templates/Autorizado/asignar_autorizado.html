@@ -1,16 +1,15 @@
 <div class="modal-dialog">
     <div class="modal-content">
-        <!-- Modal Header -->
+
         <div class="modal-header">
             <span>Autorizados:</span>
         </div>
-        <!-- Modal body -->
+
         <div class="modal-body">
-            <!-- Div con el contenido Base de la Tabla -->
             <div id="hide_for_c">
                 {% if autorizados|length != 0 %}
-                <div id="hide_correct">
-                    <input type="text"placeholder="Autorizado que desea buscar" id="inputAutorizado" onkeyup="buscar_autorizado()" size="5">
+
+                <input type="text"placeholder="Autorizado que desea buscar" id="inputAutorizado" onkeyup="buscar_autorizado()" size="5">
                     <select id="filter_by">
                         <option value=0>Nombre</option>
                         <option value=1>Apellido</option>
@@ -43,10 +42,12 @@
                     </div>
                     {% else %}
                     <h3><center>No hay ningun Autorizado.</center></h3>
-                </div>
+
 
                 {% endif %}
-                <!-- Div Asignar Autorizado -->
+
+                </div>
+
                 <center>
                     <div id="asignar_o">
                         <form id="asign_a" method="post">
@@ -57,11 +58,12 @@
                         </form>
                         <br>
                     </div>
-                </center>  
-            </div>
+                </center>
+            <br>
             <span id="resultado_asignar_autorizado"></span>
-        </div>
-        <!-- Modal footer -->
+            </div>
+
+
         <div class="modal-footer">
             <br>
             <a class="btn btn-primary centerB" href="{% url 'form_autorizado' %}" align="left" id="crear_btn">Crear Autorizado</a>
@@ -72,8 +74,8 @@
     </div>
 </div>
 
-<script>
 
+<script>
 
     document.getElementById("volver_btn").style.display = "none";
     document.getElementById("cont_autorizado").style.display = "none";
@@ -90,6 +92,7 @@
     function mandar_autorizado(){
         var r = confirm("¿Asignar este Autorizado ?");
         if (r == true) {
+            document.getElementById("asignar_o").style.display = "none";
             var myForm = document.getElementById('asign_a');
             formData = new FormData(myForm);
             $.ajax({

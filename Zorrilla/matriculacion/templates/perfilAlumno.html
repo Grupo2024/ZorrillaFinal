@@ -77,7 +77,7 @@
                 <li class="list-group-item">Enfermedades: {{alumno.enfermedad_relevante}}</li>
                 <li class="list-group-item">Obra social:
                     {% if alumno.obra_social == "No"%}
-                    <a class="btn btn-outline-dark" onclick="traer_instancias('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Asignar Obra Social</a>
+                    <a class="btn btn-outline-dark" onclick="traer_instancias('{% url 'asignar_obra' alumno.dni %}')">Asignar Obra Social</a>
                     {% else %}
                     <a class="btn btn-outline-dark" href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Ver Obras Sociales</a>
                     {% endif %}</li>
