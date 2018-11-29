@@ -59,35 +59,35 @@
                             <div class="input-group-prepend">
                                 <span style="margin-left: -16%;" class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
                             </div>
-                            <div style="margin-left: -9%;">{{ autorizado.nombre }}</div>
+                            <div style="margin-left: -9%; margin-top: 5px">{{ autorizado.nombre }}</div>
                         </div>
 
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
                                 <span style="margin-left: -15%;" class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
                             </div>
-                            <div style="margin-left: -9%;">{{ autorizado.apellido }}</div>
+                            <div style="margin-left: -9%; margin-top: 5px">{{ autorizado.apellido }}</div>
                         </div>
                         {% if opcion == 'Crear'%}
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
                                 <span style="margin-left: -4%;" class="input-group-text" id="inputGroup-sizing-sm">Numero de documento:</span>
                             </div>
-                            <div style="margin-left: -2.4%; margin-top: 0%;">{{ autorizado.dni }}</div>
+                            <div style="margin-left: -2.4%; margin-top: 5px;">{{ autorizado.dni }}</div>
                         </div>
                         {% endif %}
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
                                 <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
                             </div>
-                            <div style="margin-left: -8%" id="a">{{ autorizado.fecha_nacimiento}}</div>
+                            <div style="margin-left: -8%; margin-top: 5px" id="a">{{ autorizado.fecha_nacimiento}}</div>
                         </div>
 
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
                                 <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
                             </div>
-                            <div style="margin-left: -8%">{{ autorizado.lugar_nacimiento }}</div>
+                            <div style="margin-left: -8%; margin-top: 5px">{{ autorizado.lugar_nacimiento }}</div>
                         </div>
 
                         <div class="input-group input-group-sm mb-3 form-group">
@@ -95,7 +95,7 @@
                                 <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
                             </div>
                             <br>
-                            <div id="a"  style="margin-left:-6.5%">{{ autorizado.domicilio }}</div>
+                            <div id="a"  style="margin-left:-6.5%; margin-top: 5px">{{ autorizado.domicilio }}</div>
                         </div>
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
@@ -109,14 +109,14 @@
                                 <span style="margin-left: -4%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono:</span>
                             </div>  
                             <br>
-                            <div style="margin-left: -0.6%">{{ autorizado.telefono_autorizado }}</div>
+                            <div style="margin-left: -0.6%; margin-top: 5px">{{ autorizado.telefono_autorizado }}</div>
                         </div>
                         <div class="input-group input-group-sm mb-3 form-group">
                             <div class="input-group-prepend">
                                 <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
                             </div>
                             <br>
-                            <div style="margin-left: -1%">{{ autorizado.email }}</div>
+                            <div style="margin-left: -1%; margin-top: 5px">{{ autorizado.email }}</div>
                         </div>
                     </li>
                 </ul>
