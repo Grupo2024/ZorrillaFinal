@@ -123,7 +123,7 @@
                 <br>
                 <br>
                 <div id="btn_asignar_obra" class="hidden_idv">
-                    <a class="btn btn-outline-dark" onclick="traer('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Asignar Obra Social</a>
+                    <a class="btn btn-outline-dark" onclick="traer('{% url 'asignar_obra' alumno.dni %}')">Asignar Obra Social</a>
                     <br>
                     <br>
                 </div>
@@ -147,6 +147,6 @@
             </div>
         </form>
     <!-- Modal footer -->
-            <button type="button" style="margin-top: -18%; margin-left: 65%" class="btn btn-success" onclick="matricular()">Matricular</button>
+            <button type="button" style="margin-top: -18%; margin-left: 65%" class="btn btn-success" id="btn_matricular" onclick="matricular()">Matricular</button>
         </div>  
 </div>

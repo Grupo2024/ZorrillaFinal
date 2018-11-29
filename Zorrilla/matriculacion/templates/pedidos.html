@@ -293,7 +293,8 @@
     }
 
     function curso(e) {
-        document.getElementById("selected_curso").value = e.target.value
+        var valor = document.getElementById("selected_curso").value;
+        valor.value = e.target.value;
     }
 
     function close_modal(){

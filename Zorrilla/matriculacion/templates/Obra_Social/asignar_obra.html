@@ -52,7 +52,7 @@
             <div id="crear_o">
                 <form id="obra_s" method="post">
                     {% csrf_token %}
-                    <p>Nombre:</p>{{obra_social.nombre|title}}
+                    <p>Nombre: </p>{{obra_social.nombre|title}}
                 </form>
 
                 <a class="btn btn-success text-white" id="guardar_obra_btn" onclick="crear_obra()">Guardar Obra Social</a>
@@ -100,6 +100,7 @@
 
 
     function mostrar_form(){
+        document.getElementsByName("obra_sociall")[0].checked = false;
         document.getElementById("hide_for_c").style.display = "none";
         document.getElementById("mostrar_form_btn").style.display = "none";
         document.getElementById("asignar_o").style.display = "none";
@@ -177,21 +178,21 @@
             contentType: false,
             type: 'POST',
             success: function(data){
-            if (data.error){
-            document.getElementById("resultado_crear").innerHTML = data.resultado;
-        } else {
-               document.getElementById("hide_for_c").style.display = "none";
-        document.getElementById("cerrar_btn").style.display = "none";
-        document.getElementById("asignar_obra_btn").style.display = "none";
-        document.getElementById("mostrar_form_btn").style.display = "none";
-        document.getElementById("guardar_obra_btn").style.display = "none";
-        document.getElementById("asignar_o").style.display = "none";
-        document.getElementById("crear_o").style.display = "none";
-        document.getElementById("asig_obra_btn").style.display = "none";
-        document.getElementById("volver_btn").style.display = "block";
-        document.getElementById("resultado_crear").innerHTML = data.resultado;
-    }
-    }
-    });
+                if (data.error){
+                    document.getElementById("resultado_crear").innerHTML = data.resultado;
+                } else {
+                    document.getElementById("hide_for_c").style.display = "none";
+                    document.getElementById("cerrar_btn").style.display = "none";
+                    document.getElementById("asignar_obra_btn").style.display = "none";
+                    document.getElementById("mostrar_form_btn").style.display = "none";
+                    document.getElementById("guardar_obra_btn").style.display = "none";
+                    document.getElementById("asignar_o").style.display = "none";
+                    document.getElementById("crear_o").style.display = "none";
+                    document.getElementById("asig_obra_btn").style.display = "none";
+                    document.getElementById("volver_btn").style.display = "block";
+                    document.getElementById("resultado_crear").innerHTML = data.resultado;
+                }
+            }
+        });
     }
 </script>

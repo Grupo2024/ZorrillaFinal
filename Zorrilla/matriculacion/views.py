@@ -568,7 +568,7 @@ def todos_los_padres_asignar(request, dni_alumno):
     padre = Padre_madre.objects.exclude(dni__in=lista).order_by("nombre","apellido","dni")
     return render(request,'Padre_madre/asignar_padre.html', {'todos_los_padres':padre, 'dni_alumno':dni_alumno})
 
-def todas_las_obras_sociales_asignar(request, dni_alumno):
+def asignar_obra(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     obras_ya_asignadas = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     lista = []
@@ -576,8 +576,8 @@ def todas_las_obras_sociales_asignar(request, dni_alumno):
         lista.append(a.obra_social.id)
     obra_social = Obra_Social.objects.exclude(id__in=lista).order_by("nombre")
     obra_social2 = Obra_SocialForm()
-    return HttpResponse("Esto deberia devolver otra cosa.")
-    #return render(request,'Obra_Social/asignar_obra.html', {'obras_sociales':obra_social, 'dni_alumno':dni_alumno, 'obra_social':obra_social2})
+    return render(request,'Obra_Social/asignar_obra.html', {'obras_sociales':obra_social, 'dni_alumno':dni_alumno, 'obra_social':obra_social2})
+
 
 def todos_los_autorizados_asignar(request, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
