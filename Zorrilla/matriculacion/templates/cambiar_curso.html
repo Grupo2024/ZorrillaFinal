@@ -71,6 +71,7 @@
     document.getElementById("cambiar_curso_btn").style.display = "none";
     document.getElementById("volver_btn").style.display = "none";
     document.getElementById("egresar_btn").style.display = "none";
+    document.getElementById("loader_resultado").style.display = "none";
 
     //Contenido de los Select
 
@@ -165,30 +166,25 @@
     }
 
     function egresar_alumno(){
-        var r = confirm("¿Egresar al Alumno ?");
-        if (r == true) {
-            document.getElementById("esconder_resultado").style.display = "none";
-            document.getElementById("resultado").innerHTML = "";
-            document.getElementById("loader_resultado").style.display = "block";
-            document.getElementById("cerrar_btn").style.display = "none";
-            document.getElementById("egresar_btn").style.display = "none";
-            var myForm = document.getElementById('pedido_egreso');
-            formData = new FormData(myForm);
-            $.ajax({
-                url: '{% url 'pedido_egreso' %}',
-                data : formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    document.getElementById("loader_resultado").style.display = "none";
-                    document.getElementById("resultado").innerHTML = data.resultado;
-                    document.getElementById("volver_btn").style.display = "block";
-                }
-            });
-        } else {
-            return;
-        }
+        document.getElementById("esconder_resultado").style.display = "none";
+        document.getElementById("resultado").innerHTML = "";
+        document.getElementById("loader_resultado").style.display = "block";
+        document.getElementById("cerrar_btn").style.display = "none";
+        document.getElementById("egresar_btn").style.display = "none";
+        var myForm = document.getElementById('pedido_egreso');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: '{% url 'pedido_egreso' %}',
+            data : formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                document.getElementById("loader_resultado").style.display = "none";
+                document.getElementById("resultado").innerHTML = data.resultado;
+                document.getElementById("volver_btn").style.display = "block";
+            }
+        });
     }
 
 </script>

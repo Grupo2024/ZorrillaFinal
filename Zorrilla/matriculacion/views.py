@@ -680,32 +680,9 @@ def datos_obra_social(request, id_obra_social):
 def datos_alumno(request, opcion, dni_alumno):
     print (opcion)
     alumno = Alumno.objects.get(dni=dni_alumno)
-    transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True)
-    print (transportistas)
-    if not transportistas:
-        alumno.transporte = "No"
-    else:
-        alumno.transporte = "Si"
     matriculacion = Matriculacion.objects.get(alumno=alumno)
     alumno.matriculado = matriculacion.get_Estado()
-    obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
-    print (obras_sociales)
-    if not obras_sociales:
-        alumno.obra_social = "No"
-    else:
-        alumno.obra_social = "Si"
-    familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
-    print (familiares)
-    if not familiares:
-        alumno.familiares = "No"
-    else:
-        alumno.familiares = "Si"
-    autorizados = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True)
-    print (autorizados)
-    if not autorizados:
-        alumno.autorizados = "No"
-    else:
-        alumno.autorizados = "Si"
+    print alumno.matriculado
     if (opcion == 'pedidos'):
         alumno.opcion = "pedido"
     else:
@@ -734,6 +711,7 @@ def re_matricular(request, dni_alumno):
     recomendacion, created = Curso.objects.get_or_create(aNo=curso.aNo+1, hora=curso.hora, seccion=curso.seccion)
     lista = []
     lista.append(curso.id)
+    lista.append(recomendacion.id)
     cursos = Curso.objects.exclude(id__in=lista).order_by("aNo", "-hora")
     return render(request, 'Re_matricular/re_matricular.html', {'familiares':familiares, 'alumno':alumno, 'cursos':cursos, 'transportistas':transportistas, 'curso':curso, 'recomendacion':recomendacion, 'obras_sociales':obras_sociales, 'autorizados':autorizados})
 

@@ -143,6 +143,11 @@
 
 <script>
 
+    function refresh_p(){
+        var des = document.getElementById("reload");
+        des.submit();
+    }
+
     function traer_secciones(url, alum){
         $.ajax({
             method: "POST",
@@ -200,45 +205,40 @@
     }
 
     function re_matricular(){
-        var curso_elegido = document.getElementById('select_curso2');
-        if (curso_elegido.value == 0){
-            alert("Selecciona un Curso");
-        } else {
-            if (confirm("¿ Re Matricular al Alumno ?")) {
-                $('#modal_cursos').modal('hide');
-                var element = document.getElementById("titulo");
-                element.innerHTML = "Solicitud de re matriculacion..";
-                document.getElementById("resultado").innerHTML = "";
-                document.getElementById("continuar").style.display = "none";
-                document.getElementById("volver").style.display = "none";
-                document.getElementById("loader_resultado").style.display = "block";
-                var myForm = document.getElementById('form_for_re_matricular');
-                $('#Modal_resultado').modal('show');
-                formData = new FormData(myForm);
-                $.ajax({
-                    url: '{% url 'aceptar_re_matriculacion' %}',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    type: 'POST',
-                    success: function(data){
-                        document.getElementById("loader_resultado").style.display = "none";
+        if (confirm("¿ Re Matricular al Alumno ?")) {
+            $('#modal_cursos').modal('hide');
+            var element = document.getElementById("titulo");
+            element.innerHTML = "Solicitud de re matriculacion..";
+            document.getElementById("resultado").innerHTML = "";
+            document.getElementById("continuar").style.display = "none";
+            document.getElementById("volver").style.display = "none";
+            document.getElementById("loader_resultado").style.display = "block";
+            var myForm = document.getElementById('form_for_re_matricular');
+            $('#Modal_resultado').modal('show');
+            formData = new FormData(myForm);
+            $.ajax({
+                url: '{% url 'aceptar_re_matriculacion' %}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    document.getElementById("loader_resultado").style.display = "none";
+                    document.getElementById("resultado").innerHTML = data.resultado;
+                    console.log(data.resultado);
+                    if (data.error){
                         document.getElementById("resultado").innerHTML = data.resultado;
-                        console.log(data.resultado);
-                        if (data.error){
-                            document.getElementById("resultado").innerHTML = data.resultado;
-                            document.getElementById("continuar").style.display = "none";
-                            document.getElementById("cerrar").style.display = "block";
-                        } else {
-                            document.getElementById("resultado").innerHTML = data.resultado;
-                            document.getElementById("continuar").style.display = "block";
-                            document.getElementById("cerrar").style.display = "none";
-                        }
+                        document.getElementById("continuar").style.display = "none";
+                        document.getElementById("cerrar").style.display = "block";
+                    } else {
+                        document.getElementById("resultado").innerHTML = data.resultado;
+                        document.getElementById("continuar").style.display = "block";
+                        document.getElementById("cerrar").style.display = "none";
                     }
-                });
-            } else {
-                return;
-            }
+                }
+            });
+        } else {
+            return;
         }
     }
 

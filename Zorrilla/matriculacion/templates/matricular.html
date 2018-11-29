@@ -129,13 +129,13 @@
                 </div>
                 {% else %}
                 {% for obra_social in obras_sociales %}
-                <a class="btn btn-info" style="margin-top: 1%;" href="{% url 'datos_padre' obra_social.obra_social.id %}">{{obra_social.obra_social.nombre|title}}</a>
+                    <a class="btn btn-info" style="margin-top: 1%;">{{obra_social.obra_social.nombre|title}}</a>
                 <br>
                 {% endfor %}
                 <br>
                 <div id="new_obra">
-                    <a class="btn btn-danger" href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Desvincular</a></li>
-                <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Asignar</a>
+                    <a class="btn btn-danger" href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Desvincular</a>
+                <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'asignar_obra' alumno.dni %}')">Asignar</a>
                 </div>
             {% endif %}
             </div>
@@ -145,8 +145,10 @@
             <input name="dni_alumno" id="dni_alumno" type="hidden" value="{{alumno.dni}}">
         </div>
             </div>
+
         </form>
     <!-- Modal footer -->
+        <div>
             <button type="button" style="margin-top: -18%; margin-left: 65%" class="btn btn-success" id="btn_matricular" onclick="matricular()">Matricular</button>
         </div>  
 </div>

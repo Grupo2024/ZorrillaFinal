@@ -149,7 +149,7 @@ class Curso(models.Model):
         return "nada"
 
     def __str__(self):
-        return '{}-{} {}'.format(self.aNo, self.que_seccion() ,self.que_turno())
+        return '{}-{}' .format(self.aNo, self.que_seccion())
 
 class user_Trabajador(models.Model):
     user = models.OneToOneField(User, unique=True)

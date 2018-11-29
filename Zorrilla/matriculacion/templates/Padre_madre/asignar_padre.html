@@ -84,13 +84,13 @@
                 contentType: false,
                 type: 'POST',
                 success: function(data){
-                document.getElementById("padress").style.display = "none";
-                document.getElementById("resultado_padres").innerHTML = data.resultado;
-                document.getElementById("cont_padre").style.display = "none";
-                document.getElementById("cerrar_btn").style.display = "none";
-                document.getElementById("crear_padre_btn").style.display = "none";
-                document.getElementById("cont_btn_p").style.display = "block";
-            }
+                    document.getElementById("padress").style.display = "none";
+                    document.getElementById("cont_padre").style.display = "none";
+                    document.getElementById("cerrar_btn").style.display = "none";
+                    document.getElementById("crear_padre_btn").style.display = "none";
+                    document.getElementById("cont_btn_p").style.display = "block";
+                    document.getElementById("resultado_padres").innerHTML = data.resultado;
+                }
                    });
         }
 

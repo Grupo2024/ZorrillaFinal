@@ -17,9 +17,9 @@
         <div class="card-body">
                 <h4>Curso: {{curso}}</h4>
                 <select class="btn btn-outline-dark" id="curso2" onchange="selectCurso2(event)">
-                    <option value=0>Cursos</option>
+                    <option value={{recomendacion.id}}>{{recomendacion}}</option>
                     {% for curso in cursos %}
-                    <option value={{curso.id}}>{{curso}}</option>
+                        <option value={{curso.id}}>{{curso}}</option>
                     {% endfor %}
                 </select>
         </div>
@@ -122,25 +122,25 @@
                 <br>
                 <br>
                 <div id="btn_asignar_obra2" class="hidden_idv">
-                    <a class="btn btn-outline-dark" class="btn btn-info" onclick="traer('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Asignar Obra Social</a>
+                    <a class="btn btn-outline-dark" class="btn btn-info" onclick="traer('{% url 'asignar_obra' alumno.dni %}')">Asignar Obra Social</a>
                     <br>
                     <br>
                 </div>
                 {% else %}
                     {% for obra_social in obras_sociales %}
-                    <a style="margin-top: 1%;" class="btn btn-info" href="{% url 'datos_padre' obra_social.obra_social.id %}">{{obra_social.obra_social.nombre|title}}</a>
+                    <a style="margin-top: 1%;" class="btn btn-info">{{obra_social.obra_social.nombre|title}}</a>
                     <br>
                     {% endfor %}
                     <div id="new_obra2">
                         <br>
                         <a class="btn btn-danger" href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Desvincular</a>
-                        <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'todas_las_obras_sociales_asignar' alumno.dni %}')">Asignar</a>
+                        <a class="btn btn-success" style="margin-top: 1%; color: white" onclick="traer('{% url 'asignar_obra' alumno.dni %}')">Asignar</a>
                     </div>
                 {% endif %}
 
 
 
-                <input name="select_curso2" id="select_curso2" value=0  type="hidden">
+                <input name="select_curso2" id="select_curso2" value={{recomendacion.id}}  type="hidden">
                 <input name="dni_alumno2" id="dni_alumno2" type="hidden" value="{{alumno.dni}}">
 
             </div>
