@@ -84,7 +84,7 @@ class Trabajador(models.Model):
     def create_username(self):
         name_f = ""
         cantidad = 0
-        r = random.randint(1111,9999)
+        dni_t = int(str(self.dni_t)[:4])
         for a in self.nombre_t:
             cantidad = cantidad + 1
             if cantidad == 1:
@@ -92,11 +92,9 @@ class Trabajador(models.Model):
                 break
             else:
                 pass
-        username = name_f + self.apellido_t
-        return username
 
-    def field_text(a):
-        return a.title()
+        username = name_f + str(dni_t) + self.apellido_t
+        return username
 
     def __str__(self):
         return 'Trabajador: {} {}| dni: {}| sexo: {} puesto: {}'.format(self.nombre_t,

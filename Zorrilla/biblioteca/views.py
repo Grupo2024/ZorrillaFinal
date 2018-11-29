@@ -120,7 +120,7 @@ def cargado(request):
             estado = Estado(document = document, user=request.user, modificacion="Crear")
             estado.save()
             data = {
-                'estado': "El libro " + str(document) + " ha sido cargado",
+                'estado': " El libro " + str(document) + " ha sido cargado",
                 'error': False
             }
         else:
