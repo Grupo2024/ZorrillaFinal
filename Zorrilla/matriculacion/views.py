@@ -324,10 +324,10 @@ def crear_autorizado(request):
         message = "En el dia de la fecha se le notifica que sus datos han sido cargados en nuestra pagina."
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [autorizado.email]
-        send_mail( subject, message, email_from, recipient_list)
+        #send_mail( subject, message, email_from, recipient_list)
         data = {
             'error':False,
-            'resultado': "Los datos de " + nombre.title() + " " + apellido.title() + " han sido cargados con exito."
+            'resultado': " Los datos de " + nombre.title() + " " + apellido.title() + " han sido cargados con exito."
         }
         new_nombre = nombre.lower()
         new_apellido = apellido.lower()
@@ -831,7 +831,7 @@ def editar_autorizado(request):
             autorizado_elegido.sexo = nuevo_sexo
             autorizado_elegido.telefono_autorizado = nuevo_telefono_autorizado 
         
-            autorizado_elegido.save()
+            #autorizado_elegido.save()
             data = {
                 'error': False,
                 'resultado': " Los Datos de " + autorizado_elegido.nombre.title() + " " + autorizado_elegido.apellido.title() + " han sido modificados con exito."

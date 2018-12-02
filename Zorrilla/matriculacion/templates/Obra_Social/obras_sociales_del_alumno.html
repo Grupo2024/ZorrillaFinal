@@ -25,14 +25,12 @@
             <th>Nombre</th>
             <th>Numero de Afiliado</th>
             <th>Desvincular</th>
-            <th>Editar</th>
         </tr>
         {% for a in obras_sociales %}
         <tr>
             <td>{{a.obra_social.nombre|title}}</td>
             <td>{{a.numero_afiliado}}</td>
             <td><button class="btn btn-warning" onclick="desvincular({{a.obra_social.id}})"><i class="fa fa-ban"></i></button></td>
-            <td><a class="btn btn-info" href="#"><i class="fa fa-edit"></i></a></td>
         </tr>
         {% endfor %}
     </table>
