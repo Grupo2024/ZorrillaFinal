@@ -16,7 +16,7 @@
 
                             <div>
                                 <span style="margin-left:0">Resultado:</span>
-                                <div style="width: 100%; margin-left: 50%; margin-top: -12.5%" id="resultado">Pedido enviado con Exito.</div>
+                                <span style="width: 100%; margin-left: 120%; margin-top: -30% " id="resultado"></span>
                                 <div style="margin-top:-35%; margin-left: 120%"  id="loader" class="loader"></div>
                             </div>
                         </div>
@@ -35,12 +35,13 @@
 
         function mostrar_modal(){
             $('#cargar_alumno').modal('show');
-            myVar = setTimeout(showPage, 3000);
+            myVar = setTimeout(showPage, 1000);
         }
 
         function showPage() {
-          document.getElementById("loader").style.display = "none";
-          document.getElementById("resultado").style.display = "block";
+            document.getElementById("loader").style.display = "none";
+            document.getElementById("resultado").innerHTML = "whatever";
+            document.getElementById("resultado").style.display = "block";
         }
 
 
