@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+<style>
+
+    .outer {
+        display: table;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+    }
+
+    .middle {
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .inner {
+        margin-left: auto;
+        margin-right: auto;
+        width: 400px;
+        /*whatever width you want*/
+    }
+
+</style>
+
+<div class="outer">
+    <div class="middle">
+        <div class="inner">
+            <div class="card bg-secondary text-white">
+                <br>
+                <h4 class="card-title">Error iniciando sesion.</h4>
+                <p class="card-text">No existe un Trabajador que utilice este Usuario.</p>
+                <p align="right">
+                    <a type="button" style="color:#ffffff" class="card-link btn btn-success" href="{% url 'index' %}">Volver</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock body %}

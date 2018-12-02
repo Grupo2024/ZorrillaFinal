@@ -256,9 +256,8 @@ def crear_trabajador(request):
 
                 user_S = user_Trabajador(user=user, trabajador=trabajadorr)
                 user_S.save()
-
                 subject = "Usuario Creado"
-                message = "Sus datos han sido ingresados al sistema, en el cual utilizara  " + str(trabajadorr.apellido_t.title()) + " como nombre de usuario, y  " + str(trabajadorr.nombre_t.title()) + " como password para acceder."
+                message = "Sus datos han sido ingresados al sistema, en el cual utilizara  " + str(username) + " como nombre de usuario, y  " + str(password) + " como password para acceder."
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [trabajadorr.email_t]
                 send_mail(subject, message, email_from, recipient_list)
@@ -895,7 +894,7 @@ def aceptar_re_matriculacion(request):
         familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
         subject = "Pedido de Re Matriculacion de " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + "."
         secretaria = user_Trabajador.objects.get(user=request.user)
-        message = "Se le notifica que la Secretaria " + secretaria.trabajador.apellido_t.title() + " " + secretaria.trabajador.nombre_t.title() + " ha aceptado el pedido de Re Matriculacion de su hijo/a " + alumno.apellido.title() + " " + alumno.nombre + ", el cual ahora asistira a " + str(matriculacion.curso) + "."
+        message = "Se le notifica que la Secretaria " + secretaria.trabajador.apellido_t.title() + " " + secretaria.trabajador.nombre_t.title() + " ha aceptado el pedido de Re Matriculacion de su hijo/a " + alumno.apellido.title() + " " + alumno.nombre.title() + ", el cual ahora asistira a " + str(matriculacion.curso) + "."
         email_from = settings.EMAIL_HOST_USER
         for familiar in familiares:
             recipient_list = [familiar.padre_madre.email]

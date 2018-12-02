@@ -180,10 +180,13 @@ def modificar_datos_perfil(request):
 
 @login_required
 def mi_perfil(request):
-    user = User.objects.get(username=request.user)
-    u_trabajador = user_Trabajador.objects.get(user=user)
-    trabajador = u_trabajador.trabajador
-    return render(request, 'templates_docentes/mi_perfil.html', {'trabajador':trabajador})
+    try:
+        user = User.objects.get(username=request.user)
+        u_trabajador = user_Trabajador.objects.get(user=user)
+        trabajador = u_trabajador.trabajador
+        return render(request, 'templates_docentes/mi_perfil.html', {'trabajador':trabajador})
+    except user_Trabajador.DoesNotExist:
+        return render(request, 'templates_docentes/no_matching.html')
 
 @login_required
 def volver_curso(request, dni_alumno):

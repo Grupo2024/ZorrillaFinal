@@ -15,9 +15,8 @@
                         <div class="modal-body row">
 
                             <div>
-                                <span style="margin-left:0">Resultado:</span>
-                                <span style="width: 100%; margin-left: 120%; margin-top: -30% " id="resultado"></span>
-                                <div style="margin-top:-35%; margin-left: 120%"  id="loader" class="loader"></div>
+                                <span style="margin-left:0%" id="resultado_span">Resultado:</span>
+                                <div style="margin-left: 120%; margin-top: -40%" id="loader_resultado" class="loader"></div>
                             </div>
                         </div>
                     </div>
@@ -31,19 +30,9 @@
 
     <script>
 
-        document.getElementById("resultado").style.display = "none";
-
         function mostrar_modal(){
             $('#cargar_alumno').modal('show');
-            myVar = setTimeout(showPage, 1000);
         }
-
-        function showPage() {
-            document.getElementById("loader").style.display = "none";
-            document.getElementById("resultado").innerHTML = "whatever";
-            document.getElementById("resultado").style.display = "block";
-        }
-
 
     </script>
 {% endblock body %}
