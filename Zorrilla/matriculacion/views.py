@@ -1147,9 +1147,17 @@ def aceptar_matriculacion(request):
         curso = Curso.objects.get(id=selected_curso)
         alumno = Alumno.objects.get(dni=dni_alumno)
         matriculacion = Matriculacion.objects.get(alumno=alumno)
-        #matriculacion.matriculado = "Si"
+        matriculacion.matriculado = "Si"
         matriculacion.curso = curso
         matriculacion.save()
+        familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
+        subject = "Pedido de Matriculacion de " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + "."
+        secretaria = user_Trabajador.objects.get(user=request.user)
+        message = "Se le notifica que la Secretaria " + secretaria.trabajador.apellido_t.title() + " " + secretaria.trabajador.nombre_t.title() + " ha aceptado el pedido de Matriculacion de su hijo/a " + alumno.apellido.title() + " " + alumno.nombre.title() + ", el cual ahora asistira a " + str(matriculacion.curso) + "."
+        email_from = settings.EMAIL_HOST_USER
+        for familiar in familiares:
+            recipient_list = [familiar.padre_madre.email]
+            send_mail( subject, message, email_from, recipient_list)
         data = {
             'resultado': "El alumno " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + " asiste al curso " + str(matriculacion.curso),
             'error': False
