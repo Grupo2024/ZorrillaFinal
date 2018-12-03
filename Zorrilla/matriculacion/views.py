@@ -941,13 +941,13 @@ def pedido_re_matricular(request):
                 if matriculacion.matriculado == "No":
                     data = {
                         'error':True,
-                        'resultado': " Ya hay un pedido de Matriculacion para este alumno."
+                        'resultado': " Este Alumno no se encuentra disponible para Re Matricular."
                     }
                     return JsonResponse(data)
                 elif matriculacion.matriculado == "Re":
                     data = {
                         'error':True,
-                        'resultado': " Ya hay un pedido de Re Matriculacion para este alumno."
+                        'resultado': " Ya hay un pedido de Re Matriculacion para este Alumno."
                     }
                     return JsonResponse(data)
                 else:
@@ -959,32 +959,34 @@ def pedido_re_matricular(request):
                             message = "En el dia de la fecha " + str(padre.apellido.title()) + " " + str(padre.nombre.title()) + " ha solicitado un pedido de re matriculacion para " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + "."
                             email_from = settings.EMAIL_HOST_USER
                             for familiar in familiares:
+                                print ("Enviando EMail")
                                 recipient_list = [familiar.padre_madre.email]
                                 send_mail( subject, message, email_from, recipient_list)
+
                             matriculacion = Matriculacion.objects.get(alumno=alumno)
                             matriculacion.matriculado = "Re"
                             matriculacion.save()
                             data = {
                                 'error':False,
-                                'resultado': " El pedido de re matriculacion de " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + " ha sido creado con exito."
+                                'resultado': " El pedido de Re Matriculacion de " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + " ha sido creado con exito."
                             }
                             return JsonResponse(data)
                         else:
                             data = {
                                 'error':True,
-                                'resultado': " El email " + str(email_padre) + " no con corresponde con el dni del padre."
+                                'resultado': " El email " + str(email_padre) + " no con corresponde con el dni del Padre."
                             }
                             return JsonResponse(data)
                     except Padre_madre.DoesNotExist:
                         data = {
                             'error':True,
-                            'resultado': " No existe un padre con ese dni."
+                            'resultado': " No existe un Padre con ese dni."
                         }
                         return JsonResponse(data)
             except Alumno.DoesNotExist:
                 data = {
                     'error':True,
-                    'resultado': " No existe un alumno con ese dni."
+                    'resultado': " No existe un Alumno con ese dni."
                 }
                 return JsonResponse(data)
         else:

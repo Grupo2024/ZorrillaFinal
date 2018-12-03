@@ -42,22 +42,27 @@
     </div>
 </form>
 
-<center><button class="btn btn-success" onclick="re_matricular()">Enviar</button></center>
+<center><button class="btn btn-success" onclick="modal_re()">Enviar</button></center>
 
-<div class="modal fade" id="re_mat_alumno" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade" id="re_mat_alumno">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Re Matricular Alumno:</h5>
+                <h5 class="modal-title" id="titulo" style="display: none;">Pedido de Re Matriculacion</h5>
             </div>
             <div class="container-fluid">
-                <div class="modal-body row">
-                    <span style="margin-left:5%">Resultado:</span><span id="resultado"></span>
-                    <div style="margin-top:5%" id="loader_resultado" class="loader"></div>
+                <div class="modal-body">
+                    <p id="msg_confirm" align="center">¿Generar Pedido ?</p>
+                    <span style="margin-left:0%;display: none" id="resultado_span">Resultado:</span>
+                    <span id="resultado_mal" style="margin-top: -10"></span>
+                    <span style="width: 100%; margin-left: 0%; margin-top: -5.5% " id="resultado_bien"></span>
+                    <div style="margin-left: 35%; margin-top: -11.5%;display: none" id="loader_resultado" class="loader"></div>
                 </div>
                 <div class="modal-footer" id="footer">
-                    <a type="button" class="btn btn-primary" id="continuar" href="{% url 'formReMatricular' %}">Continuar</a>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar">Cerrar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                    <button onclick="re_matricular()" class="btn btn-primary" id="aceptar">Aceptar</button>
+                    <a type="button" class="btn btn-primary" style="display: none;" id="continuar" href="{% url 'formReMatricular' %}">Continuar</a>
+                    <button type="button" class="btn btn-danger" style="display: none;" data-dismiss="modal" id="cerrar">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -66,42 +71,53 @@
 
 <script>
 
-    document.getElementById("continuar").style.display = "none";
-    document.getElementById("cerrar").style.display = "none";
+    function modal_re(){
+        $("#cancelar").show();
+        $("#aceptar").show();
+        $("#resultado_span").hide();
+        $("#msg_confirm").show();
+        $("#loader_resultado").hide();
+        $("#resultado_crear_tr").hide();
+        $("#continuar").hide();
+        $("#titulo").hide();
+        $("#cerrar").hide();
+        $("#resultado_mal").html("");
+        $("#resultado_bien").html("");
+        $('#re_mat_alumno').modal('show');
+    }
+
+
 
     function re_matricular(){
-        if (confirm("¿Solicitar pedido de Re Matriculacion ?")) {
-            var myForm = document.getElementById('form_re_matricular');
-            formData = new FormData(myForm);
-            $('#re_mat_alumno').modal('show');
-            document.getElementById("resultado").innerHTML = "";
-            document.getElementById("continuar").style.display = "none";
-            document.getElementById("cerrar").style.display = "none";
-            document.getElementById("loader_resultado").style.display = "block";
-            $.ajax({
-                url: '{% url 'pedido_re_matricular' %}',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    document.getElementById("loader_resultado").style.display = "none";
-                    document.getElementById("resultado").innerHTML = data.resultado;
-                    console.log(data.resultado);
-                    if (data.error){
-                        document.getElementById("resultado").innerHTML = data.resultado;
-                        document.getElementById("continuar").style.display = "none";
-                        document.getElementById("cerrar").style.display = "block";
-                    } else {
-                       document.getElementById("resultado").innerHTML = data.resultado;
-                        document.getElementById("continuar").style.display = "block";
-                        document.getElementById("cerrar").style.display = "none";
-                    }
+        $("#titulo").show();
+        $("#cancelar").hide();
+        $("#aceptar").hide();
+        $("#msg_confirm").hide();
+        $("#resultado_span").show();
+        $("#loader_resultado").show();
+        var myForm = document.getElementById('form_re_matricular');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: '{% url 'pedido_re_matricular' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#loader_resultado").hide();
+                if (data.error){
+                    $("#resultado_bien").html("");
+                    $("#resultado_mal").html(data.resultado);
+                    $("#continuar").hide();
+                    $("#cerrar").show();
+                } else {
+                    $("#resultado_bien").html(data.resultado);
+                    $("#resultado_mal").html("");
+                    $("#continuar").show();
+                    $("#cerrar").hide();
                 }
+            }
         });
-    } else {
-        return;
-    }
     }
 
 </script>
