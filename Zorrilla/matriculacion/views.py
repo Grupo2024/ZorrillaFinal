@@ -1116,6 +1116,7 @@ def aplicar_cambios_alumno(request):
 
             alumno.save()
             data = {
+                'error':False,
                 'resultado': " Los datos de " + alumno.nombre.title() + " han sido modificados."
             }
             return JsonResponse(data)
@@ -1123,6 +1124,7 @@ def aplicar_cambios_alumno(request):
             errores = str(alumno_form.errors)
             print (errores)
             data = {
+                'error':True,
                 'resultado':errores
             }
             return JsonResponse(data)

@@ -113,7 +113,6 @@
         $("#loader_resultado").show();
         $("#aceptar").hide();
         $("#cancelar").hide();
-        $('#myModal').modal('show');
         $.ajax({
             url: '{% url 'cambiar_password' %}',
             data: formData,

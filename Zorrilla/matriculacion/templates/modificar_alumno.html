@@ -162,22 +162,25 @@
     <input type="hidden" name="dni" id="dni" value={{dni_alumno}}>
 </form>
 
-<center><button class="btn btn-success" onclick="modificar()" style="width:30%;">Editar</button></center>
+<center><button class="btn btn-success" onclick="modal_editar()" style="width:30%;">Editar</button></center>
 
 <div class="modal fade" id="modAlumno" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Editar Alumno:</h5>
+                <h4 class="modal-title" style="display: none;" id="titulo">Editar Alumno</h4>
             </div>
             <div class="container-fluid">
-                <div class="modal-body row">
-                    <span style="margin-left:5%">Resultado: </span><span id="resultado"></span>
-                    <div style="margin-top:5%" id="loader_resultado" class="loader"></div>
+                <div class="modal-body">
+                    <p id="msg_confirm" align="center">¿Editar Alumno?</p>
+                    <span style="margin-left:0%" id="resultado_span">Resultado: </span><span style="margin-left:0%" id="resultado"></span>
+                    <div style="margin-left:35%;margin-top:-12.5%" id="loader_resultado" class="loader"></div>
                 </div>
                 <div class="modal-footer" id="footer">
-                    <a type="button" class="btn btn-primary" id="continuar" href="{% url 'datos_alumno' 'curso' dni_alumno %}">Continuar</a>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar">Cerrar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                    <button onclick="modificar()" class="btn btn-primary" id="aceptar">Aceptar</button>
+                    <a type="button" class="btn btn-primary" id="continuar" href="{% url 'perfil_alumno' 'curso' dni_alumno %}">Continuar</a>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="volver">Volver</button>
                 </div>
             </div>
         </div>
@@ -186,37 +189,47 @@
 
 <script>
 
+    function modal_editar(){
+        $("#titulo").hide();
+        $("#resultado_span").hide();
+        $("#resultado").html("");
+        $("#loader_resultado").hide();
+        $("#continuar").hide();
+        $("#volver").hide();
+        $("#msg_confirm").show();
+        $("#aceptar").show();
+        $("#cancelar").show();
+        $('#modAlumno').modal('show');
+    }
+
     function modificar(){
-        if (confirm("¿Editar los Datos del Alumno ?")) {
-            var myForm = document.getElementById('form_editar_alumno');
-            formData = new FormData(myForm);
-            document.getElementById("resultado").innerHTML = "";
-            document.getElementById("continuar").style.display = "none";
-            document.getElementById("cerrar").style.display = "none";
-            document.getElementById("loader_resultado").style.display = "block";
-            $('#modAlumno').modal('show');
-            $.ajax({
-                url: '{% url 'aplicar_cambios_alumno' %}',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    document.getElementById("loader_resultado").style.display = "none";
-                    document.getElementById("resultado").innerHTML = data.resultado;
-                    console.log(data.resultado);
-                    if (data.error){
-                        document.getElementById("cerrar").style.display = "block";
-                        document.getElementById("continuar").style.display = "none";
-                    } else {
-                        document.getElementById("cerrar").style.display = "none";
-                        document.getElementById("continuar").style.display = "block";
-                    }
+        var myForm = document.getElementById('form_editar_alumno');
+        formData = new FormData(myForm);
+        $("#titulo").show();
+        $("#resultado_span").show();
+        $("#msg_confirm").hide();
+        $("#loader_resultado").show();
+        $("#aceptar").hide();
+        $("#cancelar").hide();
+        $.ajax({
+            url: '{% url 'aplicar_cambios_alumno' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#loader_resultado").hide();
+                if (data.error){
+                    $("#resultado").html(data.resultado);
+                    $("#continuar").hide();
+                    $("#volver").show();
+                }else{
+                    $("#resultado").html(data.resultado);
+                    $("#continuar").show();
+                    $("#volver").hide();
                 }
-            });
-        } else {
-            return;
-        }
+            }
+        });
     }
 
 </script>
