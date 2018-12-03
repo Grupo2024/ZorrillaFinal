@@ -388,7 +388,7 @@ def crear_padre_madre(request):
             apellido = padre_form.cleaned_data['apellido']
             new_nombre = nombre.lower()
             new_apellido = apellido.lower()
-            resultado = "El Padre " + str(padre.apellido) + " " + str(padre.nombre) + " ha sido creado con exito."
+            resultado = "El Padre " + str(padre.apellido.title()) + " " + str(padre.nombre.title()) + " ha sido creado con exito."
             data = {
                 'error':False,
                 'resultado':resultado

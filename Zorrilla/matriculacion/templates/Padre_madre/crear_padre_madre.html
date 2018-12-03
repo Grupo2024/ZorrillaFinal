@@ -110,34 +110,40 @@
 </form>
 
 {% if objetivo == 'Cargar'%}
-    <center><button class="btn btn-success" style="width: 380px; margin-left: -42px" onclick="matricular_Padre()" id="btn_padre">Cargar</button></center>
+    <center><button class="btn btn-success" style="width: 380px; margin-left: -42px" onclick="modal_crear()" id="btn_padre">Cargar</button></center>
 {% else %}
-    <center><button class="btn btn-success" onclick="editar_Padre()" id="btn_padre">Editar</button></center>
+    <center><button class="btn btn-success" onclick="modal_editar()" id="btn_padre">Editar</button></center>
 {% endif %}
 
 
 
-<!-- The Modal -->
-<div class="modal fade" id="myModal">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
+<div class="modal fade forget-modal" tabindex="-1" id="myModal"role="dialog" aria-labelledby="myForgetModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
-
             <!-- Modal Header -->
             <div class="modal-header">
-                <h3 class="modal-title" id="titulo">Resultado</h3>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="display: none;" id="titulo">Cargar Padre</h4>
+                <h4 class="modal-title" style="display: none;" id="titulo2">Editar Padre</h4>
             </div>
 
             <!-- Modal body -->
             <div class="modal-body">
-                <span style="margin-left:5%">Resultado:</span><span id="resultado_crear_p"></span>
-                <div style="margin-top:5%" id="loader_resultado" class="loader"></div>
-
+                <br>
+                <p id="msg_confirm" align="center">¿Cargar Padre?</p>
+                <p id="msg_confirm2" align="center">¿Editar Padre?</p>
+                <span style="margin-left:0%;display: none" id="resultado_span">Resultado:</span>
+                <span id="resultado_mal" style="margin-top: -10"></span>
+                <span style="width: 100%; margin-left: 0%; margin-top: -5.5% " id="resultado_bien"></span>
+                <div style="margin-left: 35%; margin-top: -10.5%" id="loader_resultado" class="loader"></div>
             </div>
 
-            <div class="modal-footer" id="footer">
-                <button type="button" style="display: none;" class="btn btn-success" data-dismiss="modal" id="continuar">Volver</button>
-                <a class="btn btn-primary" style="display: none;" href="{% url 'index' %}" id="volver">Continuar</a>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                <button onclick="matricular_Padre()" class="btn btn-primary" id="aceptar">Aceptar</button>
+                <button onclick="editar_Padre()" class="btn btn-primary" id="aceptar2">Aceptar</button>
+                <a type="button" style="display: none;" class="btn btn-success" href="{% url 'index' %}" id="continuar">Continuar</a>
+                <button type="button" style="display: none;" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
             </div>
         </div>
     </div>
@@ -145,72 +151,94 @@
 
 <script>
 
+    function reset_modal(){
+        $("#titulo").hide();
+        $("#titulo2").hide();
+        $("#msg_confirm").hide();
+        $("#msg_confirm2").hide();
+        $("#resultado_span").hide();
+        $("#resultado_mal").html("");
+        $("#resultado_bien").html("");
+        $("#loader_resultado").hide();
+        $("#cancelar").show();
+        $("#aceptar").hide();
+        $("#aceptar2").hide();
+        $("#continuar").hide();
+        $("#volver").hide();
+    }
+
+    function modal_crear(){
+        reset_modal();
+        $("#msg_confirm").show();
+        $("#aceptar").show();
+        $('#myModal').modal('show');
+    }
+
+    function modal_editar(){
+        reset_modal();
+        $("#msg_confirm2").show();
+        $("#aceptar2").show();
+        $('#myModal').modal('show');
+    }
+
     function matricular_Padre(){
-        if (confirm("¿Crear Padre?")) {
-            var myForm = document.getElementById('form_padre');
-            formData = new FormData(myForm);
-            $('#myModal').modal('show');
-            document.getElementById("resultado_crear_p").innerHTML = "";
-            document.getElementById("loader_resultado").style.display = "block";
-            document.getElementById("continuar").style.display = "none";
-            document.getElementById("volver").style.display = "none";
-            var element = document.getElementById("titulo");
-            element.innerHTML = "Creacion de Padre.";
-            $.ajax({
-                url: '{% url 'crear_padre_madre' %}',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    document.getElementById("loader_resultado").style.display = "none";
-                    document.getElementById("resultado_crear_p").innerHTML = data.resultado;
-                    if (data.error){
-                        document.getElementById("volver").style.display = "none";
-                        document.getElementById("continuar").style.display = "block";
-                    }else{
-                        document.getElementById("volver").style.display = "block";
-                        document.getElementById("continuar").style.display = "none";
-                    }
+        var myForm = document.getElementById('form_padre');
+        formData = new FormData(myForm);
+        $("#msg_confirm").hide();
+        $("#aceptar").hide();
+        $("#cancelar").hide();
+        $("#resultado_span").show();
+        $("#loader_resultado").show();
+        $("#titulo").show();
+        $.ajax({
+            url: '{% url 'crear_padre_madre' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#loader_resultado").hide();
+                if (data.error){
+                    $("#resultado_mal").html(data.resultado);
+                    $("#continuar").hide();
+                    $("#volver").show();
+                }else{
+                    $("#resultado_bien").html(data.resultado);
+                    $("#continuar").show();
+                    $("#volver").hide();
                 }
-            });
-        } else {
-            return;
-        } 
+            }
+        });
     }
     
     function editar_Padre(){
-        if (confirm("¿Editar Padre?")) {
-            var myForm = document.getElementById('form_padre');
-            formData = new FormData(myForm);
-            $('#myModal').modal('show');
-            var element = document.getElementById("titulo");
-            element.innerHTML = "Edicion de Padre.";
-            document.getElementById("resultado_crear_p").innerHTML = "";
-            document.getElementById("loader_resultado").style.display = "block";
-            document.getElementById("continuar").style.display = "none";
-            document.getElementById("volver").style.display = "none";
-            $.ajax({
-                url: '{% url 'editar_padre' %}',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    document.getElementById("loader_resultado").style.display = "none";
-                    document.getElementById("resultado_crear_p").innerHTML = data.resultado;
-                    if (data.error){
-                        document.getElementById("volver").style.display = "none";
-                        document.getElementById("continuar").style.display = "block";
-                    }else{
-                       document.getElementById("volver").style.display = "block";
-                        document.getElementById("continuar").style.display = "none";
-                    }
+        var myForm = document.getElementById('form_padre');
+        formData = new FormData(myForm);
+        $("#msg_confirm2").hide();
+        $("#aceptar2").hide();
+        $("#cancelar").hide();
+        $("#resultado_span").show();
+        $("#loader_resultado").show();
+        $("#titulo2").show();
+        $.ajax({
+            url: '{% url 'editar_padre' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#loader_resultado").hide();
+                if (data.error){
+                    $("#resultado_mal").html(data.resultado);
+                    $("#continuar").hide();
+                    $("#volver").show();
+                }else{
+                    $("#resultado_bien").html(data.resultado);
+                    $("#continuar").show();
+                    $("#volver").hide();
                 }
-            });
-        } else {
-            return;
-        }
+            }
+        });
     }
 </script>
 
