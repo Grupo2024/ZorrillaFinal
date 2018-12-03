@@ -23,6 +23,9 @@
                     <option value={{curso.id}}>{{curso}}</option>
                     {% endfor %}
                 </select>
+                <br>
+                <br>
+                <span style="color:red;display: none" id="span_curso">Seleccione un Curso.</span>
             </div>
         </div>
         <!-- Select Familiar -->
@@ -149,6 +152,6 @@
         </form>
     <!-- Modal footer -->
         <div>
-            <button type="button" style="margin-top: -18%; margin-left: 65%" class="btn btn-success" id="btn_matricular" onclick="matricular()">Matricular</button>
+            <button type="button" style="margin-top: -18%; margin-left: 65%" class="btn btn-success" id="btn_matricular" onclick="pre_matricular()">Matricular</button>
         </div>  
 </div>

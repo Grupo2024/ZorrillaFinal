@@ -324,7 +324,7 @@ def crear_autorizado(request):
         message = "En el dia de la fecha se le notifica que sus datos han sido cargados en nuestra pagina."
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [autorizado.email]
-        #send_mail( subject, message, email_from, recipient_list)
+        send_mail( subject, message, email_from, recipient_list)
         data = {
             'error':False,
             'resultado': " Los datos de " + nombre.title() + " " + apellido.title() + " han sido cargados con exito."
@@ -1147,7 +1147,7 @@ def aceptar_matriculacion(request):
         curso = Curso.objects.get(id=selected_curso)
         alumno = Alumno.objects.get(dni=dni_alumno)
         matriculacion = Matriculacion.objects.get(alumno=alumno)
-        matriculacion.matriculado = "Si"
+        #matriculacion.matriculado = "Si"
         matriculacion.curso = curso
         matriculacion.save()
         data = {
