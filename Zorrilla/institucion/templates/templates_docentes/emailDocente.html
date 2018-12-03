@@ -27,35 +27,31 @@
             </div>
         </article>
     </form>
-    <button class="btn btn-success btn-block mx-auto" align="center" onclick="send_key()">Enviar</button>
+    <button class="btn btn-success btn-block mx-auto" align="center" onclick="modal_key()">Enviar</button>
 </div>
 
-<!-- The Modal -->
 <div class="modal fade" id="myModal">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
-
-            <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Envio de Clave.</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="display: none;" id="titulo">Clave para el Docente</h4>
             </div>
-
-            <!-- Modal body -->
-            <div class="modal-body">
-                <span style="margin-left:5%">Resultado:</span><span id="resultado"></span>
-                <div style="margin-top:5%" id="loader_resultado" class="loader"></div>
-            </div>
-
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <a type="button" class="btn btn-primary" id="continuar" href="{% url 'index' %}">Continuar</a>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar">Cerrar</button>
+            <div class="container-fluid">
+                <div class="modal-body">
+                    <p id="msg_confirm" align="center">¿Enviar Clave ?</p>
+                    <span style="margin-left:0%" id="resultado_span">Resultado: </span><span style="margin-left:0%" id="resultado"></span>
+                    <div style="margin-left:35%;margin-top:-12.5%" id="loader_resultado" class="loader"></div>
+                </div>
+                <div class="modal-footer" id="footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                    <button onclick="send_key()" class="btn btn-primary" id="aceptar">Aceptar</button>
+                    <a type="button" class="btn btn-primary" id="continuar" href="{% url 'index' %}">Continuar</a>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="volver">Volver</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 
 <script>
 
@@ -67,39 +63,48 @@
         }
     });
 
+     function modal_key(){
+        $("#titulo").hide();
+        $("#resultado_span").hide();
+        $("#resultado").html("");
+        $("#loader_resultado").hide();
+        $("#continuar").hide();
+        $("#volver").hide();
+        $("#msg_confirm").show();
+        $("#aceptar").show();
+        $("#cancelar").show();
+        $('#myModal').modal('show');
+    }
+
 
     function send_key(){
-        if (confirm("¿Mandar clave ?")) {
-            var myForm = document.getElementById('login_form');
-            formData = new FormData(myForm);
-            $('#myModal').modal('show');
-            document.getElementById("resultado").innerHTML = "";
-            document.getElementById("continuar").style.display = "none";
-            document.getElementById("cerrar").style.display = "none";
-            document.getElementById("loader_resultado").style.display = "block";
-            $.ajax({
-                url: '{% url 'email_for_logIn' %}',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    document.getElementById("loader_resultado").style.display = "none";
-                    document.getElementById("resultado").innerHTML = data.resultado;
-                    console.log(data.error);
-                    if (data.error){
-                        document.getElementById("continuar").style.display = "none";
-                        document.getElementById("cerrar").style.display = "block";
-                    } else {
-                       document.getElementById("resultado").innerHTML = data.resultado;
-                        document.getElementById("continuar").style.display = "block";
-                        document.getElementById("cerrar").style.display = "none";
-                    }
+        var myForm = document.getElementById('login_form');
+        formData = new FormData(myForm);
+        $("#titulo").show();
+        $("#resultado_span").show();
+        $("#msg_confirm").hide();
+        $("#loader_resultado").show();
+        $("#aceptar").hide();
+        $("#cancelar").hide();
+        $.ajax({
+            url: '{% url 'email_for_logIn' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#loader_resultado").hide();
+                if (data.error){
+                    $("#resultado").html(data.resultado);
+                    $("#continuar").hide();
+                    $("#volver").show();
+                }else{
+                    $("#resultado").html(data.resultado);
+                    $("#continuar").show();
+                    $("#volver").hide();
                 }
-            });
-        } else {
-            return;
-        }
+            }
+        });
     }
 
 </script>
