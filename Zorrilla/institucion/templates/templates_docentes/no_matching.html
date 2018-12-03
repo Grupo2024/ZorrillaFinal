@@ -32,13 +32,17 @@
 <div class="outer">
     <div class="middle">
         <div class="inner">
-            <div class="card bg-secondary text-white">
+            <div class="card text-black">
                 <br>
-                <h4 class="card-title">Error iniciando sesion.</h4>
-                <p class="card-text">No existe un Trabajador que utilice este Usuario.</p>
-                <p align="right">
+                <div class="card-header">
+                    <h4 class="card-title">Error iniciando sesion.</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">No existe un Trabajador que utilice este Usuario.</p>
+                    <p align="center">
                     <a type="button" style="color:#ffffff" class="card-link btn btn-success" href="{% url 'index' %}">Volver</a>
-                </p>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
