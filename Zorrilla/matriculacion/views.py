@@ -656,7 +656,7 @@ def datos_autorizado(request, dni_transportista):
 
 def usuarios_transportista(request, dni_transportista):
     transportista = Transportista.objects.get(dni=dni_transportista)
-    todos_los_alumnos = usa_Transporte.objects.filter(transportista=transportista)
+    todos_los_alumnos = usa_Transporte.objects.filter(transportista=transportista).order_by(alumno)
     return render(request, 'Transportista/usuarios_transportista.html', {'transportista':transportista, 'todos_los_alumnos':todos_los_alumnos})
 
 def datus_usuario_t(request, dni_trabajador):

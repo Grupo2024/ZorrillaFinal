@@ -12,32 +12,72 @@
         color: black;
     }
 
+    #wrapper {
+        background: white;
+        background-position: 50% 0px;
+        width: 984px;
+        margin: 0px auto 0 auto;
+        text-align: center;
+    }
+
+    #header {
+        width: 960px;
+        height: 60px;
+        margin: 0 5px 2px 5px;
+        text-align: left;
+        background: white;
+        display: block;
+        position: relative;
+    }
+
+    #storefinderdropdown {
+        position: absolute;
+        top: 8px;
+        float: none;
+        width: 270px;
+        height: 43px;
+        border: 5px solid #F1F1EF;
+        background: #F1F1EF;
+        z-index: 10;
+        margin: 20px 0 0 342px;
+        font-size: 10px;
+        font-weight: bold;
+        text-indent: 3px;
+        padding: 0;
+    }
+
 </style>
 
 <div class="main" style="width:80%;margin-left: 10%;margin-right: 10%;">
     <br>
-    <div class="container" style="margin-left: -3.5%;">
-        <div class="row"></div>
-        <div class="">
-            <!-- Buscador -->
-            <input style="margin-left: 4%;" type="text" placeholder=" Nombre del libro que desee buscar" id="myInput" onkeyup="filterLibros()">
-            <!-- Dropdown filter -->
-            <select class="btn btn-outline-dark" id="filter_by">
-                <option value=0>Titulo</option>
-                <option value=1>Descripción</option>
-                <option value=2>Fecha</option>
-            </select>
-            <!-- Filter button -->
-            <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#myModal2">
-                <i class="fa fa-filter" aria-hidden="true"></i> Filtrar</button>
-            <!-- Añadir button -->
-            {% if user.is_authenticated %}
-            <button  class="btn btn-success" data-toggle="modal" data-target="#myModal">Añadir libro</button>
-            {% endif %}
+    <div id="wrapper">
+        <div id="header">
+            <div id="storeFinder">
+                <div class="container" style="margin-left: -3.5%;">
+                    <div class="row"></div>
+                    <div class="">
+                        <!-- Buscador -->
+                        <input style="margin-left: 4%;" type="text" placeholder=" Nombre del libro que desee buscar" id="myInput" onkeyup="filterLibros()">
+                        <!-- Dropdown filter -->
+                        <select class="btn btn-outline-dark" id="filter_by">
+                            <option value=0>Titulo</option>
+                            <option value=1>Descripción</option>
+                            <option value=2>Fecha</option>
+                        </select>
+                        <!-- Filter button -->
+                        <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#myModal2">
+                            <i class="fa fa-filter" aria-hidden="true"></i> Filtrar</button>
+                        <!-- Añadir button -->
+                        {% if user.is_authenticated %}
+                        <button  class="btn btn-success" data-toggle="modal" data-target="#myModal">Añadir libro</button>
+                        {% endif %}
 
-            {% if request.user|has_group:"Secretaria" %}
-            <button  class="btn btn-dark" onclick="informe('{% url 'informe' %}')">Informe</button>
-            {% endif %}
+                        {% if request.user|has_group:"Secretaria" %}
+                        <button  class="btn btn-dark" onclick="informe('{% url 'informe' %}')">Informe</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
