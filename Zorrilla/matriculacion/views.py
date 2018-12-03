@@ -1059,7 +1059,7 @@ def cambiar_password(request):
                     return JsonResponse(data)
             except Trabajador.DoesNotExist:
                     data = {
-                        'resultado': " No existe un Trabajador con ese Dni.",
+                        'resultado': " No existe un Trabajador con este Dni.",
                         'error':True
                     }
                     return JsonResponse(data)
