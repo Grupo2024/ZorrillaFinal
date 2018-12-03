@@ -179,68 +179,99 @@
     </div>
 </form>
 
-        <center><button onclick="crear_Profesor()" class="btn btn-success" style="width:30%">Cargar</button></center>
+<center><button onclick="modal_profesor()" class="btn btn-success" style="width:30%">Cargar</button></center>
 
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Matriculando Docente:</h5>
-                    </div>
-                    <div class="container-fluid">
-                        <div class="modal-body row">
-                            <p class="col-sm-2">Resultado: </p><span style='visibility:hidden;'>..</span>
-                            <span id="resultado"></span>
-                        </div>
-                        <div class="modal-footer" id="footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="login()" id="continuar">Continuar</button>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="close_modal()" id="volver">Volver</button>
-                        </div>
-                    </div>
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titulo" style="display: none;">Carga de Docente</h5>
+            </div>
+            <div class="container-fluid">
+                <div class="modal-body">
+                    <p id="msg_confirm" align="center">¿Cargar Datos ?</p>
+                    <span style="margin-left:0%;display: none" id="resultado_span">Resultado:</span>
+                    <span id="resultado_mal" style="margin-top: -10"></span>
+                    <span style="width: 100%; margin-left: 0%; margin-top: -5.5% " id="resultado_bien"></span>
+                    <div style="margin-left: 35%; margin-top: -11.5%;display: none" id="loader_resultado" class="loader"></div>
+                </div>
+                <div class="modal-footer" id="footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                    <button onclick="crear_Profesor()" class="btn btn-primary" id="aceptar">Aceptar</button>
+                    <a type="button" class="btn btn-primary" style="display: none;" id="continuar" href="{% url 'formReMatricular' %}">Continuar</a>
+                    <button type="button" class="btn btn-danger" style="display: none;" data-dismiss="modal" id="cerrar">Cerrar</button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 
-            <form id="login" action="{% url 'logIn' %}"></form>
+<script>
 
-            <script>
+    var input = document.getElementById("profesor_clave");
+    input.addEventListener("keyup", function(event) {
+        event.preventDefault();
+        if (event.keyCode === 13) {
+            crear_Profesor();
+        }
+    });
 
-                var input = document.getElementById("profesor_clave");
-                input.addEventListener("keyup", function(event) {
-                    event.preventDefault();
-                    if (event.keyCode === 13) {
-                        crear_Profesor();
-                    }
-                });
+    function modal_profesor(){
+        $("#cancelar").show();
+        $("#aceptar").show();
+        $("#resultado_span").hide();
+        $("#msg_confirm").show();
+        $("#loader_resultado").hide();
+        $("#resultado_crear_tr").hide();
+        $("#continuar").hide();
+        $("#titulo").hide();
+        $("#cerrar").hide();
+        $("#resultado_mal").html("");
+        $("#resultado_bien").html("");
+        $('#myModal').modal('show');
+    }
 
-                function crear_Profesor(){
-                    if (confirm("¿Cargar Datos ?")) {
-                        var myForm = document.getElementById('form_docente');
-                        formData = new FormData(myForm);
-                        $('#myModal').modal('show');
-                        $.ajax({
-                            url: '{% url 'crear_profesor' %}',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            type: 'POST',
-                            success: function(data){
-                            console.log(data.error);
-                            document.getElementById("resultado").innerHTML = data.resultado;
-                        }
-                               });
-                    } else {
-                        return;
-                    }
+    function crear_Profesor(){
+        $("#titulo").show();
+        $("#cancelar").hide();
+        $("#aceptar").hide();
+        $("#msg_confirm").hide();
+        $("#resultado_span").show();
+        $("#loader_resultado").show();
+        var myForm = document.getElementById('form_docente');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: '{% url 'crear_profesor' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#loader_resultado").hide();
+                if (data.error){
+                    $("#resultado_bien").html("");
+                    $("#resultado_mal").html(data.resultado);
+                    $("#continuar").hide();
+                    $("#cerrar").show();
+                } else {
+                    $("#resultado_bien").html(data.resultado);
+                    $("#resultado_mal").html("");
+                    $("#continuar").show();
+                    $("#cerrar").hide();
                 }
+            }
+        });
 
-                function close_modal(){
-                    $('#myModal').modal('hide');
-                }
+    }
 
-                function login(){
-                    $('#login').submit()
-                }
+    function close_modal(){
+        $('#myModal').modal('hide');
+    }
 
-            </script>
+    function login(){
+        $('#login').submit()
+    }
 
-            {% endblock body %}
+</script>
+
+{% endblock body %}

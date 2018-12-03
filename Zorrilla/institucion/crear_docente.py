@@ -39,12 +39,12 @@ def crear_profesor(request):
                     user_docente = user_Trabajador(user=user_d, trabajador=profesor)
                     user_docente.save()
                     subject = "Usuario Creado"
-                    message = "El Docente " + str(profesor.apellido_t) + "" + str(profesor.nombre_t) + " ha sido ingresado al sistema, en el cual utilizara como nombre de usuario: " + str(user_d.username) + " y la password " + str(password)
+                    message = "El Docente " + str(profesor.apellido_t.title()) + "" + str(profesor.nombre_t.title()) + " ha sido ingresado al sistema, en el cual utilizara como nombre de usuario: " + str(user_d.username) + " y la password " + str(password)
                     email_from = settings.EMAIL_HOST_USER
                     recipient_list = [email_t]
                     send_mail(subject, message, email_from, recipient_list)
                     data = {
-                        'resultado': "El docente " + str(profesor.apellido_t) + "" + str(profesor.nombre_t) + " ha sido cargado con exito.",
+                        'resultado': " Sus datos han sido cargado con exito.",
                         'error': False
                     }
                     print ("No hay error")
