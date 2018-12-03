@@ -178,89 +178,88 @@
 </form>
 
 
-<center><button class="btn btn-success" onclick="crear_Alumno()" style="width:30%; margin-top: 1%">Cargar</button></center>
+<center><button class="btn btn-success" onclick="modal_alumno()" style="width:30%; margin-top: 1%">Cargar</button></center>
 <br>
 <div class="modal fade" id="cargar_alumno" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Matriculacion de Padre/Madre.</h5>
+                <h5 class="modal-title" id="titulo">Creacion de Alumno.</h5>
+                <h5 class="modal-title" id="titulo2">Creacion de Padre.</h5>
             </div>
             <div class="container-fluid">
-                <div class="modal-body row">
+                <div class="modal-body">
+                    <p align="center" id="msg">¿Cargar Alumno?</p>
                     <div id="data"></div>
+                </div>
+                <div class="modal-footer" id="footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                    <button onclick="crear_Alumno()" class="btn btn-primary" id="aceptar">Aceptar</button>
+                    <a type="button" class="btn btn-success"  style="display: none;" href="{% url 'index' %}" id="continuar">Continuar</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
-<form id="volv" href="{% url 'index' %}">
-</form>
-
 <script>
 
+    function modal_alumno(){
+        $("#titulo").show();
+        $("#titulo2").hide();
+        $("#cancelar").show();
+        $("#aceptar").show();
+        $("#msg").show();
+        $("#data").hide();
+        $("#continuar").hide();
+        $("#resultado").hide();
+        $('#cargar_alumno').modal('show');
+    }
 
     function crear_Alumno(){
-        if (confirm("¿Crear al Alumno ?")) {
-            var myForm = document.getElementById('form_alumno');
-            formData = new FormData(myForm);
-            $('#cargar_alumno').modal('show');
-            $.ajax({
-                url: '/crear_alumno/',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    $("#data").html(data);
-                    var btn_continuar = document.getElementById("continuar");
-                    btn_continuar.style.display = "none"
-                }
-            });
-        } else {
-            return;
-        }
+        $("#msg").hide();
+        $("#cancelar").hide();
+        $("#aceptar").hide();
+        var myForm = document.getElementById('form_alumno');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: '{% url 'crear_alumno' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#data").html(data);
+                $("#data").show();
+            }
+        });
     }
 
     function crear_Padre(){
-        if (confirm("¿Cargar Datos ?")) {
-            var myForm = document.getElementById('form_padre');
-            var x = document.getElementById("title");
-            var j = document.getElementById("msg_alumno")
-            formData = new FormData(myForm);
-            var url = '{% url 'crear_padre' %}'
-            $.ajax({
-                url: url,
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    if (data.error && x.style.display === "none"){
-                        document.getElementById("resultado2").innerHTML = data.resultado;
-                        x.style.display = "block";
-                    } else{
-                        var aux=document.getElementById("res_c_padre")
-                        aux.style.display="none"
-                        document.getElementById("resultado2").innerHTML = data.resultado;
-                        var btn_continuar = document.getElementById("continuar");
-                        btn_continuar.style.display = "block"
-                        x.style.display = "none";
-                        j.style.display = "none";
-                    }
+        var myForm = document.getElementById('form_padre');
+        formData = new FormData(myForm);
+        $("#titulo").hide();
+        $("#titulo2").show();
+        var url = '{% url 'crear_padre' %}'
+        $.ajax({
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                if (data.error){
+                    $("#resultado2").html(data.resultado);
+                    $("#continuar").hide();
+                }else{
+                    $("#cp").hide();
+                    $("#cargar").hide();
+                    $("#resultado2").html(data.resultado);
+                    $("#continuar").show();
                 }
-            });
-        } else {
-            return;
-        }
-    }
+            }
+        });
 
-
-    function volver(){
-        var form = document.getElementById("volv");
-        form.submit()
     }
 
     function show_form_padre(){

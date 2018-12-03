@@ -351,7 +351,7 @@ def crear_padre(request):
         padre_form.save()
         dni_padre = padre_form.cleaned_data['dni']
         padre = Padre_madre.objects.get(dni=dni_padre)
-        resultado = "Los pedidos de Matriculacion de " + str(padre.apellido.title()) + " " + str(padre.nombre.title()) + " y de " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + " han sido creados con exito."
+        resultado = "El pedido de Matriculacion de " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + " ha sido creado con exito, y los datos de " + str(padre.apellido.title()) + " " + str(padre.nombre.title()) + " han sido ingresados al sistema."
         data = {
             'error': False,
             'resultado':resultado
@@ -603,9 +603,9 @@ def todas_los_transportistas(request):
 #Traer Todos las Matriculaciones con estado 'No' y 'Re'.
 @user_passes_test(check_Secretaria)
 def traer_pedidos(request):
-    matriculaciones = Matriculacion.objects.filter(matriculado="No")
-    re_matriculaciones = Matriculacion.objects.filter(matriculado = "Re")
-    egresos = Matriculacion.objects.filter(matriculado="Pe")
+    matriculaciones = Matriculacion.objects.filter(matriculado="No").order_by('-fecha_matriculacion')
+    re_matriculaciones = Matriculacion.objects.filter(matriculado = "Re").order_by('-fecha_matriculacion')
+    egresos = Matriculacion.objects.filter(matriculado="Pe").order_by('-fecha_matriculacion')
     return render(request, 'pedidos.html', {'matriculaciones':matriculaciones, 're_matricular':re_matriculaciones, 'egresos':egresos})
 
 def padres_del_alumno(request, dni_alumno):
