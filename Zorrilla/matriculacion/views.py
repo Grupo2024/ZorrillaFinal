@@ -676,12 +676,14 @@ def datos_obra_social(request, id_obra_social):
 
 #Funcion que Trae los datos del Alumno elegido previamente
 @login_required
-def datos_alumno(request, opcion, dni_alumno):
+def perfil_alumno(request, opcion, dni_alumno):
     print (opcion)
     alumno = Alumno.objects.get(dni=dni_alumno)
     matriculacion = Matriculacion.objects.get(alumno=alumno)
-    alumno.matriculado = matriculacion.get_Estado()
-    print alumno.matriculado
+    estado = matriculacion.get_Estado()
+    alumno.estado = estado
+
+    alumno.curso_si = matriculacion.curso
     if (opcion == 'pedidos'):
         alumno.opcion = "pedido"
     else:
@@ -1007,7 +1009,7 @@ def cambiar_curso(request):
         alumno_C.curso = curso
         subject = "Curso de " + str(alumno.nombre.title()) + " modificado."
         secretaria = user_Trabajador.objects.get(user=request.user)
-        message = "En el dia de la fecha la secretaria " + str(secretaria.trabajador.apellido_t) + " " + str(secretaria.trabajador.nombre_t) + " ha cambiado el curso al que asiste su hijo/a " + str(alumno.nombre) + " por " + str(alumno_C.curso) + "."
+        message = " En el dia de la fecha la Secretaria " + str(secretaria.trabajador.apellido_t) + " " + str(secretaria.trabajador.nombre_t) + " ha cambiado el curso al que asiste su hijo/a " + str(alumno.nombre) + " a " + str(alumno_C.curso) + "."
         email_from = settings.EMAIL_HOST_USER
 
         familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
@@ -1018,7 +1020,7 @@ def cambiar_curso(request):
 
         alumno_C.save()
         data = {
-            'resultado': "El Alumno " + alumno.nombre.title() + " " + alumno.apellido.title() + " ahora asiste a " + str(alumno_C.curso)
+            'resultado': " El Alumno " + alumno.nombre.title() + " " + alumno.apellido.title() + " ahora asiste a " + str(alumno_C.curso)
         }
         return JsonResponse(data)
 

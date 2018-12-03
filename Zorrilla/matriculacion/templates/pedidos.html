@@ -45,7 +45,7 @@
                 <li class="list-group-item">Fecha de nacimiento: {{m.alumno.fecha_nacimiento}}</li>
             </ul>
             <br>
-            <a class="btn btn-info" href="{% url 'datos_alumno' 'pedidos' m.alumno.dni %}">Ver mas</a>
+            <a class="btn btn-info" href="{% url 'perfil_alumno' 'pedidos' m.alumno.dni %}">Ver mas</a>
             <a onclick="traer_secciones('{% url 'get_Secciones' m.alumno.dni %}, {{m.alumno.dni}}')" class="btn btn-info" style="color: white">Matricular</a>
         </div>
         <div class="card-footer">
@@ -65,7 +65,7 @@
                 <li class="list-group-item">Fecha de nacimiento: {{m.alumno.fecha_nacimiento}}</li>
             </ul>
             <br>
-            <a class="btn btn-dark" href="{% url 'datos_alumno' m.alumno.dni %}">Ver mas</a>
+            <a class="btn btn-dark" href="{% url 'perfil_alumno' 'pedidos' m.alumno.dni %}">Ver mas</a>
             <a onclick="traer_secciones('{% url 're_matricular' m.alumno.dni %}, {{m.alumno.dni}}')" class="btn btn-dark" style="color: white">Re Matricular</a>
         </div>
         <div class="card-footer">
@@ -85,7 +85,7 @@
                 <li class="list-group-item">Fecha de nacimiento: {{m.alumno.fecha_nacimiento}}</li>
             </ul>
             <br>
-            <a class="btn btn-success" href="{% url 'datos_alumno' m.alumno.dni %}">Ver mas</a>
+            <a class="btn btn-success" href="{% url 'perfil_alumno' 'pedidos' m.alumno.dni %}">Ver mas</a>
             <a onclick="traer_secciones('{% url 'egresar' m.alumno.dni %}, {{m.alumno.dni}}')" class="btn btn-success" style="color: white">Egresar</a>
         </div>
         <div class="card-footer">

@@ -67,10 +67,14 @@
                 <li class="list-group-item">Enfermedades: {{alumno.enfermedad_relevante}}</li>
                 <li class="list-group-item">Obra social:<a class="btn btn-outline-dark" href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Ver Obras Sociales</a></li>
                 <li class="list-group-item">Matriculado:
-                    {% if alumno.matriculado == "Si"%}
+                    {% if alumno.estado == "Si"%}
+                        {% if request.user|has_group:"Secretaria" %}
                         <a class="btn btn-outline-dark" onclick="traer_instancias('{% url 'modificar_curso' alumno.dni %}')">Ver Curso</a>
+                        {% else %}
+                            {{alumno.curso_si}}
+                        {% endif%}
                     {% else %}
-                        <a>{{alumno.matriculado}}</a>
+                        <a>{{alumno.estado}}</a>
                     {% endif %}
                 </li>
             </ul>

@@ -46,8 +46,10 @@
                 <span style="color:red" id="msg_advertencia_egreso">Advertencia: Si el Alumno pasa a estar como Egresado, el mismo ya no pertenecera a ningun Curso y no podra volver a pertenecer a ninguno. Ademas los padres del mismo seran notificados.</span>
             </div>
             <!-- Resultado -->
-                <span id="resultado"></span>
-                <div style="margin-top:5%" id="loader_resultado" class="loader"></div>
+
+                <span style="margin-left:0%;display: none" id="span_resultado">Resultado:</span>
+                <span style="width: 100%; margin-left: 0%; margin-top: -5.5% " id="resultado"></span>
+                <div style="margin-left: 20%; margin-top: -6.5%" id="loader_resultado" class="loader"></div>
 
             <form id="pedido_egreso" method="post">
                 {% csrf_token %}
@@ -57,7 +59,7 @@
         <!-- Modal footer -->
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal" id="cerrar_btn">Cerrar</button>
-            <button type="button" class="btn btn-success" id="volver_btn" onclick="refresh_p()">Continuar</button>
+            <a type="button" class="btn btn-success" id="volver_btn" href="{% url 'index' %}">Continuar</a>
             <button type="button" class="btn btn-info" id="cambiar_curso_btn" onclick="cambiar_curso()">Cambiar Curso</button>
             <button type="button" class="btn btn-info" id="egresar_btn" onclick="egresar_alumno()">Egresar</button>
         </div>
@@ -68,29 +70,33 @@
 
     //Botones
 
-    document.getElementById("cambiar_curso_btn").style.display = "none";
-    document.getElementById("volver_btn").style.display = "none";
-    document.getElementById("egresar_btn").style.display = "none";
-    document.getElementById("loader_resultado").style.display = "none";
+    $("#cambiar_curso_btn").hide();
+    $("#volver_btn").hide();
+    $("#egresar_btn").hide();
+    $("#loader_resultado").hide();
+
+    $("#resultado_mal").html("");
+    $("#resultado_bien").html("");
+    $("#cancelar").show();
 
     //Contenido de los Select
 
-    document.getElementById("contenido_cambiar_curso").style.display = "none";
-    document.getElementById("msg_advertencia_egreso").style.display = "none";
-    document.getElementById("msg_advertencia").style.display = "none";
+    $("#contenido_cambiar_curso").hide();
+    $("#msg_advertencia_egreso").hide();
+    $("#msg_advertencia").hide();
 
     //Spans
-
-    document.getElementById("msg_advertencia_egreso").style.display = "none";
+    $("#span_resultado").hide();
+    $("#msg_advertencia_egreso").hide();
 
     function select_curso(e) {
         if (e.target.value != 0){
             document.getElementById("id_curso").value = e.target.value;
-            document.getElementById("cambiar_curso_btn").style.display = "block";
-            document.getElementById("msg_advertencia").style.display = "block";
+            $("#cambiar_curso_btn").show();
+            $("#msg_advertencia").show();
         } else {
-            document.getElementById("cambiar_curso_btn").style.display = "none";
-            document.getElementById("msg_advertencia").style.display = "none";
+            $("#cambiar_curso_btn").hide();
+            $("#msg_advertencia").hide();
         }
 
     }
@@ -105,16 +111,16 @@
         console.log(x);
         //Mostrar Cambiar Curso
         if (x == 1){
-            document.getElementById("contenido_cambiar_curso").style.display = "block";
-            document.getElementById("msg_advertencia_egreso").style.display = "none";
-            document.getElementById("msg_advertencia").style.display = "none";
-            document.getElementById("cambiar_curso_btn").style.display = "none";
-            document.getElementById("egresar_btn").style.display = "none";
+            $("#contenido_cambiar_curso").show();
+            $("#msg_advertencia_egreso").hide();
+            $("#msg_advertencia").hide();
+            $("#cambiar_curso_btn").hide();
+            $("#egresar_btn").hide();
             //Esconder Cambiar Curso
         } else {
-            document.getElementById("contenido_cambiar_curso").style.display = "none";
-            document.getElementById("msg_advertencia").style.display = "none";
-            document.getElementById("cambiar_curso_btn").style.display = "none";
+            $("#contenido_cambiar_curso").hide();
+            $("#msg_advertencia").hide();
+            $("#cambiar_curso_btn").hide();
             uncheck_table();
         }
     }
@@ -123,54 +129,51 @@
         var x = document.getElementById("select_eg").value;
         //Mostrar Egresar
         if (x == 1){
-            document.getElementById("contenido_cambiar_curso").style.display = "none";
-            document.getElementById("msg_advertencia_egreso").style.display = "block";
-            document.getElementById("egresar_btn").style.display = "block";
-            document.getElementById("cambiar_curso_btn").style.display = "none";
+            $("#contenido_cambiar_curso").hide();
+            $("#cambiar_curso_btn").hide();
+            $("#egresar_btn").show();
+            $("#msg_advertencia_egreso").show();
             uncheck_table();
         }else{
-            document.getElementById("cambiar_curso_btn").style.display = "none";
-            document.getElementById("msg_advertencia_egreso").style.display = "none";
-            document.getElementById("egresar_btn").style.display = "none";
+            $("#cambiar_curso_btn").hide();
+            $("#msg_advertencia_egreso").hide();
+            $("#egresar_btn").hide();
             uncheck_table();
         }
     }
 
     function cambiar_curso(){
-        var r = confirm("¿Cambiar el Curso ?");
-        if (r == true) {
-            document.getElementById("resultado").innerHTML = "";
-            document.getElementById("esconder_resultado").style.display = "none";
-            document.getElementById("cambiar_curso_btn").style.display = "none";
-            document.getElementById("cerrar_btn").style.display = "none";
-            var myForm = document.getElementById('form_cambiar_curso');
-            document.getElementById("loader_resultado").style.display = "block";
-            formData = new FormData(myForm);
-            $.ajax({
-                url: '{% url 'cambiar_curso' %}',
-                data : formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    var element = document.getElementById("titulo");
-                    element.innerHTML = "Cambio Realizado con exito.";
-                    document.getElementById("loader_resultado").style.display = "none";
-                    document.getElementById("resultado").innerHTML = data.resultado;
-                    document.getElementById("volver_btn").style.display = "block";
-                }
-            });
-        } else {
-            return;
-        }
+        $("#resultado").html("");
+        $("#esconder_resultado").hide();
+        $("#cambiar_curso_btn").hide();
+        $("#cerrar_btn").hide();
+        $("#span_resultado").show();
+        $("#loader_resultado").show();
+        var myForm = document.getElementById('form_cambiar_curso');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: '{% url 'cambiar_curso' %}',
+            data : formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#titulo").html("Cambio Realizado con exito");
+                $("#loader_resultado").hide();
+                $("#resultado").html(data.resultado);
+                $("#volver_btn").show();
+            }
+        });
     }
 
     function egresar_alumno(){
-        document.getElementById("esconder_resultado").style.display = "none";
-        document.getElementById("resultado").innerHTML = "";
-        document.getElementById("loader_resultado").style.display = "block";
-        document.getElementById("cerrar_btn").style.display = "none";
-        document.getElementById("egresar_btn").style.display = "none";
+        $("#resultado").html("");
+        $("#esconder_resultado").hide();
+        $("#cambiar_curso_btn").hide()
+        $("#egresar_btn").hide();
+        $("#cerrar_btn").hide();
+        $("#span_resultado").show();
+        $("#loader_resultado").show()
         var myForm = document.getElementById('pedido_egreso');
         formData = new FormData(myForm);
         $.ajax({
@@ -180,9 +183,9 @@
             contentType: false,
             type: 'POST',
             success: function(data){
-                document.getElementById("loader_resultado").style.display = "none";
-                document.getElementById("resultado").innerHTML = data.resultado;
-                document.getElementById("volver_btn").style.display = "block";
+                $("#loader_resultado").hide();
+                $("#resultado").html(data.resultado);
+                $("#volver_btn").show();
             }
         });
     }

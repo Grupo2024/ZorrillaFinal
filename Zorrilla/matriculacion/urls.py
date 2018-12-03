@@ -106,5 +106,5 @@ urlpatterns = [
 
     #Url con ID y String
 
-    url(r'^perfilAlumno/(?P<opcion>[\w\-]+)-(?P<dni_alumno>\d+)$', datos_alumno, name="datos_alumno")
+    url(r'^perfilAlumno/(?P<opcion>[\w\-]+)-(?P<dni_alumno>\d+)$', perfil_alumno, name="perfil_alumno")
 ]
