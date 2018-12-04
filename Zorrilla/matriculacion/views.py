@@ -531,7 +531,7 @@ def asignar_autorizado(request):
                 alumno_autorizado.relacion_con_alumno = relacion_con_alumno
                 alumno_autorizado.save()
             data = {
-                'resultado':"Resultado: Autorizado Asignado con exito."
+                'resultado':"Autorizado Asignado con exito."
             }
             return JsonResponse(data)
         else:
@@ -608,12 +608,16 @@ def traer_pedidos(request):
     egresos = Matriculacion.objects.filter(matriculado="Pe").order_by('-fecha_matriculacion')
     return render(request, 'pedidos.html', {'matriculaciones':matriculaciones, 're_matricular':re_matriculaciones, 'egresos':egresos})
 
-def padres_del_alumno(request, dni_alumno):
+def padres_del_alumno(request, opcion, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
+    if (opcion == "pedido"):
+        alumno.opcion = "pedido"
+    else:
+        alumno.opcion = "perfil"
     familia = Familia.objects.filter(alumno=alumno, habilitado=True).order_by("padre_madre__apellido", "padre_madre__nombre", "padre_madre__dni")
     return render(request, 'Padre_madre/padres_del_alumno.html', {'familiares':familia, 'alumno':alumno})
 
-def transportistas_del_alumno(request, dni_alumno):
+def transportistas_del_alumno(request, opcion, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
     transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True).order_by("transportista__apellido", "transportista__nombre", "transportista__dni")
     return render(request, 'Transportista/transportistas_del_alumno.html', {'transportistas':transportistas, 'alumno':alumno})
@@ -623,8 +627,12 @@ def obras_sociales_del_alumno(request, dni_alumno):
     obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     return render(request, 'Obra_Social/obras_sociales_del_alumno.html', {'obras_sociales':obras_sociales, 'alumno':alumno})
 
-def autorizados_del_alumno(request, dni_alumno):
+def autorizados_del_alumno(request, opcion, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
+    if (opcion == "pedido"):
+        alumno.opcion = "pedido"
+    else:
+        alumno.opcion = "perfil"
     autorizados = alumno_Autorizado.objects.filter(alumno=alumno, habilitado=True).order_by("autorizado__apellido", "autorizado__nombre", "autorizado__dni")
     return render(request, 'Autorizado/autorizados_del_alumno.html', {'autorizados':autorizados, 'alumno':alumno})
 
@@ -1237,7 +1245,7 @@ def desvincular_familiar(request):
         medio = Familia.objects.get(alumno=alumno, padre_madre=padre)
         medio.habilitado = False
         medio.save()
-        return redirect ('padres_del_alumno', dni_alumno)
+        return redirect ('padres_del_alumno', "perfil", dni_alumno)
     return HttpResponse("Solo por acceder por Post")
 
 def desvincular_autorizado(request):
@@ -1249,5 +1257,5 @@ def desvincular_autorizado(request):
         medio = alumno_Autorizado.objects.get(alumno=alumno, autorizado=autorizado)
         medio.habilitado = False
         medio.save()
-        return redirect ('autorizados_del_alumno', dni_alumno)
+        return redirect ('autorizados_del_alumno',"perfil", dni_alumno)
     return HttpResponse("Solo por acceder por Post")

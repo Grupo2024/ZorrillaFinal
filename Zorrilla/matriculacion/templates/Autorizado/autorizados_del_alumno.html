@@ -38,7 +38,7 @@
             <td>{{a.autorizado.nombre|title}}</td>
             <td>{{a.autorizado.dni}}</td>
             <td>{{a.relacion_con_alumno|title}}</td>
-            <td><button class="btn btn-warning" onclick="desvincular({{a.autorizado.dni}})"><i class="fa fa-ban"></i></button></td>
+            <td><button class="btn btn-warning" onclick="reset_modal({{a.autorizado.dni}})"><i class="fa fa-ban"></i></button></td>
             <td><a class="btn btn-info" href="{% url 'form_editar_autorizado' a.autorizado.dni %}"><i class="fa fa-edit"></i></a></td>
             <td><a class="btn btn-primary" href="{% url 'datos_autorizado' a.autorizado.dni %}" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></a></td>
         </tr>
@@ -55,9 +55,12 @@
 <br>
 
 <center>
-    <button class="btn btn-success text-white centerB" onclick="traer_autorizados('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Cargar Autorizado</button>
-    <a class="btn btn-primary centerB" href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
-    <a class="btn btn-primary centerB" href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
+    {% if alumno.opcion == "pedido" %}
+        <a class="btn btn-primary centerB" href="{% url 'traer_pedidos' %}">Volver</a>
+    {% else %}
+        <a class="btn btn-primary centerB" href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
+    {% endif %}
+    <a class="btn btn-success text-white centerB" onclick="traer_autorizados('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Añadir Autorizado</a>
 </center>
 
 <div class="modal fade" id="todos_los_autorizados">
@@ -67,26 +70,47 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal_confirm">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <br>
+                <p id="msg_confirm" align="center" style="display: none">¿Desvincular?</p>
+            </div>
+
+            <div class="modal-footer" id="footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                <button onclick="desvincular()" class="btn btn-primary" id="aceptar">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form action="{% url 'autorizados_del_alumno' 'perfil' alumno.dni%}" method="post" id="tda">
+    {% csrf_token %}
+</form>
+
 <form id="desvincular_autorizado" method="post" action="{% url 'desvincular_autorizado' %}">
     {% csrf_token %}
     <input type="hidden" value="{{alumno.dni}}" name="dni_alumno">
     <input type="hidden" value=0 name="dni_autorizado" id="dni_autorizado">
 </form>
 
-<form action="{% url 'autorizados_del_alumno' alumno.dni%}" method="post" id="tda">
-    {% csrf_token %}
-</form>
-
 <script>
 
-    function desvincular(dni_autorizado){
-        if (confirm("¿Desvincular a este Autorizado ?")) {
-            document.getElementById("dni_autorizado").value = dni_autorizado;
-            var des = document.getElementById("desvincular_autorizado");
-            des.submit();
-        } else {
-            return;
-        }
+    function reset_modal(dni_autorizado){
+        document.getElementById("dni_autorizado").value = dni_autorizado;
+        $("#cancelar").show();
+        $("#aceptar").show();
+        $("#msg_confirm").show();
+        $("#modal_confirm").modal()
+    }
+
+    function desvincular(){
+        var des = document.getElementById("desvincular_autorizado");
+        des.submit();
     }
 
     function traer_autorizados(url){

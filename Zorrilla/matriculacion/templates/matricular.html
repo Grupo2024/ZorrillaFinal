@@ -40,7 +40,7 @@
                             <br>
                             <br>
                             <div id="btn_asignar_padre2" class="hidden_idv">
-                                <a class="btn btn-outline-dark" href="{% url 'padres_del_alumno' alumno.dni %}">Asignar Padre</a>
+                                <a class="btn btn-outline-dark" href="{% url 'padres_del_alumno' 'pedido' alumno.dni %}">Asignar Padre</a>
                                 <br>
                                 <br>
                             </div>
@@ -51,7 +51,7 @@
                             {% endfor %}
                             <br>
                             <div id="new_padre">
-                                <a class="btn btn-success" href="{% url 'padres_del_alumno' alumno.dni %}">Ver Padres</a>
+                                <a class="btn btn-success" href="{% url 'padres_del_alumno' 'pedido' alumno.dni %}">Ver Padres</a>
                             </div>
                             {% endif %}
                         </div>
@@ -69,7 +69,7 @@
                             <br>
                             <br>
                             <div id="btn_asignar_autorizado" class="hidden_idv">
-                                <a class="btn btn-outline-dark" href="{% url 'autorizados_del_alumno' alumno.dni %}">Asignar Autorizado</a>
+                                <a class="btn btn-outline-dark" href="{% url 'autorizados_del_alumno' 'pedido' alumno.dni %}">Asignar Autorizado</a>
                                 <br>
                                 <br>
                             </div>
@@ -79,7 +79,7 @@
                             <br>
                             {% endfor %}
                             <br>
-                            <a class="btn btn-success" href="{% url 'autorizados_del_alumno' alumno.dni %}">Mostrar Autorizados</a>
+                            <a class="btn btn-success" href="{% url 'autorizados_del_alumno' 'pedido' alumno.dni %}">Mostrar Autorizados</a>
                             {% endif %}
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                             <br>
                             <br>
                             <div id="btn_asignar_transporte" class="hidden_idv">
-                                <a class="btn btn-outline-dark" href="{% url 'transportistas_del_alumno' alumno.dni %}">Asignar Transportista</a>
+                                <a class="btn btn-outline-dark" href="{% url 'transportistas_del_alumno' 'pedido' alumno.dni %}">Asignar Transportista</a>
                                 <br>
                                 <br>
                             </div>
@@ -106,7 +106,7 @@
                             <br>
                             {% endfor %}
                             <br>
-                            <a class="btn btn-success" style="margin-top: 1%; color: white" href="{% url 'transportistas_del_alumno' alumno.dni %}">Mostrar Transportistas</a>
+                            <a class="btn btn-success" style="margin-top: 1%; color: white" href="{% url 'transportistas_del_alumno' 'pedido' alumno.dni %}">Mostrar Transportistas</a>
                             {% endif %}
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                             <br>
                             <br>
                             <div id="btn_asignar_obra" class="hidden_idv">
-                                <a class="btn btn-outline-dark" href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Asignar Obra Social</a>
+                                <a class="btn btn-outline-dark" href="{% url 'obras_sociales_del_alumno' 'pedido' alumno.dni %}">Asignar Obra Social</a>
                                 <br>
                                 <br>
                             </div>
@@ -134,7 +134,7 @@
                             {% endfor %}
                             <br>
                             <div id="new_obra">
-                                <a class="btn btn-success" href="{% url 'obras_sociales_del_alumno' alumno.dni %}">Ver Obras</a>
+                                <a class="btn btn-success" href="{% url 'obras_sociales_del_alumno' 'pedido' alumno.dni %}">Ver Obras</a>
                             </div>
                             {% endif %}
                         </div>
@@ -144,8 +144,8 @@
                         <input name="dni_alumno" id="dni_alumno" type="hidden" value="{{alumno.dni}}">
                     </div>
                 </div>
+                <button type="button" class="btn btn-success" id="btn_matricular" style="margin-left: 65%; margin-top: -25%" onclick="pre_matricular()">Matricular</button>
             </div>
-            <button type="button" class="btn btn-success" id="btn_matricular" onclick="pre_matricular()">Matricular</button>
         </form>
     </div>
 </div>

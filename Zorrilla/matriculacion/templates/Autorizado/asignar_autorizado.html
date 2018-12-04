@@ -2,7 +2,7 @@
     <div class="modal-content">
 
         <div class="modal-header">
-            <span>Autorizados:</span>
+            <h4 class="modal-title">Asignar Autorizado.</h4>
         </div>
 
         <div class="modal-body">
@@ -90,29 +90,24 @@
     });
 
     function mandar_autorizado(){
-        var r = confirm("¿Asignar este Autorizado ?");
-        if (r == true) {
-            document.getElementById("asignar_o").style.display = "none";
-            var myForm = document.getElementById('asign_a');
-            formData = new FormData(myForm);
-            $.ajax({
-                url: '{% url 'asignar_autorizado' %}',
-                data : formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    document.getElementById("hide_for_c").style.display = "none";
-                    document.getElementById("cerrar_btn").style.display = "none";
-                    document.getElementById("cont_autorizado").style.display = "none";
-                    document.getElementById("crear_btn").style.display = "none";
-                    document.getElementById("resultado_asignar_autorizado").innerHTML = data.resultado
-                    document.getElementById("volver_btn").style.display = "block";
-                }
-            });
-        } else {
-            return;
-        }
+        document.getElementById("asignar_o").style.display = "none";
+        var myForm = document.getElementById('asign_a');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: '{% url 'asignar_autorizado' %}',
+            data : formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                document.getElementById("hide_for_c").style.display = "none";
+                document.getElementById("cerrar_btn").style.display = "none";
+                document.getElementById("cont_autorizado").style.display = "none";
+                document.getElementById("crear_btn").style.display = "none";
+                document.getElementById("resultado_asignar_autorizado").innerHTML = data.resultado
+                document.getElementById("volver_btn").style.display = "block";
+            }
+        });
     }
 
     function buscar_autorizado() {

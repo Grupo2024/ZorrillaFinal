@@ -2,13 +2,14 @@
     <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
-            <span>Asignar Padre.</span>
+            <h4 class="modal-title">Asignar Padre.</h4>
         </div>
         <!-- Modal body -->
         <div class="modal-body">
             <div id="padress">
-                <h4>Padres:</h4>
                 {% if todos_los_padres|length != 0 %}
+                <h4 >Padres:</h4>
+                <br>
                 <input type="text"placeholder="Padre que desea buscar" id="myInput" onkeyup="buscar_padre()" size="5">
                 <select id="filter_by">
                     <option value=0>Nombre</option>

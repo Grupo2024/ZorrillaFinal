@@ -35,7 +35,7 @@
             <td>{{a.padre_madre.apellido|title}}</td>
             <td>{{a.padre_madre.dni}}</td>
             <td>{{a.padre_madre.email}}</td>
-            <td><button class="btn btn-warning" onclick="desvincular({{a.padre_madre.dni}})"><i class="fa fa-ban"></i></button></td>
+            <td><button class="btn btn-warning" onclick="reset_modal({{a.padre_madre.dni}})"><i class="fa fa-ban"></i></button></td>
             <td><a class="btn btn-info" href="{% url 'form_editar_padre' a.padre_madre.dni %}"><i class="fa fa-edit"></i></a></td>
             <td><a class="btn btn-primary" href="{% url 'datos_padre' a.padre_madre.dni %}" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></a></td>
         </tr>
@@ -52,8 +52,11 @@
 
 
 <center>
-    <a class="btn btn-primary centerB" href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
-    <a class="btn btn-primary centerB" href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
+    {% if alumno.opcion == "pedido" %}
+        <a class="btn btn-primary centerB" href="{% url 'traer_pedidos' %}">Volver</a>
+    {% else %}
+        <a class="btn btn-primary centerB" href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
+    {% endif %}
     <a class="btn btn-success text-white centerB" onclick="traer_padres('{% url 'todos_los_padres_asignar' alumno.dni %}')">Añadir Padre</a>
 </center>
 
@@ -64,20 +67,41 @@
     </div>
 </div>
 
-<form action="{% url 'padres_del_alumno' alumno.dni%}" method="post" id="pda">
+<div class="modal fade" id="modal_confirm">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <br>
+                <p id="msg_confirm" align="center" style="display: none">¿Desvincular?</p>
+            </div>
+
+            <div class="modal-footer" id="footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                <button onclick="desvincular()" class="btn btn-primary" id="aceptar">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form action="{% url 'padres_del_alumno' 'perfil' alumno.dni%}" method="post" id="pda">
     {% csrf_token %}
 </form>
 
 <script>
 
-    function desvincular(dni_padre){
-        if (confirm("¿Desvincular a este Padre ?")) {
-            document.getElementById("dni_padre").value = dni_padre;
-            var des = document.getElementById("desvincular_familiar");
-            des.submit();
-        } else {
-            return;
-        }
+    function reset_modal(dni_padre){
+        document.getElementById("dni_padre").value = dni_padre;
+        $("#cancelar").show();
+        $("#aceptar").show();
+        $("#msg_confirm").show();
+        $("#modal_confirm").modal()
+    }
+
+    function desvincular(){
+        var des = document.getElementById("desvincular_familiar");
+        des.submit();
     }
 
     function traer_padres(url){

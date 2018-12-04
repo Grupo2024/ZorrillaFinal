@@ -78,13 +78,9 @@ urlpatterns = [
 
     url(r'^modificar_curso/(\d+)/', modificar_curso, name="modificar_curso"),
     url(r'^datos_obra_social/(?P<id_obra_social>\d+)/', datos_obra_social, name="datos_obra_social"),
-    url(r'^padres_del_alumno/(\d+)/', padres_del_alumno, name="padres_del_alumno"),
     url(r'^form_editar_padre/(\d+)/', form_editar_padre, name="form_editar_padre"),
     url(r'^form_editar_autorizado/(\d+)/', form_editar_autorizado, name="form_editar_autorizado"),
     url(r'^usuarios_transportista/(\d+)/', usuarios_transportista, name="usuarios_transportista"),
-    url(r'^transportistas_del_alumno/(\d+)/', transportistas_del_alumno, name="transportistas_del_alumno"),
-    url(r'^autorizados_del_alumno/(\d+)/', autorizados_del_alumno, name="autorizados_del_alumno"),
-    url(r'^obras_sociales_del_alumno/(\d+)/', obras_sociales_del_alumno, name="obras_sociales_del_alumno"),
     url(r'^todos_los_autorizados_asignar/(\d+)/', todos_los_autorizados_asignar, name="todos_los_autorizados_asignar"),
     url(r'^get_Secciones/(\d+)/', get_Secciones, name="get_Secciones"),
     url(r'^re_matricular/(\d+)/', re_matricular, name="re_matricular"),
@@ -107,5 +103,9 @@ urlpatterns = [
 
     #Url con ID y String
 
+    url(r'^obras_sociales_del_alumno/(?P<opcion>[\w\-]+)-(?P<dni_alumno>\d+)$', obras_sociales_del_alumno, name="obras_sociales_del_alumno"),
+    url(r'^transportistas_del_alumno/(?P<opcion>[\w\-]+)-(?P<dni_alumno>\d+)$', transportistas_del_alumno, name="transportistas_del_alumno"),
+    url(r'^autorizados_del_alumno/(?P<opcion>[\w\-]+)-(?P<dni_alumno>\d+)$', autorizados_del_alumno, name="autorizados_del_alumno"),
+    url(r'^padres_del_alumno/(?P<opcion>[\w\-]+)-(?P<dni_alumno>\d+)$', padres_del_alumno, name="padres_del_alumno"),
     url(r'^perfilAlumno/(?P<opcion>[\w\-]+)-(?P<dni_alumno>\d+)$', perfil_alumno, name="perfil_alumno")
 ]
