@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+<style>
+
+    .outer {
+        display: table;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+    }
+
+    .middle {
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .inner {
+        margin-left: auto;
+        margin-right: auto;
+        width: 400px;
+        /*whatever width you want*/
+    }
+
+</style>
+
+<div class="outer">
+    <div class="middle">
+        <div class="inner">
+            <div class="card text-black">
+                <br>
+                <div class="card-header">
+                    <h4 class="card-title" align="center">Registro de Egresados.</h4>
+                </div>
+                <div class="card-body">
+                    <form id="generar" action="{% url 'generar_egreso' %}" method="post">
+                        {% csrf_token %}
+                        <p align="center">
+                        <button type="submit" style="color:#ffffff" class="card-link btn btn-success">Generar</button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock body %}

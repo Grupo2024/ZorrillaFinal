@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^logIn/', logIn, name="logIn"),
     url(r'^logout_me_out', logout_me_out, name="logout_me_out"),
     url(r'^asdf', asdf, name="asdf"),
+    url(r'^form_egresados', form_egresados, name="form_egresados"),
     url(r'^form/', formulario, name="form"),
     url(r'^formReMatricular/', formReMatricular, name="formReMatricular"),
     url(r'^form_transportista', form_transportista, name="form_transportista"),
@@ -43,6 +44,7 @@ urlpatterns = [
 
     url(r'^todas_las_obras_sociales', todas_las_obras_sociales, name="todas_las_obras_sociales"),
     url(r'^todos_los_transportistas/$', todas_los_transportistas, name="todas_los_transportistas"),
+    url(r'^generar_egreso/$', generar_egreso, name="generar_egreso"),
     url(r'^pedidos', traer_pedidos, name="traer_pedidos"),
 
     #Modificar

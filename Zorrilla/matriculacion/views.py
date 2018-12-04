@@ -11,6 +11,8 @@ from django.conf import settings
 from django.core.mail import send_mail
 from biblioteca.decorators import *
 from institucion.forms import *
+import xlwt
+import datetime
 
 # Create your views here.
 
@@ -84,6 +86,43 @@ def index(request):
 def logout_me_out(request):
     auth.logout(request)
     return redirect ('index')
+
+@user_passes_test(check_Secretaria)
+def form_egresados(request):
+    return render(request, 'templates_cursos/egresar_file.html')
+
+@user_passes_test(check_Secretaria)
+def generar_egreso(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="reporte_egresados.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Books')
+
+    # Sheet header, first row
+    row_num = 3
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['Nombre', 'Apellido', 'Dni']
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    # Sheet body, remaining filas
+    font_style = xlwt.XFStyle()
+
+    filas = Matriculacion.objects.filter(matriculado="Eg").order_by('fecha_matriculacion').values_list('alumno__nombre', 'alumno__apellido', 'alumno__dni').distinct()
+    print (filas)
+    for row in filas:
+        row_num += 1
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
+
+    wb.save(response)
+    return response
+
 """
 ==============================¿
 Pasar ModelForm a un Template.
@@ -460,12 +499,12 @@ def asignar_transportista(request):
         dni_transportista = request.POST['dni_transportista']
         alumno = Alumno.objects.get(dni=dni)
         transportista = Transportista.objects.get(dni=dni_transportista)
-        usa_transporte, created = usa_Transporte.objects.get_or_create(alumno=alumno, transportista=transportista)
-        if created:
-            pass
-        else:
-            print ("Esta ya estaba antes.")
+        try:
+            usa_transporte = usa_Transporte.objects.get(alumno=alumno, transportista=transportista)
             usa_transporte.habilitado = True
+            usa_transporte.save()
+        except usa_Transporte.DoesNotExist:
+            usa_transporte = usa_Transporte(alumno=alumno, transportista=transportista)
             usa_transporte.save()
         data = {
             'resultado': 'Transportista asignado con exito.'
@@ -480,12 +519,12 @@ def asignar_padre(request):
         dni_padre = request.POST['dni_padre']
         alumno = Alumno.objects.get(dni=dni)
         padre = Padre_madre.objects.get(dni=dni_padre)
-        familia, created = Familia.objects.get_or_create(alumno=alumno, padre_madre=padre)
-        if created:
-            pass
-        else:
-            print ("Esta ya estaba antes.")
+        try:
+            familia = Familia.objects.get(alumno=alumno, padre_madre=padre)
             familia.habilitado = True
+            familia.save()
+        except Familia.DoesNotExist:
+            familia = Familia(alumno=alumno, padre_madre=padre)
             familia.save()
         data = {
             'resultado': 'Padre asignado con exito.'
@@ -500,11 +539,13 @@ def asignar_obra_social(request):
         num_afiliado = request.POST['num_afiliado']
         alumno = Alumno.objects.get(dni=dni)
         obra_Social = Obra_Social.objects.get(id=id_obra_social)
-        usa_Obra, created = usa_Obra_Social.objects.get_or_create(alumno=alumno, obra_social=obra_Social, numero_afiliado=num_afiliado)
-        if created:
-            pass
-        else:
+        try:
+            usa_Obra = usa_Obra_Social.objects.get(alumno=alumno, obra_social=obra_Social)
+            usa_Obra.numero_afiliado = num_afiliado
             usa_Obra.habilitado = True
+            usa_Obra.save()
+        except usa_Obra_Social.DoesNotExist:
+            usa_Obra = usa_Obra_Social(alumno=alumno, obra_social=obra_Social, numero_afiliado=num_afiliado)
             usa_Obra.save()
         data = {
             'resultado':"Obra Asignada con exito."
@@ -519,16 +560,15 @@ def asignar_autorizado(request):
         relacion_con_alumno = RelacionForm(request.POST)
         if relacion_con_alumno.is_valid():
             relacion_con_alumno = relacion_con_alumno.cleaned_data['relacion_con_alumno']
-            print (relacion_con_alumno)
             alumno = Alumno.objects.get(dni=dni)
             autorizado = Autorizado.objects.get(dni=dni_autorizado)
-            alumno_autorizado, created = alumno_Autorizado.objects.get_or_create(alumno=alumno, autorizado=autorizado)
-            if created:
+            try:
+                alumno_autorizado = alumno_Autorizado.objects.get(alumno=alumno, autorizado=autorizado)
                 alumno_autorizado.relacion_con_alumno = relacion_con_alumno
-                alumno_autorizado.save()
-            else:
                 alumno_autorizado.habilitado = True
-                alumno_autorizado.relacion_con_alumno = relacion_con_alumno
+                alumno_autorizado.save()
+            except alumno_Autorizado.DoesNotExist:
+                alumno_autorizado = alumno_Autorizado(alumno=alumno, autorizado=autorizado, relacion_con_alumno=relacion_con_alumno)
                 alumno_autorizado.save()
             data = {
                 'resultado':"Autorizado Asignado con exito."
@@ -930,6 +970,7 @@ def egresar_alumno(request):
         alumno = Alumno.objects.get(dni=dni_alumno)
         matriculacion = Matriculacion.objects.get(alumno=alumno)
         matriculacion.matriculado = "Eg"
+        matriculacion.fecha_matriculacion = datetime.date.today()
         matriculacion.save()
         familiares = Familia.objects.filter(alumno=alumno, habilitado=True)
         subject = "Pedido de Egreso de " + str(alumno.apellido.title()) + " " + str(alumno.nombre.title()) + "."
