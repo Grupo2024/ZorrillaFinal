@@ -132,36 +132,37 @@ def cargado(request):
     return JsonResponse(data)
 
 @user_passes_test(check_Profesor_or_Secretaria)
-def eliminar_libro(request, id_documento):
-    document = Documento.objects.get(id=id_documento)
-    estado = Estado(document=document, user=request.user, modificacion="Deshabilitar")
-    document.habilitado = "Deshabilitado"
-    document.save()
-    estado.save()
-    data = {
-        'estado':" El libro " + str(document.titulo) + " ha sido Deshabilitado."
-    }
-    return JsonResponse(data, safe=True)
+def eliminar_libro(request):
+    if request.method == 'POST':
+        id_documento = request.POST['document2']
+        document = Documento.objects.get(id=id_documento)
+        estado = Estado(document=document, user=request.user, modificacion="Deshabilitar")
+        document.habilitado = "Deshabilitado"
+        document.save()
+        estado.save()
+        return redirect ("biblioteca")
+    return HttpResponse("Solo podes acceder por Post")
 
 @user_passes_test(check_Secretaria)
-def cambiar_estado_libro(request, id_documento):
-    new_document = Documento.objects.get(id=id_documento)
-    print (new_document.habilitado)
-    aux = "Deshabilitado"
-    if new_document.habilitado == "Habilitado":
-        new_document.habilitado="Deshabilitado"
-        new_document.save()
-    else:
-        aux="Habilitado"
-        new_document.habilitado="Habilitado"
-        new_document.save()
-    estado = Estado(document=new_document, user=request.user, modificacion=aux)
-    estado.save()
-    data = {
-        'estado':'El libro ' + str(new_document.titulo) + " ha cambiado su estado a " + str(new_document.habilitado)
-    }
-    return JsonResponse(data, safe=True)
-
+def cambiar_estado_libro(request):
+    if request.method == 'POST':
+        id_documento = request.POST['document']
+        print id_documento
+        #id_documento2 = int(id_documento)
+        new_document = Documento.objects.get(id=id_documento)
+        print (new_document.habilitado)
+        aux = "Deshabilitado"
+        if new_document.habilitado == "Habilitado":
+            new_document.habilitado="Deshabilitado"
+            new_document.save()
+        else:
+            aux="Habilitado"
+            new_document.habilitado="Habilitado"
+            new_document.save()
+        estado = Estado(document=new_document, user=request.user, modificacion=aux)
+        estado.save()
+        return redirect ('biblioteca')
+    return HttpResponse("Solo podes acceder por Post")
 
 def info_libro(request, id_documento):
     document = Documento.objects.get(id=id_documento)

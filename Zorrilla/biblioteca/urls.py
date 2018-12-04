@@ -6,8 +6,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^biblioteca', biblioteca, name="biblioteca"),
-    url(r'^eliminar_libro/(?P<id_documento>\d+)$', eliminar_libro, name="eliminar_libro"),
-    url(r'^cambiar_estado_libro/(?P<id_documento>\d+)$', cambiar_estado_libro, name="cambiar_estado_libro"),
+    url(r'^eliminar_libro/$', eliminar_libro, name="eliminar_libro"),
+    url(r'^cambiar_estado_libro/$', cambiar_estado_libro, name="cambiar_estado_libro"),
     url(r'^info_libro/(?P<id_documento>\d+)$', info_libro, name="info_libro"),
     url(r'^historia_libro/(?P<id_documento>\d+)$', historia_libro, name="historia_libro"),
     url(r'^filtered_books/$', filtered_books, name="filtered_books"),
