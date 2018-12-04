@@ -27,11 +27,13 @@ class ReMatricularForm(forms.Form):
     email_padre = forms.EmailField(required=True)
 
 class AutorizadoForm(forms.ModelForm):
+    fecha_nacimiento = forms.DateField(error_messages={'invalid':"Fecha no valida: '2000-10-31'"})
     class Meta:
         model = Autorizado
         fields = '__all__'
         
 class EditarAutorizadoForm(forms.ModelForm):
+    fecha_nacimiento = forms.DateField(error_messages={'invalid':"Fecha no valida: '31-5-2000'"})
     class Meta:
         model = Autorizado
         fields = ['nombre', 'apellido','lugar_nacimiento','fecha_nacimiento','domicilio','email','sexo','telefono_autorizado']
@@ -73,6 +75,9 @@ class EditarTransportistaForm(forms.ModelForm):
         model = Transportista
         fields = ['nombre', 'apellido', 'lugar_nacimiento','fecha_nacimiento','domicilio','email','sexo','nombre_transporte',
 'telefono_transportista','detalles_transportista']
+        widgets = {
+          'detalles_transportista': forms.Textarea(attrs={'rows':3, 'cols':20}),
+        }
 
 
 class TransportistaForm(forms.ModelForm):
@@ -81,6 +86,7 @@ class TransportistaForm(forms.ModelForm):
         fields =  ['nombre', 'apellido', 'dni', 'lugar_nacimiento','fecha_nacimiento','domicilio','email','sexo','nombre_transporte',
 'telefono_transportista','detalles_transportista']
         widgets = {
+            'detalles_transportista': forms.Textarea(attrs={'rows':3, 'cols':20}),
             'fecha_nacimiento': DateInput()
         }
 

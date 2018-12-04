@@ -121,7 +121,7 @@ def cargar_padre(request, dni_alumno):
 
 def form_autorizado(request):
     opcion = "Crear"
-    autorizado = AutorizadoForm()
+    autorizado = AutorizadoForm(initial={'fecha_nacimiento':'dia/mes/año'})
     return render(request, 'Autorizado/crear_autorizado.html', {'autorizado':autorizado, 'opcion':opcion})
 
 def form_secretaria_director(request, opcion):
@@ -833,7 +833,7 @@ def editar_autorizado(request):
             autorizado_elegido.sexo = nuevo_sexo
             autorizado_elegido.telefono_autorizado = nuevo_telefono_autorizado 
         
-            #autorizado_elegido.save()
+            autorizado_elegido.save()
             data = {
                 'error': False,
                 'resultado': " Los Datos de " + autorizado_elegido.nombre.title() + " " + autorizado_elegido.apellido.title() + " han sido modificados con exito."
