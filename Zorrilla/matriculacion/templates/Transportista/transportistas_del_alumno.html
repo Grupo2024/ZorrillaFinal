@@ -40,7 +40,7 @@
             <td>{{a.transportista.dni}}</td>
             <td>{{a.transportista.nombre_transporte|title}}</td>
             <td>{{a.transportista.telefono_transportista}}</td>
-            <td><button class="btn btn-warning" onclick="desvincular({{a.transportista.dni}})"><i class="fa fa-ban"></i></button></td>
+            <td><button class="btn btn-warning" onclick="reset_modal({{a.transportista.dni}})"><i class="fa fa-ban"></i></button></td>
             <td><a class="btn btn-info" href="{% url 'form_editar_transportista' a.transportista.dni %}"><i class="fa fa-edit"></i></a></td>
             <td><a class="btn btn-primary" href="{% url 'datos_transportista' a.transportista.dni %}" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></a></td>
         </tr>
@@ -57,14 +57,35 @@
 <br>
 
 <center>
-    <button class="btn btn-success text-white" onclick="traer_transportistas('{% url 'todos_los_transportistas_asignar' alumno.dni %}')">Asignar Transportista</button>
-    <a class="btn btn-primary" href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
-    <a class="btn btn-primary" href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
+    {% if alumno.opcion == "pedido" %}
+        <a class="btn btn-primary centerB" href="{% url 'traer_pedidos' %}">Volver</a>
+    {% else %}
+        <a class="btn btn-primary centerB" href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
+    {% endif %}
+    <a class="btn btn-success text-white centerB" onclick="traer_transportistas('{% url 'todos_los_transportistas_asignar' alumno.dni %}')">Asignar Transportista</a>
 </center>
 
 <div class="modal fade" id="todos_los_transportistas">
     <div class="modal-dialog modal-lg">
         <div id="datos_transportista">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_confirm">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <br>
+                <p id="msg_confirm" align="center" style="display: none">¿Desvincular?</p>
+            </div>
+
+            <div class="modal-footer" id="footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                <button onclick="desvincular()" class="btn btn-primary" id="aceptar">Aceptar</button>
+            </div>
         </div>
     </div>
 </div>
@@ -75,21 +96,25 @@
     <input type="hidden" value=0 name="dni_transportista" id="dni_transportista">
 </form>
 
-<form action="{% url 'transportistas_del_alumno' alumno.dni%}" method="post" id="tda">
+<form action="{% url 'transportistas_del_alumno' 'perfil' alumno.dni%}" method="post" id="tda">
     {% csrf_token %}
 </form>
 
 <script>
 
-    function desvincular(dni_transportista){
-        if (confirm("¿Desvincular a este Transportista ?")) {
-            document.getElementById("dni_transportista").value = dni_transportista;
-            var des = document.getElementById("desvincular_transportista");
-            des.submit();
-        } else {
-            return;
-        }
+     function reset_modal(dni_transportista){
+        document.getElementById("dni_transportista").value = dni_transportista;
+        $("#cancelar").show();
+        $("#aceptar").show();
+        $("#msg_confirm").show();
+        $("#modal_confirm").modal()
     }
+
+    function desvincular(){
+        var des = document.getElementById("desvincular_transportista");
+        des.submit();
+    }
+
 
     function traer_transportistas(url){
         $.ajax({

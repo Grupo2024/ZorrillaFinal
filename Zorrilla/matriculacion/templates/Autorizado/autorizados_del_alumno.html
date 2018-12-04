@@ -60,7 +60,7 @@
     {% else %}
         <a class="btn btn-primary centerB" href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
     {% endif %}
-    <a class="btn btn-success text-white centerB" onclick="traer_autorizados('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Añadir Autorizado</a>
+    <a class="btn btn-success text-white centerB" onclick="traer_autorizados('{% url 'todos_los_autorizados_asignar' alumno.dni %}')">Asignar Autorizado</a>
 </center>
 
 <div class="modal fade" id="todos_los_autorizados">

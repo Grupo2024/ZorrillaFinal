@@ -30,7 +30,7 @@
         <tr>
             <td>{{a.obra_social.nombre|title}}</td>
             <td>{{a.numero_afiliado}}</td>
-            <td><button class="btn btn-warning" onclick="desvincular({{a.obra_social.id}})"><i class="fa fa-ban"></i></button></td>
+            <td><button class="btn btn-warning" onclick="reset_modal({{a.obra_social.id}})"><i class="fa fa-ban"></i></button></td>
         </tr>
         {% endfor %}
     </table>
@@ -40,11 +40,13 @@
 <br>
 
 <center>
-    <button class="btn btn-success text-white centerB" id="btn_os" onclick="traer_obras_sociales('{% url 'asignar_obra' alumno.dni %}')">Cargar Obra Social</button>
-    <a class="btn btn-primary centerB" href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
-    <a class="btn btn-primary centerB" href="{% url 'traer_pedidos' %}">Volver a Pedidos</a>
+    {% if alumno.opcion == "pedido" %}
+        <a class="btn btn-primary centerB" href="{% url 'traer_pedidos' %}">Volver</a>
+    {% else %}
+        <a class="btn btn-primary centerB" href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
+    {% endif %}
+    <a class="btn btn-success text-white centerB" onclick="traer_obras_sociales('{% url 'asignar_obra' alumno.dni %}')">Asignar Obra Social</a>
 </center>
-
 <form id="desvincular_obra_social" method="post" action="{% url 'desvincular_obra_social' %}">
     {% csrf_token %}
     <input type="hidden" value="{{alumno.dni}}" name="dni_alumno">
@@ -58,21 +60,42 @@
     </div>
 </div>
 
-<form action="{% url 'obras_sociales_del_alumno' alumno.dni%}" method="post" id="oda">
+<div class="modal fade" id="modal_confirm">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <br>
+                <p id="msg_confirm" align="center" style="display: none">¿Desvincular?</p>
+            </div>
+
+            <div class="modal-footer" id="footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                <button onclick="desvincular()" class="btn btn-primary" id="aceptar">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form action="{% url 'obras_sociales_del_alumno' 'perfil' alumno.dni%}" method="post" id="oda">
     {% csrf_token %}
 </form>
 
 
 <script>
 
-    function desvincular(id_obra_social){
-        if (confirm("¿Desvincular de esta Obra Social ?")) {
-            document.getElementById("id_obra_social").value = id_obra_social;
-            var des = document.getElementById("desvincular_obra_social");
-            des.submit();
-        } else {
-            return;
-        }
+    function reset_modal(id_obra_social){
+        document.getElementById("id_obra_social").value = id_obra_social;
+        $("#cancelar").show();
+        $("#aceptar").show();
+        $("#msg_confirm").show();
+        $("#modal_confirm").modal()
+    }
+
+    function desvincular(){
+        var des = document.getElementById("desvincular_obra_social");
+        des.submit();
     }
 
     function traer_obras_sociales(url){

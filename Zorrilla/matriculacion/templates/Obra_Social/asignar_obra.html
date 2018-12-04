@@ -2,7 +2,7 @@
     <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
-            <span>Obras Sociales:</span>
+            <h4 class="modal-title">Asignar Obra Social.</h4>
         </div>
         <!-- Modal body -->
         <div class="modal-body">
@@ -68,6 +68,7 @@
                     <input value={{dni_alumno}} id="dni_alumno" name="dni_alumno" type="hidden">
                     <p>Numero de Afiliado:</p><input value=0 name="num_afiliado" id="num_afiliado" type="number">
                     <input value=0 name="id_obra_social" id="id_obra_social2" type="hidden">
+                    <span id="error_num" style="color:red">Ingrese un numero valido</span>
                 </form>
             </div>
             <span id="resultado_asginar"></span>
@@ -94,6 +95,7 @@
 
     document.getElementById("asig_obra_btn").style.display = "none";
     document.getElementById("crear_o").style.display = "none";
+    document.getElementById("error_num").style.display = "none";
     document.getElementById("asignar_o").style.display = "none";
     document.getElementById("asignar_obra_btn").style.display = "none";
     document.getElementById("volver_btn").style.display = "none";
@@ -118,19 +120,17 @@
 
     function asignar_obra(){
         if(document.getElementById("num_afiliado").value == 0){
-            alert("Cargue un numero de afiliado valido.")
+            document.getElementById("error_num").style.display = "block";
         } else {
-            var r = confirm("¿Asignar esta Obra Social ?");
-            if (r == true) {
-                var myForm = document.getElementById('asign_s');
-                formData = new FormData(myForm);
-                $.ajax({
-                    url: '{% url 'asignar_obra_social' %}',
-                    data : formData,
-                    processData: false,
-                    contentType: false,
-                    type: 'POST',
-                    success: function(data){
+            var myForm = document.getElementById('asign_s');
+            formData = new FormData(myForm);
+            $.ajax({
+                url: '{% url 'asignar_obra_social' %}',
+                data : formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
                     document.getElementById("hide_for_c").style.display = "none";
                     document.getElementById("cerrar_btn").style.display = "none";
                     document.getElementById("asignar_obra_btn").style.display = "none";
@@ -139,11 +139,7 @@
                     document.getElementById("volver_btn").style.display = "block";
                     document.getElementById("resultado_asginar").innerHTML = data.resultado
                 }
-                       });
-            } else {
-                return;
-            }
-
+            });
         }
     }
 

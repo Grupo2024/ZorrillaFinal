@@ -619,11 +619,19 @@ def padres_del_alumno(request, opcion, dni_alumno):
 
 def transportistas_del_alumno(request, opcion, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
+    if (opcion == "pedido"):
+        alumno.opcion = "pedido"
+    else:
+        alumno.opcion = "perfil"
     transportistas = usa_Transporte.objects.filter(alumno=alumno, habilitado=True).order_by("transportista__apellido", "transportista__nombre", "transportista__dni")
     return render(request, 'Transportista/transportistas_del_alumno.html', {'transportistas':transportistas, 'alumno':alumno})
 
-def obras_sociales_del_alumno(request, dni_alumno):
+def obras_sociales_del_alumno(request,opcion, dni_alumno):
     alumno = Alumno.objects.get(dni=dni_alumno)
+    if (opcion == "pedido"):
+        alumno.opcion = "pedido"
+    else:
+        alumno.opcion = "perfil"
     obras_sociales = usa_Obra_Social.objects.filter(alumno=alumno, habilitado=True)
     return render(request, 'Obra_Social/obras_sociales_del_alumno.html', {'obras_sociales':obras_sociales, 'alumno':alumno})
 
@@ -1221,7 +1229,7 @@ def desvincular_transportista(request):
         medio = usa_Transporte.objects.get(alumno=alumno, transportista=transportista)
         medio.habilitado = False
         medio.save()
-        return redirect ('transportistas_del_alumno', dni_alumno)
+        return redirect ('transportistas_del_alumno', "perfil", dni_alumno)
     return HttpResponse("Solo por acceder por Post")
 
 def desvincular_obra_social(request):
@@ -1233,7 +1241,7 @@ def desvincular_obra_social(request):
         medio = usa_Obra_Social.objects.get(alumno=alumno, obra_social=obra_social)
         medio.habilitado = False
         medio.save()
-        return redirect ('obras_sociales_del_alumno', dni_alumno)
+        return redirect ('obras_sociales_del_alumno',"perfil", dni_alumno)
     return HttpResponse("Solo por acceder por Post")
 
 def desvincular_familiar(request):
