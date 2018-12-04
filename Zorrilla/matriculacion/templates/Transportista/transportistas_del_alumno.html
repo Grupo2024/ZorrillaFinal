@@ -31,6 +31,7 @@
             <th>Telefono Transporte</th>
             <th>Desvincular</th>
             <th>Editar</th>
+            <th>Info</th>
         </tr>
         {% for a in transportistas %}
         <tr>
@@ -41,6 +42,7 @@
             <td>{{a.transportista.telefono_transportista}}</td>
             <td><button class="btn btn-warning" onclick="desvincular({{a.transportista.dni}})"><i class="fa fa-ban"></i></button></td>
             <td><a class="btn btn-info" href="{% url 'form_editar_transportista' a.transportista.dni %}"><i class="fa fa-edit"></i></a></td>
+            <td><a class="btn btn-primary" href="{% url 'datos_transportista' a.transportista.dni %}" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></a></td>
         </tr>
         {% endfor %}
 

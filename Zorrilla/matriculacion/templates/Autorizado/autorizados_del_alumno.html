@@ -30,6 +30,7 @@
             <th>Relacion con {{alumno.nombre|title}}</th>
             <th>Desvincular</th>
             <th>Editar</th>
+            <th>Info</th>
         </tr>
         {% for a in autorizados %}
         <tr>
@@ -39,6 +40,7 @@
             <td>{{a.relacion_con_alumno|title}}</td>
             <td><button class="btn btn-warning" onclick="desvincular({{a.autorizado.dni}})"><i class="fa fa-ban"></i></button></td>
             <td><a class="btn btn-info" href="{% url 'form_editar_autorizado' a.autorizado.dni %}"><i class="fa fa-edit"></i></a></td>
+            <td><a class="btn btn-primary" href="{% url 'datos_autorizado' a.autorizado.dni %}" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></a></td>
         </tr>
         {% endfor %}
 

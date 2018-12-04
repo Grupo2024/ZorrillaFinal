@@ -27,6 +27,7 @@
             <th>Email</th>
             <th>Desvincular</th>
             <th>Editar</th>
+            <th>Info</th>
         </tr>
         {% for a in familiares %}
         <tr>
@@ -36,6 +37,7 @@
             <td>{{a.padre_madre.email}}</td>
             <td><button class="btn btn-warning" onclick="desvincular({{a.padre_madre.dni}})"><i class="fa fa-ban"></i></button></td>
             <td><a class="btn btn-info" href="{% url 'form_editar_padre' a.padre_madre.dni %}"><i class="fa fa-edit"></i></a></td>
+            <td><a class="btn btn-primary" href="{% url 'datos_padre' a.padre_madre.dni %}" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></a></td>
         </tr>
         {% endfor %}
     </table>
