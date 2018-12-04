@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+{% load poll_extras %}
+
+<br>
+    <div align="center">
+        {% if obras_sociales|length != 0 %}
+
+        <div align="center">
+            <h3><center>Obras Sociales</center></h3>
+            <br>
+
+            <input type="text" id="input_filter" onkeyup="filterFunction()" placeholder="Obra Social que desea buscar...">
+        </div>
+        <br>
+        <table class="table table-sm table-hover" style="width: 25%" id="funcion_filter">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Info</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for a in obras_sociales %}
+                <tr>
+                    <td>{{a.nombre}}</td>
+                    <td ><button class="btn btn-primary" onclick="info_obra_social('{% url 'datos_obra_social' a.id %}')"><i style="font-size:15px" class="fa">&#xf129;</i></button></td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+        {% else %}
+
+        <h3><center>No hay ninguna Obra Social.</center></h3>
+
+        {% endif %}
+    </div>
+
+<div class="modal fade" id="modal_info">
+    <div class="modal-dialog">
+        <div id="datos_obrass">
+        </div>
+    </div>
+</div>
+
+<script>
+
+    //Script de el filter:
+    function filterFunction() {
+        // Declarando Variables
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("input_filter");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("funcion_filter");
+        tr = table.getElementsByTagName("tr");
+
+        // Recorre todas las filas de la tabla y oculte a las que no coincidan con lo que se busca
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }   
+        }
+    }
+
+
+    function info_obra_social(url, alum){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_obrass").html(data);
+            $('#modal_info').modal('show');
+        });
+    }
+
+    function buscar_alumno() {
+        var e = document.getElementById("filter_by");
+        var strUser = e.options[e.selectedIndex].value;
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("inputObrass");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("tabla_obras");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[strUser];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+</script>
+
+{% endblock body %}

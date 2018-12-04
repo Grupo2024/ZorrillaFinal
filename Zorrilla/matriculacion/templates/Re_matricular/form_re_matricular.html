@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+<form id="form_re_matricular" method="post">
+    {% csrf_token %}
+    <div align="center" style="margin-top:2%">
+        <div class="card text-center" style="width: 25%" >
+            <div class="card-body">
+                <h4 class="card-title">Datos personales</h4>
+
+                <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item">
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend" style="margin-right: 200%;">
+                                <span  class="input-group-text" id="inputGroup-sizing-sm">Dni del Alumno:</span>
+                            </div>
+                            <div style="margin-left: -0.5%; margin-top: 5px">{{re_matricular_form.dni_alumno}}</div>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend" style="margin-right: 200%;">
+                                <span  class="input-group-text" id="inputGroup-sizing-sm">Dni del Padre:</span>
+                            </div>
+                            <div style="margin-left: -0.5%; margin-top: 5px">{{re_matricular_form.dni_padre}}</div>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3 form-group">
+                            <div class="input-group-prepend" style="margin-right: 200%;">
+                                <span  class="input-group-text" id="inputGroup-sizing-sm">Email del Padre:</span>
+                            </div>
+                            <div style="margin-left: -0.5%; margin-top: 5px;">{{re_matricular_form.email_padre}}</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</form>
+
+<center><button class="btn btn-success" onclick="modal_re()">Enviar</button></center>
+
+<div class="modal fade" id="re_mat_alumno">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titulo" style="display: none;">Pedido de Re Matriculacion</h5>
+            </div>
+            <div class="container-fluid">
+                <div class="modal-body">
+                    <p id="msg_confirm" align="center">¿Generar Pedido ?</p>
+                    <span style="margin-left:0%;display: none" id="resultado_span">Resultado:</span>
+                    <span id="resultado_mal" style="margin-top: -10"></span>
+                    <span style="width: 100%; margin-left: 0%; margin-top: -5.5% " id="resultado_bien"></span>
+                    <div style="margin-left: 35%; margin-top: -11.5%;display: none" id="loader_resultado" class="loader"></div>
+                </div>
+                <div class="modal-footer" id="footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                    <button onclick="re_matricular()" class="btn btn-primary" id="aceptar">Aceptar</button>
+                    <a type="button" class="btn btn-primary" style="display: none;" id="continuar" href="{% url 'formReMatricular' %}">Continuar</a>
+                    <button type="button" class="btn btn-danger" style="display: none;" data-dismiss="modal" id="cerrar">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function modal_re(){
+        $("#cancelar").show();
+        $("#aceptar").show();
+        $("#resultado_span").hide();
+        $("#msg_confirm").show();
+        $("#loader_resultado").hide();
+        $("#resultado_crear_tr").hide();
+        $("#continuar").hide();
+        $("#titulo").hide();
+        $("#cerrar").hide();
+        $("#resultado_mal").html("");
+        $("#resultado_bien").html("");
+        $('#re_mat_alumno').modal('show');
+    }
+
+
+
+    function re_matricular(){
+        $("#titulo").show();
+        $("#cancelar").hide();
+        $("#aceptar").hide();
+        $("#msg_confirm").hide();
+        $("#resultado_span").show();
+        $("#loader_resultado").show();
+        var myForm = document.getElementById('form_re_matricular');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: '{% url 'pedido_re_matricular' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#loader_resultado").hide();
+                if (data.error){
+                    $("#resultado_bien").html("");
+                    $("#resultado_mal").html(data.resultado);
+                    $("#continuar").hide();
+                    $("#cerrar").show();
+                } else {
+                    $("#resultado_bien").html(data.resultado);
+                    $("#resultado_mal").html("");
+                    $("#continuar").show();
+                    $("#cerrar").hide();
+                }
+            }
+        });
+    }
+
+</script>
+
+{% endblock body %}

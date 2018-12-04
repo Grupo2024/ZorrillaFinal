@@ -13,8 +13,8 @@ from django.contrib.auth.models import User
 class clave_Docente(models.Model):
     clave_logIn = models.CharField(null=False, max_length=10)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-    email_docente = models.EmailField(null=False)
-    dni_docente = models.IntegerField(null=False)
+    email_docente = models.EmailField(null=False, unique=True)
+    dni_docente = models.IntegerField(null=False, unique=True)
     ingresado = models.BooleanField(default=False)#False hasta que se ingrese el docente al sistema.
     
     def change(self):
@@ -34,6 +34,15 @@ class Trabajador(models.Model):
     
     HO = 'Hombre'
     MU = 'Mujer'
+    PR = 'Profesor'
+    SE = 'Secretaria'
+    DI = 'Director'
+
+    CARGO_CHOICES = (
+        (PR , 'Profesor'),
+        (SE , 'Secretaria'),
+        (DI , 'Director')
+    )
     
     GENERO_CHOICES = (
         (HO , 'Hombre'),
@@ -44,13 +53,12 @@ class Trabajador(models.Model):
     nombre_t = models.CharField('Nombre del trabajador', max_length=40)
     apellido_t = models.CharField('Apellido del trabajador', max_length=40)
     dni_t = models.IntegerField('Dni del trabajador', primary_key=True)
-    lugar_nacimiento_t = models.CharField('Lugar de Nacimiento', max_length=150, blank=True)
+    lugar_nacimiento_t = models.CharField('Lugar de Nacimiento', max_length=150)
     fecha_nacimiento_t = models.DateField('Fecha Nacimiento', blank=True)
     domicilio_t = models.CharField('Domicilio del trabajador', max_length=150, blank=True)
-    email_t = models.EmailField('Email del trabajador', max_length=70, blank=True)
+    email_t = models.EmailField('Email del trabajador', max_length=70, unique=True)
     sexo_t = models.CharField('Sexo', max_length=6, choices=GENERO_CHOICES)
-    #foto = models.ImageField(upload_to=get_image_path, blank=True, null=True)
-    #BUSCAR LO DE FOTOS
+    cargo_t = models.CharField('Cargo', max_length=10, choices=CARGO_CHOICES)
     telefono_particular = models.IntegerField('Telefono Personal del Trabajador')
     telefono_laboral = models.IntegerField('Telefono Laboral del Trabajador')
     telefono_familiar = models.IntegerField('Telefono de algun Familiar del Trabajador')
@@ -58,24 +66,6 @@ class Trabajador(models.Model):
     fecha_inicio_actividad = models.DateField('Fecha de Inicio de Clases en el Colegio', auto_now_add=True)
     antecedentes_laborales = models.TextField('Datos de Trabajos Previos', max_length=300)
     estudios_cursados = models.TextField('Estudios del Trabajador', max_length=300)
-
-    #Nuevos datos que faltaban:
-    cargo = models.CharField('Cargo que posee en esta escuela', max_length=150)
-
-
-    def __str__(self):
-        return 'Trabajador: {} {}| dni: {}| sexo: {}'.format(self.nombre_t,
-         self.apellido_t, self.dni_t, self.sexo_t)
-
-    class Meta:
-        abstract = True
-
-
-class Profesor(Trabajador):
-
-    def __str__(self):
-        return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre_t, self.apellido_t, self.dni_t, self.sexo_t)
-
 
     def create_pass_user(self):
         name_f = ""
@@ -94,7 +84,7 @@ class Profesor(Trabajador):
     def create_username(self):
         name_f = ""
         cantidad = 0
-        r = random.randint(1111,9999)
+        dni_t = int(str(self.dni_t)[:4])
         for a in self.nombre_t:
             cantidad = cantidad + 1
             if cantidad == 1:
@@ -102,29 +92,22 @@ class Profesor(Trabajador):
                 break
             else:
                 pass
-        username = name_f + self.apellido_t
+
+        username = name_f + str(dni_t) + self.apellido_t
         return username
 
-
-class Director(Trabajador):
-
     def __str__(self):
-        return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre_t, self.apellido_t, self.dni_t, self.sexo_t)
-
-
-class Secretaria(Trabajador):
-
-    def __str__(self):
-        return 'Persona: {} {}| dni: {}| sexo: {}'.format(self.nombre_t, self.apellido_t, self.dni_t, self.sexo_t)
+        return 'Trabajador: {} {}| dni: {}| sexo: {} puesto: {}'.format(self.nombre_t,
+         self.apellido_t, self.dni_t, self.sexo_t, self.cargo_t)
 
 
 class Curso(models.Model):
     hora = models.BooleanField('Clickea para seleccionar turno "Tarde"', null=False)
-    aNo = models.CharField('1ero, 2do, etc...', max_length=5)
+    aNo = models.IntegerField('1ero, 2do, etc...')
     seccion = models.BooleanField('True = B o D, dependiendo de si es turno mañana o tarde', null=False)
 
     def que_turno(self):
-        aux = 'Mañana'
+        aux = 'Maniana'
         if (self.hora == True):
             aux = 'Tarde'
             return aux
@@ -146,12 +129,17 @@ class Curso(models.Model):
                 return aux
             else:
                 return aux
+            
+    # HORA: TRUE, SECCION TRUE: --- D
+    # HORA: FALSE, SECCION TRUE: ---- B
+    # HORA: TRUE, SECCION FALSE: ---- C
+    # HORA: FALSE, SECCION FALSE: ----- A
 
     def new_turno(self):
         if self.hora:
             self.turno = "Tarde"
         else:
-            self.turno = "Mañana"
+            self.turno = "Maniana"
         return self.turno
 
     def pasar(self):
@@ -161,28 +149,12 @@ class Curso(models.Model):
         return "nada"
 
     def __str__(self):
-        return '{}-{} {}'.format(self.aNo, self.que_seccion() ,self.que_turno())
+        return '{}-{}' .format(self.aNo, self.que_seccion())
 
-class user_Docente(models.Model):
-    user = models.OneToOneField(User)
-    docente_referenciado = models.OneToOneField(Profesor, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return 'El usuario {} pertenece al profesor: {}'.format(self.user, self.docente_referenciado)
-
-
-class user_Secretaria(models.Model):
-    user = models.OneToOneField(User)
-    secretaria_referenciada = models.OneToOneField(Secretaria, on_delete=models.CASCADE)
+class user_Trabajador(models.Model):
+    user = models.OneToOneField(User, unique=True)
+    trabajador = models.OneToOneField(Trabajador, on_delete=models.CASCADE, unique=True)
 
     def __str__(self):
-        return 'El usuario {} pertenece a la secretaria: {}'.format(self.user, self.secretaria_referenciada)
-
-
-class user_Director(models.Model):
-    user = models.OneToOneField(User)
-    director_referenciado = models.OneToOneField(Director, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return 'El usuario {} pertenece al director: {}'.format(self.user, self.director_referenciado)
+        return 'El usuario {} pertenece al trabajador: {}'.format(self.user, self.trabajador.nombre_t, self.trabajador.apellido_t)
 

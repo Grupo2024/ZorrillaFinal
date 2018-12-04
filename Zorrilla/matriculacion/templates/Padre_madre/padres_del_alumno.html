@@ -4,24 +4,127 @@
 {% endblock navbar %}
 {% block body %}
 
+<style>
+
+    .table-wrapper-scroll-y {
+      display: block;
+      max-height: 200px;
+      overflow-y: auto;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+
+</style>
+
 <br>
-<h3><center>Padres de {{alumno.apellido}} {{alumno.nombre}}.</center></h3>
-<br>
-<table style="width:50%" align="center">
-    <tr>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>Dni</th>
-        <th>Email</th>
-    </tr>
-    {% for a in familiares %}
-    <tr>
-        <td>{{a.padre_madre.nombre}}</td>
-        <td>{{a.padre_madre.apellido}}</td>
-        <td>{{a.padre_madre.dni}}</td>
-        <td>{{a.padre_madre.email}}</td>
-    </tr>
-    {% endfor %}
-</table>
+{% if familiares|length != 0%}
+    <h3><center>Padres de {{alumno.apellido|title}} {{alumno.nombre|title}}.</center></h3>
+    <br>
+    <table class="table table-sm table-hover" id="tabla" align="center" style="width:50%">
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Dni</th>
+            <th>Email</th>
+            <th>Desvincular</th>
+            <th>Editar</th>
+            <th>Info</th>
+        </tr>
+        {% for a in familiares %}
+        <tr>
+            <td>{{a.padre_madre.nombre|title}}</td>
+            <td>{{a.padre_madre.apellido|title}}</td>
+            <td>{{a.padre_madre.dni}}</td>
+            <td>{{a.padre_madre.email}}</td>
+            <td><button class="btn btn-warning" onclick="reset_modal({{a.padre_madre.dni}})"><i class="fa fa-ban"></i></button></td>
+            <td><a class="btn btn-info" href="{% url 'form_editar_padre' a.padre_madre.dni %}"><i class="fa fa-edit"></i></a></td>
+            <td><a class="btn btn-primary" href="{% url 'datos_padre' a.padre_madre.dni %}" id="info_book"><i style="font-size:15px" class="fa">&#xf129;</i></a></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <h3><center>{{alumno.apellido|title}} {{alumno.nombre|title}} no tiene ningun Padre/Madre.</center></h3>
+{% endif %}
+<form id="desvincular_familiar" method="post" action="{% url 'desvincular_familiar' %}">
+    {% csrf_token %}
+    <input type="hidden" value="{{alumno.dni}}" name="dni_alumno">
+    <input type="hidden" value=0 name="dni_padre" id="dni_padre">
+</form>
+
+
+<center>
+    {% if alumno.opcion == "pedido" %}
+        <a class="btn btn-primary centerB" href="{% url 'traer_pedidos' %}">Volver</a>
+    {% else %}
+        <a class="btn btn-primary centerB" href="{% url 'datos_alumno' alumno.dni %}">Volver</a>
+    {% endif %}
+    <a class="btn btn-success text-white centerB" onclick="traer_padres('{% url 'todos_los_padres_asignar' alumno.dni %}')">Asignar Padre</a>
+</center>
+
+<div class="modal fade" id="todos_los_padres">
+    <div class="modal-dialog modal-lg">
+        <div id="datos_padre">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_confirm">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <br>
+                <p id="msg_confirm" align="center" style="display: none">¿Desvincular?</p>
+            </div>
+
+            <div class="modal-footer" id="footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                <button onclick="desvincular()" class="btn btn-primary" id="aceptar">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form action="{% url 'padres_del_alumno' 'perfil' alumno.dni%}" method="post" id="pda">
+    {% csrf_token %}
+</form>
+
+<script>
+
+    function reset_modal(dni_padre){
+        document.getElementById("dni_padre").value = dni_padre;
+        $("#cancelar").show();
+        $("#aceptar").show();
+        $("#msg_confirm").show();
+        $("#modal_confirm").modal()
+    }
+
+    function desvincular(){
+        var des = document.getElementById("desvincular_familiar");
+        des.submit();
+    }
+
+    function traer_padres(url){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_padre").html(data);
+            $('#todos_los_padres').modal('show');
+        });
+    }
+
+
+    function refresh_p(){
+        var des = document.getElementById("pda");
+        des.submit();
+    }
+
+
+</script>
 
 {% endblock body %}

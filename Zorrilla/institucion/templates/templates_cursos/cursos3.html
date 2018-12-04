@@ -6,7 +6,7 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{%url 'cursos1'%}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{%url 'cursos1' %}">Home</a></li>
         <li class="breadcrumb-item"><a>{{curso.año}}</a></li>
         <li class="breadcrumb-item"><a>{{curso.seccion}}</a></li>
         <li class="breadcrumb-item "aria-current="page">{{curso.turno}}</li>
@@ -16,37 +16,37 @@
     <div class="">
         <input type="text"placeholder="Nombre del Alumno que desee buscar" id="myInput" onkeyup="myFunction()">
         <select id="filter_by">
-            <option value=0>Dni</option>
+            <option value=0>Nombre</option>
             <option value=1>Apellido</option>
-            <option value=2>Nombre</option>
+            <option value=2>Dni</option>
         </select>
     </div>
     <div class="">
-        <span style="margin-left: 175px">Cantidad de alumnos: {{alumnos_curso|length}}</span>
+        <span style="margin-left: 175px">Cantidad de alumnos: {{matriculaciones|length}}</span>
     </div>
 </div>
 <br>
 <table class="table" id="myTable">
     <thead class="thead-dark">
         <tr>
-            <th>Dni</th>
-            <th>Apellido</th>
-            <th>Nombre</th>
-            <th>Fecha de Nacimiento</th>
+            <th onclick="sortTable(0)">Nombre</th>
+            <th onclick="sortTable(1)">Apellido</th>
+            <th onclick="sortTable(2)">Dni</th>
+            <th onclick="sortTable(3)">Fecha de Nacimiento</th>
             <th>Telefonos</th>
             <th>Datos Personales</th>
-            <th>Informe Alumno</th>
+            <th>Perfil Alumno</th>
         </tr>
     <tbody>
-        {% for alumno in alumnos_curso %}
+        {% for alumno in matriculaciones %}
         <tr>
-            <td>{{alumno.alumno.dni}}</td>
-            <td>{{alumno.alumno.apellido|title}}</td>
             <td>{{alumno.alumno.nombre|title}}</td>
+            <td>{{alumno.alumno.apellido|title}}</td>
+            <td>{{alumno.alumno.dni}}</td>
             <td>{{alumno.alumno.fecha_nacimiento}}</td>
             <td><button class="btn btn-primary" onclick="get_alumno('{% url 'get_alumno' 'telefonos' alumno.alumno.dni %}')" id="info_book"><i style="font-size:15px" class="fa fa-phone-square"></i></button></td>
             <td><button class="btn btn-primary" onclick="get_alumno('{% url 'get_alumno' 'otros' alumno.alumno.dni %}')" id="info_book"><i style="font-size:15px" class="fa fa-child"></i></button></td>
-            <td><a class="btn btn-primary" href="{% url 'datos_alumno' alumno.alumno.dni %}" id="info_book"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
+            <td><a class="btn btn-primary" href="{% url 'perfil_alumno' 'curso' alumno.alumno.dni %}" id="info_book"><i style="font-size:15px" class="fa fa-info-circle"></i></a></td>
         </tr>
         {% endfor %}
     </tbody>
@@ -88,6 +88,43 @@
                     tr[i].style.display = "";
                 } else {
                     tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("myTable");
+        switching = true;
+        dir = "asc";
+        while (switching) {
+            switching = false;
+            rows = table.getElementsByTagName("TR");
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch= true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount ++;
+            } else {
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
                 }
             }
         }

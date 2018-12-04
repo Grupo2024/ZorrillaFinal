@@ -1,0 +1,317 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
+
+<style type="text/css">
+    input{
+        width: 280px
+    }
+    #a{
+        width:81%
+    }
+    textarea {
+        width: 100px;
+        height: 30%;
+    }
+
+    .loader {
+        border: 6px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 6px solid #3498db;
+        width: 30px;
+        height: 30px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite;
+    }
+
+    /* Safari */
+    @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    #wrapper {
+        background: white;
+        background-position: 50% 0px;
+        width: 984px;
+        margin: 0px auto 0 auto;
+        text-align: center;
+    }
+
+    #header {
+        width: 960px;
+        height: 60px;
+        margin: 0 5px 2px 5px;
+        text-align: left;
+        background: white;
+        display: block;
+        position: relative;
+    }
+
+</style>
+<br>
+<div class="main" style="width:80%;margin-left: 7%">
+    <div id="wrapper">
+        <div id="header">
+            <form method="post" enctype="multipart/form-data" id="form_autorizado">
+                {% csrf_token %}
+                <input name="dni" id="dni" type="hidden" value={{dni}} >
+                <div class='row' style="margin-top:2%">
+                    <div class="card text-center" style="width: 360px; height:auto; margin-left: 36.5%">
+                        <div class="card-body">
+                            {% if opcion == 'Crear'%}
+                            <h4 class="card-title">Crear Autorizado</h4>
+                            {% else %}
+                            <h4 class="card-title">Editar Autorizado</h4>
+                            {% endif %}
+                            <ul class="list-group list-group-flush">
+
+                                <li class="list-group-item">
+
+                                    <div class="input-group input-group-sm mb-3 form-group">
+                                        <div class="input-group-prepend">
+                                            <span style="margin-left: -16%;" class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
+                                        </div>
+                                        <div style="margin-left: -9%; margin-top: 5px">{{ autorizado.nombre }}</div>
+                                    </div>
+
+                                    <div class="input-group input-group-sm mb-3 form-group">
+                                        <div class="input-group-prepend">
+                                            <span style="margin-left: -15%;" class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
+                                        </div>
+                                        <div style="margin-left: -9%; margin-top: 5px">{{ autorizado.apellido }}</div>
+                                    </div>
+                                    {% if opcion == 'Crear'%}
+                                    <div class="input-group input-group-sm mb-3 form-group">
+                                        <div class="input-group-prepend">
+                                            <span style="margin-left: -4%;" class="input-group-text" id="inputGroup-sizing-sm">Numero de documento:</span>
+                                        </div>
+                                        <div style="margin-left: -2.4%; margin-top: 5px;">{{ autorizado.dni }}</div>
+                                    </div>
+                                    {% endif %}
+
+                                    <div class="input-group input-group-sm mb-3 form-group" style="margin-left: -3.5%">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
+                                        </div>
+                                        <br>
+                                        {% if objetivo == 'Cargar'%}
+                                            <div id="a"  style="margin-left: 10%; margin-top: 5px">{{autorizado.fecha_nacimiento}}</div>
+                                        {% else %}
+                                            <div id="a"  style="margin-left: -5%; margin-top: 5px">{{autorizado.fecha_nacimiento}}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="input-group input-group-sm mb-3 form-group">
+                                        <div class="input-group-prepend">
+                                            <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
+                                        </div>
+                                        <div style="margin-left: -8%; margin-top: 5px">{{ autorizado.lugar_nacimiento }}</div>
+                                    </div>
+
+                                    <div class="input-group input-group-sm mb-3 form-group">
+                                        <div class="input-group-prepend">
+                                            <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
+                                        </div>
+                                        <br>
+                                        <div id="a"  style="margin-left:-6.5%; margin-top: 5px">{{ autorizado.domicilio }}</div>
+                                    </div>
+                                    <div class="input-group input-group-sm mb-3 form-group">
+                                        <div class="input-group-prepend">
+                                            <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
+                                        </div>
+                                        <br>
+                                        <div style="margin-left:-1%">{{ autorizado.sexo }}</div>
+                                    </div>
+                                    <div class="input-group input-group-sm mb-3 form-group">
+                                        <div class="input-group-prepend">
+                                            <span style="margin-left: -4%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono:</span>
+                                        </div>
+                                        <br>
+                                        <div style="margin-left: -0.6%; margin-top: 5px">{{ autorizado.telefono_autorizado }}</div>
+                                    </div>
+                                    <div class="input-group input-group-sm mb-3 form-group">
+                                        <div class="input-group-prepend">
+                                            <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
+                                        </div>
+                                        <br>
+                                        <div style="margin-left: -1%; margin-top: 5px">{{ autorizado.email }}</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            {% if opcion == 'Crear'%}
+            <center><button onclick="modal_crear()" class="btn btn-success" style="width:350px;margin-left: 10%">Cargar</button></center>
+            {% else %}
+            <center><button onclick="modal_editar()" class="btn btn-success" style="width:350px;margin-left: 10%">Editar</button></center>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" style="display: none;" id="titulo">Cargar Autorizado</h4>
+                <h4 class="modal-title" style="display: none;" id="titulo2">Editar Autorizado</h4>
+
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                <p id="msg_confirm" align="center" style="display: none">¿Cargar Autorizado ?</p>
+                <p id="msg_confirm2" align="center" style="display: none">¿Editar Autorizado ?</p>
+                <span style="margin-left:0%" id="resultado_span">Resultado:</span>
+                <span id="resultado_mal" style="margin-top: -10"></span>
+                <span style="width: 100%; margin-left: 0%; margin-top: -5.5% " id="resultado_bien"></span>
+                <div style="margin-left: 35%; margin-top: -11.5%" id="loader_resultado" class="loader"></div>
+
+            </div>
+
+            <div class="modal-footer" id="footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                <button onclick="crear_Autorizado()" class="btn btn-primary" id="aceptar">Aceptar</button>
+                <button onclick="editar_Autorizado()" class="btn btn-primary" id="aceptar2">Aceptar</button>
+                <a type="button" class="btn btn-success" style="display: none;" href="{% url 'index' %}" id="continuar">Continuar</a>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function reset_modal(){
+        $("#continuar").hide();
+        $("#volver").hide();
+        $("#titulo").hide();
+        $("#titulo2").hide();
+        $("#resultado_span").hide();
+        $("#loader_resultado").hide();
+        $("#resultado_crear_tr").hide();
+        $("#resultado_mal").html("");
+        $("#resultado_bien").html("");
+        $("#cancelar").show();
+        $("#aceptar").hide();
+        $("#aceptar2").hide();
+        $("#msg_confirm").hide();
+        $("#msg_confirm2").hide();
+    }
+
+    function modal_crear(){
+        reset_modal();
+        $("#msg_confirm").show();
+        $("#titulo").show();
+        $("#aceptar").show();
+        $("#myModal").modal()
+    }
+
+    function modal_editar(){
+        reset_modal();
+        $("#msg_confirm2").show();
+        $("#titulo2").show();
+        $("#aceptar2").show();
+        $("#myModal").modal()
+    }
+
+    function run_crear(){
+        $("#msg_confirm").hide();
+        $("#cancelar").hide();
+        $("#aceptar").hide();
+        $("#continuar").hide();
+        $("#volver").hide();
+        $("#resultado_mal").html("");
+        $("#resultado_bien").html("");
+        $("#resultado_span").show();
+        $("#resultado_mal").show();
+        $("#resultado_bien").show();
+    }
+
+    function run_editar(){
+        $("#msg_confirm2").hide();
+        $("#cancelar").hide();
+        $("#aceptar2").hide();
+        $("#continuar").hide();
+        $("#volver").hide();
+        $("#resultado_mal").html("");
+        $("#resultado_bien").html("");
+        $("#resultado_span").show();
+        $("#resultado_mal").show();
+        $("#resultado_bien").show();
+    }
+
+    function crear_Autorizado(){
+        reset_modal();
+        $("#cancelar").hide();
+        $("#titulo").show();
+        var myForm = document.getElementById('form_autorizado');
+        formData = new FormData(myForm);
+        $("#resultado_span").show();
+        $("#loader_resultado").show();
+        $.ajax({
+            url: '{% url 'crear_autorizado' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#loader_resultado").hide();
+                if (data.error){
+                    $("#resultado_mal").html(data.resultado);
+                    $("#continuar").hide();
+                    $("#volver").show();
+                }else{
+                    $("#resultado_bien").html(data.resultado);
+                    $("#continuar").show();
+                    $("#volver").hide();
+                }
+            }
+
+        });
+    }
+
+    function editar_Autorizado(){
+        run_editar();
+        $("#cancelar").hide();
+        $("#titulo2").show();
+        var myForm = document.getElementById('form_autorizado');
+        formData = new FormData(myForm);
+        $("#resultado_span").show();
+        $("#loader_resultado").show();
+        $.ajax({
+            url: '{% url 'editar_autorizado' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#loader_resultado").hide();
+                if (data.error){
+                    $("#resultado_mal").html(data.resultado);
+                    $("#continuar").hide();
+                    $("#volver").show();
+                }else{
+                    $("#resultado_bien").html(data.resultado);
+                    $("#continuar").show();
+                    $("#volver").hide();
+                }
+            }
+        });
+
+    }    
+</script>
+{% endblock body %}

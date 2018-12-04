@@ -7,17 +7,17 @@
 
 <div class="card text-center" style="width: 30%; margin-left: 35%">
     <div class="card-body">
-        <h4 class="card-title">Datos de contacto</h4>
+        <h4 class="card-title">Datos de {{padre.apellido|title}} {{padre.nombre|title}}</h4>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">Nombre: {{padre.nombre}}</li>
-            <li class="list-group-item">Apellido: {{padre.apellido}}</li>
+            <li class="list-group-item">Nombre: {{padre.nombre|title}}</li>
+            <li class="list-group-item">Apellido: {{padre.apellido|title}}</li>
             <li class="list-group-item">Dni: {{padre.dni}}</li>
-            <li class="list-group-item">Lugar Nacimiento: {{padre.lugar_nacimiento}}</li>
+            <li class="list-group-item">Lugar Nacimiento: {{padre.lugar_nacimiento|title}}</li>
             <li class="list-group-item">Fecha Nacimiento: {{padre.fecha_nacimiento}}</li>
-            <li class="list-group-item">Domicilio: {{padre.domicilio}}</li>
+            <li class="list-group-item">Domicilio: {{padre.domicilio|title}}</li>
             <li class="list-group-item">Email: {{padre.email}}</li>
             <li class="list-group-item">Sexo: {{padre.sexo}}</li>
-            <li class="list-group-item">Profesion: {{padre.profesion}}</li>
+            <li class="list-group-item">Profesion: {{padre.profesion|title}}</li>
             <li class="list-group-item">Telefono del Trabajo: {{padre.telefono_trabajo}}</li>
         </ul>
     </div>

@@ -5,7 +5,7 @@
 
 <br>
 
-<h1 class="card-title" align="center">{{trabajador.nombre_t}} {{trabajador.apellido_t}}</h1>
+<h1 class="card-title" align="center">{{trabajador.nombre_t|title}} {{trabajador.apellido_t|title}}</h1>
 
 <div class='row'>
     <div class="card text-center" style="width: 30%; margin-left: 3%">
@@ -41,10 +41,13 @@
                 <li class="list-group-item">Estudios: {{trabajador.estudios_cursados}}</li>
                 <li class="list-group-item">Fecha de inicio: {{trabajador.fecha_inicio_actividad}}</li>
                 <li class="list-group-item">Antecedentes laborales: {{trabajador.antecedentes_laborales}}</li>
-                <li class="list-group-item">Antiguedad: {{trabajador.antiguedad_en_empresa}}</li>
             </ul>
         </div>
     </div>
 </div>
+
+{% if user.is_authenticated %}
+    <center><a style="margin-top: 1%; margin-left: 3%" class="btn btn-info" href="{% url 'modificar_perfil' trabajador.dni_t %}">Modificar Datos</a></center>
+{% endif %}
 
 {% endblock body %}

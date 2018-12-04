@@ -6,283 +6,272 @@
 
 <style type="text/css">
     input{
-        width: 128%
+        width: 250px;
     }
     #a{
-        width:81%
+        widows: 250px;
     }
     textarea {
-        width: 100%;
-        height: 30%;
-    }
-
-    #myProgress {
-        width: 100%;
-        background-color: #ddd;
-    }
-
-    #myBar {
-        width: 10%;
+        width: 250px;
         height: 30px;
-        background-color: #4CAF50;
-        text-align: center;
-        line-height: 30px;
-        color: white;
     }
+
+    #wrapper {
+        background: white;
+        background-position: 50% 0px;
+        width: 1200px;
+        margin: 0px auto 0 auto;
+        text-align: center;
+    }
+
+    #header {
+        text-align: left;
+        background: white;
+        display: block;
+        position: relative;
+    }
+
 </style>
 
 <form method="post" enctype="multipart/form-data" id="form_docente">
     {% csrf_token %}
-    <div class='row' style="margin-top:2%">
-        <div class="card text-center" style="width: 26%; height:35%; margin-left: 6%">
-            <div class="card-body">
-                <h4 class="card-title">Datos personales</h4>
+    <div id="wrapper">
+        <div id="header">
+            <div class='row' style="margin-top:2%">
+                <div class="card text-center" style="width: 370px; margin-left: 40px">
+                    <div class="card-body" >
+                        <h4 class="card-title">Datos personales</h4>
 
-                <ul class="list-group list-group-flush">
+                        <ul class="list-group list-group-flush">
 
-                    <li class="list-group-item">
+                            <li class="list-group-item">
 
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -16%;" class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
-                            </div>
-                            <div style="margin-left: -9%;">{{ form.nombre_t }}</div>
-                        </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-right: 300%;" class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
+                                    </div>
+                                    <div style="margin-left: -13px; margin-top: 5px">{{ form.nombre_t }}</div>
+                                </div>
 
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -15%;" class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
-                            </div>
-                            <div style="margin-left: -9%;">{{ form.apellido_t }}</div>
-                        </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-right: 300%;" class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
+                                    </div>
+                                    <div style="margin-left: -13px; margin-top: 5px">{{ form.apellido_t }}</div>
+                                </div>
 
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -4%;" class="input-group-text" id="inputGroup-sizing-sm">Numero de documento:</span>
-                            </div>
-                            <div style="margin-left: -2.4%; margin-top: 0%;">{{ form.dni_t }}</div>
-                        </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-right: 300%;" class="input-group-text" id="inputGroup-sizing-sm">Numero de documento:</span>
+                                    </div>
+                                    <div style="margin-left: -2px; margin-top: 5px;">{{ form.dni_t }}</div>
+                                </div>
 
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
-                            </div>
-                            <div style="margin-left: -3%" id="a">{{ form.fecha_nacimiento_t }}</div>
-                        </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-right: 300%;" class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
+                                    </div>
+                                    <div style="margin-left: 3px; margin-top: 5px" id="a">{{ form.fecha_nacimiento_t }}</div>
+                                </div>
 
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
-                            </div>
-                            <div style="margin-left: -8%">{{ form.lugar_nacimiento_t }}</div>
-                        </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-right: 300%;" class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
+                                    </div>
+                                    <div style="margin-left: -13px; margin-top: 5px">{{ form.lugar_nacimiento_t }}</div>
+                                </div>
 
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
-                            </div>
-                            <br>
-                            <div id="a"  style="margin-left:-6.5%">{{ form.domicilio_t }}</div>
-                        </div>
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
-                            </div>
-                            <br>
-                            <div style="margin-left:-1%">{{ form.sexo_t }}</div>
-                        </div>
-                    </li>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-right: 300%;" class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
+                                    </div>
+                                    <br>
+                                    <div id="a"  style="margin-left:-12px; margin-top: 5px">{{ form.domicilio_t }}</div>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-right: 300%;" class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
+                                    </div>
+                                    <br>
+                                    <div style="margin-left:-1px">{{ form.sexo_t }}</div>
+                                </div>
+                            </li>
 
-                </ul>
-            </div>
-
-        </div>
-
-        <div class="card text-center" style="width: 26%; height:67% ;margin-left: 5%">
-            <div class="card-body" >
-                <h4 class="card-title">Datos de Contacto</h4>
-
-                <ul class="list-group list-group-flush">
-
-                    <li class="list-group-item">
-
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono particular:</span>
-                            </div>
-                            <div style="margin-left: -5%;">{{ form.telefono_particular }}</div>
-                        </div>
-
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono laboral:</span>
-                            </div>
-                            <div style="margin-left: -5%;">{{ form.telefono_laboral }}</div>
-                        </div>
-
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono de un familiar:</span>
-                            </div>
-                            <div style="margin-left: -5%; margin-top: 0%;">{{ form.telefono_familiar }}</div>
-                        </div>
-
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Datos familiares a cargo:</span>
-                            </div>
-                            <div style="margin-left: -5%; margin-top: 0%;; height:50%">{{ form.datos_familiares_cargo }}</div>
-                        </div>
-
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -10%;" class="input-group-text" id="inputGroup-sizing-sm">Correo electronico:</span>
-                            </div>
-                            <br>
-                            <div style="margin-left:-5%">{{ form.email_t }}</div>
-                        </div>
+                        </ul>
                     </div>
-            </div>
-            <div class="card text-center" style="width: 26%; margin-left: 5%">
-                <div class="card-body">
-                    <h4 class="card-title">Datos Laborales</h4>
-
-                    <ul class="list-group list-group-flush">
-
-                        <li class="list-group-item">
-
-                            <div class="input-group input-group-sm mb-3 form-group">
-                                <div class="input-group-prepend">
-                                    <span style="margin-left: -8%;" class="input-group-text" id="inputGroup-sizing-sm">Estudios cursados:</span>
-                                </div>
-                                <div id="b" style="margin-left: -4%;; height:50%">{{ form.estudios_cursados }}</div>
-                            </div>
-                            <div class="input-group input-group-sm mb-3 form-group">
-                                <div class="input-group-prepend">
-                                    <span style="margin-left: -7.5%;" class="input-group-text" id="inputGroup-sizing-sm">Antecedentes laborales:</span>
-                                </div>
-                                <br>
-                                <div style="margin-left:-5%; height:50%">{{ form.antecedentes_laborales }}</div>
-                            </div>
-                            <div class="input-group input-group-sm mb-3 form-group">
-                                <div class="input-group-prepend">
-                                    <span style="margin-left: -7.5%;" class="input-group-text" id="inputGroup-sizing-sm">Clave Unica:</span>
-                                </div>
-                                <br>
-                                <input style="margin-left: 0px; height: 31px" type="text" class="form-control" aria-label="Small" value="" aria-describedby="inputGroup-sizing-sm" id="profesor_clave" name="profesor_clave">
-                            </div>
-                        </li>
-                    </ul>
                 </div>
-            </div>
-        </div>
 
-        </form>
-    <center><button onclick="crear_Profesor()" class="btn btn-success" style="width:30%">Cargar</button></center>
-
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Matriculando Docente:</h5>
-                </div>
-                <div class="container-fluid">
-                    <div class="modal-body row">
-                        <p class="col-sm-2">Resultado: </p><span style='visibility:hidden;'>..</span>
-                        <div class="col-sm-9">
-                        <div id="myProgress">
-                            <p id="myBar" value="10%"></p>
-                        </div>
+                <div class="card text-center" style="width: 370px; height:67%; margin-left: 40px">
+                    <div class="card-body" >
+                        <h4 class="card-title">Datos de Contacto</h4>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono particular:</span>
+                                    </div>
+                                    <div style="margin-left: -5%; margin-top: 5px">{{ form.telefono_particular }}</div>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono laboral:</span>
+                                    </div>
+                                    <div style="margin-left: -5%; margin-top: 5px">{{ form.telefono_laboral }}</div>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono de un familiar:</span>
+                                    </div>
+                                    <div style="margin-left: -5%; margin-top: 5px;">{{ form.telefono_familiar }}</div>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Datos familiares a cargo:</span>
+                                    </div>
+                                    <div style="margin-left: -5%; margin-top: 5px;; height:50%">{{ form.datos_familiares_cargo }}</div>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -10%;" class="input-group-text" id="inputGroup-sizing-sm">Correo electronico:</span>
+                                    </div>
+                                    <br>
+                                    <div style="margin-left:-5%; margin-top: 5px">{{ form.email_t }}</div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                    <span id="resultado"></span>
                 </div>
-                <div class="modal-footer" id="footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="login()" id="continuar">Continuar</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="close_modal()" id="volver">Volver</button>
+
+                <div class="card text-center" style="width: 370px; margin-left: 40px">
+                    <div class="card-body">
+                        <h4 class="card-title">Datos Laborales</h4>
+
+                        <ul class="list-group list-group-flush">
+
+                            <li class="list-group-item">
+
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -8%;" class="input-group-text" id="inputGroup-sizing-sm">Estudios cursados:</span>
+                                    </div>
+                                    <div id="b" style="margin-left: -4%;; height:50%; margin-top: 5px">{{ form.estudios_cursados }}</div>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -7.5%;" class="input-group-text" id="inputGroup-sizing-sm">Antecedentes laborales:</span>
+                                    </div>
+                                    <br>
+                                    <div style="margin-left:-5%; height:50%; margin-top: 5px">{{ form.antecedentes_laborales }}</div>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -7.5%;" class="input-group-text" id="inputGroup-sizing-sm">Clave Unica:</span>
+                                    </div>
+                                    <br>
+                                    <input style="margin-left: 0px; height: 50%" type="text" class="form-control" aria-label="Small" value="" aria-describedby="inputGroup-sizing-sm" id="profesor_clave" name="profesor_clave">
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</form>
 
-    <form id="login" action="{% url 'logIn' %}"></form>
+<center><button onclick="modal_profesor()" class="btn btn-success" style="width:30%">Cargar</button></center>
 
-    <script>
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titulo" style="display: none;">Carga de Docente</h5>
+            </div>
+            <div class="container-fluid">
+                <div class="modal-body">
+                    <p id="msg_confirm" align="center">¿Cargar Datos ?</p>
+                    <span style="margin-left:0%;display: none" id="resultado_span">Resultado:</span>
+                    <span id="resultado_mal" style="margin-top: -10"></span>
+                    <span style="width: 100%; margin-left: 0%; margin-top: -5.5% " id="resultado_bien"></span>
+                    <div style="margin-left: 35%; margin-top: -11.5%;display: none" id="loader_resultado" class="loader"></div>
+                </div>
+                <div class="modal-footer" id="footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                    <button onclick="crear_Profesor()" class="btn btn-primary" id="aceptar">Aceptar</button>
+                    <a type="button" class="btn btn-primary" style="display: none;" id="continuar" href="{% url 'formReMatricular' %}">Continuar</a>
+                    <button type="button" class="btn btn-danger" style="display: none;" data-dismiss="modal" id="cerrar">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-        var input = document.getElementById("profesor_clave");
-        input.addEventListener("keyup", function(event) {
-            event.preventDefault();
-            if (event.keyCode === 13) {
-                crear_Profesor();
+<script>
+
+    var input = document.getElementById("profesor_clave");
+    input.addEventListener("keyup", function(event) {
+        event.preventDefault();
+        if (event.keyCode === 13) {
+            crear_Profesor();
+        }
+    });
+
+    function modal_profesor(){
+        $("#cancelar").show();
+        $("#aceptar").show();
+        $("#resultado_span").hide();
+        $("#msg_confirm").show();
+        $("#loader_resultado").hide();
+        $("#resultado_crear_tr").hide();
+        $("#continuar").hide();
+        $("#titulo").hide();
+        $("#cerrar").hide();
+        $("#resultado_mal").html("");
+        $("#resultado_bien").html("");
+        $('#myModal').modal('show');
+    }
+
+    function crear_Profesor(){
+        $("#titulo").show();
+        $("#cancelar").hide();
+        $("#aceptar").hide();
+        $("#msg_confirm").hide();
+        $("#resultado_span").show();
+        $("#loader_resultado").show();
+        var myForm = document.getElementById('form_docente');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: '{% url 'crear_profesor' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#loader_resultado").hide();
+                if (data.error){
+                    $("#resultado_bien").html("");
+                    $("#resultado_mal").html(data.resultado);
+                    $("#continuar").hide();
+                    $("#cerrar").show();
+                } else {
+                    $("#resultado_bien").html(data.resultado);
+                    $("#resultado_mal").html("");
+                    $("#continuar").show();
+                    $("#cerrar").hide();
+                }
             }
         });
 
-        function sleep() {
-            return new Promise(resolve => setTimeout(resolve, 1000));
-        }
+    }
 
-        async function footer(a){
-            var elem = document.getElementById("myBar");
-            var width = 10;
-            var id = setInterval(frame, 10);
-            function frame() {
-                if (width >= 100) {
-                    clearInterval(id);
-                } else {
-                    width++;
-                    elem.style.width = width + '%';
-                    elem.innerHTML = width * 1  + '%';
-                }
-            }
-            await sleep();
-            elem.style.display = "none";
-            var resultado = document.getElementById("resultado");
-            resultado.innerHTML = a;
-            return a
+    function close_modal(){
+        $('#myModal').modal('hide');
+    }
 
-        }
+    function login(){
+        $('#login').submit()
+    }
 
-        function crear_Profesor(){
-            var myForm = document.getElementById('form_docente');
-            formData = new FormData(myForm);
-            console.log("llega");
-            var elem = document.getElementById("myBar");
-            elem.style.display = "block";
-            var resultado = document.getElementById("resultado");
-            resultado.innerHTML = "";
-            var x = document.getElementById("continuar");
-            var y = document.getElementById("volver");
-            x.style.display = "none";
-            y.style.display = "none";
-            $('#myModal').modal('show');
-            $.ajax({
-                url: 'crear_profesor/',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    console.log(data.error);
-                    if (data.error){
-                        footer(data.resultado);
-                        x.style.display = "none";
-                        y.style.display = "block";
-                    }else{
-                        footer(data.resultado);
-                        y.style.display = "none";
-                        x.style.display = "block";
-                    }
-                }
-            });
-        }
+</script>
 
-        function close_modal(){
-            $('#myModal').modal('hide');
-        }
-
-        function login(){
-            $('#login').submit()
-        }
-
-    </script>
-
-    {% endblock body %}
+{% endblock body %}

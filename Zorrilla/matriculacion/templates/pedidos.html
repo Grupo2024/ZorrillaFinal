@@ -6,18 +6,15 @@
 
 <style>
 
-    #myProgress {
-        width: 100%;
-        background-color: #ddd;
+    .table-wrapper-scroll-y {
+      display: block;
+      max-height: 200px;
+      overflow-y: auto;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
     }
 
-    #myBar {
-        width: 10%;
-        height: 30px;
-        background-color: #4CAF50;
-        text-align: center;
-        line-height: 30px;
-        color: white;
+    div.hidden_idv {     /* this will hide div with class div_class_name */
+        display:none;
     }
 </style>
 
@@ -26,16 +23,16 @@
 
     {% for m in matriculaciones %}
 
-    <div class="card text-center" style="width:20%; margin-left: 3%">
+    <div class="card text-center" style="width:20%; margin-left: 3%;">
         <div class="card-body">
-            <h4 class="card-title">{{m.alumno.nombre}} {{m.alumno.apellido}}</h4>
+            <h4 class="card-title">{{m.alumno.nombre|title}} {{m.alumno.apellido|title}}</h4>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">DNI: {{m.alumno.dni}}</li>
                 <li class="list-group-item">Fecha de nacimiento: {{m.alumno.fecha_nacimiento}}</li>
             </ul>
             <br>
-            <a class="btn btn-outline-dark" href="{% url 'datos_alumno' m.alumno.dni %}">Ver mas</a>
-            <a onclick="traer_secciones('{% url 'get_Secciones' m.alumno.dni %}, {{m.alumno.dni}}')" class="btn btn-outline-dark">Matricular</a>
+            <a class="btn btn-info" href="{% url 'perfil_alumno' 'pedidos' m.alumno.dni %}">Ver mas</a>
+            <a onclick="traer_secciones('{% url 'get_Secciones' m.alumno.dni %}, {{m.alumno.dni}}')" class="btn btn-info" style="color: white">Matricular</a>
         </div>
         <div class="card-footer">
             <small class="text-muted">Fecha de pedido: {{m.fecha_matriculacion|date:"d/M/Y"}}</small>
@@ -46,16 +43,16 @@
 
     {% for m in re_matricular %}
 
-    <div class="card text-center" style="width:20%; margin-left: 3%">
+    <div class="card text-center " style="width:20%; margin-left: 3%">
         <div class="card-body">
-            <h4 class="card-title">{{m.alumno.nombre}} {{m.alumno.apellido}}</h4>
+            <h4 class="card-title">{{m.alumno.nombre|title}} {{m.alumno.apellido|title}}</h4>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">DNI: {{m.alumno.dni}}</li>
                 <li class="list-group-item">Fecha de nacimiento: {{m.alumno.fecha_nacimiento}}</li>
             </ul>
             <br>
-            <a class="btn btn-outline-dark" href="{% url 'datos_alumno' m.alumno.dni %}">Ver mas</a>
-            <a onclick="traer_secciones('{% url 're_matricular' m.alumno.dni %}, {{m.alumno.dni}}')" class="btn btn-outline-dark">Re Matricular</a>
+            <a class="btn btn-dark" href="{% url 'perfil_alumno' 'pedidos' m.alumno.dni %}">Ver mas</a>
+            <a onclick="traer_secciones('{% url 're_matricular' m.alumno.dni %}, {{m.alumno.dni}}')" class="btn btn-dark" style="color: white">Re Matricular</a>
         </div>
         <div class="card-footer">
             <small class="text-muted">Fecha de pedido: {{m.fecha_matriculacion|date:"d/M/Y"}}</small>
@@ -63,11 +60,32 @@
     </div>
 
     {% endfor %}
+
+    {% for m in egresos %}
+
+    <div class="card text-center " style="width:20%; margin-left: 3%">
+        <div class="card-body">
+            <h4 class="card-title">{{m.alumno.nombre|title}} {{m.alumno.apellido|title}}</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">DNI: {{m.alumno.dni}}</li>
+                <li class="list-group-item">Fecha de nacimiento: {{m.alumno.fecha_nacimiento}}</li>
+            </ul>
+            <br>
+            <a class="btn btn-success" href="{% url 'perfil_alumno' 'pedidos' m.alumno.dni %}">Ver mas</a>
+            <a onclick="traer_secciones('{% url 'egresar' m.alumno.dni %}, {{m.alumno.dni}}')" class="btn btn-success" style="color: white">Egresar</a>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Fecha de pedido: {{m.fecha_matriculacion|date:"d/M/Y"}}</small>
+        </div>
+    </div>
+
+    {% endfor %}
+
 </div>
 
-{% if matriculaciones|length == 0 %}
+{% if matriculaciones|length == 0 and re_matricular|length == 0 and egresos|length == 0 %}
 
-<h2><center>No hay ningun pedido</center></h2>
+    <h2><center>No hay ningun pedido</center></h2>
 
 {% endif %}
 
@@ -79,39 +97,27 @@
     </div>
 </div>
 
-<div class="modal fade" id="todos_los_padres">
-    <div class="modal-dialog modal-lg">
-        <div id="datos_padre">
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="todos_los_transportistas">
-    <div class="modal-dialog modal-lg">
-        <div id="datos_transportista">
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="Modal_resultado" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade" id="confirm_modal">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Matriculando Alumno:</h5>
+                <h5 class="modal-title" id="titulo"></h5>
             </div>
-            <div class="container-fluid">
-                <div class="modal-body row">
-                    <p class="col-sm-2">Resultado: </p><span style='visibility:hidden;'>..</span>
-                    <div class="col-sm-9">
-                        <div id="myProgress">
-                            <p id="myBar" value="10%"></p>
-                        </div>
-                    </div>
-                    <span id="resultado"></span>
-                </div>
-                <div class="modal-footer" id="footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="close_modal()" id="volver">Continuar</button>
-                </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p id="msg_matricular" align="center">¿Matricular al Alumno ?</p>
+                <p id="msg_re_matricular" align="center">¿Re Matricular al Alumno ?</p>
+                <span style="margin-left:0%;display: none" id="resultado_span">Resultado:</span>
+                <span style="width: 100%; margin-left: 0%; margin-top: -5.5% " id="resultado"></span>
+                <div style="margin-left: 32%; margin-top: -11.5%" id="loader_resultado" class="loader"></div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                <button type="button" id="ma_acepter" class="btn btn-success" onclick="matricular()">Aceptar</button>
+                <button type="button" id="re_aceptar" class="btn btn-success" onclick="re_matricular()">Aceptar</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
+                <a type="button" class="btn btn-primary" id="continuar" href="{% url 'traer_pedidos' %}">Continuar</a>
             </div>
         </div>
     </div>
@@ -122,16 +128,147 @@
 
 <script>
 
+    function refresh_p(){
+        var des = document.getElementById("reload");
+        des.submit();
+    }
 
+    function ma_model(){
+        $('#re_aceptar').hide();
+        $('#ma_acepter').show();
+        $('#msg_matricular').show();
+        $('#msg_re_matricular').hide();
+        $("#continuar").hide();
+        $("#resultado_span").hide();
+        $("#volver").hide();
+        $("#loader_resultado").hide();
+    }
 
-    function use_transporte(e) {
-        var aux = document.getElementById("transporte").value
-        var sel_div = document.getElementById("new_transporte");
-        if (aux == 0){
-            sel_div.style.display = "none";
+    function pre_matricular(){
+        var curso_elegido = document.getElementById('select_curso');
+        if (curso_elegido.value == 0){
+            $('#span_curso').show();
         } else {
-            sel_div.style.display = "block";
+            $('#modal_cursos').modal('hide');
+            ma_model();
+            $('#confirm_modal').modal('show');
+
         }
+    }
+
+    function matricular(){
+        $('#ma_acepter').hide();
+        $('#msg_matricular').hide();
+        $('#cancelar').hide();
+        $("#titulo").html("Solicitudad de Matriculacion");
+        $("#resultado").html("");
+        var myForm = document.getElementById('form_for_curso');
+        formData = new FormData(myForm);
+        $("#resultado_span").show();
+        $("#loader_resultado").show();
+        $.ajax({
+            url: '{% url 'aceptar_matriculacion' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#loader_resultado").hide();
+                $("#resultado").html(data.resultado);
+                if (data.error){
+                    $("#continuar").hide();
+                    $("#cerrar").show();
+                } else {
+                    $("#continuar").show();
+                    $("#cerrar").hide();
+                }
+            }
+        });
+      }
+
+
+    function re_ma_model(){
+        $('#re_aceptar').show();
+        $('#ma_acepter').hide();
+        $('#msg_matricular').hide();
+        $('#msg_re_matricular').show();
+        $("#continuar").hide();
+        $("#resultado_span").hide();
+        $("#volver").hide();
+        $("#loader_resultado").hide();
+        $('#modal_cursos').modal('hide');
+        $('#confirm_modal').modal('show');
+    }
+
+    function re_matricular(){
+        $('#re_aceptar').hide();
+        $('#msg_re_matricular').hide();
+        $('#cancelar').hide();
+        $("#titulo").html("Solicitud de Re Matriculacion");
+        $("#resultado").html("");
+        $("#continuar").hide();
+        $("#volver").hide();
+        $("#resultado_span").show();
+        $("#loader_resultado").show();
+        var myForm = document.getElementById('form_for_re_matricular');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: '{% url 'aceptar_re_matriculacion' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#loader_resultado").hide();
+                $("#resultado").html(data.resultado);
+                if (data.error){
+                    $("#continuar").hide();
+                    $("#cerrar").show();
+                } else {
+                    $("#continuar").show();
+                    $("#cerrar").hide();
+                }
+            }
+        });
+    }
+
+    function egresar(){
+        $("#msg_advertencia_egreso").hide();
+        $("#resultado_span_egreso").show();
+        $("#resultado_egreso").html("");
+        $("#resultado_egreso").show();
+        $("#loader_resultado_egreso").show();
+        $("#cancelar_egreso").hide();
+        $("#aceptar_egreso").hide();
+        var myForm = document.getElementById('form_for_egreso');
+        formData = new FormData(myForm);
+        $.ajax({
+            url: '{% url 'egresar_alumno' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#loader_resultado_egreso").hide();
+                $("#continuar_egreso").show();
+                $("#resultado_egreso").html(data.resultado);
+            }
+        });
+    }
+
+    function traer(url){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        })
+            .done(function (data) {
+            $("#datos_modal").html(data);
+            $('#modal_cursos').modal('hide');
+            $('#modal_cursos').modal('show');
+        });
     }
 
     function traer_secciones(url, alum){
@@ -148,95 +285,9 @@
         });
     }
 
-    function sleep() {
-        return new Promise(resolve => setTimeout(resolve, 1000));
-    }
-
-    async function footer(a){
-        var elem = document.getElementById("myBar");
-        var width = 10;
-        var id = setInterval(frame, 10);
-        function frame() {
-            if (width >= 100) {
-                clearInterval(id);
-            } else {
-                width++;
-                elem.style.width = width + '%';
-                elem.innerHTML = width * 1  + '%';
-            }
-        }
-        await sleep();
-        elem.style.display = "none";
-        document.getElementById("resultado").innerHTML = a;
-        return a
-
-    }
-
-    function matricular(){
-        var curso_elegido = document.getElementById('select_curso');
-        if (curso_elegido.value == 0){
-            alert("Selecciona un Curso");
-        } else {
-            if (confirm("¿ Matricular al Alumno ?")) {
-                var myForm = document.getElementById('form_for_curso');
-                formData = new FormData(myForm);
-                var elem = document.getElementById("myBar");
-                elem.style.display = "block";
-                var resultado = document.getElementById("resultado");
-                resultado.innerHTML = "";
-                var y = document.getElementById("volver");
-                y.style.display = "none";
-                $('#Modal_resultado').modal('show');
-                $.ajax({
-                    url: '{% url 'aceptar_matriculacion' %}',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    type: 'POST',
-                    success: function(data){
-                        $('#modal_cursos').modal('hide');
-                        footer(data.resultado);
-                        y.style.display = "block";
-                    }
-                });
-            } else {
-                return;
-            }
-        }
-    }
-
-    function traer_transportistas(url){
-        $.ajax({
-            method: "POST",
-            url: url,
-            data: {
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-            }
-        })
-            .done(function (data) {
-            $("#datos_transportista").html(data);
-            $('#modal_cursos').modal('hide');
-            $('#todos_los_transportistas').modal('show');
-        });
-    }
-
-    function traer_padres(url){
-        $.ajax({
-            method: "POST",
-            url: url,
-            data: {
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-            }
-        })
-            .done(function (data) {
-            $("#datos_padre").html(data);
-            $('#modal_cursos').modal('hide');
-            $('#todos_los_padres').modal('show');
-        });
-    }
-
     function curso(e) {
-        document.getElementById("selected_curso").value = e.target.value
+        var valor = document.getElementById("selected_curso").value;
+        valor.value = e.target.value;
     }
 
     function close_modal(){
@@ -245,7 +296,92 @@
         aux.submit();
     }
 
-    function mandar_padre(){
+    function show_transportistas(){
+        var div_trans = document.getElementById("btn_asignar_transporte");
+        var e = document.getElementById("transporte").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
+
+    function selectCurso(e) {
+        document.getElementById("select_curso").value = e.target.value
+    }
+
+    function show_autorizados(){
+        var div_trans = document.getElementById("btn_asignar_autorizado");
+        var e = document.getElementById("autorizado").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
+
+    function show_padres(){
+        var div_trans = document.getElementById("btn_asignar_padre2");
+        var e = document.getElementById("padress").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
+
+    function show_obras(){
+        var div_trans = document.getElementById("btn_asignar_obra");
+        var e = document.getElementById("obrass").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
+
+    function show_transportistas2(){
+        var div_trans = document.getElementById("btn_asignar_transporte2");
+        var e = document.getElementById("transporte2").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
+
+    function selectCurso2(e) {
+        document.getElementById("select_curso2").value = e.target.value
+    }
+
+    function show_autorizados2(){
+        var div_trans = document.getElementById("btn_asignar_autorizado2");
+        var e = document.getElementById("autorizado2").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
+
+    function show_padres2(){
+        var div_trans = document.getElementById("btn_asignar_padre2");
+        var e = document.getElementById("padress2").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
+    }
+
+    function show_obras2(){
+        var div_trans = document.getElementById("btn_asignar_obra2");
+        var e = document.getElementById("obrass2").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
     }
 </script>
 

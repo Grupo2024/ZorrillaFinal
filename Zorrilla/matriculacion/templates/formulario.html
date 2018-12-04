@@ -6,223 +6,261 @@
 
 <style type="text/css">
     input{
-        width: 140%
+        width: auto
     }
-    #a{
+    input[type=text]{
+        margin-left: 15px;
+        width: auto;
+        height: 30px;
+        border: 2px solid #ccc;
+        border-radius:4px;
+        padding: 0px 5px;
+        font-size: 16px;
+    }
+    text-label{
         width: 75%
+    }
+
+    #wrapper {
+        background: white;
+        background-position: 50% 0px;
+        width: 1200px;
+        margin: 0px auto 0 auto;
+        text-align: center;
+    }
+
+    #header {
+        text-align: left;
+        background: white;
+        display: block;
+        position: relative;
     }
 </style>
 
 <form method="post" enctype="multipart/form-data" id="form_alumno">
     {% csrf_token %}
-    <div class='row' style="margin-top:2%">
-        <div class="card text-center" style="width: 26%; margin-left: 6%">
-            <div class="card-body">
-                <h4 class="card-title">Datos personales</h4>
+    <div id="wrapper">
+        <div id="header">
+            <div class='row' style="margin-top:2%">
+                <div class="card text-center" style="width:270px; margin-left: 10%; margin-top: 2%">
+                    <div class="card-body">
+                        <h4 class="card-title">Datos personales</h4>
 
-                <ul class="list-group list-group-flush">
+                        <ul class="list-group list-group-flush">
 
-                    <li class="list-group-item">
+                            <li class="list-group-item">
 
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -16%;" class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
-                            </div>
-                            <div style="margin-left: -9%;">{{ alumno_form.nombre }}</div>
-                        </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -16%;" class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
+                                    </div>
+                                    <div style="margin-left: -13.53%; margin-right: 100px;margin-top: 5px">{{ alumno_form.nombre }}</div>
+                                </div>
 
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -15%;" class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
-                            </div>
-                            <div style="margin-left: -9%;">{{ alumno_form.apellido }}</div>
-                        </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -15%;" class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
+                                    </div>
+                                    <div style="margin-left: -13.53%; margin-top: 5px">{{ alumno_form.apellido }}</div>
+                                </div>
 
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -4%;" class="input-group-text" id="inputGroup-sizing-sm">Numero de documento:</span>
-                            </div>
-                            <div style="margin-left: -2.2%; margin-top: 0%;">{{ alumno_form.dni }}</div>
-                        </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -4%;" class="input-group-text" id="inputGroup-sizing-sm">Numero de documento:</span>
+                                    </div>
+                                    <div style="margin-left: -2.2%; margin-top: 0%; margin-top: 5px">{{ alumno_form.dni }}</div>
+                                </div>
 
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
-                            </div>
-                            <div style="margin-left: -8%">{{ alumno_form.lugar_nacimiento }}</div>
-                        </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
+                                    </div>
+                                    <div style="margin-left: -12%; margin-top: 5px">{{ alumno_form.lugar_nacimiento }}</div>
+                                </div>
 
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
-                            </div>
-                            <br>
-                            <div id="a"  style="margin-left:-2.4%">{{ alumno_form.fecha_nacimiento }}</div>
-                        </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
+                                    </div>
+                                    <br>
+                                    <div id="a"  style="margin-left:-3.4%; margin-top: 5px">{{ alumno_form.fecha_nacimiento }}</div>
+                                </div>
 
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
-                            </div>
-                            <br>
-                            <div style="margin-left:-7%">{{ alumno_form.domicilio }}</div>
-                        </div>
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div style="margin-right: 800%; margin-left:-4" class="input-group-prepend">
-                                <span  class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
-                            </div>
-                            <br>
-                            <div style="margin-left:-6">{{ alumno_form.email }}</div>
-                        </div>
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
-                                {{ alumno_form.sexo }}
-                            </div>
-                        </div>
-                    </li>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
+                                    </div>
+                                    <br>
+                                    <div style="margin-left:-10%; margin-top: 5px">{{ alumno_form.domicilio }}</div>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div style="margin-right: 800%; margin-left:-4" class="input-group-prepend">
+                                        <span  class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
+                                    </div>
+                                    <div style="margin-left:-2; margin-top: 5px">{{ alumno_form.email }}</div>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -5%; margin-top: 5px" class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
+                                        {{ alumno_form.sexo }}
+                                    </div>
+                                </div>
+                            </li>
 
-                </ul>
-            </div>
-
-        </div>
-
-        <div class="card text-center" style="width: 26%; margin-left: 5%">
-            <div class="card-body">
-                <h4 class="card-title">Datos de Contacto</h4>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono de la casa:</span>
-                            </div>
-                            <div style="margin-left: -5%;">{{ alumno_form.telefono_casa }}</div>
-                        </div>
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono del padre:</span>
-                            </div>
-                            <div style="margin-left: -5%;">{{ alumno_form.telefono_padre }}</div>
-                        </div>
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono de la madre:</span>
-                            </div>
-                            <div style="margin-left: -5%; margin-top: 0%;">{{ alumno_form.telefono_madre }}</div>
-                        </div>
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono de un familiar:</span>
-                            </div>
-                            <div style="margin-left: -5%">{{ alumno_form.telefono_familiar }}</div>
-                        </div>
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono de un vecino:</span>
-                            </div>
-                            <br>
-                            <div style="margin-left:-5%">{{ alumno_form.telefono_vecino }}</div>
-                        </div>
-                        <div class="input-group input-group-sm mb-3 form-group">
-                            <div class="input-group-prepend">
-                                <span style="margin-left: -7.5%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono de quien lo trae:</span>
-                            </div>
-                            <br>
-                            <div style="margin-left:-5%">{{ alumno_form.telefono_que_lo_trae }}</div>
-                        </div>
+                        </ul>
                     </div>
+
+                </div>
+
+                <div class="card text-center" style="width: 270px; margin-left: 10%;margin-top: 2%">
+                    <div class="card-body">
+                        <h4 class="card-title">Datos de Contacto</h4>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono de la casa:</span>
+                                    </div>
+                                    <div style="margin-left: -7%; margin-top: 5px">{{ alumno_form.telefono_casa }}</div>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono del padre:</span>
+                                    </div>
+                                    <div style="margin-left: -7%; margin-top: 5px">{{ alumno_form.telefono_padre }}</div>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono de la madre:</span>
+                                    </div>
+                                    <div style="margin-left: -7%; margin-top: 5px;">{{ alumno_form.telefono_madre }}</div>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono de un familiar:</span>
+                                    </div>
+                                    <div style="margin-left: -7%; margin-top: 5px">{{ alumno_form.telefono_familiar }}</div>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -9%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono de un vecino:</span>
+                                    </div>
+                                    <br>
+                                    <div style="margin-left:-7%; margin-top: 5px">{{ alumno_form.telefono_vecino }}</div>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -7.5%;" class="input-group-text" id="inputGroup-sizing-sm">Telefono de quien lo trae:</span>
+                                    </div>
+                                    <br>
+                                    <div style="margin-left:-7%; margin-top: 5px">{{ alumno_form.telefono_que_lo_trae }}</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card text-center" style="width: 270px; margin-left: 10%;margin-top: 2%">
+                    <div class="card-body">
+                        <h4 class="card-title">Otros Datos</h4>
+
+                        <ul class="list-group list-group-flush">
+
+                            <li class="list-group-item">
+
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Enfermedad relevante:</span>
+                                    </div>
+                                    <div style="margin-left: -12%; margin-top: 5px">{{ alumno_form.enfermedad_relevante }}</div>
+                                </div>
+
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Con quien vive:</span>
+                                    </div>
+                                    <br>
+                                    <div style="margin-left:-20; margin-top: 5px">{{ alumno_form.con_quien_vive }}</div>
+                                </div>
+
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend">
+                                        <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Quien lo trae:</span>
+                                    </div>
+                                    <br>
+                                    <div style="margin-left:-20; margin-top: 5px">{{ alumno_form.quien_lo_trae }}</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="card text-center" style="width: 26%; margin-left: 5%">
-                <div class="card-body">
-                    <h4 class="card-title">Otros Datos</h4>
-
-                    <ul class="list-group list-group-flush">
-
-                        <li class="list-group-item">
-
-                            <div class="input-group input-group-sm mb-3 form-group">
-                                <div class="input-group-prepend">
-                                    <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Enfermedad relevante:</span>
-                                </div>
-                                <div style="margin-left: -8%;">{{ alumno_form.enfermedad_relevante }}</div>
-                            </div>
-
-                            <div class="input-group input-group-sm mb-3 form-group">
-                                <div class="input-group-prepend">
-                                    <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Con quien vive:</span>
-                                </div>
-                                <br>
-                                <div style="margin-left:-20">{{ alumno_form.con_quien_vive }}</div>
-                            </div>
-
-                            <div class="input-group input-group-sm mb-3 form-group">
-                                <div class="input-group-prepend">
-                                    <span style="margin-left: -5%;" class="input-group-text" id="inputGroup-sizing-sm">Quien lo trae:</span>
-                                </div>
-                                <br>
-                                <div style="margin-left:-20">{{ alumno_form.quien_lo_trae }}</div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-
         </div>
     </div>
 </form>
 
-<center><button class="btn btn-success" onclick="crear_Alumno()" style="width:30%">Cargar</button></center>
 
+<center><button class="btn btn-success" onclick="modal_alumno()" style="width:30%; margin-top: 1%">Cargar</button></center>
+<br>
 <div class="modal fade" id="cargar_alumno" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Matriculacion de Padre/Madre.</h5>
+                <h5 class="modal-title" id="titulo">Creacion de Alumno.</h5>
+                <h5 class="modal-title" id="titulo2">Creacion de Padre.</h5>
             </div>
             <div class="container-fluid">
-                <div class="modal-body row">
-                    <div class="col-sm-9">
-                        <div id="myProgress">
-                            <p id="myBar" value="10%"></p>
-                        </div>
-                    </div>
-
-                    <div id="data">
-                    </div>
+                <div class="modal-body">
+                    <p align="center" id="msg">¿Cargar Alumno?</p>
+                    <div id="data"></div>
                 </div>
-
+                <div class="modal-footer" id="footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                    <button onclick="crear_Alumno()" class="btn btn-primary" id="aceptar">Aceptar</button>
+                    <a type="button" class="btn btn-success"  style="display: none;" href="{% url 'index' %}" id="continuar">Continuar</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-
-<form id="volv" href="{% url 'index' %}">
-</form>
-
 <script>
 
+    function modal_alumno(){
+        $("#titulo").show();
+        $("#titulo2").hide();
+        $("#cancelar").show();
+        $("#aceptar").show();
+        $("#msg").show();
+        $("#data").hide();
+        $("#continuar").hide();
+        $("#resultado").hide();
+        $('#cargar_alumno').modal('show');
+    }
 
     function crear_Alumno(){
+        $("#msg").hide();
+        $("#cancelar").hide();
+        $("#aceptar").hide();
         var myForm = document.getElementById('form_alumno');
         formData = new FormData(myForm);
-        $('#cargar_alumno').modal('show');
         $.ajax({
-            url: '/crear_alumno/',
+            url: '{% url 'crear_alumno' %}',
             data: formData,
             processData: false,
             contentType: false,
             type: 'POST',
             success: function(data){
-                $("#data").html(data);
-                var btn_continuar = document.getElementById("continuar");
-                btn_continuar.style.display = "none"
-            }
-        });
+            $("#data").html(data);
+            $("#data").show();
+        }
+               });
     }
 
     function crear_Padre(){
         var myForm = document.getElementById('form_padre');
         formData = new FormData(myForm);
+        $("#titulo").hide();
+        $("#titulo2").show();
         var url = '{% url 'crear_padre' %}'
         $.ajax({
             url: url,
@@ -232,23 +270,27 @@
             type: 'POST',
             success: function(data){
                 if (data.error){
-                    document.getElementById("resultado2").innerHTML = data.resultado;
-                } else{
-                    var aux=document.getElementById("resul_padre")
-                    aux.style.display="none"
-                    document.getElementById("resultado2").innerHTML = data.resultado;
-                    var btn_cargar = document.getElementById("cargar");
-                    btn_cargar.style.display = "none"
-                    var btn_continuar = document.getElementById("continuar");
-                    btn_continuar.style.display = "block"
+                    $("#resultado2").html(data.resultado);
+                    $("#continuar").hide();
+                }else{
+                    $("#cp").hide();
+                    $("#cargar").hide();
+                    $("#resultado2").html(data.resultado);
+                    $("#continuar").show();
                 }
             }
         });
+
     }
 
-    function volver(){
-        var form = document.getElementById("volv");
-        form.submit()
+    function show_form_padre(){
+        var div_trans = document.getElementById("si_form_padre");
+        var e = document.getElementById("padress_form").value;
+        if (e == 1) {
+            div_trans.style.display = "block";
+        } else {
+            div_trans.style.display = "none";
+        }
     }
 </script>
 

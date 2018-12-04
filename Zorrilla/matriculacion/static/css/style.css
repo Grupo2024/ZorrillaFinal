@@ -385,8 +385,8 @@ table.table .avatar {
 #snackbar {
     visibility: hidden;
     min-width: 250px;
-    margin-left: -110px;
-    background-color: #0099cc;
+    margin-left: -125px;
+    background-color: #333;
     color: #fff;
     text-align: center;
     border-radius: 2px;
@@ -397,6 +397,7 @@ table.table .avatar {
     bottom: 30px;
     font-size: 17px;
 }
+
 
 #snackbar.show {
     visibility: visible;
@@ -470,6 +471,23 @@ table.table .avatar {
 
 /* end Toast */
 
-.hdp{
-    align: right;
+.loader {
+    border: 6px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 6px solid #3498db;
+    width: 30px;
+    height: 30px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

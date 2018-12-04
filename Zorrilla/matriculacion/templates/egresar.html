@@ -1,0 +1,26 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <h4 class="modal-title"><strong>Pedido de Egreso de {{alumno.nombre|title}}</strong></h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+            <span id="msg_advertencia_egreso">Esta seguro de que desea egresar al alumno {{alumno.nombre|title}} {{alumno.apellido|title}}?</span>
+            <span style="margin-left:0%;display: none" id="resultado_span_egreso">Resultado:</span>
+            <span style="width: 100%; margin-left: 0%; margin-top: -5.5% " id="resultado_egreso"></span>
+            <div style="margin-left: 32%; margin-top: -11.5%;display: none" id="loader_resultado_egreso" class="loader"></div>
+            <form id="form_for_egreso" method="post">
+                {% csrf_token %}
+                <input name="dni_alumno" id="dni_alumno" type="hidden" value="{{alumno.dni}}">
+            </form>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar_egreso">Cancelar</button>
+            <button type="button" class="btn btn-success" onclick="egresar()" id="aceptar_egreso">Aceptar</button>
+            <a type="button" style="display: none" class="btn btn-primary" id="continuar_egreso" href="{% url 'traer_pedidos' %}">Continuar</a>
+        </div>
+    </div>
+</div>

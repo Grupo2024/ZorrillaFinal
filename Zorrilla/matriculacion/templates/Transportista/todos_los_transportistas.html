@@ -1,104 +1,123 @@
-<div class="modal-dialog">
-    <div class="modal-content">
-        <!-- Modal Header -->
-        <div class="modal-header">
-            <span>Asignar Transportista</span>
-        </div>
-        <!-- Modal body -->
-        <div class="modal-body">
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% endblock navbar %}
+{% block body %}
 
-            <input type="text"placeholder="Transportista que desea buscar" id="myInput" onkeyup="buscar_transportista()" size="5">
-            <select id="filter_by">
-                <option value=0>Nombre</option>
-                <option value=1>Apellido</option>
-                <option value=2>Dni</option>
-            </select>
-            <br>
-            <table class="table table-bordered" id="tabla_transportistas">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Dni</th>
-                        <th>Opcion</th>
-                    </tr>
+{% load poll_extras %}
+
+<br>
+<div id="contenido">
+    {% if transportistas|length != 0 %}
+
+    <h3><center>Transportistas</center></h3>
+    <br>
+    <div align="center">
+        <input type="text"placeholder="Transportista que desea buscar" id="input_t" onkeyup="buscar_transportista()" size="5">
+        <select id="filtro_t">
+            <option value=0>Nombre</option>
+            <option value=1>Apellido</option>
+            <option value=2>Dni</option>
+        </select>
+    </div>
+
+
+    <br>
+
+    <div class="col-md-12">
+        <h4></h4>
+        <div class="table-responsive">
+
+
+            <table id="tabla_t" class="table table-hover">
+
+                <thead class="thead">
+                    <th>Apellido Transportista</th>
+                    <th>Nombre Transportista</th>
+                    <th>Dni Transportista</th>
+                    <th>Nombre Transporte</th>
+                    <th>Telefono Transporte</th>
+                    <th>Info</th>
+                    <th>Perfil</th>
                 </thead>
+                {% for a in transportistas %}
                 <tbody>
-                    {% for t in transportistas %}
+
                     <tr>
-                        <td>{{t.nombre}}</td>
-                        <td>{{t.apellido}}</td>
-                        <td>{{t.dni}}</td>
-                        <td><input type="radio" id={{t.dni}} name="transporte" value={{t.dni}}></td>
+                        <td>{{a.apellido|title}}</td>
+                        <td>{{a.nombre|title}}</td>
+                        <td>{{a.dni}}</td>
+                        <td>{{a.nombre_transporte|title}}</td>
+                        <td>{{a.telefono_transportista}}</td>
+                        <td><button class="btn btn-primary" onclick="info_transportista('{% url 'usuarios_transportista' a.dni %}')"><i style="font-size:15px" class="fa">&#xf129;</i></button></td>
+                        <td><a class="btn btn-info" href="{% url 'datos_transportista' a.dni %}"><i style="font-size:15px" class="fas fa-child"></i></a></td>
                     </tr>
                     {% endfor %}
                 </tbody>
+                
             </table>
 
+            {% else %}
 
-
-            <span id="resultado"></span>
+            <h3><center>No hay ningun Transportista.</center></h3>
+        
+            {% endif %}
 
         </div>
-        <!-- Modal footer -->
-        <div class="modal-footer">
-            <form id="select_transportista" method="post" href="{% url 'asignar_transportista' %}">
-                {% csrf_token %}
-                <input name="dni_alumno" id="dni_alumno" value={{dni_alumno}} type="hidden">
-                <input name="dni_transportista" id="dni_transportista" value=0 type="hidden">
-            </form>
-            <a href="{% url 'form_transportista' %}"><li>&#x2b;</li></a>
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-success" onclick="select_transportista()">Continuar</button>
+
+    </div>
+
+
+<div class="modal fade" id="modal_info">
+    <div class="modal-dialog">
+        <div id="datos_transs">
         </div>
     </div>
 </div>
 
-
-
 <script>
 
-    $('input[name=transporte]').click(function() {
-        var aux = $('input[name=transporte]:checked').val();
-        document.getElementById("dni_transportista").value = aux
-    });
-
-    function select_transportista(){
-        var aux = document.getElementById("dni_transportista").value;
-        if (aux == 0){
-            alert("Eliga un Transportista");
-        } else {
-            var aux_form = document.getElementById("select_transportista");
-            //aux_form.submit();
-
-            var r = confirm("¿Asignar este Transportista ?");
-            if (r == true) {
-                var myForm = document.getElementById('select_transportista');
-                formData = new FormData(myForm);
-                $.ajax({
-                    url: '{% url 'asignar_transportista' %}',
-                    data : formData,
-                    processData: false,
-                    contentType: false,
-                    type: 'POST',
-                    success: function(data){
-                    document.getElementById("tabla_transportistas").style.display = "none";
-                    document.getElementById("resultado").innerHTML = data.resultado;
-                }
-                       });
-            } else {
-                return;
+    function info_transportista(url, alum){
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
             }
-        }
+        })
+            .done(function (data) {
+            $("#datos_transs").html(data);
+            $('#modal_info').modal('show');
+        });
     }
 
-    function buscar_transportista() {
+    function buscar_alumno() {
         var e = document.getElementById("filter_by");
         var strUser = e.options[e.selectedIndex].value;
         var input, filter, table, tr, td, i;
-        input = document.getElementById("myInput");
+        input = document.getElementById("inputTranss");
         filter = input.value.toUpperCase();
-        table = document.getElementById("tabla_transportistas");
+        table = document.getElementById("tabla_trans");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[strUser];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    
+    function buscar_transportista() {
+        var e = document.getElementById("filtro_t");
+        var strUser = e.options[e.selectedIndex].value;
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("input_t");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("tabla_t");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[strUser];
@@ -113,3 +132,5 @@
     }
 
 </script>
+
+{% endblock body %}

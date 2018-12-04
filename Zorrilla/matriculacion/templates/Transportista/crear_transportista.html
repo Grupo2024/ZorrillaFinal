@@ -4,226 +4,297 @@
 {% endblock navbar %}
 {% block body %}
 
-<style>
-
-    #myProgress {
-        width: 100%;
-        background-color: #ddd;
-    }
-
-    #myBar {
-        width: 10%;
-        height: 30px;
-        background-color: #4CAF50;
-        text-align: center;
-        line-height: 30px;
-        color: white;
-    }
-
-</style>
-
 <style type="text/css">
-    input{
-        width: 140%
+    #wrapper {
+        background: white;
+        background-position: 50% 0px;
+        margin: 0px auto 0 auto;
+        text-align: center;
     }
-    #a{
-        width: 40%
+
+    #header {
+        margin: 0 5px 2px 5px;
+        text-align: center;
+        background: white;
+        display: block;
+        position: relative;
     }
+
 </style>
-
 <br>
-<form id="form_transportista" style="margin-left: 30%;" method="post">
-{% csrf_token %}
+<div class="main" style="width:350px%;margin-left: 32%">
+    <div id="wrapper">
+        <div id="header">
+            <form id="form_transportista"  method="post">
+                {% csrf_token %}
+                <input type="hidden" name="dni_transportista" id="dni_transportista" value={{dni_transportista}}>
+                <div class="card text-center" style="width: 450px;">
+                    <div class="card-body">
+                        {% if objetivo == 'Crear' %}
+                        <h4 class="card-title">Crear Transportista</h4>
+                        {% else %}
+                        <h4 class="card-title">Editar Transportista</h4>
+                        {% endif %}
+                        <ul class="list-group list-group-flush">
 
-<div class="card text-center" style="width: 55%;">
-        <div class="card-body">
-            <h4 class="card-title">Crear Transportista</h4>
+                            <li class="list-group-item">
 
-            <ul class="list-group list-group-flush">
-
-                <li class="list-group-item">
-
-                        <div class="input-group input-group-sm mb-3 form-group">
-                                <div style="margin-right: 300%;" class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div style="margin-right: 300%;" class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
+                                    </div>
+                                    <div style="margin-left: -3.5%; margin-right: 17%; margin-top: 5px">{{form_transportista.nombre}}</div>
                                 </div>
-                        <div style="margin-left: -3.5%; margin-right: 17%;">{{form_transportista.nombre}}</div>
+                                <div class="input-group input-group-sm mb-4 form-group">
+                                    <div style="margin-right: 300%;" class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
+                                    </div>
+                                    <div style="margin-left: -3.5%; margin-right: 17%; margin-top: 5px">{{form_transportista.apellido}}</div>
+                                </div>
+                                {% if objetivo == 'Crear' %}
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div style="margin-right: 300%;" class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">DNI:</span>
+                                    </div>
+                                    <div id="b" style="margin-left: 0%; margin-right: 45%; margin-top: 5px">{{form_transportista.dni}}</div>
+                                </div>
+                                {% endif %}
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div style="margin-right: 300%;" class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
+                                    </div>
+                                    <div id="a" style="margin-left: -3.5%; margin-right: 40%; margin-top: 5px">{{form_transportista.lugar_nacimiento}}</div>
+                                </div>
+
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div class="input-group-prepend"  style="margin-right: 800%;">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
+                                    </div>
+                                    <br>
+                                    {% if objetivo == 'Cargar'%}
+                                    <div id="a" style="margin-left: 100%; margin-top: 5px">{{form_transportista.fecha_nacimiento}}</div>
+                                    {% else %}
+                                    <div id="a"  style="margin-left: -5%; margin-top: 5px">{{form_transportista.fecha_nacimiento}}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div style="margin-right: 300%;" class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
+                                    </div>
+                                    <div style="margin-left:-3.5%; margin-right: 40%; margin-top: 5px">{{form_transportista.domicilio}}</div>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div style="margin-right: 300%;" class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
+                                    </div>
+
+                                    <div style="margin-left: 0%; margin-right: 40%; margin-top: 5px">{{form_transportista.email}}</div>
+
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div style="margin-right: 300%;"class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
+                                    </div>
+                                    <br>
+                                    <div style="margin-left: 0%">{{form_transportista.sexo}}</div>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div style="margin-right: 300%;" class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">Nombre del transporte:</span>
+                                    </div>
+
+                                    <div style="margin-left:-3.5%; margin-right: 10%; margin-top: 5px">{{form_transportista.nombre_transporte}}</div>
+
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div style="margin-right: 300%;" class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">Telefono del transporte:</span>
+                                    </div>
+
+                                    <div id="a" style="margin-left:0%; margin-right: 25%; margin-top: 5px">{{form_transportista.telefono_transportista}}</div>
+
+                                </div>
+                                <div class="input-group input-group-sm mb-3 form-group">
+                                    <div style="margin-right: 300%;" class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">Detalles:</span>
+                                    </div>
+
+                                    <div style="margin-left: 0%; margin-top: 5px">{{form_transportista.detalles_transportista}}</div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-
-                    <div class="input-group input-group-sm mb-4 form-group">
-                        <div style="margin-right: 300%;" class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Apellido:</span>
-                        </div>
-                        <div style="margin-left: -3.5%; margin-right: 17%;">{{form_transportista.apellido}}</div>
-                    </div>
-
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div style="margin-right: 300%;" class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">DNI:</span>
-                        </div>
-                        <div id="b" style="margin-left: 0%; margin-right: 45%;">{{form_transportista.dni}}</div>
-                    </div>
-
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div style="margin-right: 300%;" class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Lugar de nacimiento:</span>
-                        </div>
-                        <div id="a" style="margin-left: -3.5%; margin-right: 40%;">{{form_transportista.lugar_nacimiento}}</div>
-                    </div>
-
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div style="margin-right: 300%;" class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Fecha de nacimiento:</span>
-                        </div>
-                        <br>
-                        <div id="a"  style="margin-left: 0%; margin-right: 50%;">{{form_transportista.fecha_nacimiento}}</div>
-                    </div>
-
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div style="margin-right: 300%;" class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Domicilio:</span>
-                        </div>
-                        <div style="margin-left:-3.5%; margin-right: 40%;">{{form_transportista.domicilio}}</div>
-                    </div>
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div style="margin-right: 300%;" class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
-                        </div>
-
-                        <div style="margin-left: 0%; margin-right: 40%;">{{form_transportista.email}}</div>
-
-                    </div>
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div style="margin-right: 300%;"class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Sexo:</span>
-                        </div>
-                        <br>
-                        <div style="margin-left: 0%">{{form_transportista.sexo}}</div>
-                    </div>
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div style="margin-right: 300%;" class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Nombre del transporte:</span>
-                        </div>
-
-                        <div style="margin-left:-3.5%; margin-right: 10%;">{{form_transportista.nombre_transporte}}</div>
-
-                    </div>
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div style="margin-right: 300%;" class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Telefono del transporte:</span>
-                        </div>
-
-                        <div id="a" style="margin-left:0%; margin-right: 25%;">{{form_transportista.telefono_transportista}}</div>
-
-                    </div>
-                    <div class="input-group input-group-sm mb-3 form-group">
-                        <div style="margin-right: 300%;" class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Detalles:</span>
-                        </div>
-
-                        <div id="a" style="margin-left:0%">{{form_transportista.detalles_transportista}}</div>
-
-                    </div>
-                </li>
-                <button class="btn btn-success"onclick="matricular_Transportista()" id="btn_padre">Cargar</button>
-            </ul>
+                </div>
+            </form>
         </div>
-
     </div>
+</div>
 
-</form>
+{% if objetivo == 'Crear' %}
+    <button class="btn btn-success" style="width:350px;margin-left: 38%" onclick="modal_crear()" id="btn_padre">Cargar</button>
+{% else %}
+    <button class="btn btn-success" style="width:350px;margin-left: 38%" onclick="modal_editar()" id="btn_padre">Editar</button>
+{% endif %}
 
 
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
+
+            <!-- Modal Header -->
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Matriculando Transportista:</h5>
+                <h4 class="modal-title" style="display: none;" id="titulo">Cargar Transportista</h4>
+                <h4 class="modal-title" style="display: none;" id="titulo2">Editar Transportista</h4>
+
             </div>
-            <div class="container-fluid">
-                <div class="modal-body row">
-                    <p class="col-sm-2">Resultado: </p><span style='visibility:hidden;'>..</span>
-                    <div class="col-sm-9">
-                        <div id="myProgress">
-                            <p id="myBar" value="10%"></p>
-                        </div>
-                    </div>
-                    <span id="resultado"></span>
-                </div>
-                <div class="modal-footer" id="footer">
-                    <button type="button" class="btn btn-secondary" onclick="volver_pedidos()" id="continuar">Continuar</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
-                </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                <p id="msg_confirm" align="center" style="display: none">¿Cargar Transportista ?</p>
+                <p id="msg_confirm2" align="center" style="display: none">¿Editar Transportista ?</p>
+                <span style="margin-left:0%" id="resultado_span">Resultado:</span>
+                <span id="resultado_mal" style="margin-top: -10"></span>
+                <span style="width: 100%; margin-left: 0%; margin-top: -5.5% " id="resultado_bien"></span>
+                <div style="margin-left: 35%; margin-top: -11.5%" id="loader_resultado" class="loader"></div>
+
+            </div>
+
+            <div class="modal-footer" id="footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                <button onclick="editar_Transportista()" class="btn btn-primary" id="aceptar">Aceptar</button>
+                <button onclick="matricular_Transportista()" class="btn btn-primary" id="aceptar2">Aceptar</button>
+                <a type="button" class="btn btn-success" style="display: none;" href="{% url 'index' %}" id="continuar">Continuar</a>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
             </div>
         </div>
     </div>
+</div>
 
-    <form id="pedidos" action="{% url 'traer_pedidos' %}"></form>
+<script>
 
-    <script>
-        function sleep() {
-            return new Promise(resolve => setTimeout(resolve, 1000));
-        }
+    function reset_modal(){
+        $("#continuar").hide();
+        $("#volver").hide();
+        $("#titulo").hide();
+        $("#titulo2").hide();
+        $("#resultado_span").hide();
+        $("#loader_resultado").hide();
+        $("#resultado_crear_tr").hide();
+        $("#resultado_mal").html("");
+        $("#resultado_bien").html("");
+        $("#cancelar").show();
+        $("#aceptar").hide();
+        $("#aceptar2").hide();
+        $("#msg_confirm").hide();
+        $("#msg_confirm2").hide();
+    }
 
-        async function footer(a){
-            var elem = document.getElementById("myBar");
-            var width = 10;
-            var id = setInterval(frame, 10);
-            function frame() {
-                if (width >= 100) {
-                    clearInterval(id);
-                } else {
-                    width++;
-                    elem.style.width = width + '%';
-                    elem.innerHTML = width * 1  + '%';
+    function modal_crear(){
+        reset_modal();
+        $("#msg_confirm").show();
+        $("#titulo").show();
+        $("#aceptar2").show();
+        $("#myModal").modal()
+    }
+
+    function modal_editar(){
+        reset_modal();
+        $("#msg_confirm2").show();
+        $("#titulo2").show();
+        $("#aceptar").show();
+        $("#myModal").modal()
+    }
+
+    function run_crear(){
+        $("#msg_confirm").hide();
+        $("#cancelar").hide();
+        $("#aceptar2").hide();
+        $("#continuar").hide();
+        $("#volver").hide();
+        $("#resultado_mal").html("");
+        $("#resultado_bien").html("");
+        $("#resultado_span").show();
+        $("#resultado_mal").show();
+        $("#resultado_bien").show();
+    }
+
+    function run_editar(){
+        $("#msg_confirm2").hide();
+        $("#cancelar").hide();
+        $("#aceptar").hide();
+        $("#continuar").hide();
+        $("#volver").hide();
+        $("#resultado_mal").html("");
+        $("#resultado_bien").html("");
+        $("#resultado_span").show();
+        $("#resultado_mal").show();
+        $("#resultado_bien").show();
+    }
+
+
+    function matricular_Transportista(){
+        reset_modal();
+        console.log("Crear");
+        $("#cancelar").hide();
+        $("#titulo").show();
+        var myForm = document.getElementById('form_transportista');
+        formData = new FormData(myForm);
+        $("#resultado_span").show();
+        $("#loader_resultado").show();
+        $.ajax({
+            url: '{% url 'crear_transportista' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#loader_resultado").hide();
+                if (data.error){
+                    $("#resultado_mal").html(data.resultado);
+                    $("#continuar").hide();
+                    $("#volver").show();
+                }else{
+                    $("#resultado_bien").html(data.resultado);
+                    $("#continuar").show();
+                    $("#volver").hide();
                 }
             }
-            await sleep();
-            elem.style.display = "none";
-            var resultado = document.getElementById("resultado");
-            resultado.innerHTML = a;
-            return a
 
-        }
+        });
+    }
 
-        function volver_pedidos(){
-            var aux_form = document.getElementById("pedidos");
-            aux_form.submit();
-        }
-
-        function matricular_Transportista(){
-            var myForm = document.getElementById('form_transportista');
-            formData = new FormData(myForm);
-            console.log("llega");
-            var elem = document.getElementById("myBar");
-            elem.style.display = "block";
-            var resultado = document.getElementById("resultado");
-            resultado.innerHTML = "";
-            var x = document.getElementById("continuar");
-            var y = document.getElementById("volver");
-            x.style.display = "none";
-            y.style.display = "none";
-            $('#myModal').modal('show');
-            $.ajax({
-                url: '{% url 'crear_transportista' %}',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    console.log(data.error);
-                    console.log(data.resultado);
-                    if (data.error){
-                        footer(data.resultado);
-                        y.style.display = "block";
-                    }else{
-                        footer(data.resultado);
-                        x.style.display = "block";
-                    }
+    function editar_Transportista(){
+        console.log("editar");
+        run_editar();
+        $("#cancelar").hide();
+        $("#titulo2").show();
+        var myForm = document.getElementById('form_transportista');
+        formData = new FormData(myForm);
+        $("#resultado_span").show();
+        $("#loader_resultado").show();
+        $.ajax({
+            url: '{% url 'editar_transportista' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                $("#loader_resultado").hide();
+                if (data.error){
+                    $("#resultado_mal").html(data.resultado);
+                    $("#continuar").hide();
+                    $("#volver").show();
+                }else{
+                    $("#resultado_bien").html(data.resultado);
+                    $("#continuar").show();
+                    $("#volver").hide();
                 }
-            });
-        }
+            }
+        });
+    }
 
-    </script>
+</script>
 {% endblock body %}

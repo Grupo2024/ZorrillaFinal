@@ -11,20 +11,6 @@
     #a{
         width: 106%
     }
-
-    #myProgress {
-        width: 100%;
-        background-color: #ddd;
-    }
-
-    #myBar {
-        width: 10%;
-        height: 30px;
-        background-color: #4CAF50;
-        text-align: center;
-        line-height: 30px;
-        color: white;
-    }
 </style>
 
 
@@ -44,8 +30,8 @@
                             {{ form.email }}
                         </div>
                     </div>
-                </div> <!-- input-group.// -->
-            </div> <!-- form-group// -->
+                </div>
+            </div>
 
             <div class="form-group">
                 <div class="input-group">
@@ -55,120 +41,101 @@
                             {{ form.dni }}
                         </div>
                     </div>
-                </div> <!-- input-group.// -->
-            </div> <!-- form-group// -->
-
+                </div>
+            </div>
         </form>
     </article>
-    <button class="btn btn-success" align="center"  onclick="new_pass()">Buscar</button>
+    <button class="btn btn-success" align="center"  onclick="modal_crear()">Buscar</button>
 
-    <form id="logIn" action="{% url 'logIn' %}">
-    </form>
+</div>
 
+<div class="modal fade forget-modal" tabindex="-1" id="myModal"role="dialog" aria-labelledby="myForgetModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
 
-    <!-- Modal -->
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" style="display: none;" id="titulo">Cambiar Contraseña</h4>
+            </div>
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Recuperar Contraseña:</h5>
-                </div>
-                <div class="modal-body">
-                    <p>Resultado: </p>
-                    <div id="myProgress">
-                        <p id="myBar" value="10%"></p>
-                    </div>
-                    <span id="resultado"></span>
-                </div>
-                <div class="modal-footer" id="footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="login()" id="continuar">Continuar</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="close_modal()" id="volver">Volver</button>
-                </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <br>
+                <p id="msg_confirm" align="center">¿Cambiar Contraseña ?</p>
+                <span style="margin-left:0%;display: none" id="resultado_span">Resultado:</span>
+                <span id="resultado_mal" style="margin-left: 80%;margin-top: -15"></span>
+                <span style="width: 100%; margin-left: 30%; margin-top: -15.5% " id="resultado_bien"></span>
+                <div style="margin-left: 30%; margin-top: -20.5%" id="loader_resultado" class="loader"></div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">Cancelar</button>
+                <button onclick="new_pass()" class="btn btn-primary" id="aceptar">Aceptar</button>
+                <a type="button" style="display: none;" class="btn btn-success" href="{% url 'index' %}" id="continuar">Continuar</a>
+                <button type="button" style="display: none;" class="btn btn-primary" data-dismiss="modal" id="volver">Volver</button>
             </div>
         </div>
     </div>
+</div>
+
+<script>
+
+    var input = document.getElementById("sub");
+    input.addEventListener("keyup", function(event) {
+        event.preventDefault();
+        if (event.keyCode === 13) {
+            new_pass();
+        }
+    });
 
 
+    function modal_crear(){
+        $("#titulo").hide();
+        $("#resultado_span").hide();
+        $("#resultado_mal").html("");
+        $("#resultado_bien").html("");
+        $("#loader_resultado").hide();
+        $("#continuar").hide();
+        $("#volver").hide();
+        $("#msg_confirm").show();
+        $("#aceptar").show();
+        $("#cancelar").show();
+        $('#myModal').modal('show');
+    }
 
-
-
-
-    <script>
-
-        var input = document.getElementById("sub");
-        input.addEventListener("keyup", function(event) {
-            event.preventDefault();
-            if (event.keyCode === 13) {
-                new_pass();
+    function new_pass(){
+        var myForm = document.getElementById('GetDataForPassword');
+        formData = new FormData(myForm);
+        $("#titulo").show();
+        $("#resultado_span").show();
+        $("#msg_confirm").hide();
+        $("#loader_resultado").show();
+        $("#aceptar").hide();
+        $("#cancelar").hide();
+        $.ajax({
+            url: '{% url 'cambiar_password' %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+               $("#loader_resultado").hide();
+                if (data.error){
+                    $("#resultado_mal").html(data.resultado);
+                    $("#continuar").hide();
+                    $("#volver").show();
+                }else{
+                    $("#resultado_bien").html(data.resultado);
+                    $("#continuar").show();
+                    $("#volver").hide();
+                }
             }
+
         });
+    }
 
-        function close_modal(){
-            $('#myModal').modal('hide');
-        }
 
-        function sleep() {
-            return new Promise(resolve => setTimeout(resolve, 1000));
-        }
+</script>
 
-        async function footer(a){
-            var elem = document.getElementById("myBar");
-            var width = 10;
-            var id = setInterval(frame, 10);
-            function frame() {
-                if (width >= 100) {
-                    clearInterval(id);
-                } else {
-                    width++;
-                    elem.style.width = width + '%';
-                    elem.innerHTML = width * 1  + '%';
-                }
-            }
-            await sleep();
-            elem.style.display = "none";
-            resultado.innerHTML = a;
-            return a
-
-        }
-
-        function new_pass(){
-            var myForm = document.getElementById('GetDataForPassword');
-            formData = new FormData(myForm);
-            var elem = document.getElementById("myBar");
-             elem.style.width = 0;
-            elem.style.display = "block";
-            var resultado = document.getElementById("resultado");
-            resultado.innerHTML = "";
-            var x = document.getElementById("continuar");
-            var y = document.getElementById("volver");
-            x.style.display = "none";
-            y.style.display = "none";
-            $('#myModal').modal('show');
-            $.ajax({
-                url: '{% url 'cambiar_password' %}',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                    if (data.error){
-                        footer(data.resultado);
-                        x.style.display = "none";
-                        y.style.display = "block";
-                    }else{
-                        footer(data.resultado);
-                        y.style.display = "none";
-                        x.style.display = "block";
-
-                    }
-                }
-            });
-        }
-
-        function login(){
-            $('#logIn').submit()
-        }
-    </script>
-
-    {% endblock body %}
+{% endblock body %}

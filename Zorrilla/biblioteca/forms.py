@@ -1,7 +1,7 @@
 from django import forms
-from .models import Document
+from .models import Documento
 
 class DocumentForm(forms.ModelForm):
     class Meta:
-        model = Document
-        fields = ('descripcion', 'documento','titulo','genero','autor',)
+        model = Documento
+        fields = ('titulo','descripcion', 'documento','genero','autor',)

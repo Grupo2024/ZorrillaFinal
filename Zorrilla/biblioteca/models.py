@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 
-class Document(models.Model):
+class Documento(models.Model):
 
 
     DR = 'Drama'
@@ -71,7 +71,7 @@ class Estado(models.Model):
         (ED , 'Editar')
     )
 
-    document = models.ForeignKey(Document)
+    document = models.ForeignKey(Documento)
     user = models.ForeignKey(User)
     modificacion = models.CharField('Modificacion', max_length=12, choices=MODIFICACION_CHOICES)
     uploaded_at = models.DateTimeField(auto_now_add=True)
